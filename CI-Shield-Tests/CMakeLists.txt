@@ -4,12 +4,13 @@ cmake_policy(VERSION 3.19)
 # Initialize Mbed OS build system
 set(MBED_APP_JSON_PATH mbed_app.json5)
 include(mbed-os/tools/cmake/app.cmake)
+
+# Make sure testing is enabled for the project
+set(MBED_ENABLE_TESTING TRUE CACHE BOOL "" FORCE)
+
 add_subdirectory(mbed-os)
 
 project(mbed-ce-ci-shield-tests)
-
-enable_testing()
-include(mbed_greentea)
 
 add_executable(TestEEPROM TestEEPROM.cpp)
 target_link_libraries(TestEEPROM mbed-storage-i2cee mbed-os)
