@@ -1,0 +1,16 @@
+{
+    "target_overrides": {
+        "*": {
+            "platform.stdio-baud-rate": 115200,
+            "platform.stdio-buffered-serial": 1,
+			"target.components_add" : ["SD", "I2CEE"],
+            "sd.CRC_ENABLED": 1,
+            "drivers.spi_transaction_queue_len": 3
+        },
+        "STM32L452xE": {
+            // This was added because not using it seemed to cause intermittent
+            // glitchy behavior with UART comms on my dev board
+            "target.clock_source": "USE_PLL_HSI"
+        }
+    }
+}

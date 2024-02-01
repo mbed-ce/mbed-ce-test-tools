@@ -1,0 +1,3 @@
+[submodule "CI-Shield-Tests/mbed-os"]
+	path = CI-Shield-Tests/mbed-os
+	url = https://github.com/mbed-ce/mbed-os.git

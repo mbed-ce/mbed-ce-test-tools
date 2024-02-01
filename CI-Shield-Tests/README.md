@@ -1,0 +1,5 @@
+# Mbed CE CI Shield Tests
+
+This directory contains the test cases that run on the [CI Shield v2](https://github.com/mbed-ce/mbed-ce-ci-shield-v2).  These are loosely based on the original [ARM Mbed CI shield tests](https://github.com/ARMmbed/ci-test-shield/tree/master/TESTS/API), but have been updated to take advantage of new features of the test shield, such as the logic analyzer and the PWM-ADC loopback.
+
+Note that the `host_test_utils/sigrok_interface.py` file contains the Sigrok CLI driver.  I was able to find, on the whole wide internet, not *one* example of scripting sigrok via another program and automatically doing stuff with the output, so a lot of this had to be figured out from messing around with the Sigrok CLI and looking at its source code.  Hopefully this can be a useful example to others also looking to script sigrok!
