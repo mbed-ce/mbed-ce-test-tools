@@ -1,0 +1,2 @@
+junitparser~=3.0.0
+prettytable~=3.8.0
