@@ -12,11 +12,7 @@ database = mbed_test_database.MbedTestDatabase(db_path)
 print(">> Creating Database...")
 database.create_database()
 print(">> Populating Targets and Features into Database...")
-database.populate_targets_features(pathlib.Path("J:/Mbed/mbed-os"))
-
-print(">> Generating Website...")
-html_gen_dir = pathlib.Path("generated-site")
-generate_tests_and_targets_website(database, html_gen_dir)
+database.populate_targets_features(pathlib.Path("../CI-Shield-Tests/mbed-os"))
 
 
 target_name = "ARDUINO_NANO33BLE"

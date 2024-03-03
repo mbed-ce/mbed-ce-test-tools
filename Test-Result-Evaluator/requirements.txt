@@ -1,2 +1,4 @@
 junitparser~=3.0.0
 prettytable~=3.8.0
+graphviz~=0.20
+-r ../CI-Shield-Tests/mbed-os/tools/requirements.txt

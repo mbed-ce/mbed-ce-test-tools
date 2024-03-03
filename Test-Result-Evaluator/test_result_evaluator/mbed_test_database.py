@@ -1,10 +1,13 @@
 """
 Module for creating and accessing an SQLite database of Mbed test results
 """
+import collections
 import pathlib
 import sqlite3
 import enum
-from typing import Set
+from typing import Set, List
+
+import graphviz
 
 from mbed_tools.targets._internal.target_attributes import get_target_attributes
 
@@ -105,11 +108,21 @@ class MbedTestDatabase:
             ")"
         )
 
+        # -- TargetGraph table
+        # Contains target parent/child relationships
+        self._database.execute(
+            "CREATE TABLE TargetGraph("
+            "parentTarget TEXT REFERENCES Targets(name), "  # Name of the parent target
+            "childTarget TEXT REFERENCES Targets(name), "  # Name of the child target
+            "UNIQUE(parentTarget, childTarget)"
+            ")"
+        )
+
         # -- TargetFeatures table
         # Maps targets to the features they support
         self._database.execute(
             "CREATE TABLE TargetFeatures("
-            "targetName TEXT REFERENCES Targets(name), "  # Name of the test
+            "targetName TEXT REFERENCES Targets(name), "  # Name of the target
             "feature TEXT REFERENCES Features(name),"  # Name of feature or component.
             "UNIQUE(targetName, feature)"  # Combo of target name - feature name must be unique
             ")"
@@ -177,6 +190,13 @@ class MbedTestDatabase:
                 (target_name,
                  is_public,
                  is_mcu_family))
+
+            # Also add the parents for each target
+            for parent in target_data.get("inherits", []):
+                self._database.execute(
+                    "INSERT INTO TargetGraph(parentTarget, childTarget) VALUES(?, ?)",
+                    (parent, target_name)
+                )
 
         # Now add the features to the database
         self._database.execute("BEGIN")
@@ -255,4 +275,102 @@ WHERE
 GROUP BY Features.name
 ORDER BY friendlyName ASC""", (type.value,))
 
+    def get_mcu_family_targets(self) -> List[str]:
+        """
+        Get all the targets that are MCU family targets and should have
+        webpages generated for them
+        """
+        mcu_family_targets = []
 
+        cursor = self._database.execute("""
+SELECT name
+FROM Targets
+WHERE isMCUFamily == 1
+ORDER BY name ASC
+""")
+
+        for row in cursor:
+            mcu_family_targets.append(row["name"])
+
+        cursor.close()
+
+        return mcu_family_targets
+
+    def _get_target_parents(self, target_name: str) -> List[str]:
+        """
+        Get the parent(s) of a target
+        """
+        parents = []
+
+        cursor = self._database.execute("""
+SELECT parentTarget
+FROM TargetGraph
+WHERE childTarget == ?
+ORDER BY parentTarget ASC
+""", (target_name, ))
+
+        for row in cursor:
+            parents.append(row["parentTarget"])
+
+        cursor.close()
+
+        return parents
+
+    def _get_target_children(self, target_name: str) -> List[str]:
+        """
+        Get the children of a target
+        """
+        parents = []
+
+        cursor = self._database.execute("""
+SELECT childTarget
+FROM TargetGraph
+WHERE parentTarget == ?
+ORDER BY childTarget ASC
+""", (target_name,))
+
+        for row in cursor:
+            parents.append(row["childTarget"])
+
+        cursor.close()
+
+        return parents
+
+    def get_inheritance_graph(self, target_name: str) -> graphviz.Digraph:
+        """
+        Get the inheritance graph for a target, showing its parents and children.
+        """
+
+        inheritance_graph = graphviz.Digraph(comment=f"Inheritance graph for {target_name}")
+
+        inheritance_graph.node(target_name)
+
+        # Note: There is probably some 400 IQ way to do this in one SQLite query, but I
+        # think we can leave that to figure out later.  For now we just do BFS upwards and downwards.
+        nodes_to_explore = collections.deque()
+        nodes_to_explore.append(target_name)
+
+        # BFS parent targets
+        while len(nodes_to_explore) > 0:
+            curr_target = nodes_to_explore.pop()
+            parents = self._get_target_parents(curr_target)
+
+            for parent_target in parents:
+                inheritance_graph.node(parent_target)
+                inheritance_graph.edge(curr_target, parent_target)
+                nodes_to_explore.append(parent_target)
+
+        # BFS child targets
+        nodes_to_explore = collections.deque()
+        nodes_to_explore.append(target_name)
+
+        while len(nodes_to_explore) > 0:
+            curr_target = nodes_to_explore.pop()
+            children = self._get_target_children(curr_target)
+
+            for child_target in children:
+                inheritance_graph.node(child_target)
+                inheritance_graph.edge(child_target, curr_target)
+                nodes_to_explore.append(child_target)
+
+        return inheritance_graph

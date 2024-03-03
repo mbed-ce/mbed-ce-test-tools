@@ -80,7 +80,26 @@ def generate_features_index_page(database: MbedTestDatabase, out_path: pathlib.P
 
             index_page.write(feature_table.get_html_string(attributes={"class": "ui celled table"}))
 
-        index_page.write("</body>")
+        index_page.write("\n</body>")
+
+
+def generate_target_page(database: MbedTestDatabase, target_name: str, out_path: pathlib.Path):
+    """
+    Generate a webpage for a target.  This includes info like the target's features and its inheritance graph.
+    """
+
+    with open(out_path, "w") as target_page:
+        write_html_header(target_page, target_name + " Target Info")
+
+        # Generate inheritance graph
+        target_page.write("<h2>Inheritance Graph</h2>")
+
+        inheritance_graph = database.get_inheritance_graph(target_name)
+        inheritance_graph_basename = out_path.parent / "assets" / f"{target_name}.dot"
+        inheritance_graph_svg_file = pathlib.Path(inheritance_graph.render(inheritance_graph_basename, format="svg"))
+        target_page.write(f'<img src="assets/{inheritance_graph_svg_file.name}" alt="Inheritance Graph"/>\n')
+
+        target_page.write("\n</body>")
 
 
 def generate_tests_and_targets_website(database: MbedTestDatabase, gen_path: pathlib.Path):
@@ -97,4 +116,14 @@ def generate_tests_and_targets_website(database: MbedTestDatabase, gen_path: pat
     features_dir = gen_path / "features"
     features_dir.mkdir(exist_ok=True)
     generate_features_index_page(database, features_dir / "index.html")
+
+    # Generate targets subdirectory
+    targets_dir = gen_path / "targets"
+    targets_dir.mkdir(exist_ok=True)
+    targets_assets_dir = targets_dir / "assets"
+    targets_assets_dir.mkdir(exist_ok=True)
+
+    for mcu_family_target in database.get_mcu_family_targets():
+        generate_target_page(database, mcu_family_target, targets_dir / f"{mcu_family_target}.html")
+
 
