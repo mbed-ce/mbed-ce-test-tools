@@ -1,5 +1,6 @@
 import pathlib
-from typing import TextIO
+from typing import TextIO, List
+import html
 
 import prettytable
 
@@ -28,6 +29,7 @@ def write_html_header(output_file: TextIO, page_title: str):
             margin-left: 30px;
             margin-right: 30px;
             margin-top: 30px;
+            overflow: scroll;
         }}
     </style>
 </head>
@@ -83,13 +85,39 @@ def generate_features_index_page(database: MbedTestDatabase, out_path: pathlib.P
         index_page.write("\n</body>")
 
 
-def generate_target_page(database: MbedTestDatabase, target_name: str, out_path: pathlib.Path):
+def generate_targets_index_page(database: MbedTestDatabase, mcu_family_targets: List[str], out_path: pathlib.Path):
     """
-    Generate a webpage for a target.  This includes info like the target's features and its inheritance graph.
+    Generates the index page for the targets folder.
+    This includes a link to each MCU target family and other information about it.
+    """
+    with open(out_path, "w") as targets_index:
+        write_html_header(targets_index, "Mbed CE MCU Targets")
+        targets_index.write("<p>Each MCU target on this page represents one microcontroller family that Mbed supports."
+                            " Microcontroller family, here, refers to a group of microcontrollers that run almost the same"
+                            " code, with the differences only being memory sizes or the presence or absence of some "
+                            "peripherals.</p>")
+
+        target_table = prettytable.PrettyTable()
+        target_table.field_names = ["MCU Target"]
+        for mcu_family_target in mcu_family_targets:
+            target_link = f"<a href=\"{mcu_family_target}.html\">{mcu_family_target}</a>"
+            target_table.add_row([target_link])
+
+        # Write the table to the page.
+        # Note: html.unescape() prevents HTML in the cells from being escaped in the page (which prettytable
+        # seems to do)
+        targets_index.write(html.unescape(target_table.get_html_string(attributes={"class": "ui celled table"})))
+
+        targets_index.write("\n</body>")
+
+
+def generate_target_family_page(database: MbedTestDatabase, target_name: str, out_path: pathlib.Path):
+    """
+    Generate a webpage for a target family.  This includes info like the target's features and the targets in the family.
     """
 
     with open(out_path, "w") as target_page:
-        write_html_header(target_page, target_name + " Target Info")
+        write_html_header(target_page, target_name + " Target Family Info")
 
         # Generate inheritance graph
         target_page.write("<h2>Inheritance Graph</h2>")
@@ -123,7 +151,9 @@ def generate_tests_and_targets_website(database: MbedTestDatabase, gen_path: pat
     targets_assets_dir = targets_dir / "assets"
     targets_assets_dir.mkdir(exist_ok=True)
 
-    for mcu_family_target in database.get_mcu_family_targets():
-        generate_target_page(database, mcu_family_target, targets_dir / f"{mcu_family_target}.html")
+    mcu_family_targets = database.get_mcu_family_targets()
+    generate_targets_index_page(database, mcu_family_targets, targets_dir / "index.html")
+    for mcu_family_target in mcu_family_targets:
+        generate_target_family_page(database, mcu_family_target, targets_dir / f"{mcu_family_target}.html")
 
 

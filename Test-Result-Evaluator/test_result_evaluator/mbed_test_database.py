@@ -341,9 +341,14 @@ ORDER BY childTarget ASC
         Get the inheritance graph for a target, showing its parents and children.
         """
 
-        inheritance_graph = graphviz.Digraph(comment=f"Inheritance graph for {target_name}")
+        # Create the graph with a nice blue color for all nodes.
+        # The "rankdir=BT" attr puts the parent node at the top.
+        inheritance_graph = graphviz.Digraph(comment=f"Inheritance graph for {target_name}",
+                                             node_attr={"fillcolor": "lightblue", "style": "filled"},
+                                             graph_attr={"rankdir": "BT"})
 
-        inheritance_graph.node(target_name)
+        # Give the MCU family target some special styling
+        inheritance_graph.node(target_name, label=f"<<B>{target_name}</B>>", _attributes={"shape": "box"})
 
         # Note: There is probably some 400 IQ way to do this in one SQLite query, but I
         # think we can leave that to figure out later.  For now we just do BFS upwards and downwards.
