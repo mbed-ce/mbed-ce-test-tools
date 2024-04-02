@@ -91,17 +91,30 @@ def generate_targets_index_page(database: MbedTestDatabase, mcu_family_targets: 
     This includes a link to each MCU target family and other information about it.
     """
     with open(out_path, "w") as targets_index:
-        write_html_header(targets_index, "Mbed CE MCU Targets")
-        targets_index.write("<p>Each MCU target on this page represents one microcontroller family that Mbed supports."
+        write_html_header(targets_index, "Mbed CE MCU Target Families")
+        targets_index.write("<p>Each row on this page represents one microcontroller family that Mbed supports."
                             " Microcontroller family, here, refers to a group of microcontrollers that run almost the same"
                             " code, with the differences only being memory sizes or the presence or absence of some "
                             "peripherals.</p>")
 
         target_table = prettytable.PrettyTable()
-        target_table.field_names = ["MCU Target"]
+        target_table.field_names = ["MCU Target", "MCU Vendor", "Board Targets"]
         for mcu_family_target in mcu_family_targets:
             target_link = f"<a href=\"{mcu_family_target}.html\">{mcu_family_target}</a>"
-            target_table.add_row([target_link])
+
+            mcu_vendor_name = ""
+            boards_cursor = database.get_all_boards_in_mcu_family(mcu_family_target)
+            boards_list: List[str] = []
+            for row in boards_cursor:
+                boards_list.append(row["name"])
+
+                # Not every board may have the CPU vendor set (since the JSON doesn't require the 'device_name'
+                # property to be set so the board may not get linked to CMSIS) so only store this field if it exists.
+                if row["cpuVendorName"] is not None:
+                    mcu_vendor_name = row["cpuVendorName"]
+            boards_cursor.close()
+
+            target_table.add_row([target_link, mcu_vendor_name, ", ".join(boards_list)])
 
         # Write the table to the page.
         # Note: html.unescape() prevents HTML in the cells from being escaped in the page (which prettytable

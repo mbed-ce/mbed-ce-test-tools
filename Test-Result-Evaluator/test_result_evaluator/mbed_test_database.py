@@ -5,13 +5,14 @@ import collections
 import pathlib
 import sqlite3
 import enum
-from typing import Set, List
+from typing import Set, List, Optional, Dict, Any
 
 import graphviz
 
 from mbed_tools.targets._internal.target_attributes import get_target_attributes
 
 import json5
+import cmsis_pack_manager
 
 
 class TestResult(enum.IntEnum):
@@ -101,10 +102,14 @@ class MbedTestDatabase:
             "name TEXT PRIMARY KEY, "  # Name of the target
             "isPublic INTEGER, "  # 1 if the target is a public target (a board that can be built for).
                                   # 0 if not (the target is just used as a parent for other targets).
-            "isMCUFamily INTEGER"  # 1 if this is the top-level target for one family of MCUs and boards.
-                                   # (for example, STM32L4 is the family target for all STM32L4 MCUs and boards).
-                                   # Family targets are used to group together documentation and test results.
-                                   # 0 otherwise (target is above or below the family level).
+            "isMCUFamily INTEGER, " # 1 if this is the top-level target for one family of MCUs and boards.
+                                    # (for example, STM32L4 is the family target for all STM32L4 MCUs and boards).
+                                    # Family targets are used to group together documentation and test results.
+                                    # 0 otherwise (target is above or below the family level).
+            "cpuVendorName TEXT, "  # Name of the vendor which the CPU on this target comes from.  From the CMSIS
+                                    # database.  NULL if this target does not have a valid link to the CMSIS database.
+            "mcuFamilyTarget TEXT NULL"  # Name of the MCU family target which is a parent of this target.
+                                         # Only set iff a target has a parent which is an MCU family target. 
             ")"
         )
 
@@ -141,9 +146,10 @@ class MbedTestDatabase:
         # now commit the initial transaction
         self._database.commit()
 
-    def populate_targets_features(self, mbed_os_path: pathlib.Path):
+    def populate_targets_features(self, mbed_os_path: pathlib.Path, cmsis_device_dict: Dict[str, Any]):
         """
-        Populate the Features and TargetFeatures tables from a given Mbed OS path
+        Populate the Features and TargetFeatures tables from a given Mbed OS path.
+        CMSIS cache is used to get attributes like RAM sizes from CMSIS.
         """
 
         target_json5_file = mbed_os_path / "targets" / "targets.json5"
@@ -185,11 +191,28 @@ class MbedTestDatabase:
             is_public = 1 if target_data.get("public", True) else 0  # targets are public by default
             is_mcu_family = 1 if target_data.get("is_mcu_family_target", False) else 0
 
+            # Try and lookup additional data from the CMSIS json file
+            cmsis_device_name: Optional[str] = target_data.get("device_name", None)
+            cpu_vendor_name: Optional[str] = None
+
+            if cmsis_device_name is not None:
+                if cmsis_device_name not in cmsis_device_dict:
+                    raise RuntimeError(f"Target {target_name} specifies CMSIS device name {cmsis_device_name} which "
+                                       f"does not exist in CMSIS pack index. Error in 'device_name' targets.json5 "
+                                       f"attribute?")
+                cmsis_cpu_data = cmsis_device_dict[cmsis_device_name]
+                cpu_vendor_name = cmsis_cpu_data["vendor"]
+
+                # In the JSON file the vendor name has a colon then a number after it.  I think this is
+                # some sort of vendor ID but can't find actual docs.
+                cpu_vendor_name = cpu_vendor_name.split(":")[0]
+
             self._database.execute(
-                "INSERT INTO Targets(name, isPublic, isMCUFamily) VALUES(?, ?, ?)",
+                "INSERT INTO Targets(name, isPublic, isMCUFamily, cpuVendorName) VALUES(?, ?, ?, ?)",
                 (target_name,
                  is_public,
-                 is_mcu_family))
+                 is_mcu_family,
+                 cpu_vendor_name))
 
             # Also add the parents for each target
             for parent in target_data.get("inherits", []):
@@ -250,6 +273,12 @@ class MbedTestDatabase:
                 self._database.execute(
                     "INSERT INTO TargetFeatures(targetName, feature) VALUES(?, ?)",
                     (target_name, peripheral_full_name))
+
+        # Match targets with their MCU family targets.
+        for mcu_family_target in self.get_mcu_family_targets():
+            inheriting_targets = self.get_all_target_children(mcu_family_target)
+            for target in inheriting_targets:
+                self._database.execute("UPDATE Targets SET mcuFamilyTarget = ? WHERE name = ?", (mcu_family_target, target))
 
         self._database.commit()
 
@@ -379,3 +408,40 @@ ORDER BY childTarget ASC
                 nodes_to_explore.append(child_target)
 
         return inheritance_graph
+
+    def get_all_target_children(self, target_name: str) -> Set[str]:
+        """
+        Get all targets which inherit from the given target anywhere in the inheritance hierarchy
+        """
+
+        all_children: Set[str] = set()
+
+        # BFS child targets
+        nodes_to_explore = collections.deque()
+        nodes_to_explore.append(target_name)
+
+        while len(nodes_to_explore) > 0:
+            curr_target = nodes_to_explore.pop()
+
+            this_target_children = self._get_target_children(curr_target)
+            all_children.update(this_target_children)
+
+            for child_target in this_target_children:
+                nodes_to_explore.append(child_target)
+
+        return all_children
+
+    def get_all_boards_in_mcu_family(self, mcu_family_name: str) -> sqlite3.Cursor:
+        """
+        Get all boards (public targets) which are in an MCU family.
+        Returns a cursor containing the name and the CPU vendor name
+        """
+
+        # Note: sometimes the MCU family target can also be a public board (legacy JSON definitions)
+        # so we need to return it as well if it is public.
+        return self._database.execute("SELECT name, cpuVendorName "
+                                      "FROM Targets "
+                                      "WHERE "
+                                          "isPublic == 1 AND "
+                                          "((isMCUFamily == 1 AND name == ?) OR mcuFamilyTarget == ?)",
+                                      (mcu_family_name, mcu_family_name))

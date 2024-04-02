@@ -1,0 +1,229 @@
+// This file contains additional devices that are manually added to the CMSIS
+// device index file before the devices from Mbed are processed.
+// It's used to restore support for removed devices and add support for non-CMSIS devices.
+{
+    "LPC1114FN28/102": {
+        "algorithms": [
+            {
+                "default": true,
+                "file_name": "Flash\\LPC1xxx_32.FLM",
+                "ram_size": 4064,
+                "ram_start": 268435456,
+                "size": 32768,
+                "start": 0
+            }
+        ],
+        "family": "LPC1100 Series",
+        "from_pack": {
+            "pack": "LPC1100_DFP",
+            "url": "http://www.keil.com/pack/",
+            "vendor": "Keil",
+            "version": "1.4.0"
+        },
+        "memories": {
+            "IRAM1": {
+                "access": {
+                    "execute": false,
+                    "non_secure": false,
+                    "non_secure_callable": false,
+                    "peripheral": false,
+                    "read": true,
+                    "secure": false,
+                    "write": true
+                },
+                "default": true,
+                "size": 4096,
+                "start": 268435456,
+                "startup": false
+            },
+            "IROM1": {
+                "access": {
+                    "execute": true,
+                    "non_secure": false,
+                    "non_secure_callable": false,
+                    "peripheral": false,
+                    "read": true,
+                    "secure": false,
+                    "write": false
+                },
+                "default": true,
+                "size": 32768,
+                "start": 0,
+                "startup": true
+            }
+        },
+        "name": "LPC1114FN28/102",
+        "processor": {
+            "Symmetric": {
+                "core": "CortexM0",
+                "fpu": "None",
+                "mpu": "NotPresent",
+                "units": 1
+            }
+        },
+        "sectors": [
+            [
+                0,
+                4096
+            ]
+        ],
+        "sub_family": "LPC1100XL",
+        "vendor": "NXP:11"
+    },
+    "MKL25Z128xxx4": {
+        "algorithms": [
+            {
+                "default": true,
+                "file_name": "Flash/MK_P128_48MHZ.FLM",
+                "ram_size": 16384,
+                "ram_start": 536866816,
+                "size": 131072,
+                "start": 0
+            }
+        ],
+        "family": "KLxx Series",
+        "from_pack": {
+            "pack": "Kinetis_KLxx_DFP",
+            "url": "http://www.keil.com/pack/",
+            "vendor": "Keil",
+            "version": "1.15.0"
+        },
+        "memories": {
+            "IRAM1": {
+                "access": {
+                    "execute": false,
+                    "non_secure": false,
+                    "non_secure_callable": false,
+                    "peripheral": false,
+                    "read": true,
+                    "secure": false,
+                    "write": true
+                },
+                "default": true,
+                "size": 16384,
+                "start": 536866816,
+                "startup": false
+            },
+            "IROM1": {
+                "access": {
+                    "execute": true,
+                    "non_secure": false,
+                    "non_secure_callable": false,
+                    "peripheral": false,
+                    "read": true,
+                    "secure": false,
+                    "write": false
+                },
+                "default": true,
+                "size": 131072,
+                "start": 0,
+                "startup": true
+            }
+        },
+        "name": "MKL25Z128xxx4",
+        "processor": {
+            "Symmetric": {
+                "core": "CortexM0Plus",
+                "fpu": "None",
+                "mpu": "NotPresent",
+                "units": 1
+            }
+        },
+        "sectors": [
+            [
+                0,
+                1024
+            ]
+        ],
+        "sub_family": "KL2x",
+        "vendor": "NXP:11"
+    },
+        "R7S72103": {
+        "algorithms": [],
+        "family": "RZ_A",
+        "from_pack": {
+            "pack": "RZ_DFP",
+            "url": "http://www.keil.com/pack/",
+            "vendor": "Keil",
+            "version": "1.2.1"
+        },
+        "memories": {
+            "IRAM1": {
+                "access": {
+                    "execute": true,
+                    "non_secure": false,
+                    "non_secure_callable": false,
+                    "peripheral": false,
+                    "read": true,
+                    "secure": false,
+                    "write": true
+                },
+                "default": true,
+                "size": 3145728,
+                "start": 536870912,
+                "startup": false
+            }
+        },
+        "name": "R7S72103",
+        "processor": {
+            "Symmetric": {
+                "core": "CortexA9",
+                "fpu": "DoublePrecision",
+                "mpu": "Present",
+                "units": 1
+            }
+        },
+        "sectors": [
+            [
+                0,
+                4096
+            ]
+        ],
+        "sub_family": "RZ_A1LU",
+        "vendor": "Renesas:117"
+    },
+    "R7S921053": {
+        "algorithms": [],
+        "family": "RZ_A",
+        "from_pack": {
+            "pack": "RZ_DFP",
+            "url": "http://www.keil.com/pack/",
+            "vendor": "Keil",
+            "version": "1.2.1"
+        },
+        "memories": {
+            "IRAM1": {
+                "access": {
+                    "execute": true,
+                    "non_secure": false,
+                    "non_secure_callable": false,
+                    "peripheral": false,
+                    "read": true,
+                    "secure": false,
+                    "write": true
+                },
+                "default": true,
+                "size": 33554432,
+                "start": 4194304,
+                "startup": false
+            }
+        },
+        "name": "R7S921053",
+        "processor": {
+            "Symmetric": {
+                "core": "CortexA9",
+                "fpu": "DoublePrecision",
+                "mpu": "Present",
+                "units": 1
+            }
+        },
+        "sectors": [
+            [
+                0,
+                4096
+            ]
+        ],
+        "sub_family": "RZ_A2M",
+        "vendor": "Renesas:117"
+    }
+}
