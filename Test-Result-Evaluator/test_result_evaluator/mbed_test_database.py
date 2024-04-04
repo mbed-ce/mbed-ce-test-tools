@@ -5,7 +5,8 @@ import collections
 import pathlib
 import sqlite3
 import enum
-from typing import Set, List, Optional, Dict, Any
+from typing import Set, List, Optional, Dict, Any, Tuple
+import dataclasses
 
 import graphviz
 
@@ -108,8 +109,10 @@ class MbedTestDatabase:
                                     # 0 otherwise (target is above or below the family level).
             "cpuVendorName TEXT, "  # Name of the vendor which the CPU on this target comes from.  From the CMSIS
                                     # database.  NULL if this target does not have a valid link to the CMSIS database.
-            "mcuFamilyTarget TEXT NULL"  # Name of the MCU family target which is a parent of this target.
-                                         # Only set iff a target has a parent which is an MCU family target. 
+            "mcuFamilyTarget TEXT NULL, "  # Name of the MCU family target which is a parent of this target.
+                                           # Only set iff a target has a parent which is an MCU family target.
+            "imageURL TEXT NULL  "  # URL of the image that will be shown in the target table for this board, if set 
+                                    # in JSON.
             ")"
         )
 
@@ -130,6 +133,19 @@ class MbedTestDatabase:
             "targetName TEXT REFERENCES Targets(name), "  # Name of the target
             "feature TEXT REFERENCES Features(name),"  # Name of feature or component.
             "UNIQUE(targetName, feature)"  # Combo of target name - feature name must be unique
+            ")"
+        )
+
+        # -- TargetMemories table
+        # Stores information about the memory banks available on a target
+        self._database.execute(
+            "CREATE TABLE TargetMemories("
+            "targetName TEXT REFERENCES Targets(name), "  # Name of the target
+            "bankName TEXT NOT NULL, "  # Name of memory.  Directly from the CMSIS json.
+            "size INTEGER NOT NULL, "  # Size in bytes
+            "isFlash INTEGER NOT NULL, "  # 1 if flash memory, 0 if RAM.  This comes from the "writeable" 
+                                          # attribute from the CMSIS JSON.
+            "UNIQUE(targetName, bankName)"  # Combo of target name - bank name must be unique
             ")"
         )
 
@@ -190,10 +206,12 @@ class MbedTestDatabase:
 
             is_public = 1 if target_data.get("public", True) else 0  # targets are public by default
             is_mcu_family = 1 if target_data.get("is_mcu_family_target", False) else 0
+            image_url = target_data.get("image_url", None)
 
             # Try and lookup additional data from the CMSIS json file
             cmsis_device_name: Optional[str] = target_data.get("device_name", None)
             cpu_vendor_name: Optional[str] = None
+            cmsis_cpu_data: Optional[Any] = None
 
             if cmsis_device_name is not None:
                 if cmsis_device_name not in cmsis_device_dict:
@@ -208,11 +226,23 @@ class MbedTestDatabase:
                 cpu_vendor_name = cpu_vendor_name.split(":")[0]
 
             self._database.execute(
-                "INSERT INTO Targets(name, isPublic, isMCUFamily, cpuVendorName) VALUES(?, ?, ?, ?)",
+                "INSERT INTO Targets(name, isPublic, isMCUFamily, cpuVendorName, imageURL) VALUES(?, ?, ?, ?, ?)",
                 (target_name,
                  is_public,
                  is_mcu_family,
-                 cpu_vendor_name))
+                 cpu_vendor_name,
+                 image_url))
+
+            # Add target memories based on the CMSIS json data
+            if cmsis_cpu_data is not None:
+                for bank_name, bank_data in cmsis_cpu_data["memories"].items():
+                    self._database.execute(
+                        "INSERT INTO TargetMemories(targetName, bankName, size, isFlash) VALUES(?, ?, ?, ?)",
+                        (target_name,
+                         bank_name,
+                         bank_data["size"],
+                         0 if bank_data["access"]["write"] else 1)
+                    )
 
             # Also add the parents for each target
             for parent in target_data.get("inherits", []):
@@ -284,7 +314,7 @@ class MbedTestDatabase:
 
     def get_all_features(self, type: FeatureType) -> sqlite3.Cursor:
         """
-        Get a cursor containing all database features of the given type
+        Get a cursor containing all target features of the given type
         """
         # TODO Enable returning testsThatTestFeature once that table is populated
         return self._database.execute("""
@@ -303,6 +333,41 @@ WHERE
     AND Features.type == ?
 GROUP BY Features.name
 ORDER BY friendlyName ASC""", (type.value,))
+
+    @dataclasses.dataclass(eq=True, frozen=True)  # note: eq and frozen must be enabled to make the dataclass hashable
+    class TargetFeatureInfo:
+        """
+        Convenience type for returning information about a given target feature
+        """
+        name: str
+        friendly_name: str
+        description: str
+        type: FeatureType
+
+    def get_target_features(self, target_name: str) -> Set[TargetFeatureInfo]:
+        """
+        Get a set of the features of all types that the given target has
+        """
+        cursor = self._database.execute("""
+SELECT
+    name,
+    friendlyName,
+    description,
+    type
+FROM 
+    Features
+    INNER JOIN TargetFeatures ON Features.name = TargetFeatures.feature
+WHERE
+    Features.hidden == 0
+    AND TargetFeatures.targetName == ?
+""", (target_name, ))
+
+        result = set()
+        for row in cursor:
+            result.add(MbedTestDatabase.TargetFeatureInfo(row["name"], row["friendlyName"], row["description"], FeatureType(row["type"])))
+        cursor.close()
+
+        return result
 
     def get_mcu_family_targets(self) -> List[str]:
         """
