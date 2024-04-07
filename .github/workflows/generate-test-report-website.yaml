@@ -23,14 +23,15 @@ jobs:
       
       - name: Install Graphviz
         run: |
-          sudo apt-get update -y
-          sudo apt-get install graphviz
+          sudo apt-get update
+          sudo apt-get install -y graphviz
       
       - name: Run website generator
         run: |
           export PYTHONPATH=$(pwd)/CI-Shield-Tests/mbed-os/tools/python
           cd Test-Result-Evaluator
-          python -m test_result_evaluator.create_database ../CI-Shield-Tests/mbed-os mbed_tests.db
+          python -m test_result_evaluator.create_database ../CI-Shield-Tests/mbed-os mbed_tests.db || true
+          ls ~/.local/share/cmsis-pack-manager
           python -m test_result_evaluator.generate_results mbed_tests.db generated-site
           
           # Per the docs, the HTML files have to be inside a file called github-pages.tar.gz 

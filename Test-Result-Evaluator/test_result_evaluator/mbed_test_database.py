@@ -297,9 +297,6 @@ class MbedTestDatabase:
 
         for target_name in targets_data.keys():
             # Next, add the drivers for each target
-            if target_name == "EP_AGORA":
-                print("Got here")
-
             target_attrs = get_target_attributes(targets_data, target_name, True)
 
             for feature_name in target_attrs["features"]:
