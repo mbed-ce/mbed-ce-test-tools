@@ -1,0 +1,58 @@
+name: Generate and Publish Test Report Website
+on: push
+jobs:
+  generate-site:
+    runs-on: ubuntu-latest
+    steps:
+    
+      # Check out this repo and the Mbed submodule
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          
+      - name: Set up Python environment
+        with:
+          python-version: '3.9'
+          cache: 'pip' # caching pip dependencies
+          
+      - name: Install Python dependencies
+        run: |
+          pip install -r Test-Result-Evaluator/requirements.txt
+      
+      - name: Run website generator
+        run: |
+          cd Test-Result-Evaluator
+          python -m test_result_evaluator.create_database ../CI-Shield-Tests/mbed-os mbed_tests.db
+          python -m test_result_evaluator.generate_results mbed_tests.db generated-site
+          
+          # Per the docs, the HTML files have to be inside a file called github-pages.tar.gz 
+          # See here: https://github.com/actions/upload-pages-artifact
+          cd generated-site
+          tar czf ../../github-pages.tar.gz *
+          
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+      
+  # Note: The below is copied almost verbatim from the example job from the deploy-pages action.
+  # See https://github.com/actions/deploy-pages
+  deploy-site:
+    # Add a dependency to the build job
+    needs: generate-site
+
+    # Grant GITHUB_TOKEN the permissions required to make a Pages deployment
+    permissions:
+      pages: write      # to deploy to Pages
+      id-token: write   # to verify the deployment originates from an appropriate source
+
+    # Deploy to the github-pages environment
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    # Specify runner + deployment step
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4 # or specific "vX.X.X" version tag for this action
