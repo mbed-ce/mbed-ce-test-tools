@@ -30,17 +30,12 @@ jobs:
         run: |
           export PYTHONPATH=$(pwd)/CI-Shield-Tests/mbed-os/tools/python
           cd Test-Result-Evaluator
-          python -m test_result_evaluator.create_database ../CI-Shield-Tests/mbed-os mbed_tests.db || true
-          ls ~/.local/share/cmsis-pack-manager
-          python -m test_result_evaluator.generate_results mbed_tests.db generated-site
-          
-          # Per the docs, the HTML files have to be inside a file called github-pages.tar.gz 
-          # See here: https://github.com/actions/upload-pages-artifact
-          cd generated-site
-          tar czf ../../github-pages.tar.gz *
-          
+          python -m test_result_evaluator.create_database ../CI-Shield-Tests/mbed-os mbed_tests.db
+          python -m test_result_evaluator.generate_results mbed_tests.db generated-site  
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
+        with:
+          path: Test-Result-Evaluator/generated-site
       
   # Note: The below is copied almost verbatim from the example job from the deploy-pages action.
   # See https://github.com/actions/deploy-pages

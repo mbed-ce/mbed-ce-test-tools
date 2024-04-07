@@ -19,6 +19,7 @@ if len(sys.argv) != 3:
 
 # Set up cmsis-pack-manager cache.  This downloads the list of latest devices if needed,
 # then loads it and merges with some extra devices.
+# Note that data is cached by default in the folder returned by appdirs.user_data_dir("cmsis-pack-manager")
 cmsis_cache = cmsis_pack_manager.Cache(False, False)
 
 # Compile the index if it does not exist or is more than 30 days out of date.
