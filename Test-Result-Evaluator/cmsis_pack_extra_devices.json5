@@ -227,75 +227,75 @@
         "vendor": "Renesas:117"
     },
     "MKW41Z512xxx4": {
-    "name": "MKW41Z512xxx4",
-    "memories": {
-      "IROM1": {
-        "p_name": null,
-        "access": {
-          "read": true,
-          "write": false,
-          "execute": true,
-          "peripheral": false,
-          "secure": false,
-          "non_secure": false,
-          "non_secure_callable": false
+        "name": "MKW41Z512xxx4",
+        "memories": {
+            "IROM1": {
+                "p_name": null,
+                "access": {
+                    "read": true,
+                    "write": false,
+                    "execute": true,
+                    "peripheral": false,
+                    "secure": false,
+                    "non_secure": false,
+                    "non_secure_callable": false
+                },
+                "start": 0,
+                "size": 524288,
+                "startup": true,
+                "default": true
+            },
+            "IRAM1": {
+                "p_name": null,
+                "access": {
+                    "read": true,
+                    "write": true,
+                    "execute": false,
+                    "peripheral": false,
+                    "secure": false,
+                    "non_secure": false,
+                    "non_secure_callable": false
+                },
+                "start": 536838144,
+                "size": 131072,
+                "startup": false,
+                "default": true
+            }
         },
-        "start": 0,
-        "size": 524288,
-        "startup": true,
-        "default": true
-      },
-      "IRAM1": {
-        "p_name": null,
-        "access": {
-          "read": true,
-          "write": true,
-          "execute": false,
-          "peripheral": false,
-          "secure": false,
-          "non_secure": false,
-          "non_secure_callable": false
+        "algorithms": [
+            {
+                "file_name": "Flash/MKWxxZ_P512_2KB_SEC.FLM",
+                "start": 0,
+                "size": 524288,
+                "default": true,
+                "ram_start": 536870912,
+                "ram_size": 4096,
+                "style": "Keil"
+            }
+        ],
+        "processors": [
+            {
+                "core": "CortexM0Plus",
+                "fpu": "None",
+                "mpu": "NotPresent",
+                "ap": 0,
+                "dp": 0,
+                "apid": null,
+                "address": null,
+                "svd": "SVD/MKW41Z4.svd",
+                "name": null,
+                "unit": 0,
+                "default_reset_sequence": null
+            }
+        ],
+        "from_pack": {
+            "vendor": "Keil",
+            "pack": "Kinetis_KWxx_DFP",
+            "version": "1.9.1",
+            "url": "https://www.keil.com/pack/"
         },
-        "start": 536838144,
-        "size": 131072,
-        "startup": false,
-        "default": true
-      }
-    },
-    "algorithms": [
-      {
-        "file_name": "Flash/MKWxxZ_P512_2KB_SEC.FLM",
-        "start": 0,
-        "size": 524288,
-        "default": true,
-        "ram_start": 536870912,
-        "ram_size": 4096,
-        "style": "Keil"
-      }
-    ],
-    "processors": [
-      {
-        "core": "CortexM0Plus",
-        "fpu": "None",
-        "mpu": "NotPresent",
-        "ap": 0,
-        "dp": 0,
-        "apid": null,
-        "address": null,
-        "svd": "SVD/MKW41Z4.svd",
-        "name": null,
-        "unit": 0,
-        "default_reset_sequence": null
-      }
-    ],
-    "from_pack": {
-      "vendor": "Keil",
-      "pack": "Kinetis_KWxx_DFP",
-      "version": "1.9.1",
-      "url": "https://www.keil.com/pack/"
-    },
-    "vendor": "NXP:11",
-    "family": "KWxx Series",
-    "sub_family": "KW41Z"
-  }
+        "vendor": "NXP:11",
+        "family": "KWxx Series",
+        "sub_family": "KW41Z"
+    }
 }

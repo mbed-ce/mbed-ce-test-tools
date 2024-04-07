@@ -21,6 +21,11 @@ jobs:
         run: |
           pip install -r Test-Result-Evaluator/requirements.txt
       
+      - name: Install Graphviz
+        run: |
+          apt-get update -y
+          apt-get install graphviz
+      
       - name: Run website generator
         run: |
           export PYTHONPATH=$(pwd)/CI-Shield-Tests/mbed-os/tools/python
