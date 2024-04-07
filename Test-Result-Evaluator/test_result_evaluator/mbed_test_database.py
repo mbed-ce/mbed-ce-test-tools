@@ -25,9 +25,9 @@ class TestResult(enum.IntEnum):
     SKIPPED = 3  # Test was not run because it is not supported on this target
 
 
-class FeatureType(enum.Enum):
+class DriverType(enum.Enum):
     """
-    Enumeration of the possible types a feature can be
+    Enumeration of the possible types a driver can be
     """
     PERIPHERAL = "Peripheral"  # Peripheral present on this target and supported by Mbed CE
     FEATURE = "Feature"  # Larger Mbed OS optional feature supported for this target
@@ -49,6 +49,12 @@ class MbedTestDatabase:
 
         # turn on foreign keys
         self._database.execute("PRAGMA foreign_keys = 1")
+
+    def close(self):
+        """
+        Close the database file.
+        """
+        self._database.close()
 
     def create_database(self):
         """Create all the needed tables in an empty database"""
@@ -83,15 +89,15 @@ class MbedTestDatabase:
             ")"
         )
 
-        # -- Features table
+        # -- Drivers table
         # Lists target features
         self._database.execute(
-            "CREATE TABLE Features("
-            "name TEXT PRIMARY KEY, "  # Feature name, matching how it's named in code.  This is a string like
+            "CREATE TABLE Drivers("
+            "name TEXT PRIMARY KEY, "  # Driver name, matching how it's named in code.  This is a string like
                                        # DEVICE_SERIAL, FEATURE_BLE, or COMPONENT_SPIF
             "friendlyName TEXT, "  # Human readable name, like FEATURE_BLE would have "Bluetooth Low Energy"
             "description TEXT, "  # Description, if available
-            "type TEXT, "  # Type, value of FeatureType
+            "type TEXT, "  # Type, value of DriverType
             "hidden INTEGER"  # 1 if the feature is an internal one and should not be shown in docs, 0 otherwise
             ")"
         )
@@ -126,13 +132,13 @@ class MbedTestDatabase:
             ")"
         )
 
-        # -- TargetFeatures table
+        # -- TargetDrivers table
         # Maps targets to the features they support
         self._database.execute(
-            "CREATE TABLE TargetFeatures("
+            "CREATE TABLE TargetDrivers("
             "targetName TEXT REFERENCES Targets(name), "  # Name of the target
-            "feature TEXT REFERENCES Features(name),"  # Name of feature or component.
-            "UNIQUE(targetName, feature)"  # Combo of target name - feature name must be unique
+            "driver TEXT REFERENCES Drivers(name),"  # Name of driver or component.
+            "UNIQUE(targetName, driver)"  # Combo of target name - driver name must be unique
             ")"
         )
 
@@ -149,34 +155,34 @@ class MbedTestDatabase:
             ")"
         )
 
-        # -- TestFeatures table
-        # Maps test cases to the Mbed features / components they test
+        # -- TestDrivers table
+        # Maps test cases to the Mbed drivers / components they test
         self._database.execute(
-            "CREATE TABLE TestFeatures("
+            "CREATE TABLE DriverTests("
             "testName TEXT, "  # Name of the test
-            "featureTested TEXT,"  # Name of feature or component that the test tests.
-            "FOREIGN KEY(featureTested) REFERENCES Features(name)"
+            "driverTested TEXT,"  # Name of driver or component that the test tests.
+            "FOREIGN KEY(driverTested) REFERENCES Drivers(name)"
             ")"
         )
 
         # now commit the initial transaction
         self._database.commit()
 
-    def populate_targets_features(self, mbed_os_path: pathlib.Path, cmsis_device_dict: Dict[str, Any]):
+    def populate_targets_and_drivers(self, mbed_os_path: pathlib.Path, cmsis_device_dict: Dict[str, Any]):
         """
-        Populate the Features and TargetFeatures tables from a given Mbed OS path.
+        Populate Targets, Drivers, and related tables from a given Mbed OS path.
         CMSIS cache is used to get attributes like RAM sizes from CMSIS.
         """
 
         target_json5_file = mbed_os_path / "targets" / "targets.json5"
         targets_data = json5.loads(target_json5_file.read_text())
 
-        features_json5_file = mbed_os_path / "targets" / "features.json5"
-        features_data = json5.loads(features_json5_file.read_text())
+        drivers_json5_file = mbed_os_path / "targets" / "drivers.json5"
+        drivers_data = json5.loads(drivers_json5_file.read_text())
 
-        # First assemble a list of all the features.
+        # First assemble a list of all the drivers.
         # For this we want to process the JSON directly rather than dealing with target inheritance, because
-        # we just want a list of all the features used everywhere.
+        # we just want a list of all the drivers used everywhere.
         component_names: Set[str] = set()
         feature_names: Set[str] = set()
         peripheral_names: Set[str] = set()
@@ -236,6 +242,14 @@ class MbedTestDatabase:
             # Add target memories based on the CMSIS json data
             if cmsis_cpu_data is not None:
                 for bank_name, bank_data in cmsis_cpu_data["memories"].items():
+
+                    # The MIMXRT series of devices list a "ROMCP" memory bank, but this
+                    # actually represents the hardcoded ROM init code, not an actual flash bank on the device.
+                    # Unfortunately, there is no way to know that it isn't programmable based on the JSON.
+                    # So we have to exclude it from the output manually.
+                    if "MIMXRT" in cmsis_device_name and bank_name == "ROMCP":
+                        continue
+
                     self._database.execute(
                         "INSERT INTO TargetMemories(targetName, bankName, size, isFlash) VALUES(?, ?, ?, ?)",
                         (target_name,
@@ -251,57 +265,60 @@ class MbedTestDatabase:
                     (parent, target_name)
                 )
 
-        # Now add the features to the database
+        # Now add the drivers to the database
         self._database.execute("BEGIN")
-        types_and_features = (
-            (FeatureType.PERIPHERAL, peripheral_names),
-            (FeatureType.FEATURE, feature_names),
-            (FeatureType.COMPONENT, component_names)
+        types_and_drivers = (
+            (DriverType.PERIPHERAL, peripheral_names),
+            (DriverType.FEATURE, feature_names),
+            (DriverType.COMPONENT, component_names)
         )
-        for type, feature_names in types_and_features:
-            for feature_name in feature_names:
+        for type, driver_names in types_and_drivers:
+            for driver_name in driver_names:
 
-                # Look up feature friendly name, description, etc in json file
-                if feature_name not in features_data[type.value]:
-                    raise RuntimeError(f"features.json5 section '{type.value}' is missing information on {feature_name}!")
+                # Look up driver friendly name, description, etc in json file
+                if driver_name not in drivers_data[type.value]:
+                    raise RuntimeError(f"drivers.json5 section '{type.value}' is missing information on {driver_name}!")
 
-                if "friendly_name" not in features_data[type.value][feature_name]:
-                    raise RuntimeError(f"features.json5 section {type.value}.{feature_name} is missing 'friendly_name'!")
-                if "description" not in features_data[type.value][feature_name]:
-                    raise RuntimeError(f"features.json5 section {type.value}.{feature_name} is missing 'description'!")
+                if "friendly_name" not in drivers_data[type.value][driver_name]:
+                    raise RuntimeError(f"drivers.json5 section {type.value}.{driver_name} is missing 'friendly_name'!")
+                if "description" not in drivers_data[type.value][driver_name]:
+                    raise RuntimeError(f"drivers.json5 section {type.value}.{driver_name} is missing 'description'!")
 
                 hidden = 0
-                if "hidden_from_docs" in features_data[type.value][feature_name]:
-                    hidden = 1 if features_data[type.value][feature_name]["hidden_from_docs"] else 0
+                if "hidden_from_docs" in drivers_data[type.value][driver_name]:
+                    hidden = 1 if drivers_data[type.value][driver_name]["hidden_from_docs"] else 0
 
-                self._database.execute("INSERT INTO Features(name, friendlyName, description, type, hidden) VALUES(?, ?, ?, ?, ?)",
-                                       (feature_name,
-                                        features_data[type.value][feature_name]["friendly_name"],
-                                        features_data[type.value][feature_name]["description"],
+                self._database.execute("INSERT INTO Drivers(name, friendlyName, description, type, hidden) VALUES(?, ?, ?, ?, ?)",
+                                       (driver_name,
+                                        drivers_data[type.value][driver_name]["friendly_name"],
+                                        drivers_data[type.value][driver_name]["description"],
                                         type.value,
                                         hidden))
 
-        # Next, add the features for each target
         for target_name in targets_data.keys():
+            # Next, add the drivers for each target
+            if target_name == "EP_AGORA":
+                print("Got here")
+
             target_attrs = get_target_attributes(targets_data, target_name, True)
 
             for feature_name in target_attrs["features"]:
                 feature_full_name = "FEATURE_" + feature_name
                 self._database.execute(
-                    "INSERT INTO TargetFeatures(targetName, feature) VALUES(?, ?)",
+                    "INSERT INTO TargetDrivers(targetName, driver) VALUES(?, ?)",
                     (target_name, feature_full_name))
 
             for component_name in target_attrs["components"]:
                 component_full_name = "COMPONENT_" + component_name
                 self._database.execute(
-                    "INSERT INTO TargetFeatures(targetName, feature) VALUES(?, ?)",
+                    "INSERT INTO TargetDrivers(targetName, driver) VALUES(?, ?)",
                     (target_name, component_full_name))
 
             # Note: device_has can contain duplicates, so we have to wrap it in set()
             for peripheral_name in set(target_attrs.get("device_has", [])):
                 peripheral_full_name = "DEVICE_" + peripheral_name
                 self._database.execute(
-                    "INSERT INTO TargetFeatures(targetName, feature) VALUES(?, ?)",
+                    "INSERT INTO TargetDrivers(targetName, driver) VALUES(?, ?)",
                     (target_name, peripheral_full_name))
 
         # Match targets with their MCU family targets.
@@ -312,41 +329,46 @@ class MbedTestDatabase:
 
         self._database.commit()
 
-    def get_all_features(self, type: FeatureType) -> sqlite3.Cursor:
-        """
-        Get a cursor containing all target features of the given type
-        """
-        # TODO Enable returning testsThatTestFeature once that table is populated
-        return self._database.execute("""
-SELECT
-    name,
-    friendlyName,
-    description,
-    group_concat(targetName) AS targetsWithFeature
---    group_concat(testName) AS testsThatTestFeature
-FROM 
-    Features
-    INNER JOIN TargetFeatures ON Features.name = TargetFeatures.feature
---    INNER JOIN TestFeatures ON Features.name = TestFeatures.featureTested
-WHERE
-    Features.hidden == 0
-    AND Features.type == ?
-GROUP BY Features.name
-ORDER BY friendlyName ASC""", (type.value,))
-
     @dataclasses.dataclass(eq=True, frozen=True)  # note: eq and frozen must be enabled to make the dataclass hashable
-    class TargetFeatureInfo:
+    class TargetDriverInfo:
         """
-        Convenience type for returning information about a given target feature
+        Convenience type for returning information about a given target driver
         """
         name: str
         friendly_name: str
         description: str
-        type: FeatureType
+        type: DriverType
 
-    def get_target_features(self, target_name: str) -> Set[TargetFeatureInfo]:
+    def get_all_drivers(self, type: DriverType = None) -> Set[TargetDriverInfo]:
         """
-        Get a set of the features of all types that the given target has
+        Get a all target drivers, optionally filtering by type
+        """
+        cursor = self._database.execute(f"""
+SELECT
+    name,
+    friendlyName,
+    description,
+    type
+FROM 
+    Drivers
+    INNER JOIN TargetDrivers ON Drivers.name = TargetDrivers.driver
+WHERE
+    Drivers.hidden == 0
+    {'AND Drivers.type == ?' if type is not None else ''}
+GROUP BY Drivers.name
+ORDER BY friendlyName ASC""", (type.value,) if type is not None else ())
+
+        result = set()
+        for row in cursor:
+            result.add(MbedTestDatabase.TargetDriverInfo(row["name"], row["friendlyName"], row["description"],
+                                                         DriverType(row["type"])))
+        cursor.close()
+
+        return result
+
+    def get_target_drivers(self, target_name: str) -> Set[TargetDriverInfo]:
+        """
+        Get a set of the drivers of all types that the given target has
         """
         cursor = self._database.execute("""
 SELECT
@@ -355,16 +377,16 @@ SELECT
     description,
     type
 FROM 
-    Features
-    INNER JOIN TargetFeatures ON Features.name = TargetFeatures.feature
+    Drivers
+    INNER JOIN TargetDrivers ON Drivers.name = TargetDrivers.driver
 WHERE
-    Features.hidden == 0
-    AND TargetFeatures.targetName == ?
+    Drivers.hidden == 0
+    AND TargetDrivers.targetName == ?
 """, (target_name, ))
 
         result = set()
         for row in cursor:
-            result.add(MbedTestDatabase.TargetFeatureInfo(row["name"], row["friendlyName"], row["description"], FeatureType(row["type"])))
+            result.add(MbedTestDatabase.TargetDriverInfo(row["name"], row["friendlyName"], row["description"], DriverType(row["type"])))
         cursor.close()
 
         return result
@@ -380,7 +402,7 @@ WHERE
 SELECT name
 FROM Targets
 WHERE isMCUFamily == 1
-ORDER BY name ASC
+ORDER BY cpuVendorName ASC, name ASC
 """)
 
         for row in cursor:
@@ -499,14 +521,63 @@ ORDER BY childTarget ASC
     def get_all_boards_in_mcu_family(self, mcu_family_name: str) -> sqlite3.Cursor:
         """
         Get all boards (public targets) which are in an MCU family.
-        Returns a cursor containing the name and the CPU vendor name
+        Returns a cursor containing the name, image, and the CPU vendor name
         """
 
         # Note: sometimes the MCU family target can also be a public board (legacy JSON definitions)
         # so we need to return it as well if it is public.
-        return self._database.execute("SELECT name, cpuVendorName "
+        return self._database.execute("SELECT name, imageURL, cpuVendorName "
                                       "FROM Targets "
                                       "WHERE "
                                           "isPublic == 1 AND "
                                           "((isMCUFamily == 1 AND name == ?) OR mcuFamilyTarget == ?)",
                                       (mcu_family_name, mcu_family_name))
+
+    def get_target_memories(self, target_name: str) -> sqlite3.Cursor:
+        """
+        Get all memory banks for a target.
+        Returns a cursor containing the name and the CPU vendor name
+        """
+
+        return self._database.execute("SELECT bankName, size, isFlash "
+                                      "FROM TargetMemories "
+                                      "WHERE "
+                                          "targetName == ?"
+                                      "ORDER BY bankName ASC",
+                                      (target_name, ))
+
+    def get_targets_with_driver_by_family(self, driver_name: str) -> sqlite3.Cursor:
+        """
+        Get all the targets that have a given driver, grouped by MCU family
+        Returns a cursor containing the MCU family and grouped targets
+        """
+
+        # Note: In the query below, we use max(cpuVendorName) to select any non-null value for
+        # cpuVendorName.
+
+        return self._database.execute("""
+        SELECT
+            group_concat(TargetDrivers.targetName, ',') AS targetNames,
+            Targets.mcuFamilyTarget AS mcuFamilyTarget,
+            max(Targets.cpuVendorName) AS cpuVendorName
+        FROM 
+            TargetDrivers
+            INNER JOIN Targets ON TargetDrivers.targetName = Targets.name
+        WHERE
+            TargetDrivers.driver == ?
+            AND Targets.isPublic == 1
+        GROUP BY Targets.mcuFamilyTarget
+        ORDER BY 
+            max(Targets.cpuVendorName) ASC, 
+            Targets.mcuFamilyTarget ASC
+            """,
+                                      (driver_name,))
+
+    def add_test_record(self, test_name: str, target_name: str, execution_time: float, result: TestResult, output: str):
+        """
+        Add a record of a test to the Tests table.
+        Replaces the record if it already exists
+        """
+        self._database.execute("INSERT OR REPLACE INTO Tests(testName, targetName, executionTime, result, output) "
+                               "VALUES(?, ?, ?, ?, ?)",
+                               (test_name, target_name, execution_time, result.value, output))

@@ -1,12 +1,21 @@
+"""
+Script to create a database for storing Mbed testing information and initially populate it with data.
+If the output file path already exists it will be deleted and recreated.
+"""
+
 import pathlib
 import datetime
+import sys
 
 from junitparser import JUnitXml
 import cmsis_pack_manager
 import json5
 
 from test_result_evaluator import mbed_test_database
-from test_result_evaluator.result_page_generator import generate_tests_and_targets_website
+
+if len(sys.argv) != 3:
+    print(f"Usage: {sys.argv[0]} <path to Mbed OS> <path to database to initialize>")
+    sys.exit(1)
 
 # Set up cmsis-pack-manager cache.  This downloads the list of latest devices if needed,
 # then loads it and merges with some extra devices.
@@ -28,17 +37,13 @@ cmsis_all_devices = dict(cmsis_cache.index)
 cmsis_all_devices.update(cmsis_extra_devices)
 
 # Create database
-db_path = pathlib.Path("mbed_tests.db")
+db_path = pathlib.Path(sys.argv[2])
 db_path.unlink(missing_ok=True)
 database = mbed_test_database.MbedTestDatabase(db_path)
 print(">> Creating Database...")
 database.create_database()
-print(">> Populating Targets and Features into Database...")
-database.populate_targets_features(pathlib.Path("../CI-Shield-Tests/mbed-os"), cmsis_all_devices)
+print(">> Populating Target and Driver Info into Database...")
+database.populate_targets_and_drivers(pathlib.Path(sys.argv[1]), cmsis_all_devices)
 
-
-target_name = "ARDUINO_NANO33BLE"
-test_report = JUnitXml.fromfile(f"demo-test-configs/mbed-tests-{target_name}.xml")
-
-for suite in test_report:
-    print(repr(suite))
+database.close()
+print("Done.")

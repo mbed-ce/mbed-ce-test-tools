@@ -5,7 +5,7 @@ import html
 
 import prettytable
 
-from .mbed_test_database import MbedTestDatabase, FeatureType
+from .mbed_test_database import MbedTestDatabase, DriverType
 
 
 def write_html_header(output_file: TextIO, page_title: str):
@@ -38,52 +38,90 @@ def write_html_header(output_file: TextIO, page_title: str):
     <h1>{page_title}</h1>""")
 
 
-def generate_features_index_page(database: MbedTestDatabase, out_path: pathlib.Path):
+def generate_drivers_index_page(database: MbedTestDatabase, out_path: pathlib.Path):
     """
-    Generate the features index page.  This page contains tables with summaries of the features and components.
+    Generate the driver index page.  This page contains tables with summaries of the features and components.
     :param database:
     :param out_path:
     :return:
     """
 
     with open(out_path, "w") as index_page:
-        write_html_header(index_page, "Mbed Features Index")
+        write_html_header(index_page, "Mbed Drivers Index")
 
-        for feature_type in FeatureType:
-            index_page.write(f"<h2>Features of type {feature_type.value}</h2>\n")
+        for driver_type in DriverType:
+            index_page.write(f"<h2>Drivers of type {driver_type.value}</h2>\n")
 
-            if type == FeatureType.PERIPHERAL:
-                index_page.write("This indicates MCU peripherals which are present on this target MCU and supported by Mbed CE.\n")
-            elif type == FeatureType.COMPONENT:
-                index_page.write("This indicates external components (or in some cases co-processors) which are present on a target board and supported out of the box.\n")
-            elif type == FeatureType.FEATURE:
-                index_page.write("Larger Mbed OS optional features supported for certain targets.\n")
+            if driver_type == DriverType.PERIPHERAL:
+                index_page.write("<p>This lists peripheral drivers (drivers for internal parts of the MCU) that exist"
+                                 " in Mbed CE.  Check these pages carefully: If a MCU's datasheet shows that it "
+                                 " has a peripheral, but "
+                                 " Mbed does not list a driver for that peripheral, then the peripheral will not"
+                                 " be accessible via Mbed APIs on that MCU.</p>\n")
+            elif driver_type == DriverType.COMPONENT:
+                index_page.write("<p>This lists drivers which support external components (or in some cases "
+                                 "co-processors) which are present on a target board so that they are supported"
+                                 " out of the box.</p>\n")
+            elif driver_type == DriverType.FEATURE:
+                index_page.write("<p>Larger Mbed OS optional features supported for certain targets.</p>\n")
 
-            feature_table = prettytable.PrettyTable()
-            feature_table.field_names = ["Name", "Mbed Internal Name", "Description", "Supported on Targets:"]
+            driver_table = prettytable.PrettyTable()
+            driver_table.field_names = ["Name", "Mbed Internal Name", "Description"]
 
-            features_cursor = database.get_all_features(feature_type)
-            for row in features_cursor:
-
-                # Limit targets amount to 10
-                # TODO also link to the target page
-                targets_list = row["targetsWithFeature"].split(",")
-                targets_str = ", ".join(targets_list[:10])
-                if len(targets_list) > 10:
-                    targets_str += f", ... ({len(targets_list) - 10} more)"
-
-                # TODO also link to the feature page
-                feature_table.add_row([
-                    row["friendlyName"],
-                    row["name"],
-                    row["description"],
-                    targets_str,
+            drivers_of_type = database.get_all_drivers(driver_type)
+            for driver in drivers_of_type:
+                driver_table.add_row([
+                    f'<a href="{driver.name}.html">{driver.friendly_name}</a>',
+                    f'<code>{driver.name}</code>',
+                    driver.description
                 ])
-            features_cursor.close()
 
-            index_page.write(feature_table.get_html_string(attributes={"class": "ui celled table"}))
+            index_page.write(html.unescape(driver_table.get_html_string(attributes={"class": "ui celled table"})))
 
         index_page.write("\n</body>")
+
+
+def generate_driver_page(database: MbedTestDatabase, driver_info: MbedTestDatabase.TargetDriverInfo, out_path: pathlib.Path):
+    """
+    Generate a webpage for a feature.  This includes information about the feature like which
+    targets have it.
+    """
+
+    with open(out_path, "w") as target_page:
+        write_html_header(target_page, f"Mbed CE Driver Info: {driver_info.friendly_name}")
+        target_page.write('<p><a href="index.html">Back to Drivers Index ^</a></p>\n')
+        target_page.write(f"""
+<p><strong>Mbed Internal Name:</strong> <code>{driver_info.name}</code></p>
+<p><strong>Description:</strong> {driver_info.description}</p>
+""")
+
+        target_page.write("<h2>Target Families With this Feature</h2>")
+        target_table = prettytable.PrettyTable()
+        target_table.field_names = ["Target Family", "MCU Vendor", "Board Targets With Feature"]
+
+        target_families_cursor = database.get_targets_with_driver_by_family(driver_info.name)
+        for row in target_families_cursor:
+
+            mcu_family_target = row["mcuFamilyTarget"]
+            target_family_link = f"<a href=\"../targets/{mcu_family_target}.html\">{mcu_family_target}</a>"
+            all_targets_in_family = row["targetNames"].split(",")
+            cpu_vendor_name = row["cpuVendorName"]
+
+            # Special handling for boards with no MCU target family (avoid linking to None.html)
+            if mcu_family_target is None:
+                target_family_link = "&lt;None&gt;"
+                cpu_vendor_name = ""
+
+            target_table.add_row([target_family_link,
+                                  cpu_vendor_name,
+                                  ", ".join(sorted(all_targets_in_family))])
+
+        # Write the table to the page.
+        # Note: html.unescape() prevents HTML in the cells from being escaped in the page (which prettytable
+        # seems to do)
+        target_page.write(html.unescape(target_table.get_html_string(attributes={"class": "ui celled table"})))
+
+        target_page.write("\n</body>")
 
 
 def generate_targets_index_page(database: MbedTestDatabase, mcu_family_targets: List[str], out_path: pathlib.Path):
@@ -116,17 +154,17 @@ def generate_targets_index_page(database: MbedTestDatabase, mcu_family_targets: 
                     mcu_vendor_name = row["cpuVendorName"]
             boards_cursor.close()
 
-            target_features = database.get_target_features(mcu_family_target)
+            target_features = database.get_target_drivers(mcu_family_target)
             features_list = []
             peripherals_list = []
             for feature in target_features:
-                feature_string = f'<a href="../features/{feature.name}.html">{feature.friendly_name}</a>'
+                feature_string = f'<a href="../drivers/{feature.name}.html">{feature.friendly_name}</a>'
 
                 # Features and peripherals each go in separate table entries.  We ignore COMPONENTs for now
                 # because those are a property of the board not the MCU.
-                if feature.type == FeatureType.FEATURE:
+                if feature.type == DriverType.FEATURE:
                     features_list.append(feature_string)
-                elif feature.type == FeatureType.PERIPHERAL:
+                elif feature.type == DriverType.PERIPHERAL:
                     peripherals_list.append(feature_string)
 
             target_table.add_row([target_link,
@@ -155,34 +193,83 @@ def generate_target_family_page(database: MbedTestDatabase, mcu_family_target: s
         # Lookup features for each target.  Builds a dict from a target name to its features,
         # and a set containing the intersections of all targets' features
         targets_cursor = database.get_all_boards_in_mcu_family(mcu_family_target)
-        targets_in_family = [row["name"] for row in targets_cursor]
+        targets_in_family_info = [(row["name"], row["imageURL"]) for row in targets_cursor]
         targets_cursor.close()
 
-        target_features: Dict[str, Dict[FeatureType, Set[MbedTestDatabase.TargetFeatureInfo]]] = dict()
-        for target_name in targets_in_family:
-            this_target_features = database.get_target_features(target_name)
+        target_features: Dict[str, Dict[DriverType, Set[MbedTestDatabase.TargetDriverInfo]]] = dict()
+        for target_name, _ in targets_in_family_info:
+            this_target_features = database.get_target_drivers(target_name)
             this_target_features_by_type = collections.defaultdict(set)
             for feature in this_target_features:
                 this_target_features_by_type[feature.type].add(feature)
             target_features[target_name] = this_target_features_by_type
 
-        common_features_by_type: Dict[FeatureType, Set[MbedTestDatabase.TargetFeatureInfo]] = dict()
-        for feature_type in FeatureType:
+        common_features_by_type: Dict[DriverType, Set[MbedTestDatabase.TargetDriverInfo]] = dict()
+        for feature_type in DriverType:
             common_features_by_type[feature_type] = set.intersection(*[feature_dict[feature_type] for feature_dict in target_features.values()])
 
         # Generate features list (with the features and peripherals)
         target_page.write("<h2>Features Supported</h2>\n<ul>")
-        for feature in common_features_by_type[FeatureType.FEATURE]:
-            target_page.write(f'<li><a href="../features/{feature.name}.html">{feature.friendly_name}</a>: {feature.description}</li>\n')
+        for feature in common_features_by_type[DriverType.FEATURE]:
+            target_page.write(f'<li><a href="../drivers/{feature.name}.html">{feature.friendly_name}</a>: {feature.description}</li>\n')
         target_page.write("</ul>\n<h2>Peripheral Drivers Supported</h2>\n<ul>")
-        for peripheral in common_features_by_type[FeatureType.PERIPHERAL]:
-            target_page.write(f'<li><a href="../features/{peripheral.name}.html">{peripheral.friendly_name}</a>: {peripheral.description}</li>\n')
+        for peripheral in common_features_by_type[DriverType.PERIPHERAL]:
+            target_page.write(f'<li><a href="../drivers/{peripheral.name}.html">{peripheral.friendly_name}</a>: {peripheral.description}</li>\n')
         target_page.write("</ul>\n")
 
         # Generate board table
         target_page.write("<h2>Boards in this Target Family</h2>")
         target_table = prettytable.PrettyTable()
-        target_table.field_names = ["Board", "Components"]
+        target_table.field_names = ["Board", "Extra Features", "Extra Peripheral Drivers", "Components", "RAM Banks", "Flash Banks"]
+        for target_name, image_url in targets_in_family_info:
+
+            # Format board image
+            if image_url is None:
+                board_image_html = ""
+            else:
+                board_image_html = f'<img src="{image_url}" alt="{target_name} Image" width="100%" style="display: block;">'
+
+            # Figure out any extra features that this target contains which the MCU family doesn't
+            target_unique_features = target_features[target_name][DriverType.FEATURE] - common_features_by_type[DriverType.FEATURE]
+            target_unique_peripherals = target_features[target_name][DriverType.PERIPHERAL] - common_features_by_type[DriverType.PERIPHERAL]
+
+            # Make lists for each of the features
+            target_unique_feature_strings = [f'<a href="../drivers/{feature.name}.html">{feature.friendly_name}</a>'
+                                             for feature in target_unique_features]
+            target_unique_periph_strings = [f'<a href="../drivers/{feature.name}.html">{feature.friendly_name}</a>'
+                                             for feature in target_unique_peripherals]
+            target_component_strings = [f'<a href="../drivers/{feature.name}.html">{feature.friendly_name}</a>'
+                                        for feature in target_features[target_name][DriverType.COMPONENT]]
+
+            # Make lists for each of the memory banks
+            ram_bank_string = "<ul>"
+            rom_bank_string = "<ul>"
+
+            memory_bank_cursor = database.get_target_memories(target_name)
+            for row in memory_bank_cursor:
+                bank_str = f"<li>{row['bankName']}: {row['size'] // 1024} kiB</li>"
+                if row["isFlash"] == 1:
+                    rom_bank_string += bank_str
+                else:
+                    ram_bank_string += bank_str
+
+            ram_bank_string += "</ul>"
+            rom_bank_string += "</ul>"
+
+            target_table.add_row([
+                target_name + board_image_html,
+                ", ".join(target_unique_feature_strings),
+                ", ".join(target_unique_periph_strings),
+                ", ".join(target_component_strings),
+                ram_bank_string,
+                rom_bank_string
+            ])
+            memory_bank_cursor.close()
+
+        # Write the table to the page.
+        # Note: html.unescape() prevents HTML in the cells from being escaped in the page (which prettytable
+        # seems to do)
+        target_page.write(html.unescape(target_table.get_html_string(attributes={"class": "ui celled table"})))
 
         # Generate inheritance graph
         target_page.write("<h2>Inheritance Graph</h2>")
@@ -194,6 +281,7 @@ def generate_target_family_page(database: MbedTestDatabase, mcu_family_target: s
 
         target_page.write("\n</body>")
 
+
 def generate_tests_and_targets_website(database: MbedTestDatabase, gen_path: pathlib.Path):
     """
     Generate a static website containing info about all the Mbed tests and targets.
@@ -204,10 +292,14 @@ def generate_tests_and_targets_website(database: MbedTestDatabase, gen_path: pat
 
     gen_path.mkdir(exist_ok=True)
 
-    # Generate features subdirectory
-    features_dir = gen_path / "features"
-    features_dir.mkdir(exist_ok=True)
-    generate_features_index_page(database, features_dir / "index.html")
+    # Generate drivers subdirectory
+    drivers_dir = gen_path / "drivers"
+    drivers_dir.mkdir(exist_ok=True)
+    generate_drivers_index_page(database, drivers_dir / "index.html")
+
+    all_drivers = database.get_all_drivers()
+    for driver in all_drivers:
+        generate_driver_page(database, driver, drivers_dir / f"{driver.name}.html")
 
     # Generate targets subdirectory
     targets_dir = gen_path / "targets"
