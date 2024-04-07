@@ -23,8 +23,8 @@ jobs:
       
       - name: Install Graphviz
         run: |
-          apt-get update -y
-          apt-get install graphviz
+          sudo apt-get update -y
+          sudo apt-get install graphviz
       
       - name: Run website generator
         run: |
