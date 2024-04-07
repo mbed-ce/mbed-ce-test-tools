@@ -23,6 +23,7 @@ jobs:
       
       - name: Run website generator
         run: |
+          export PYTHONPATH=$(pwd)/CI-Shield-Tests/mbed-os/tools/python
           cd Test-Result-Evaluator
           python -m test_result_evaluator.create_database ../CI-Shield-Tests/mbed-os mbed_tests.db
           python -m test_result_evaluator.generate_results mbed_tests.db generated-site
