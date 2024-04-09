@@ -116,7 +116,8 @@ class MbedTestDatabase:
             "cpuVendorName TEXT, "  # Name of the vendor which the CPU on this target comes from.  From the CMSIS
                                     # database.  NULL if this target does not have a valid link to the CMSIS database.
             "mcuFamilyTarget TEXT NULL, "  # Name of the MCU family target which is a parent of this target.
-                                           # Only set iff a target has a parent which is an MCU family target.
+                                           # Only set iff a target is or has a parent which is an MCU family target.
+                                           # If isMCUFamily = 1, this will contain the target's own name.
             "imageURL TEXT NULL  "  # URL of the image that will be shown in the target table for this board, if set 
                                     # in JSON.
             ")"
@@ -321,8 +322,9 @@ class MbedTestDatabase:
 
         # Match targets with their MCU family targets.
         for mcu_family_target in self.get_mcu_family_targets():
-            inheriting_targets = self.get_all_target_children(mcu_family_target)
-            for target in inheriting_targets:
+            mcu_family_targets = self.get_all_target_children(mcu_family_target)
+            mcu_family_targets.add(mcu_family_target)
+            for target in mcu_family_targets:
                 self._database.execute("UPDATE Targets SET mcuFamilyTarget = ? WHERE name = ?", (mcu_family_target, target))
 
         self._database.commit()
@@ -521,15 +523,12 @@ ORDER BY childTarget ASC
         Get all boards (public targets) which are in an MCU family.
         Returns a cursor containing the name, image, and the CPU vendor name
         """
-
-        # Note: sometimes the MCU family target can also be a public board (legacy JSON definitions)
-        # so we need to return it as well if it is public.
         return self._database.execute("SELECT name, imageURL, cpuVendorName "
                                       "FROM Targets "
                                       "WHERE "
                                           "isPublic == 1 AND "
-                                          "((isMCUFamily == 1 AND name == ?) OR mcuFamilyTarget == ?)",
-                                      (mcu_family_name, mcu_family_name))
+                                          "mcuFamilyTarget == ?",
+                                      (mcu_family_name, ))
 
     def get_target_memories(self, target_name: str) -> sqlite3.Cursor:
         """
