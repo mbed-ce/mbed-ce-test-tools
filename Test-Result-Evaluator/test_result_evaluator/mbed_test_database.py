@@ -214,49 +214,12 @@ class MbedTestDatabase:
             is_mcu_family = 1 if target_data.get("is_mcu_family_target", False) else 0
             image_url = target_data.get("image_url", None)
 
-            # Try and lookup additional data from the CMSIS json file
-            cmsis_device_name: Optional[str] = target_data.get("device_name", None)
-            cpu_vendor_name: Optional[str] = None
-            cmsis_cpu_data: Optional[Any] = None
-
-            if cmsis_device_name is not None:
-                if cmsis_device_name not in cmsis_device_dict:
-                    raise RuntimeError(f"Target {target_name} specifies CMSIS device name {cmsis_device_name} which "
-                                       f"does not exist in CMSIS pack index. Error in 'device_name' targets.json5 "
-                                       f"attribute?")
-                cmsis_cpu_data = cmsis_device_dict[cmsis_device_name]
-                cpu_vendor_name = cmsis_cpu_data["vendor"]
-
-                # In the JSON file the vendor name has a colon then a number after it.  I think this is
-                # some sort of vendor ID but can't find actual docs.
-                cpu_vendor_name = cpu_vendor_name.split(":")[0]
-
             self._database.execute(
-                "INSERT INTO Targets(name, isPublic, isMCUFamily, cpuVendorName, imageURL) VALUES(?, ?, ?, ?, ?)",
+                "INSERT INTO Targets(name, isPublic, isMCUFamily, imageURL) VALUES(?, ?, ?, ?)",
                 (target_name,
                  is_public,
                  is_mcu_family,
-                 cpu_vendor_name,
                  image_url))
-
-            # Add target memories based on the CMSIS json data
-            if cmsis_cpu_data is not None:
-                for bank_name, bank_data in cmsis_cpu_data["memories"].items():
-
-                    # The MIMXRT series of devices list a "ROMCP" memory bank, but this
-                    # actually represents the hardcoded ROM init code, not an actual flash bank on the device.
-                    # Unfortunately, there is no way to know that it isn't programmable based on the JSON.
-                    # So we have to exclude it from the output manually.
-                    if "MIMXRT" in cmsis_device_name and bank_name == "ROMCP":
-                        continue
-
-                    self._database.execute(
-                        "INSERT INTO TargetMemories(targetName, bankName, size, isFlash) VALUES(?, ?, ?, ?)",
-                        (target_name,
-                         bank_name,
-                         bank_data["size"],
-                         0 if bank_data["access"]["write"] else 1)
-                    )
 
             # Also add the parents for each target
             for parent in target_data.get("inherits", []):
@@ -317,6 +280,44 @@ class MbedTestDatabase:
                 self._database.execute(
                     "INSERT INTO TargetDrivers(targetName, driver) VALUES(?, ?)",
                     (target_name, peripheral_full_name))
+
+            # Also, while we have the target attributes handy, look up the target in the CMSIS
+            # CPU database if possible.
+            cmsis_device_name: Optional[str] = target_attrs.get("device_name", None)
+
+            if cmsis_device_name is not None:
+                if cmsis_device_name not in cmsis_device_dict:
+                    raise RuntimeError(
+                        f"Target {target_name} specifies CMSIS device name {cmsis_device_name} which "
+                        f"does not exist in CMSIS pack index. Error in 'device_name' targets.json5 "
+                        f"attribute?")
+                cmsis_cpu_data = cmsis_device_dict[cmsis_device_name]
+                cpu_vendor_name = cmsis_cpu_data["vendor"]
+
+                # Set vendor name in the database.
+                # In the JSON file the vendor name has a colon then a number after it.  I think this is
+                # some sort of vendor ID but can't find actual docs.
+                cpu_vendor_name = cpu_vendor_name.split(":")[0]
+                self._database.execute("UPDATE Targets SET cpuVendorName = ? WHERE name == ?",
+                                       (cpu_vendor_name, target_name))
+
+                # Add target memories based on the CMSIS json data
+                for bank_name, bank_data in cmsis_cpu_data["memories"].items():
+
+                    # The MIMXRT series of devices list a "ROMCP" memory bank, but this
+                    # actually represents the hardcoded ROM init code, not an actual flash bank on the device.
+                    # Unfortunately, there is no way to know that it isn't programmable based on the JSON.
+                    # So we have to exclude it from the output manually.
+                    if "MIMXRT" in cmsis_device_name and bank_name == "ROMCP":
+                        continue
+
+                    self._database.execute(
+                        "INSERT INTO TargetMemories(targetName, bankName, size, isFlash) VALUES(?, ?, ?, ?)",
+                        (target_name,
+                         bank_name,
+                         bank_data["size"],
+                         0 if bank_data["access"]["write"] else 1)
+                    )
 
         # Match targets with their MCU family targets.
         for mcu_family_target in self.get_mcu_family_targets():
