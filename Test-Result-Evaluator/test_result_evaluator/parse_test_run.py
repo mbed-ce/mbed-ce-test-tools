@@ -51,13 +51,21 @@ for test_report in junit_report:
     if test_suite_result != TestResult.SKIPPED:
         # Now things get a bit more complicated as we have to parse Greentea's output directly to determine
         # the list of tests.
+
         # First use a regex to extract the list of test cases...
         test_case_names = re.findall(GREENTEA_TESTCASE_NAME_RE, test_report.system_out)
+
+        # Next, we need some special handling for tests which reset.  These tests print out the list of
+        # test cases multiple times, which causes the previous operation to return duplicate results.  Remove those
+        # while preserving the test case order.
+        test_case_names = list(dict.fromkeys(test_case_names))
+
+        test_case_records: List[Tuple[str, str]]
 
         if len(test_case_names) > 0:
             # This is a "normal" test with test cases.  Parse them.
             # Regex returns tuple of (output, passed/failed indicator)
-            test_case_records: List[Tuple[str, str]] = re.findall(GREENTEA_TESTCASE_OUTPUT_RE, test_report.system_out)
+            test_case_records = re.findall(GREENTEA_TESTCASE_OUTPUT_RE, test_report.system_out)
 
             if len(test_case_records) < len(test_case_names):
                 # Did one test case crash the test?
@@ -66,16 +74,37 @@ for test_report in junit_report:
                 crash_re = re.compile(r"\{\{__testcase_start;" + crashing_test_name + r"}}(.+?)teardown\(\) finished", re.DOTALL)
                 test_case_crash_output = re.search(crash_re, test_report.system_out)
 
-                if test_case_crash_output is None:
-                    raise RuntimeError(f"Parse error: found {len(test_case_names)} test cases but only found {len(test_case_records)} records of test cases executing")
-                else:
-
+                if test_case_crash_output is not None:
                     print(f"Note: Test case '{crashing_test_name}' in test {test_report.classname} appears to have crashed and prevented {len(test_case_names) - len(test_case_records) - 1} subsequent tests from running")
-                test_case_records.append((test_case_crash_output.group(0), "0"))
+                    test_case_records.append((test_case_crash_output.group(0), "0"))
+                else:
+                    # Otherwise the test simply didn't run the remaining test cases.
+                    pass
 
         # However, there are some tests (e.g. test-mbed-drivers-dev-null) which don't use the greentea
         # system in a standard way and therefore can't be divided evenly into test cases.  These tests need special
         # handling.
+        else:
+            print(f"This test has non-standard output. Treating the entire test as one test case")
+            test_case_records = [test_report.system_out, test_suite_result]
+
+        for test_case_idx, test_case_name in enumerate(test_case_names):
+
+            # If the test actually was run, save its output
+            if test_case_idx < len(test_case_records):
+                database.add_test_case_record(test_report.classname,
+                                              test_case_name,
+                                              mbed_target,
+                                              TestResult.PASSED if test_case_records[test_case_idx][1] == "1" else TestResult.FAILED,
+                                              test_case_records[test_case_idx][0])
+
+            # Otherwise, mark it as skipped
+            else:
+                database.add_test_case_record(test_report.classname,
+                                              test_case_name,
+                                              mbed_target,
+                                              TestResult.SKIPPED,
+                                              "")
 
 print(">> Done.")
 database.close()

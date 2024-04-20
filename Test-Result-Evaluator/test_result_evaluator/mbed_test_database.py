@@ -61,47 +61,6 @@ class MbedTestDatabase:
 
         self._database.execute("BEGIN")
 
-        # -- Tests table
-        # Holds details about tests for each target
-        self._database.execute(
-            "CREATE TABLE Tests("
-            "testName TEXT, "  # Name of the test
-            "targetName TEXT, "  # Name of the target it was ran for
-            "executionTime REAL, "  # Time in seconds it took to run the test
-            "result INTEGER,"  # TestResult of the test
-            "output TEXT,"  # Output that the complete test printed (not divided into test cases)
-            "FOREIGN KEY(targetName) REFERENCES Targets(name), "
-            "UNIQUE(testName, targetName)"  # Combo of test name - target name must be unique
-            ")"
-        )
-
-        # -- TestCases table
-        # Holds the result of each test case for each target
-        self._database.execute(
-            "CREATE TABLE TestCases("
-            "testName TEXT, "  # Name of the test
-            "testCaseName TEXT, "  # Name of the test case
-            "targetName TEXT, "  # Name of the target it was ran for
-            "result INTEGER,"  # TestResult of the test
-            "output TEXT,"  # Output that this test case printed specifically
-            "FOREIGN KEY(targetName) REFERENCES Targets(name), "
-            "UNIQUE(testName, testCaseName, targetName)"  # Combo of test name - test case name - target name must be unique
-            ")"
-        )
-
-        # -- Drivers table
-        # Lists target features
-        self._database.execute(
-            "CREATE TABLE Drivers("
-            "name TEXT PRIMARY KEY, "  # Driver name, matching how it's named in code.  This is a string like
-                                       # DEVICE_SERIAL, FEATURE_BLE, or COMPONENT_SPIF
-            "friendlyName TEXT, "  # Human readable name, like FEATURE_BLE would have "Bluetooth Low Energy"
-            "description TEXT, "  # Description, if available
-            "type TEXT, "  # Type, value of DriverType
-            "hidden INTEGER"  # 1 if the feature is an internal one and should not be shown in docs, 0 otherwise
-            ")"
-        )
-
         # -- Targets table
         # Lists targets and their attibutes
         self._database.execute(
@@ -120,6 +79,46 @@ class MbedTestDatabase:
                                            # If isMCUFamily = 1, this will contain the target's own name.
             "imageURL TEXT NULL  "  # URL of the image that will be shown in the target table for this board, if set 
                                     # in JSON.
+            ")"
+        )
+
+        # -- Tests table
+        # Holds details about tests for each target
+        self._database.execute(
+            "CREATE TABLE Tests("
+            "testName TEXT, "  # Name of the test
+            "targetName TEXT REFERENCES Targets(name), "  # Name of the target it was ran for
+            "executionTime REAL, "  # Time in seconds it took to run the test
+            "result INTEGER,"  # TestResult of the test
+            "output TEXT,"  # Output that the complete test printed (not divided into test cases)
+            "UNIQUE(testName, targetName)"  # Combo of test name - target name must be unique
+            ")"
+        )
+
+        # -- TestCases table
+        # Holds the result of each test case for each target
+        self._database.execute(
+            "CREATE TABLE TestCases("
+            "testName TEXT NOT NULL, "  # Name of the test
+            "testCaseName TEXT NOT NULL, "  # Name of the test case
+            "targetName TEXT NOT NULL REFERENCES Targets(name), "  # Name of the target it was ran for
+            "result INTEGER NOT NULL,"  # TestResult of the test
+            "output TEXT NOT NULL,"  # Output that this test case printed specifically, or empty string for skipped tests
+            "FOREIGN KEY(testName, targetName) REFERENCES Tests(testName, targetName), "
+            "UNIQUE(testName, testCaseName, targetName)"  # Combo of test name - test case name - target name must be unique
+            ")"
+        )
+
+        # -- Drivers table
+        # Lists target features
+        self._database.execute(
+            "CREATE TABLE Drivers("
+            "name TEXT PRIMARY KEY, "  # Driver name, matching how it's named in code.  This is a string like
+                                       # DEVICE_SERIAL, FEATURE_BLE, or COMPONENT_SPIF
+            "friendlyName TEXT, "  # Human readable name, like FEATURE_BLE would have "Bluetooth Low Energy"
+            "description TEXT, "  # Description, if available
+            "type TEXT, "  # Type, value of DriverType
+            "hidden INTEGER"  # 1 if the feature is an internal one and should not be shown in docs, 0 otherwise
             ")"
         )
 
@@ -578,3 +577,12 @@ ORDER BY childTarget ASC
         self._database.execute("INSERT OR REPLACE INTO Tests(testName, targetName, executionTime, result, output) "
                                "VALUES(?, ?, ?, ?, ?)",
                                (test_name, target_name, execution_time, result.value, output))
+
+    def add_test_case_record(self, test_name: str, test_case_name: str, target_name: str, result: TestResult, output: str):
+        """
+        Add a record of a test to the TestCases table.
+        Replaces the record if it already exists
+        """
+        self._database.execute("INSERT OR REPLACE INTO TestCases(testName, testCaseName, targetName, result, output) "
+                               "VALUES(?, ?, ?, ?, ?)",
+                               (test_name, test_case_name, target_name, result.value, output))
