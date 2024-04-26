@@ -5,8 +5,36 @@ import html
 
 import prettytable
 
-from .mbed_test_database import MbedTestDatabase, DriverType
+from .mbed_test_database import MbedTestDatabase, DriverType, TestResult
 
+
+def write_global_stylesheet(gen_path: pathlib.Path):
+    """
+    Write out the global stylesheet to a location
+    """
+    gen_path.write_text("""
+body {
+    margin-left: 30px;
+    margin-right: 30px;
+    margin-top: 30px;
+    overflow: scroll;
+}
+div.passed-marker {
+    width: 100%;
+    height: 100%;
+    background-color: lightgreen
+}
+div.skipped-marker {
+    width: 100%;
+    height: 100%;
+    background-color: lightgray
+}
+div.failed-marker {
+    width: 100%;
+    height: 100%;
+    background-color: lightpink
+}
+""")
 
 def write_html_header(output_file: TextIO, page_title: str):
     """
@@ -19,20 +47,12 @@ def write_html_header(output_file: TextIO, page_title: str):
     <meta charset="utf-8">
     <title>{page_title}</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <link rel="stylesheet" href="../mbed-results-site.css">
     <script
       src="https://code.jquery.com/jquery-3.1.1.min.js"
       integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
       crossorigin="anonymous"></script>
     <script src="https://code.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
-    
-    <style>
-        body {{
-            margin-left: 30px;
-            margin-right: 30px;
-            margin-top: 30px;
-            overflow: scroll;
-        }}
-    </style>
 </head>
 <body>
     <h1>{page_title}</h1>""")
@@ -227,7 +247,7 @@ def generate_target_family_page(database: MbedTestDatabase, mcu_family_target: s
             if image_url is None:
                 board_image_html = ""
             else:
-                board_image_html = f'<img src="{image_url}" alt="{target_name} Image" width="100%" style="display: block;">'
+                board_image_html = f'<img src="{image_url}" alt="{target_name} Image" width="200px" style="display: block;">'
 
             # Figure out any extra features that this target contains which the MCU family doesn't
             target_unique_features = target_features[target_name][DriverType.FEATURE] - common_features_by_type[DriverType.FEATURE]
@@ -282,6 +302,51 @@ def generate_target_family_page(database: MbedTestDatabase, mcu_family_target: s
         target_page.write("\n</body>")
 
 
+def generate_tests_index_page(database: MbedTestDatabase, out_path: pathlib.Path):
+
+    """
+    Generate the page with the index of all the tests and their status on each target
+    """
+
+    with open(out_path, "w") as targets_index:
+        write_html_header(targets_index, "Mbed CE MCU Target Families")
+
+        test_table = prettytable.PrettyTable()
+
+        # Figure out list of targets that we have test data for
+        targets_with_test_data = []
+        target_table_header_text = ["Test Name"]
+        targets_cursor = database.get_targets_with_tests()
+        for row in targets_cursor:
+            targets_with_test_data.append(row["targetName"])
+            target_table_header_text.append(f'<div style="writing-mode: vertical-lr;"><a href="../targets/{row["mcuFamilyTarget"]}.html">{row["targetName"]}</a></div>')
+        targets_cursor.close()
+
+        # Now fill in test results
+        for test_name, target_test_results in database.get_test_results().items():
+            row_content = [test_name]
+
+            for target in targets_with_test_data:
+                if target in target_test_results:
+                    if target_test_results[target] == TestResult.PASSED:
+                        row_content.append('<div class="passed-marker">Passed</div>')
+                    elif target_test_results[target] == TestResult.FAILED:
+                        row_content.append('<div class="failed-marker">Failed</div>')
+                    else: # skipped
+                        row_content.append('<div class="skipped-marker">Skipped</div>')
+                else:
+                    row_content.append("") # Test not supported for this target
+            test_table.add_row(row_content)
+
+        # Write the table to the page.
+        # Note: html.unescape() prevents HTML in the cells from being escaped in the page (which prettytable
+        # seems to do)
+        test_table.field_names = target_table_header_text
+        targets_index.write(html.unescape(test_table.get_html_string(attributes={"class": "ui celled table"})))
+
+        targets_index.write("\n</body>")
+
+
 def generate_tests_and_targets_website(database: MbedTestDatabase, gen_path: pathlib.Path):
     """
     Generate a static website containing info about all the Mbed tests and targets.
@@ -291,6 +356,9 @@ def generate_tests_and_targets_website(database: MbedTestDatabase, gen_path: pat
     """
 
     gen_path.mkdir(exist_ok=True)
+
+    # Generate CSS
+    write_global_stylesheet(gen_path / "mbed-results-site.css")
 
     # Generate drivers subdirectory
     drivers_dir = gen_path / "drivers"
@@ -312,4 +380,9 @@ def generate_tests_and_targets_website(database: MbedTestDatabase, gen_path: pat
     for mcu_family_target in mcu_family_targets:
         generate_target_family_page(database, mcu_family_target, targets_dir / f"{mcu_family_target}.html")
 
+    # Generate tests subdirectory
+    tests_dir = gen_path / "tests"
+    tests_dir.mkdir(exist_ok=True)
+
+    generate_tests_index_page(database, tests_dir / "index.html")
 

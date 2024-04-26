@@ -586,3 +586,51 @@ ORDER BY childTarget ASC
         self._database.execute("INSERT OR REPLACE INTO TestCases(testName, testCaseName, targetName, result, output) "
                                "VALUES(?, ?, ?, ?, ?)",
                                (test_name, test_case_name, target_name, result.value, output))
+
+    def get_targets_with_tests(self) -> sqlite3.Cursor:
+        """
+        Get a cursor containing the target names for which we have test records available.
+        Also returns their target families.
+        """
+
+        return self._database.execute("""
+SELECT DISTINCT targetName, mcuFamilyTarget
+FROM
+    Tests
+    INNER JOIN Targets ON Tests.targetName == Targets.name
+ORDER BY targetName ASC
+""")
+
+    def get_test_results(self) -> Dict[str, Dict[str, TestResult]]:
+        """
+        Get the results of all tests for all targets.
+        Returns {test name: {target name: TestResult}}
+        """
+
+        cursor = self._database.execute("""
+SELECT
+    testName,
+    group_concat(targetName, ",") AS targets,
+    group_concat(result, ",") AS results
+FROM Tests
+GROUP BY testName
+ORDER BY testName ASC
+""")
+
+        all_test_results: Dict[str, Dict[str, TestResult]] = {}
+
+        for row in cursor:
+            this_test_results: Dict[str, TestResult] = {}
+
+            # Split up the targets and results into individual elements
+            target_names = row["targets"].split(",")
+            results = row["results"].split(",")
+
+            # Store data in dict
+            for target_idx, target in enumerate(target_names):
+                this_test_results[target] = TestResult(int(results[target_idx]))
+
+            all_test_results[row["testName"]] = this_test_results
+
+        cursor.close()
+        return all_test_results
