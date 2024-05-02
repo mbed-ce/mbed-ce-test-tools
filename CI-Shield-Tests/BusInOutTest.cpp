@@ -61,11 +61,14 @@ void businout_bidirectional_test(){
 		printf("\r\n*********\r\nvalue of x,bio is: 0x%x, 0x%x\r\n********\r\n",x,y);
 		TEST_ASSERT_MESSAGE(y == x,"Value read on bus does not equal value written. ");
 
-        x = (x<<1) +1;
+        x = x + 1;
 	}
 	while(x <= 0b111);
 
     bio1.input();
+	
+	wait_us(GPIO_PROPAGATION_TIME);
+
     bio2.output();
 
 	x = 0x00;
@@ -77,7 +80,7 @@ void businout_bidirectional_test(){
 		printf("\r\n*********\r\nvalue of x,bio is: 0x%x, 0x%x\r\n********\r\n",x,y);
 		TEST_ASSERT_MESSAGE(y == x,"Value read on bus does not equal value written. ");
 
-        x = (x<<1) +1;
+        x = x + 1;
 	}
 	while(x <= 0b111);
 

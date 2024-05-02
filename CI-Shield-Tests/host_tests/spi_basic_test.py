@@ -16,7 +16,7 @@ class SpiBasicTestHostTest(BaseHostTest):
 
     """
     Host test for the SPI Basic Test testsuite.
-    Handles logging data using the Bus Pirate and verifying certain test results.
+    Handles logging data using the logic analyzer and verifying certain test results.
     """
 
     SEQUENCES = {

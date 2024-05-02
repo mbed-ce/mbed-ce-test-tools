@@ -35,6 +35,9 @@ char SD_TEST_STRING[SD_TEST_STRING_MAX] = {0};
 
 alignas(SDBlockDevice) uint8_t sdBlockDevMemory[sizeof(SDBlockDevice)];
 
+// Enable power and SPI to the SD card
+static DigitalOut sdcardEnablePin(PIN_SDCARD_ENABLE, 1);
+
 /*
  * Wait for the next host message with the given key, and then assert that its
  * value is expectedVal.
@@ -113,7 +116,9 @@ void test_card_present()
 
     host_start_spi_logging();
 
+#if DEVICE_SPI_ASYNCH
     sdDev->set_async_spi_mode(useAsync, dmaHint);
+#endif
 
     int ret = sdDev->init();
     TEST_ASSERT_MESSAGE(ret == BD_ERROR_OK, "Failed to connect to SD card");
@@ -134,7 +139,9 @@ void mount_fs_create_file()
 
     FATFileSystem fs("sd");
 
+#if DEVICE_SPI_ASYNCH
     sdDev->set_async_spi_mode(useAsync, dmaHint);
+#endif
 
 	int ret = sdDev->init();
     TEST_ASSERT_MESSAGE(ret == BD_ERROR_OK, "Failed to connect to SD card");
@@ -173,7 +180,9 @@ void test_sd_file()
 
     FATFileSystem fs("sd");
 
+#if DEVICE_SPI_ASYNCH
     sdDev->set_async_spi_mode(useAsync, dmaHint);
+#endif
 
 	int ret = sdDev->init();
     TEST_ASSERT_MESSAGE(ret == BD_ERROR_OK, "Failed to connect to SD card");

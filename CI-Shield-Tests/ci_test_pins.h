@@ -28,6 +28,7 @@
 // PIN_FUNC_SEL0     - Pin connected to FUNC_SEL0 on the test shield.  Can be any GPIO.  Default A3.
 // PIN_FUNC_SEL1     - Pin connected to FUNC_SEL1 on the test shield.  Can be any GPIO.  Default A4.
 // PIN_FUNC_SEL2     - Pin connected to FUNC_SEL2 on the test shield.  Can be any GPIO.  Default A5.
+// PIN_SDCARD_ENABLE - Pin connected to SDCARD_ENABLE on the test shield.  Can be any GPIO.  Default A1
 // PIN_SPI_SCLK      - Pin connected to SPI_SCLK on the test shield.  Default D13.
 // PIN_SPI_MISO      - Pin connected to SPI_MISO on the test shield.  Default D12
 // PIN_SPI_MOSI      - Pin connected to SPI_MOSI on the test shield.  Default D11.
@@ -40,7 +41,8 @@
 // PIN_GPIN_1        - Pin connected to GPIN_1 on the test shield.  Can be any GPIO.  Default D4.
 // PIN_GPOUT_0       - Pin connected to GPOUT_0 on the test shield.  Can be any GPIO.  Default D3.
 // PIN_GPIN_0        - Pin connected to GPIN_0 on the test shield.  Can be any GPIO.  Default D2.
-
+// PIN_UART_MCU_TX   - Pin connected to UART_MCU_TX on the test shield.  Must be mappable as UART Tx. Default D0.
+// PIN_UART_MCU_RX   - Pin connected to UART_MCU_RX on the test shield.  Must be mappable as UART Rx. Default D1.
 
 // Overrides for RP2040
 #if TARGET_RASPBERRY_PI_PICO
@@ -48,6 +50,29 @@
 #define PIN_GPOUT_1_PWM p27
 #endif
 
+// Overrides for LPC1768.  Manually set up with jumper wires.
+#if TARGET_LPC1768
+#define PIN_I2C_SCL p27
+#define PIN_I2C_SDA p28
+#define PIN_SDCARD_ENABLE p17
+#define PIN_FUNC_SEL0 p16
+#define PIN_FUNC_SEL1 p15
+#define PIN_FUNC_SEL2 p14
+#define PIN_GPOUT_2 p21
+#define PIN_GPIN_2 p22
+#define PIN_GPOUT_1_PWM p23
+#define PIN_GPIN_1 p24
+#define PIN_GPOUT_0 p25
+#define PIN_GPIN_0 p26
+#define PIN_UART_MCU_RX p10
+#define PIN_UART_MCU_TX p9
+#define PIN_ANALOG_IN p20
+#define PIN_SPI_MOSI p5
+#define PIN_SPI_MISO p6
+#define PIN_SPI_SCLK p7
+#define PIN_SPI_HW_CS p8 // This is a HW CS pin despite HW CS pins not being labeled in the pinout diagram
+#define PIN_SPI_SD_CS p11
+#endif
 
 // Default definitions, if not overridden above.  These use the Arduino Uno form factor.
 #ifdef TARGET_FF_ARDUINO_UNO
@@ -70,6 +95,10 @@
 
 #ifndef PIN_FUNC_SEL2
 #define PIN_FUNC_SEL2 ARDUINO_UNO_A5
+#endif
+
+#ifndef PIN_SDCARD_ENABLE
+#define PIN_SDCARD_ENABLE ARDUINO_UNO_A1
 #endif
 
 #ifndef PIN_SPI_SCLK
@@ -118,6 +147,14 @@
 
 #ifndef PIN_GPIN_0
 #define PIN_GPIN_0 ARDUINO_UNO_D2
+#endif
+
+#ifndef PIN_UART_MCU_RX
+#define PIN_UART_MCU_RX ARDUINO_UNO_D1
+#endif
+
+#ifndef PIN_UART_MCU_TX
+#define PIN_UART_MCU_TX ARDUINO_UNO_D0
 #endif
 
 #endif

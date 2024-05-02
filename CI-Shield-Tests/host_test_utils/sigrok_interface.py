@@ -231,13 +231,13 @@ class SigrokI2CRecorder(SigrokRecorderBase):
 
     # i2c sigrok command
     SIGROK_I2C_COMMAND = ["--protocol-decoders",
-                          "i2c:scl=D0:sda=D1:address_format=unshifted",  # Set up I2C decoder
+                          "i2c:scl=D1:sda=D2:address_format=unshifted",  # Set up I2C decoder
                           "--protocol-decoder-annotations",
                           "i2c=address-read:address-write:data-read:data-write:start:repeat-start:ack:nack:stop",  # Request output of all detectable conditions
 
                           # Trigger on falling edge of SCL
                           "--triggers",
-                          "D0=f",
+                          "D1=f",
                           ]
     def __init__(self):
         super().__init__()
@@ -354,7 +354,7 @@ class SigrokSPIRecorder(SigrokRecorderBase):
               # Set up SPI decoder.
               # Note that for now we always use mode 0 and a word size of 8, but that can be changed later.
               "--protocol-decoders",
-              f"spi:clk=D0:mosi=D1:miso=D2{':cs=' + cs_pin if self._has_cs_pin else ''}:cpol=0:cpha=0:wordsize=8",
+              f"spi:clk=D3:mosi=D2:miso=D1{':cs=' + cs_pin if self._has_cs_pin else ''}:cpol=0:cpha=0:wordsize=8",
               ]
 
         if self._has_cs_pin:
@@ -368,7 +368,7 @@ class SigrokSPIRecorder(SigrokRecorderBase):
         else:
             # Trigger on any edge of clock
             sigrok_spi_command.append("--triggers")
-            sigrok_spi_command.append("D0=e")
+            sigrok_spi_command.append("D3=e")
 
             # The decoder has no transaction information without CS.
             # So, we have to just get the raw bytes

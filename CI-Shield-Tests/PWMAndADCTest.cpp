@@ -37,6 +37,63 @@ float ioVoltageADCPercent;
 std::mt19937 randomGen(287327); // Fixed random seed for repeatability
 
 /*
+ * Uses the logic analyzer on the host side to verify the frequency and duty cycle of the current PWM signal
+ */
+void verify_pwm_freq_and_duty_cycle(float expectedFrequencyHz, float expectedDutyCyclePercent)
+{
+    // Use the host test to measure the signal attributes
+    greentea_send_kv("analyze_signal", "please");
+
+    char receivedKey[64], receivedValue[64];
+    float measuredFrequencyHz = 0;
+    float measuredDutyCycle = 0;
+    while (1) {
+        greentea_parse_kv(receivedKey, receivedValue, sizeof(receivedKey), sizeof(receivedValue));
+
+        if(strncmp("frequency", receivedKey, sizeof(receivedKey) - 1) == 0)
+        {
+            measuredFrequencyHz = atof(receivedValue);
+        }
+        if(strncmp("duty_cycle", receivedKey, sizeof(receivedKey) - 1) == 0)
+        {
+            measuredDutyCycle = atof(receivedValue);
+
+            // We get the duty cycle second so we can break once we have it
+            break;
+        }
+    }
+
+    // For frequency, the host test measures for 100 ms, meaning that it should be able to
+    // detect frequency within +-10Hz.  We'll double to 20Hz that to be a bit generous.
+    // Note that we only run at even power-of-10 frequencies, so most MCUs *should* be able to hit them
+    // precisely with a clock divider.  We shall see if any do not meet this assumption though..
+    const float frequencyTolerance = 20;
+
+    // For duty cycle, implementations should hopefully be at least 0.1% accurate.
+    // However, at high clock frequencies, the resolution often gets worse, because the timer concerned might
+    // only be counting to a few hundred before resetting.
+    // Example: on RP2040, at 1MHz, the PWM counts to 125 before resetting, so we have an accuracy of 0.01 us
+    // on a period of 1 us (giving a resolution a bit better than 1%)
+    // We'll add another factor of 10 and say that we must only be as accurate as 0.1us if 0.1us is more
+    // than 0.1% of the period, so for the RP2040 at 1MHz, the requirement would only be 10% duty cycle accuracy.
+    const float dutyCycleTolerance = std::max(.001f, expectedFrequencyHz / 1e7f);
+
+    printf("Expected PWM frequency was %.00f Hz (+- %.00f Hz) and duty cycle was %.02f%% (+-%.02f%%), host measured frequency %.00f Hz and duty cycle %.02f%%\n",
+            expectedFrequencyHz,
+            frequencyTolerance,
+            expectedDutyCyclePercent * 100.0f,
+            dutyCycleTolerance * 100.0f,
+            measuredFrequencyHz,
+            measuredDutyCycle * 100.0f);
+
+    TEST_ASSERT_FLOAT_WITHIN(frequencyTolerance, expectedFrequencyHz, measuredFrequencyHz);
+    TEST_ASSERT_FLOAT_WITHIN(dutyCycleTolerance, expectedDutyCyclePercent, measuredDutyCycle);
+
+    // Extra test: make sure PwmOut::read() works
+    TEST_ASSERT_FLOAT_WITHIN(dutyCycleTolerance, expectedDutyCyclePercent, pwmOut.read());
+}
+
+/*
  * Tests that we can see a response on the ADC when setting the PWM pin to a constant high or low value.
  */
 void test_adc_digital_value()
@@ -137,61 +194,61 @@ void test_pwm()
 
         pwmOut.write(dutyCycle);
 
-        // Use the host test to measure the signal attributes
-        greentea_send_kv("analyze_signal", "please");
-
-        char receivedKey[64], receivedValue[64];
-        float measuredFrequencyHz = 0;
-        float measuredDutyCycle = 0;
-        while (1) {
-            greentea_parse_kv(receivedKey, receivedValue, sizeof(receivedKey), sizeof(receivedValue));
-
-            if(strncmp("frequency", receivedKey, sizeof(receivedKey) - 1) == 0)
-            {
-                measuredFrequencyHz = atof(receivedValue);
-            }
-            if(strncmp("duty_cycle", receivedKey, sizeof(receivedKey) - 1) == 0)
-            {
-                measuredDutyCycle = atof(receivedValue);
-
-                // We get the duty cycle second so we can break once we have it
-                break;
-            }
-        }
-
-        // For frequency, the host test measures for 100 ms, meaning that it should be able to
-        // detect frequency within +-10Hz.  We'll double to 20Hz that to be a bit generous.
-        // Note that we only run at even power-of-10 frequencies, so most MCUs *should* be able to hit them
-        // precisely with a clock divider.  We shall see if any do not meet this assumption though..
-        const float frequencyTolerance = 20;
-
-        // For duty cycle, implementations should hopefully be at least 0.1% accurate.
-        // However, at high clock frequencies, the resolution often gets worse, because the timer concerned might
-        // only be counting to a few hundred before resetting.
-        // Example: on RP2040, at 1MHz, the PWM counts to 125 before resetting, so we have an accuracy of 0.01 us
-        // on a period of 1 us (giving a resolution a bit better than 1%)
-        // We'll add another factor of 10 and say that we must only be as accurate as 0.1us if 0.1us is more
-        // than 0.1% of the period, so for the RP2040 at 1MHz, the requirement would only be 10% duty cycle accuracy.
-        const float dutyCycleTolerance = std::max(.001f, .1f / period_us);
-
-        printf("Expected PWM frequency was %.00f Hz (+- %.00f Hz) and duty cycle was %.02f%% (+-%.02f%%), host measured frequency %.00f Hz and duty cycle %.02f%%\n",
-               frequency,
-               frequencyTolerance,
-               dutyCycle * 100.0f,
-               dutyCycleTolerance * 100.0f,
-               measuredFrequencyHz,
-               measuredDutyCycle * 100.0f);
-
-        TEST_ASSERT_FLOAT_WITHIN(frequencyTolerance, frequency, measuredFrequencyHz);
-        TEST_ASSERT_FLOAT_WITHIN(dutyCycleTolerance, dutyCycle, measuredDutyCycle);
+        verify_pwm_freq_and_duty_cycle(frequency, dutyCycle);
 
         // Extra test: check that read_pulsewidth_us() produces the correct value
         float pulseWidthUs = dutyCycle * period_us;
-        TEST_ASSERT_EQUAL_INT32(lroundf(pulseWidthUs), pwmOut.read_pulsewidth_us());
+
+        // We do want to catch off by 1 errors in read_pulsewidth_us(), but we also want to be a bit lenient -- if
+        // pulseWidthUs is, say, 3.457, we need to be able to accept 4 as that can be valid depending on how the
+        // driver rounds the number internally.  So, require the 
+        TEST_ASSERT_FLOAT_WITHIN(0.75f, pulseWidthUs, pwmOut.read_pulsewidth_us());
     }
 
     // As one last extra test, make sure that reading the period gets the correct value
     TEST_ASSERT_EQUAL_INT32(period_us, pwmOut.read_period_us());
+}
+
+/*
+ * Test that a PWM output can be suspended and resumed
+ */
+void test_pwm_suspend_resume()
+{
+    // Run at 1kHz, 75.0% duty cycle (chosen arbitrarily)
+    pwmOut.period_ms(1);
+    pwmOut.pulsewidth_us(750);
+
+    verify_pwm_freq_and_duty_cycle(1000, .75f);
+
+    pwmOut.suspend();
+
+    verify_pwm_freq_and_duty_cycle(0, 0);
+
+    pwmOut.resume();
+
+    verify_pwm_freq_and_duty_cycle(1000, .75f);
+}
+
+/*
+ * Test that a PWM output maintain its duty cycle when the period is changed
+ */
+void test_pwm_maintains_duty_cycle()
+{
+    // Run at 1kHz, 75.0% duty cycle (chosen arbitrarily)
+    pwmOut.period_ms(1);
+    pwmOut.pulsewidth_us(750);
+
+    verify_pwm_freq_and_duty_cycle(1000, .75f);
+
+    // Increase frequency to 40 kHz but keep duty cycle the same
+    pwmOut.period_us(25);
+
+    verify_pwm_freq_and_duty_cycle(40000, .75f);
+
+    // Decrease frequency to 200 Hz but keep duty cycle the same
+    pwmOut.period_ms(5);
+
+    verify_pwm_freq_and_duty_cycle(200, .75f);
 }
 
 utest::v1::status_t test_setup(const size_t number_of_cases) {
@@ -212,6 +269,9 @@ Case cases[] = {
 
     // Note: Many targets currently cannot do 1MHz PWM.  This test will help figure out which ones those are.
     Case("Test PWM frequency and duty cycle (freq = 1 MHz)", test_pwm<1>),
+
+    Case("Test PWM Suspend/Resume (freq = 1kHz)", test_pwm_suspend_resume),
+    Case("Test PWM Maintains Duty Cycle (freq = 1kHz)", test_pwm_maintains_duty_cycle)
 };
 
 Specification specification(test_setup, cases, greentea_continue_handlers);

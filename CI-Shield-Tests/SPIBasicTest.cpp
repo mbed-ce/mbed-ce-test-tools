@@ -240,8 +240,9 @@ void free_and_reallocate_spi()
 
     spi = new SPI(PIN_SPI_MOSI, PIN_SPI_MISO, PIN_SPI_SCLK);
     spi->frequency(spiFreq);
+#if DEVICE_SPI_ASYNCH
     spi->set_dma_usage(DMA_USAGE_NEVER);
-
+#endif
     spi->write(standardMessageBytes, 4, nullptr, 0);
 
     host_assert_standard_message();
@@ -457,15 +458,17 @@ utest::v1::status_t test_setup(const size_t number_of_cases)
     spi->frequency(spiFreq);
     spi->set_default_write_value(DEFAULT_WRITE_VALUE);
 
+#if DEVICE_SPI_ASYNCH
     // For starters, don't use DMA, but we will use it later
     spi->set_dma_usage(DMA_USAGE_NEVER);
+#endif
 
     // Initialize logic analyzer for SPI pinouts
     static BusOut funcSelPins(PIN_FUNC_SEL0, PIN_FUNC_SEL1, PIN_FUNC_SEL2);
     funcSelPins = 0b010;
 
-    // Set the SD card CS pin to high so it doesn't try to use the bus
-    DigitalOut sdCsPin(PIN_SPI_SD_CS, 1);
+    // make sure SD card is disabled and disconnected
+    static DigitalOut sdcardEnablePin(PIN_SDCARD_ENABLE, 0);
 
     // Setup Greentea using a reasonable timeout in seconds
     GREENTEA_SETUP(45, "spi_basic_test");
