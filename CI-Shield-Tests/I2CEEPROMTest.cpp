@@ -106,13 +106,6 @@ void single_byte_WR()
 	TEST_ASSERT_MESSAGE(test == read, "character written does not match character read")
 }
 
-// Test initializing an I2C Object
-void test_object()
-{
-	I2C i2c(PIN_I2C_SDA, PIN_I2C_SCL);
-	TEST_ASSERT_MESSAGE(true,"If you hang here your I2C Object has problems");
-}
-
 utest::v1::status_t test_setup(const size_t number_of_cases)
 {
     // Initialize logic analyzer for I2C pinouts
@@ -120,29 +113,54 @@ utest::v1::status_t test_setup(const size_t number_of_cases)
     funcSelPins = 0b001;
 
 	// Setup Greentea using a reasonable timeout in seconds
-	GREENTEA_SETUP(20, "default_auto");
+	GREENTEA_SETUP(20, "i2c_record_only_test");
 	return verbose_test_setup_handler(number_of_cases);
+}
+
+/*
+ * Case setup handler which uses the host test to start I2C logging from the device
+ */
+utest::v1::status_t start_logging_case_setup(const Case *const source, const size_t index_of_case)
+{
+    // Note: Value is not important but cannot be empty
+    greentea_send_kv("start_recording_i2c", "please");
+    assert_next_message_from_host("start_recording_i2c", "complete");
+
+	// Call original Greentea handler which communicates with the host test
+	return greentea_case_setup_handler(source, index_of_case);
+}
+
+/*
+ * Case teardown handler which uses the host test to display captured I2C data
+ */
+utest::v1::status_t display_data_case_teardown(const Case *const source, const size_t passed, const size_t failed, const failure_t reason)
+{
+    // Note: Value is not important but cannot be empty
+    greentea_send_kv("display_i2c_data", "please");
+    assert_next_message_from_host("display_i2c_data", "complete");
+
+	// Call original Greentea handler which communicates with the host test
+	return greentea_case_teardown_handler(source, passed, failed, reason);
 }
 
 // Test cases
 Case cases[] = {
 			// TODO need tests that test using a correct and incorrect address and seeing if we get the right result.
 			// Should use single byte and multi byte API.  Also should have one that does and does not transfer one byte after sending the address.
-		Case("I2C -  Instantiation of I2C Object", test_object),
-		Case("I2C - 100kHz - EEPROM WR Single Byte",single_byte_WR<100000, 1>),
-		Case("I2C - 100kHz - EEPROM 2nd WR Single Byte",single_byte_WR<100000, 1025>),
-		Case("I2C - 100kHz - EEPROM WR 2 Bytes", flash_WR<100000, 2, 5>),
-		Case("I2C - 100kHz - EEPROM 2nd WR 2 Bytes",flash_WR<100000, 2, 1029>),
-		Case("I2C - 100kHz - EEPROM WR 1 Page",flash_WR<100000, EEPROM_BLOCK_SIZE, 100>),
-		Case("I2C - 100kHz - EEPROM 2nd WR 1 Page",flash_WR<100000, EEPROM_BLOCK_SIZE, 1124>),
-		Case("I2C - 100kHz - EEPROM WR 2kiB",flash_WR<100000, MAX_TEST_SIZE, 0>),
-		Case("I2C - 400kHz - EEPROM WR Single Byte",single_byte_WR<400000, 1>),
-		Case("I2C - 400kHz - EEPROM 2nd WR Single Byte",single_byte_WR<400000, 1025>),
-		Case("I2C - 400kHz - EEPROM WR 2 Bytes", flash_WR<400000, 2, 5>),
-		Case("I2C - 400kHz - EEPROM 2nd WR 2 Bytes",flash_WR<400000, 2, 1029>),
-		Case("I2C - 400kHz - EEPROM WR 1 Page",flash_WR<400000, EEPROM_BLOCK_SIZE, 100>),
-		Case("I2C - 400kHz - EEPROM 2nd WR 1 Page",flash_WR<400000, EEPROM_BLOCK_SIZE, 1124>),
-		Case("I2C - 400kHz - EEPROM WR 2kiB",flash_WR<400000, MAX_TEST_SIZE, 0>),
+		Case("I2C - 100kHz - EEPROM WR Single Byte", start_logging_case_setup, single_byte_WR<100000, 1>, display_data_case_teardown),
+		Case("I2C - 100kHz - EEPROM 2nd WR Single Byte", start_logging_case_setup, single_byte_WR<100000, 1025>, display_data_case_teardown),
+		Case("I2C - 100kHz - EEPROM WR 2 Bytes", start_logging_case_setup, flash_WR<100000, 2, 5>, display_data_case_teardown),
+		Case("I2C - 100kHz - EEPROM 2nd WR 2 Bytes", start_logging_case_setup, flash_WR<100000, 2, 1029>, display_data_case_teardown),
+		Case("I2C - 100kHz - EEPROM WR 1 Page", start_logging_case_setup, flash_WR<100000, EEPROM_BLOCK_SIZE, 100>, display_data_case_teardown),
+		Case("I2C - 100kHz - EEPROM 2nd WR 1 Page", start_logging_case_setup, flash_WR<100000, EEPROM_BLOCK_SIZE, 1124>, display_data_case_teardown),
+		Case("I2C - 100kHz - EEPROM WR 2kiB", start_logging_case_setup, flash_WR<100000, MAX_TEST_SIZE, 0>, display_data_case_teardown),
+		Case("I2C - 400kHz - EEPROM WR Single Byte", start_logging_case_setup, single_byte_WR<400000, 1>, display_data_case_teardown),
+		Case("I2C - 400kHz - EEPROM 2nd WR Single Byte", start_logging_case_setup, single_byte_WR<400000, 1025>, display_data_case_teardown),
+		Case("I2C - 400kHz - EEPROM WR 2 Bytes", start_logging_case_setup, flash_WR<400000, 2, 5>, display_data_case_teardown),
+		Case("I2C - 400kHz - EEPROM 2nd WR 2 Bytes", start_logging_case_setup, flash_WR<400000, 2, 1029>, display_data_case_teardown),
+		Case("I2C - 400kHz - EEPROM WR 1 Page", start_logging_case_setup, flash_WR<400000, EEPROM_BLOCK_SIZE, 100>, display_data_case_teardown),
+		Case("I2C - 400kHz - EEPROM 2nd WR 1 Page",start_logging_case_setup,  flash_WR<400000, EEPROM_BLOCK_SIZE, 1124>, display_data_case_teardown),
+		Case("I2C - 400kHz - EEPROM WR 2kiB", start_logging_case_setup, flash_WR<400000, MAX_TEST_SIZE, 0>, display_data_case_teardown),
 };
 
 Specification specification(test_setup, cases, greentea_continue_handlers);

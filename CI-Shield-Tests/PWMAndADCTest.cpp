@@ -15,6 +15,7 @@
  */
 
 #include "mbed.h"
+#include "static_pinmap.h"
 #include "greentea-client/test_env.h"
 #include "unity.h"
 #include "utest.h"
@@ -25,8 +26,16 @@
 
 using namespace utest::v1;
 
+// Use static pinmaps if available for this target
+#if STATIC_PINMAP_READY
+constexpr auto adcPinmap = get_analogin_pinmap(PIN_ANALOG_IN);
+AnalogIn adc(adcPinmap);
+constexpr auto pwmPinmap = get_pwm_pinmap(PIN_GPOUT_1_PWM);
+PwmOut pwmOut(pwmPinmap);
+#else
 AnalogIn adc(PIN_ANALOG_IN);
 PwmOut pwmOut(PIN_GPOUT_1_PWM);
+#endif
 
 // How long to wait when setting a PWM value for the hardware filter to settle
 constexpr std::chrono::milliseconds PWM_FILTER_DELAY = 50ms; // nominal time constant 10ms

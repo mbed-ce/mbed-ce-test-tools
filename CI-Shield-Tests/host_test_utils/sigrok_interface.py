@@ -227,6 +227,20 @@ SR_I2C_NACK = re.compile(r'i2c-1: NACK')
 SR_I2C_STOP = re.compile(r'i2c-1: Stop')
 
 
+def pretty_print_i2c_data(data: List[I2CBusData]) -> str:
+    """
+    Pretty-print a list of I2C data to a string, printing a newline after the end of each transaction.
+    """
+    result = ""
+    strings_this_transaction = []
+    for bus_data in data:
+        strings_this_transaction.append(str(bus_data))
+        if isinstance(bus_data, I2CStop):
+            result += " ".join(strings_this_transaction) + "\n"
+            strings_this_transaction = []
+    
+    return result
+
 class SigrokI2CRecorder(SigrokRecorderBase):
 
     # i2c sigrok command

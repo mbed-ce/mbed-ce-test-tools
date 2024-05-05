@@ -20,6 +20,7 @@
 #endif
 
 #include "mbed.h"
+#include "static_pinmap.h"
 #include "greentea-client/test_env.h"
 #include "unity.h"
 #include "utest.h"
@@ -52,6 +53,22 @@ void host_verify_sequence(char const * sequenceName)
 {
     greentea_send_kv("verify_sequence", sequenceName);
     assert_next_message_from_host("verify_sequence", "complete");
+}
+
+#if STATIC_PINMAP_READY
+// Must be declared globally as I2C stores the pointer
+constexpr auto i2cPinmap = get_i2c_pinmap(PIN_I2C_SDA, PIN_I2C_SCL);
+#endif
+
+void create_i2c_object()
+{
+    // Use static pinmap if supported for this device
+#if STATIC_PINMAP_READY
+    i2c = new I2C(i2cPinmap);
+#else	
+    i2c = new I2C(PIN_I2C_SDA, PIN_I2C_SCL);
+#endif
+	i2c->frequency(100000); // Use a lower frequency so that a logic analyzer can more easily capture what's up
 }
 
 // Test that we can address the EEPROM with its correct address
@@ -139,6 +156,12 @@ void test_simple_write_single_byte()
     ThisThread::sleep_for(5ms);
 
     host_verify_sequence("write_2_to_0x1");
+}
+
+void test_destroy_recreate_object()
+{
+    delete i2c;
+    create_i2c_object();
 }
 
 void test_simple_read_single_byte()
@@ -388,8 +411,7 @@ void async_causes_thread_to_sleep()
 utest::v1::status_t test_setup(const size_t number_of_cases)
 {
 	// Create I2C
-	i2c = new I2C(PIN_I2C_SDA, PIN_I2C_SCL);
-	i2c->frequency(100000); // Use a lower frequency so that a logic analyzer can more easily capture what's up
+    create_i2c_object();
 
     // Initialize logic analyzer for I2C pinouts
     static BusOut funcSelPins(PIN_FUNC_SEL0, PIN_FUNC_SEL1, PIN_FUNC_SEL2);
@@ -423,12 +445,14 @@ Case cases[] = {
         Case("Incorrect Address - Read Transaction", test_incorrect_addr_read_transaction),
         ADD_ASYNC_TEST(Case("Incorrect Address - Async", test_incorrect_addr_async))
         Case("Simple Write - Single Byte", test_simple_write_single_byte),
+        Case("Destroy and Recreate Object", test_destroy_recreate_object),
         Case("Simple Read - Single Byte", test_simple_read_single_byte),
         Case("Simple Write - Transaction", test_simple_write_transaction),
         Case("Simple Read - Transaction", test_simple_read_transaction),
         Case("Mixed Usage - Single Byte -> repeated -> Transaction", test_repeated_single_byte_to_transaction),
         Case("Mixed Usage - Transaction -> repeated -> Single Byte", test_repeated_transaction_to_single_byte),
         ADD_ASYNC_TEST(Case("Simple Write - Async", test_simple_write_async))
+        ADD_ASYNC_TEST(Case("Destroy and Recreate Object (between async calls)", test_destroy_recreate_object))
         ADD_ASYNC_TEST(Case("Simple Read - Async", test_simple_read_async))
         ADD_ASYNC_TEST(Case("Mixed Usage - Async -> repeated -> Transaction", test_repeated_async_to_transaction))
         ADD_ASYNC_TEST(Case("Mixed Usage - Async -> repeated -> Single Byte", test_repeated_async_to_single_byte))

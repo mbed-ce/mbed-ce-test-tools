@@ -20,6 +20,7 @@
 #endif
 
 #include "mbed.h"
+#include "static_pinmap.h"
 #include "greentea-client/test_env.h"
 #include "unity.h"
 #include "utest.h"
@@ -71,6 +72,27 @@ uint8_t const longMessage[32] = {0x01, 0x02, };
 
 const uint32_t spiFreq = 1000000;
 const uint8_t spiMode = 0;
+
+#if STATIC_PINMAP_READY
+// must be declared globally as SPI stores the pointer
+constexpr auto spiPinmap = get_spi_pinmap(PIN_SPI_MOSI, PIN_SPI_MISO, PIN_SPI_SCLK);
+#endif
+
+void create_spi_object()
+{
+    // Use static pinmap if available
+#if STATIC_PINMAP_READY
+    spi = new SPI(spiPinmap);
+#else
+    spi = new SPI(PIN_SPI_MOSI, PIN_SPI_MISO, PIN_SPI_SCLK);
+#endif
+
+    spi->frequency(spiFreq);
+    spi->set_default_write_value(DEFAULT_WRITE_VALUE);
+#if DEVICE_SPI_ASYNCH
+    spi->set_dma_usage(DMA_USAGE_NEVER);
+#endif
+}
 
 /*
  * Uses the host test to start SPI logging from the device
@@ -237,12 +259,9 @@ void free_and_reallocate_spi()
     host_start_spi_logging();
 
     delete spi;
+    
+    create_spi_object();
 
-    spi = new SPI(PIN_SPI_MOSI, PIN_SPI_MISO, PIN_SPI_SCLK);
-    spi->frequency(spiFreq);
-#if DEVICE_SPI_ASYNCH
-    spi->set_dma_usage(DMA_USAGE_NEVER);
-#endif
     spi->write(standardMessageBytes, 4, nullptr, 0);
 
     host_assert_standard_message();
@@ -452,11 +471,8 @@ void async_free_and_reallocate_spi()
 
 utest::v1::status_t test_setup(const size_t number_of_cases)
 {
-    // Create SPI.  For now, we won't use any CS pin, because we don't want to trigger the MicroSD card
-    // to actually respond.
-    spi = new SPI(PIN_SPI_MOSI, PIN_SPI_MISO, PIN_SPI_SCLK);
-    spi->frequency(spiFreq);
-    spi->set_default_write_value(DEFAULT_WRITE_VALUE);
+    // Create SPI.
+    create_spi_object();
 
 #if DEVICE_SPI_ASYNCH
     // For starters, don't use DMA, but we will use it later
@@ -493,6 +509,8 @@ Case cases[] = {
         Case("Send 32 Bit Data via Transactional API (Tx only)", write_transactional_tx_only<uint32_t>),
 #endif
 
+        Case("Free and Reallocate SPI Instance (synchronous API)", free_and_reallocate_spi),
+
         Case("Read 8 Bit Data via Transactional API (Rx only)", write_transactional_rx_only<uint8_t>),
         Case("Read 16 Bit Data via Transactional API (Rx only)", write_transactional_rx_only<uint16_t>),
 #if DEVICE_SPI_32BIT_WORDS
@@ -505,7 +523,6 @@ Case cases[] = {
         Case("Transfer 32 Bit Data via Transactional API (Tx/Rx)", write_transactional_tx_rx<uint32_t>),
 #endif
         Case("Use Multiple SPI Instances (synchronous API)", use_multiple_spi_objects),
-        Case("Free and Reallocate SPI Instance (synchronous API)", free_and_reallocate_spi),
 
 #if DEVICE_SPI_ASYNCH
         Case("Send Data via Async Interrupt API (Tx only)", write_async_tx_only<DMA_USAGE_NEVER>),

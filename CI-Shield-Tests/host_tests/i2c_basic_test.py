@@ -11,7 +11,7 @@ import pathlib
 this_script_dir = pathlib.Path(os.path.dirname(__file__))
 sys.path.append(str(this_script_dir / ".." / "host_test_utils"))
 
-from sigrok_interface import I2CStart, I2CRepeatedStart, I2CWriteToAddr, I2CReadFromAddr, I2CDataByte, I2CAck, I2CNack, I2CStop, SigrokI2CRecorder
+from sigrok_interface import I2CStart, I2CRepeatedStart, I2CWriteToAddr, I2CReadFromAddr, I2CDataByte, I2CAck, I2CNack, I2CStop, SigrokI2CRecorder, pretty_print_i2c_data
 
 
 class I2CBasicTestHostTest(BaseHostTest):
@@ -72,7 +72,7 @@ class I2CBasicTestHostTest(BaseHostTest):
 
         recorded_data = self.recorder.get_result()
         if len(recorded_data) > 0:
-            self.logger.prn_inf("Saw on the I2C bus: " + " ".join(str(item) for item in recorded_data))
+            self.logger.prn_inf("Saw on the I2C bus:\n" + pretty_print_i2c_data(recorded_data))
         else:
             self.logger.prn_inf("Saw nothing the I2C bus.")
 
@@ -90,7 +90,7 @@ class I2CBasicTestHostTest(BaseHostTest):
             self.logger.prn_inf("PASS")
             self.send_kv('verify_sequence', 'complete')
         else:
-            self.logger.prn_inf("We expected: " + " ".join(str(item) for item in self.SEQUENCES[value]))
+            self.logger.prn_inf("We expected: \n" + pretty_print_i2c_data(self.SEQUENCES[value]))
             self.logger.prn_inf("FAIL")
             self.send_kv('verify_sequence', 'failed')
 

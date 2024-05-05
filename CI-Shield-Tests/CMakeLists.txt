@@ -45,9 +45,16 @@ mbed_greentea_add_test(
 )
 
 mbed_greentea_add_test(
+    TEST_NAME testshield-i2c-slave-comms
+    TEST_SOURCES I2CSlaveCommsTest.cpp
+	HOST_TESTS_DIR host_tests
+)
+
+mbed_greentea_add_test(
     TEST_NAME testshield-i2c-eeprom
     TEST_SOURCES I2CEEPROMTest.cpp
     TEST_REQUIRED_LIBS mbed-storage-i2cee
+    HOST_TESTS_DIR host_tests
 )
 
 mbed_greentea_add_test(
