@@ -6,12 +6,13 @@ import binascii
 import sys
 import os
 import pathlib
+import subprocess
 
 # Unfortunately there's no easy way to make the test runner add a directory to its module path...
 this_script_dir = pathlib.Path(os.path.dirname(__file__))
 sys.path.append(str(this_script_dir / ".." / "host_test_utils"))
 
-from sigrok_interface import I2CStart, I2CRepeatedStart, I2CWriteToAddr, I2CReadFromAddr, I2CDataByte, I2CAck, I2CNack, I2CStop, SigrokI2CRecorder, pretty_print_i2c_data
+from sigrok_interface import I2CStart, I2CRepeatedStart, I2CWriteToAddr, I2CReadFromAddr, I2CDataByte, I2CAck, I2CNack, I2CStop, SigrokI2CRecorder, pretty_print_i2c_data, pretty_diff_i2c_data
 
 
 class I2CBasicTestHostTest(BaseHostTest):
@@ -69,30 +70,9 @@ class I2CBasicTestHostTest(BaseHostTest):
         """
         Verify that the current recorded I2C data matches the given sequence
         """
-
         recorded_data = self.recorder.get_result()
-        if len(recorded_data) > 0:
-            self.logger.prn_inf("Saw on the I2C bus:\n" + pretty_print_i2c_data(recorded_data))
-        else:
-            self.logger.prn_inf("Saw nothing the I2C bus.")
 
-        fail = False
-        if len(self.SEQUENCES[value]) != len(recorded_data):
-            self.logger.prn_inf("Expected length differs from actual!")
-            fail = True
-        else:
-            for index, (expected, actual) in enumerate(zip(self.SEQUENCES[value], recorded_data)):
-                if expected != actual:
-                    self.logger.prn_inf(f"Data item at index {index}: expected {str(expected)} but got {str(actual)}")
-                    fail = True
-
-        if not fail:
-            self.logger.prn_inf("PASS")
-            self.send_kv('verify_sequence', 'complete')
-        else:
-            self.logger.prn_inf("We expected: \n" + pretty_print_i2c_data(self.SEQUENCES[value]))
-            self.logger.prn_inf("FAIL")
-            self.send_kv('verify_sequence', 'failed')
+        self.send_kv('verify_sequence', 'complete' if pretty_diff_i2c_data(self.logger, self.SEQUENCES[value], recorded_data) else 'failed')
 
     def setup(self):
 

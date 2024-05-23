@@ -16,6 +16,8 @@ import time
 from typing import List, cast, Optional, Tuple
 from dataclasses import dataclass
 
+from mbed_host_tests.host_tests_logger import HtrunLogger
+
 LOGIC_ANALYZER_FREQUENCY = 4 # MHz
 
 if sys.platform == "win32":
@@ -238,8 +240,38 @@ def pretty_print_i2c_data(data: List[I2CBusData]) -> str:
         if isinstance(bus_data, I2CStop):
             result += " ".join(strings_this_transaction) + "\n"
             strings_this_transaction = []
+
+    # Grab anything after the last stop
+    if len(strings_this_transaction):
+        result += " ".join(strings_this_transaction) + "\n"
     
     return result
+
+def pretty_diff_i2c_data(logger: HtrunLogger, expected: List[I2CBusData], actual: List[I2CDataByte]) -> bool:
+    """
+    Diff expected I2C data against actual.  Always prints the actual data to the console, and prints the expected
+    too if they don't match.
+    """
+
+    if len(actual) > 0:
+        logger.prn_inf("Saw on the I2C bus:\n" + pretty_print_i2c_data(actual))
+    else:
+        logger.prn_inf("Saw nothing the I2C bus.")
+
+    match = True
+    if len(expected) != len(actual):
+        logger.prn_err("Expected length differs from actual!")
+        match = False
+    else:
+        for index, (expected_item, actual_item) in enumerate(zip(expected, actual)):
+            if expected_item != actual_item:
+                logger.prn_err(f"Data item at index {index}: expected {str(expected_item)} but got {str(actual_item)}")
+                match = False
+
+    if not match:
+        logger.prn_inf("We expected:\n" + pretty_print_i2c_data(expected))
+
+    return match
 
 class SigrokI2CRecorder(SigrokRecorderBase):
 
@@ -265,11 +297,15 @@ class SigrokI2CRecorder(SigrokRecorderBase):
 
     def get_result(self) -> List[I2CBusData]:
         """
-        Get the data that was recorded
-        :return: Data recorded (list of I2CBusData subclasses)
+        Get the data that was recorded.
+        
+        :return: Data recorded (list of I2CBusData subclasses).  If nothing was seen before the timeout (logic analyzer never triggered), returns [].
         """
 
-        sigrok_output = self._get_sigrok_output()
+        try:
+            sigrok_output = self._get_sigrok_output()
+        except subprocess.TimeoutExpired:
+            return []
 
         i2c_transaction: List[I2CBusData] = []
 

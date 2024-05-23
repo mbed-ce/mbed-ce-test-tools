@@ -6,6 +6,9 @@ import os
 import pathlib
 import subprocess
 import contextlib
+import binascii
+import traceback
+from typing import List
 
 import cy_serial_bridge
 
@@ -13,7 +16,7 @@ import cy_serial_bridge
 this_script_dir = pathlib.Path(os.path.dirname(__file__))
 sys.path.append(str(this_script_dir / ".." / "host_test_utils"))
 
-from sigrok_interface import SigrokI2CRecorder, pretty_print_i2c_data
+from sigrok_interface import SigrokI2CRecorder, pretty_print_i2c_data, I2CStart, I2CRepeatedStart, I2CWriteToAddr, I2CReadFromAddr, I2CDataByte, I2CAck, I2CNack, I2CStop, I2CBusData, pretty_diff_i2c_data
 
 
 class I2CSlaveCommsTest(BaseHostTest):
@@ -29,10 +32,10 @@ class I2CSlaveCommsTest(BaseHostTest):
         self.logger = HtrunLogger('TEST')
 
         if "MBED_CI_SHIELD_SERIAL_NUMBER" in os.environ:
-            ci_shield_serno = os.environ["MBED_CI_SHIELD_SERIAL_NUMBER"]
+            self.ci_shield_serno = "Shield" + os.environ["MBED_CI_SHIELD_SERIAL_NUMBER"]
             self.logger.prn_inf("Connecting to CI shield with serial number " + ci_shield_serno)
         else:
-            ci_shield_serno = None
+            self.ci_shield_serno = None
             self.logger.prn_inf("Will use any connected CI shield for this test.  Export the MBED_CI_SHIELD_SERIAL_NUMBER environment var to select a specific shield.")
             self.logger.prn_inf("e.g. 'export MBED_CI_SHIELD_SERIAL_NUMBER=SN002'")
 
@@ -40,11 +43,7 @@ class I2CSlaveCommsTest(BaseHostTest):
     
         # Open serial bridge chip
         self.cy_usb_context = cy_serial_bridge.CyScbContext()
-        self.i2c_bridge: cy_serial_bridge.CyI2CControllerBridge = self.cy_usb_context.open_device(
-                         cy_serial_bridge.DEFAULT_VID, 
-                         cy_serial_bridge.DEFAULT_PID, 
-                         cy_serial_bridge.OpenMode.I2C_CONTROLLER,
-                         ci_shield_serno)
+        
 
 
     def _callback_start_recording_i2c(self, key: str, value: str, timestamp):
@@ -61,7 +60,7 @@ class I2CSlaveCommsTest(BaseHostTest):
         Command to the host test to write bytes to a specific slave I2C address.
         Argument looks like:
         'addr 0xa0 data 0x00 0x01 0x02 0x03...'
-        Address is a 7 bit address!
+        Address is an 8 bit address!
         """
 
         # Process arguments
@@ -72,29 +71,114 @@ class I2CSlaveCommsTest(BaseHostTest):
         bytes_to_write = bytes([int(data_byte_str, 0) for data_byte_str in command_parts[3:]])
 
         # Write data to slave device
-        self.i2c_bridge.i2c_write(addr, bytes_to_write)
+        success = True
+        try:
+            self.i2c_bridge.i2c_write(addr >> 1, bytes_to_write)
+        except Exception:
+            self.logger.prn_err("Error writing to I2C slave: " + traceback.format_exc())
+            success = False
+
+        # Generate expected data for the logic analyzer
+        expected_i2c_data = [I2CStart(), I2CWriteToAddr(addr), I2CAck()]
+        for data_byte in bytes_to_write:
+            expected_i2c_data.append(I2CDataByte(data_byte))
+            expected_i2c_data.append(I2CAck())
+        
+        expected_i2c_data.append(I2CStop())
+
+        # Check logic analyzer data
+        i2c_data = self.recorder.get_result()
+        if not pretty_diff_i2c_data(self.logger, expected_i2c_data, i2c_data):
+            success = False
+
+        self.send_kv('read_bytes_from_slave', 'complete' if success else 'error')
 
         self.send_kv('write_bytes_to_slave', 'complete')
 
-    def _callback_display_i2c_data(self, key: str, value: str, timestamp):
+    def _callback_try_write_to_wrong_address(self, key: str, value: str, timestamp):
         """
-        Verify that the current recorded I2C data matches the given sequence
+        Command to the host test to try and write data to an incorrect address.  We expect a NACK!
+        Value is the 8-bit address to try and write to.
         """
+
+        addr = int(value, 0)
+
+        # Write data to slave device
+        try:
+            self.i2c_bridge.i2c_write(addr >> 1, bytes([0x1, 0x2])) # Need to write >=2 bytes to avoid CY7C65211 bug where NACK is not detected
+            raise RuntimeError("I2C operation should have thrown an exception but didn't!")
+        except cy_serial_bridge.driver.I2CNACKError:
+            pass # this is expected
+
+        # Check logic analyzer data
+        i2c_data = self.recorder.get_result()
+        expected_i2c_data = [I2CStart(), I2CWriteToAddr(addr), I2CNack(), I2CStop()]
+
+        self.send_kv('try_write_to_wrong_address', 'complete' if pretty_diff_i2c_data(self.logger, expected_i2c_data, i2c_data) else 'failed')
+
+    def _callback_read_bytes_from_slave(self, key: str, value: str, timestamp):
+        """
+        Command to the host test to read and verify bytes from a specific slave I2C address.
+        Argument looks like:
+        'addr 0xa0 expected-data 0x00 0x01 0x02 0x03...'
+        Address is an 8 bit address (can be read or write address)!
+        """
+
+        # Process arguments
+        command_parts = value.split(" ")
+        if command_parts[0] != "addr" or command_parts[2] != "expected-data":
+            raise RuntimeError("Invalid command for write_bytes_to_slave")
+        addr = int(command_parts[1], 0)
+        expected_data_bytes = bytes([int(data_byte_str, 0) for data_byte_str in command_parts[3:]])
+
+        # Read data from slave device
+        success = True
 
         try:
-            recorded_data = self.recorder.get_result()
-        except subprocess.TimeoutExpired:
-            recorded_data = []
+            read_data = self.i2c_bridge.i2c_read(addr >> 1, len(expected_data_bytes))
+        except Exception:
+            self.logger.prn_err("Error reading from I2C slave: " + traceback.format_exc())
+            success = False
+        
+        if read_data != expected_data_bytes:
+            self.logger.prn_err(f"Expected '{binascii.b2a_hex(expected_data_bytes).decode('ASCII')}' but read '{binascii.b2a_hex(read_data).decode('ASCII')}'")
+            success = False
 
-        if len(recorded_data) > 0:
-            self.logger.prn_inf("Saw on the I2C bus:\n" + pretty_print_i2c_data(recorded_data))
-        else:
-            self.logger.prn_inf("WARNING: Logic analyzer saw nothing the I2C bus.")
+        # Generate expected data fpr the logic analyzer
+        expected_i2c_data = [I2CStart(), I2CReadFromAddr(addr | 1)]
+        for data_byte in expected_data_bytes:
+            expected_i2c_data.append(I2CAck())
+            expected_i2c_data.append(I2CDataByte(data_byte))
+        
+        # Expect a NACK after the last read byte
+        expected_i2c_data.append(I2CNack())
+        expected_i2c_data.append(I2CStop())
 
-        self.send_kv('display_i2c_data', 'complete')
+        # Check logic analyzer data
+        i2c_data = self.recorder.get_result()
+        if not pretty_diff_i2c_data(self.logger, expected_i2c_data, i2c_data):
+            success = False
 
-    def setup(self):
+        self.send_kv('read_bytes_from_slave', 'complete' if success else 'error')
 
+    def _callback_reinit_i2c_bridge(self, key: str, value: str, timestamp):
+        """
+        Reinitialize the I2C bridge.  This has to be done if I2C is reinitialized on the Mbed device side.
+        """
+        self._destroy_i2c_bridge()
+        self._initialize_i2c_bridge()
+        self.send_kv('reinit_i2c_bridge', 'complete')
+
+    def _initialize_i2c_bridge(self):
+        """
+        Initialize the i2c bridge driver.
+        """
+        self.i2c_bridge: cy_serial_bridge.CyI2CControllerBridge = self.cy_usb_context.open_device(
+                                cy_serial_bridge.DEFAULT_VID, 
+                                cy_serial_bridge.DEFAULT_PID, 
+                                cy_serial_bridge.OpenMode.I2C_CONTROLLER,
+                                self.ci_shield_serno)
+        
         # Enter serial bridge
         with contextlib.ExitStack() as temp_exit_stack: # Creates a temporary ExitStack
             temp_exit_stack.enter_context(self.i2c_bridge) # Enter the serial bridge using the temporary stack
@@ -103,16 +187,28 @@ class I2CSlaveCommsTest(BaseHostTest):
 
             self.exit_stack = temp_exit_stack.pop_all() # Creates a new exit stack with ownership of mcast_socket "moved" into it
 
-        self.register_callback('start_recording_i2c', self._callback_start_recording_i2c)
-        self.register_callback('display_i2c_data', self._callback_display_i2c_data)
-        self.register_callback('write_bytes_to_slave', self._callback_write_bytes_to_slave)
-
-        self.logger.prn_inf("I2C Record-Only Test host test setup complete.")
-
-    def teardown(self):
-        self.recorder.teardown()
+    def _destroy_i2c_bridge(self):
+        """
+        Destroy the i2c bridge driver
+        """
 
         # Exit serial bridge
         if self.exit_stack is not None:
             self.exit_stack.close() # This exits each object saved in the stack
         self.exit_stack = None
+
+    def setup(self):
+        self._initialize_i2c_bridge()
+
+        self.register_callback('start_recording_i2c', self._callback_start_recording_i2c)
+        self.register_callback('write_bytes_to_slave', self._callback_write_bytes_to_slave)
+        self.register_callback('try_write_to_wrong_address', self._callback_try_write_to_wrong_address)
+        self.register_callback('read_bytes_from_slave', self._callback_read_bytes_from_slave)
+        self.register_callback('reinit_i2c_bridge', self._callback_reinit_i2c_bridge)
+
+        self.logger.prn_inf("I2C Record-Only Test host test setup complete.")
+
+    def teardown(self):
+        self.recorder.teardown()
+        self._destroy_i2c_bridge()
+        
