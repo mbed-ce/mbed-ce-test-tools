@@ -1,0 +1,3077 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="(empty)"
+	tests="9"
+	failures="2"
+	disabled="0"
+	skipped="0"
+	hostname=""
+	time="661"
+	timestamp="2024-05-29T21:27:37"
+	>
+	<testcase name="test-testshield-businout" classname="test-testshield-businout" time="7.73113" status="fail">
+		<failure message=""/>
+		<system-out>[1/1] Flashing test-testshield-businout with OpenOCD...
+Open On-Chip Debugger 0.11.0
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+Info : auto-selecting first available session transport "swd". To override use 'transport select &lt;transport&gt;'.
+adapter speed: 4000 kHz
+
+Info : CMSIS-DAP: SWD  Supported
+Info : CMSIS-DAP: FW Version = 1.0
+Info : CMSIS-DAP: Interface Initialised (SWD)
+Info : SWCLK/TCK = 0 SWDIO/TMS = 1 TDI = 0 TDO = 0 nTRST = 0 nRESET = 1
+Info : CMSIS-DAP: Interface ready
+Info : clock speed 4000 kHz
+Info : SWD DPIDR 0x2ba01477
+Info : lpc17xx.cpu: hardware has 6 breakpoints, 4 watchpoints
+Info : gdb port disabled
+target halted due to debug-request, current mode: Thread
+xPSR: 0x01000000 pc: 0x1fff0080 msp: 0x10001ffc
+** Programming Started **
+Info : If auto-detection fails for this part, please email openocd-devel@lists.sourceforge.net, citing part id 0x26013f37.
+
+Warn : Boot verification checksum in image (0x00000000) to be written to flash is different from calculated vector checksum (0xeffed146).
+Warn : OpenOCD will write the correct checksum. To remove this warning modify build tools on developer PC to inject correct LPC vector checksum.
+** Programming Finished **
+** Resetting Target **
+Info : SWD DPIDR 0x2ba01477
+shutdown command invoked
+Executing: /home/jamie/Mbed/mbed-ce-test-tools/CI-Shield-Tests/mbed-os/venv/bin/python3.10 -m mbed_host_tests.mbedhtrun --skip-flashing -p /dev/ttyLPC1768 --skip-reset -m LPC1768 --baud-rate=115200
+[1717043290.88][HTST][INF] host test executor ver. 0.0.16
+[1717043290.88][HTST][INF] copy image onto target... SKIPPED!
+[1717043290.89][HTST][INF] starting host test process...
+[1717043290.91][CONN][INF] starting connection process...
+[1717043290.91][CONN][INF] notify event queue about extra 60 sec timeout for serial port pooling
+[1717043290.91][CONN][INF] initializing serial port listener...
+[1717043290.91][SERI][INF] using specified port '/dev/ttyLPC1768'
+[1717043290.91][SERI][INF] serial(port=/dev/ttyLPC1768, baudrate=115200, read_timeout=0.01, write_timeout=5)
+[1717043290.92][HTST][INF] setting timeout to: 60 sec
+[1717043290.92][SERI][TXD] mbedmbedmbedmbedmbedmbedmbedmbedmbedmbed
+[1717043290.92][CONN][INF] sending up to 2 __sync packets (specified with --sync=2)
+[1717043290.92][CONN][INF] sending preamble '40aaca5c-3659-42b8-9b73-f03d9ab9d828'
+[1717043290.92][SERI][TXD] {{__sync;40aaca5c-3659-42b8-9b73-f03d9ab9d828}}
+[1717043290.93][CONN][RXD] mbedmbedmbedmbedmbedmbedmbedmbed
+[1717043290.94][CONN][INF] found SYNC in stream: {{__sync;40aaca5c-3659-42b8-9b73-f03d9ab9d828}} it is #0 sent, queued...
+[1717043290.94][CONN][INF] found KV pair in stream: {{__version;1.3.0}}, queued...
+[1717043290.94][HTST][INF] sync KV found, uuid=40aaca5c-3659-42b8-9b73-f03d9ab9d828, timestamp=1717043290.940437
+[1717043290.94][CONN][INF] found KV pair in stream: {{__timeout;40}}, queued...
+[1717043290.94][HTST][INF] DUT greentea-client version: 1.3.0
+[1717043290.94][HTST][INF] setting timeout to: 40 sec
+[1717043290.94][CONN][INF] found KV pair in stream: {{__host_test_name;default_auto}}, queued...
+[1717043290.94][HTST][INF] host test class: '&lt;class 'mbed_os_tools.test.host_tests.default_auto.DefaultAuto'&gt;'
+[1717043290.94][HTST][INF] host test setup() call...
+[1717043290.94][HTST][INF] CALLBACKs updated
+[1717043290.94][HTST][INF] host test detected: default_auto
+[1717043290.95][CONN][RXD] &gt;&gt;&gt; Running 4 test cases...
+[1717043290.95][CONN][INF] found KV pair in stream: {{__testcase_name;BusIn definable}}, queued...
+[1717043290.95][CONN][INF] found KV pair in stream: {{__testcase_name;BusOut definable}}, queued...
+[1717043290.95][CONN][INF] found KV pair in stream: {{__testcase_name;BusInOut to BusInOut}}, queued...
+[1717043290.97][CONN][RXD]
+[1717043290.97][CONN][RXD] &gt;&gt;&gt; Running case #1: 'BusIn definable'...
+[1717043290.97][CONN][INF] found KV pair in stream: {{__testcase_name;BusIn to BusOut}}, queued...
+[1717043290.97][CONN][INF] found KV pair in stream: {{__testcase_start;BusIn definable}}, queued...
+[1717043290.98][CONN][RXD] &gt;&gt;&gt; 'BusIn definable': 1 passed, 0 failed
+[1717043290.98][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1717043290.98][CONN][RXD]
+[1717043290.98][CONN][RXD] &gt;&gt;&gt; Running case #2: 'BusOut definable'...
+[1717043290.98][CONN][INF] found KV pair in stream: {{__testcase_finish;BusIn definable;1;0}}, queued...
+[1717043290.99][CONN][RXD] &gt;&gt;&gt; 'BusOut definable': 1 passed, 0 failed
+[1717043290.99][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1717043290.99][CONN][RXD]
+[1717043290.99][CONN][INF] found KV pair in stream: {{__testcase_start;BusOut definable}}, queued...
+[1717043290.99][CONN][INF] found KV pair in stream: {{__testcase_finish;BusOut definable;1;0}}, queued...
+[1717043291.00][CONN][RXD] &gt;&gt;&gt; Running case #3: 'BusInOut to BusInOut'...
+[1717043291.00][CONN][RXD]
+[1717043291.00][CONN][RXD] *********
+[1717043291.00][CONN][RXD] value of x,bio is: 0x0, 0x0
+[1717043291.00][CONN][RXD] ********
+[1717043291.00][CONN][RXD]
+[1717043291.01][CONN][INF] found KV pair in stream: {{__testcase_start;BusInOut to BusInOut}}, queued...
+[1717043291.02][CONN][RXD] *********
+[1717043291.02][CONN][RXD] value of x,bio is: 0x1, 0x1
+[1717043291.02][CONN][RXD] ********
+[1717043291.02][CONN][RXD]
+[1717043291.02][CONN][RXD] *********
+[1717043291.02][CONN][RXD] value of x,bio is: 0x2, 0x2
+[1717043291.02][CONN][RXD] ********
+[1717043291.02][CONN][RXD]
+[1717043291.02][CONN][RXD] *********
+[1717043291.02][CONN][RXD] value of x,bio is: 0x3, 0x3
+[1717043291.03][CONN][RXD] ********
+[1717043291.03][CONN][RXD]
+[1717043291.03][CONN][RXD] *********
+[1717043291.03][CONN][RXD] value of x,bio is: 0x4, 0x4
+[1717043291.03][CONN][RXD] ********
+[1717043291.03][CONN][RXD]
+[1717043291.03][CONN][RXD] *********
+[1717043291.03][CONN][RXD] value of x,bio is: 0x5, 0x5
+[1717043291.03][CONN][RXD] ********
+[1717043291.03][CONN][RXD]
+[1717043291.04][CONN][RXD] *********
+[1717043291.04][CONN][RXD] value of x,bio is: 0x6, 0x6
+[1717043291.04][CONN][RXD] ********
+[1717043291.04][CONN][RXD]
+[1717043291.04][CONN][RXD] *********
+[1717043291.05][CONN][RXD] value of x,bio is: 0x7, 0x7
+[1717043291.05][CONN][RXD] ********
+[1717043291.05][CONN][RXD]
+[1717043291.05][CONN][RXD] *********
+[1717043291.05][CONN][RXD] value of x,bio is: 0x0, 0x2
+[1717043291.05][CONN][RXD] ********
+[1717043291.05][CONN][RXD] &lt;greentea test suite&gt;:81::FAIL: Value read on bus does not equal value written.
+[1717043291.05][CONN][RXD]
+[1717043291.05][CONN][RXD] *********
+[1717043291.06][CONN][RXD] value of x,bio is: 0x1, 0x3
+[1717043291.06][CONN][RXD] ********
+[1717043291.06][CONN][RXD]
+[1717043291.06][CONN][RXD] *********
+[1717043291.06][CONN][RXD] value of x,bio is: 0x2, 0x2
+[1717043291.06][CONN][RXD] ********
+[1717043291.06][CONN][RXD]
+[1717043291.07][CONN][RXD] *********
+[1717043291.07][CONN][RXD] value of x,bio is: 0x3, 0x3
+[1717043291.07][CONN][RXD] ********
+[1717043291.07][CONN][RXD]
+[1717043291.07][CONN][RXD] *********
+[1717043291.08][CONN][RXD] value of x,bio is: 0x4, 0x6
+[1717043291.08][CONN][RXD] ********
+[1717043291.08][CONN][RXD]
+[1717043291.08][CONN][RXD] *********
+[1717043291.08][CONN][RXD] value of x,bio is: 0x5, 0x7
+[1717043291.08][CONN][RXD] ********
+[1717043291.08][CONN][RXD]
+[1717043291.08][CONN][RXD] *********
+[1717043291.08][CONN][RXD] value of x,bio is: 0x6, 0x6
+[1717043291.08][CONN][RXD] ********
+[1717043291.08][CONN][RXD]
+[1717043291.08][CONN][RXD] *********
+[1717043291.08][CONN][RXD] value of x,bio is: 0x7, 0x7
+[1717043291.08][CONN][RXD] ********
+[1717043291.09][CONN][RXD] &gt;&gt;&gt; 'BusInOut to BusInOut': 0 passed, 1 failed with reason 'Test Cases Failed'
+[1717043291.09][CONN][RXD]
+[1717043291.09][CONN][RXD]
+[1717043291.09][CONN][RXD] &gt;&gt;&gt; Running case #4: 'BusIn to BusOut'...
+[1717043291.09][CONN][INF] found KV pair in stream: {{__testcase_finish;BusInOut to BusInOut;0;1}}, queued...
+[1717043291.10][CONN][RXD]
+[1717043291.10][CONN][RXD] *********
+[1717043291.10][CONN][RXD] value of bin,bout,x is: 0x1, 0x1, 0x1
+[1717043291.10][CONN][RXD] ********
+[1717043291.10][CONN][RXD]
+[1717043291.10][CONN][RXD] *********
+[1717043291.11][CONN][INF] found KV pair in stream: {{__testcase_start;BusIn to BusOut}}, queued...
+[1717043291.12][CONN][RXD] value of bin,bout,x is: 0x2, 0x2, 0x2
+[1717043291.12][CONN][RXD] ********
+[1717043291.12][CONN][RXD]
+[1717043291.12][CONN][RXD] *********
+[1717043291.12][CONN][RXD] value of bin,bout,x is: 0x3, 0x3, 0x3
+[1717043291.12][CONN][RXD] ********
+[1717043291.12][CONN][RXD]
+[1717043291.12][CONN][RXD] *********
+[1717043291.13][CONN][RXD] value of bin,bout,x is: 0x4, 0x4, 0x4
+[1717043291.13][CONN][RXD] ********
+[1717043291.13][CONN][RXD]
+[1717043291.13][CONN][RXD] *********
+[1717043291.13][CONN][RXD] value of bin,bout,x is: 0x5, 0x5, 0x5
+[1717043291.13][CONN][RXD] ********
+[1717043291.13][CONN][RXD]
+[1717043291.13][CONN][RXD] *********
+[1717043291.13][CONN][RXD] value of bin,bout,x is: 0x6, 0x6, 0x6
+[1717043291.13][CONN][RXD] ********
+[1717043291.14][CONN][RXD]
+[1717043291.14][CONN][RXD] *********
+[1717043291.14][CONN][RXD] value of bin,bout,x is: 0x7, 0x7, 0x7
+[1717043291.14][CONN][RXD] ********
+[1717043291.14][CONN][INF] found KV pair in stream: {{__testcase_finish;BusIn to BusOut;1;0}}, queued...
+[1717043291.15][CONN][RXD] &gt;&gt;&gt; 'BusIn to BusOut': 1 passed, 0 failed
+[1717043291.15][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1717043291.15][CONN][RXD]
+[1717043291.15][CONN][RXD] &gt;&gt;&gt; Test cases: 3 passed, 1 failed with reason 'Test Cases Failed'
+[1717043291.15][CONN][RXD] &gt;&gt;&gt; TESTS FAILED!
+[1717043291.15][CONN][RXD]
+[1717043291.16][CONN][RXD] -----------------------
+[1717043291.16][CONN][RXD] 0 Tests 1 Failures 0 Ignored
+[1717043291.16][CONN][RXD] FAIL
+[1717043291.16][CONN][INF] found KV pair in stream: {{__testcase_summary;3;1}}, queued...
+[1717043291.17][CONN][INF] found KV pair in stream: {{end;failure}}, queued...
+[1717043291.17][CONN][INF] found KV pair in stream: {{__exit;0}}, queued...
+[1717043291.17][HTST][INF] __exit(0)
+[1717043291.17][HTST][INF] __notify_complete(False)
+[1717043291.17][HTST][INF] __exit_event_queue received
+[1717043291.17][HTST][INF] test suite run finished after 0.23 sec...
+[1717043291.18][CONN][INF] received special event '__host_test_finished' value='True', finishing
+[1717043291.18][HTST][INF] CONN exited with code: 0
+[1717043291.18][HTST][INF] Some events in queue
+[1717043291.18][HTST][INF] stopped consuming events
+[1717043291.18][HTST][INF] host test result() call skipped, received: False
+[1717043291.18][HTST][INF] calling blocking teardown()
+[1717043291.18][HTST][INF] teardown() finished
+[1717043291.18][HTST][INF] {{result;failure}}
+CMake Error at mbed-run-greentea-test-testshield-businout.cmake:20 (execute_process):
+  execute_process failed command indexes:
+
+    1: "Child return code: 1"
+
+
+
+</system-out>
+	</testcase>
+	<testcase name="test-testshield-interruptin" classname="test-testshield-interruptin" time="18.6105" status="run">
+		<system-out>[1/3] Building CXX object CMakeFiles/test-testshield-interruptin.dir/InterruptInTest.cpp.obj
+[2/3] Linking CXX executable test-testshield-interruptin.elf
+-- built: /home/jamie/Mbed/mbed-ce-test-tools/CI-Shield-Tests/build/LPC1768-Develop/test-testshield-interruptin.bin
+-- built: /home/jamie/Mbed/mbed-ce-test-tools/CI-Shield-Tests/build/LPC1768-Develop/test-testshield-interruptin.hex
+LPC Patch: test-testshield-interruptin.bin
+| Module                                     |     .text |    .data |     .bss |
+|--------------------------------------------|-----------|----------|----------|
+| CMakeFiles/test-testshield-interruptin.dir |  1856(+0) |    0(+0) |  213(+0) |
+| [fill]                                     |   646(+0) |    3(+0) |   24(+0) |
+| [lib]/c.a                                  |  5592(+0) | 1344(+0) |  373(+0) |
+| [lib]/client_userio.a                      |  1480(+0) |   56(+0) |    8(+0) |
+| [lib]/gcc.a                                |  3136(+0) |    0(+0) |    0(+0) |
+| [lib]/mbed-greentea-io.a                   |    70(+0) |    0(+0) |    0(+0) |
+| [lib]/mbed-unity.a                         |   794(+0) |    0(+0) |  224(+0) |
+| [lib]/mbed-utest.a                         |  3380(+0) |   13(+0) |  201(+0) |
+| [lib]/misc                                 |   264(+0) |    4(+0) |   25(+0) |
+| mbed-os/CMakeFiles                         | 20066(+0) |  436(+0) | 7497(+0) |
+| Subtotals                                  | 37284(+0) | 1856(+0) | 8565(+0) |
+Total Static RAM memory (data + bss): 10421(+0) bytes
+Total Flash memory (text + data): 39140(+0) bytes
+
+[3/3] Flashing test-testshield-interruptin with OpenOCD...
+Open On-Chip Debugger 0.11.0
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+Info : auto-selecting first available session transport "swd". To override use 'transport select &lt;transport&gt;'.
+adapter speed: 4000 kHz
+
+Info : CMSIS-DAP: SWD  Supported
+Info : CMSIS-DAP: FW Version = 1.0
+Info : CMSIS-DAP: Interface Initialised (SWD)
+Info : SWCLK/TCK = 0 SWDIO/TMS = 1 TDI = 0 TDO = 0 nTRST = 0 nRESET = 1
+Info : CMSIS-DAP: Interface ready
+Info : clock speed 4000 kHz
+Info : SWD DPIDR 0x2ba01477
+Info : lpc17xx.cpu: hardware has 6 breakpoints, 4 watchpoints
+Info : gdb port disabled
+target halted due to debug-request, current mode: Thread
+xPSR: 0x01000000 pc: 0x1fff0080 msp: 0x10001ffc
+** Programming Started **
+Info : If auto-detection fails for this part, please email openocd-devel@lists.sourceforge.net, citing part id 0x26013f37.
+
+Warn : Boot verification checksum in image (0x00000000) to be written to flash is different from calculated vector checksum (0xeffed4be).
+Warn : OpenOCD will write the correct checksum. To remove this warning modify build tools on developer PC to inject correct LPC vector checksum.
+** Programming Finished **
+** Resetting Target **
+Info : SWD DPIDR 0x2ba01477
+shutdown command invoked
+Executing: /home/jamie/Mbed/mbed-ce-test-tools/CI-Shield-Tests/mbed-os/venv/bin/python3.10 -m mbed_host_tests.mbedhtrun --skip-flashing -p /dev/ttyLPC1768 --skip-reset -m LPC1768 --baud-rate=115200
+[1717043309.50][HTST][INF] host test executor ver. 0.0.16
+[1717043309.50][HTST][INF] copy image onto target... SKIPPED!
+[1717043309.51][HTST][INF] starting host test process...
+[1717043309.53][CONN][INF] starting connection process...
+[1717043309.53][CONN][INF] notify event queue about extra 60 sec timeout for serial port pooling
+[1717043309.54][CONN][INF] initializing serial port listener...
+[1717043309.54][SERI][INF] using specified port '/dev/ttyLPC1768'
+[1717043309.54][HTST][INF] setting timeout to: 60 sec
+[1717043309.54][SERI][INF] serial(port=/dev/ttyLPC1768, baudrate=115200, read_timeout=0.01, write_timeout=5)
+[1717043309.54][SERI][TXD] mbedmbedmbedmbedmbedmbedmbedmbedmbedmbed
+[1717043309.54][CONN][INF] sending up to 2 __sync packets (specified with --sync=2)
+[1717043309.54][CONN][INF] sending preamble '2ebfbb25-7aa2-4ad6-b5ed-b93f4ccf4be6'
+[1717043309.54][SERI][TXD] {{__sync;2ebfbb25-7aa2-4ad6-b5ed-b93f4ccf4be6}}
+[1717043309.55][CONN][RXD] mbedmbedmbedmbedmbedmbedmbedmbed
+[1717043309.57][CONN][INF] found SYNC in stream: {{__sync;2ebfbb25-7aa2-4ad6-b5ed-b93f4ccf4be6}} it is #0 sent, queued...
+[1717043309.57][CONN][INF] found KV pair in stream: {{__version;1.3.0}}, queued...
+[1717043309.57][HTST][INF] sync KV found, uuid=2ebfbb25-7aa2-4ad6-b5ed-b93f4ccf4be6, timestamp=1717043309.565689
+[1717043309.57][CONN][INF] found KV pair in stream: {{__timeout;40}}, queued...
+[1717043309.57][CONN][INF] found KV pair in stream: {{__host_test_name;default_auto}}, queued...
+[1717043309.57][HTST][INF] DUT greentea-client version: 1.3.0
+[1717043309.57][HTST][INF] setting timeout to: 40 sec
+[1717043309.57][HTST][INF] host test class: '&lt;class 'mbed_os_tools.test.host_tests.default_auto.DefaultAuto'&gt;'
+[1717043309.57][HTST][INF] host test setup() call...
+[1717043309.57][HTST][INF] CALLBACKs updated
+[1717043309.57][HTST][INF] host test detected: default_auto
+[1717043309.58][CONN][RXD] &gt;&gt;&gt; Running 6 test cases...
+[1717043309.58][CONN][INF] found KV pair in stream: {{__testcase_name;Interrupt from GPOUT_2 -&gt; GPIN_2}}, queued...
+[1717043309.58][CONN][INF] found KV pair in stream: {{__testcase_name;Interrupt from GPIN_2 -&gt; GPOUT_2}}, queued...
+[1717043309.59][CONN][INF] found KV pair in stream: {{__testcase_name;Interrupt from GPOUT_1 -&gt; GPIN_1}}, queued...
+[1717043309.59][CONN][INF] found KV pair in stream: {{__testcase_name;Interrupt from GPIN_1 -&gt; GPOUT_1}}, queued...
+[1717043309.59][CONN][INF] found KV pair in stream: {{__testcase_name;Interrupt from GPOUT_0 -&gt; GPIN_0}}, queued...
+[1717043309.60][CONN][RXD]
+[1717043309.61][CONN][RXD] &gt;&gt;&gt; Running case #1: 'Interrupt from GPOUT_2 -&gt; GPIN_2'...
+[1717043309.61][CONN][INF] found KV pair in stream: {{__testcase_name;Interrupt from GPIN_0 -&gt; GPOUT_0}}, queued...
+[1717043309.61][CONN][INF] found KV pair in stream: {{__testcase_start;Interrupt from GPOUT_2 -&gt; GPIN_2}}, queued...
+[1717043309.62][CONN][RXD] &gt;&gt;&gt; 'Interrupt from GPOUT_2 -&gt; GPIN_2': 1 passed, 0 failed
+[1717043309.62][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1717043309.62][CONN][RXD]
+[1717043309.62][CONN][INF] found KV pair in stream: {{__testcase_finish;Interrupt from GPOUT_2 -&gt; GPIN_2;1;0}}, queued...
+[1717043309.63][CONN][RXD] &gt;&gt;&gt; Running case #2: 'Interrupt from GPIN_2 -&gt; GPOUT_2'...
+[1717043309.63][CONN][INF] found KV pair in stream: {{__testcase_start;Interrupt from GPIN_2 -&gt; GPOUT_2}}, queued...
+[1717043309.64][CONN][RXD] &gt;&gt;&gt; 'Interrupt from GPIN_2 -&gt; GPOUT_2': 1 passed, 0 failed
+[1717043309.64][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1717043309.64][CONN][RXD]
+[1717043309.64][CONN][INF] found KV pair in stream: {{__testcase_finish;Interrupt from GPIN_2 -&gt; GPOUT_2;1;0}}, queued...
+[1717043309.65][CONN][RXD] &gt;&gt;&gt; Running case #3: 'Interrupt from GPOUT_1 -&gt; GPIN_1'...
+[1717043309.65][CONN][INF] found KV pair in stream: {{__testcase_start;Interrupt from GPOUT_1 -&gt; GPIN_1}}, queued...
+[1717043309.67][CONN][RXD] &gt;&gt;&gt; 'Interrupt from GPOUT_1 -&gt; GPIN_1': 1 passed, 0 failed
+[1717043309.67][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1717043309.67][CONN][RXD]
+[1717043309.67][CONN][INF] found KV pair in stream: {{__testcase_finish;Interrupt from GPOUT_1 -&gt; GPIN_1;1;0}}, queued...
+[1717043309.68][CONN][RXD] &gt;&gt;&gt; Running case #4: 'Interrupt from GPIN_1 -&gt; GPOUT_1'...
+[1717043309.68][CONN][INF] found KV pair in stream: {{__testcase_start;Interrupt from GPIN_1 -&gt; GPOUT_1}}, queued...
+[1717043309.68][CONN][INF] found KV pair in stream: {{__testcase_finish;Interrupt from GPIN_1 -&gt; GPOUT_1;1;0}}, queued...
+[1717043309.69][CONN][RXD] &gt;&gt;&gt; 'Interrupt from GPIN_1 -&gt; GPOUT_1': 1 passed, 0 failed
+[1717043309.69][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1717043309.69][CONN][RXD]
+[1717043309.69][CONN][RXD] &gt;&gt;&gt; Running case #5: 'Interrupt from GPOUT_0 -&gt; GPIN_0'...
+[1717043309.71][CONN][INF] found KV pair in stream: {{__testcase_start;Interrupt from GPOUT_0 -&gt; GPIN_0}}, queued...
+[1717043309.71][CONN][INF] found KV pair in stream: {{__testcase_finish;Interrupt from GPOUT_0 -&gt; GPIN_0;1;0}}, queued...
+[1717043309.72][CONN][RXD] &gt;&gt;&gt; 'Interrupt from GPOUT_0 -&gt; GPIN_0': 1 passed, 0 failed
+[1717043309.72][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1717043309.72][CONN][RXD]
+[1717043309.72][CONN][RXD] &gt;&gt;&gt; Running case #6: 'Interrupt from GPIN_0 -&gt; GPOUT_0'...
+[1717043309.73][CONN][RXD] &gt;&gt;&gt; 'Interrupt from GPIN_0 -&gt; GPOUT_0': 1 passed, 0 failed
+[1717043309.73][CONN][INF] found KV pair in stream: {{__testcase_start;Interrupt from GPIN_0 -&gt; GPOUT_0}}, queued...
+[1717043309.73][CONN][INF] found KV pair in stream: {{__testcase_finish;Interrupt from GPIN_0 -&gt; GPOUT_0;1;0}}, queued...
+[1717043309.74][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1717043309.74][CONN][RXD]
+[1717043309.74][CONN][RXD] &gt;&gt;&gt; Test cases: 6 passed, 0 failed
+[1717043309.75][CONN][RXD]
+[1717043309.75][CONN][RXD] -----------------------
+[1717043309.75][CONN][RXD] 0 Tests 0 Failures 0 Ignored
+[1717043309.75][CONN][RXD] OK
+[1717043309.75][CONN][INF] found KV pair in stream: {{__testcase_summary;6;0}}, queued...
+[1717043309.75][CONN][INF] found KV pair in stream: {{end;success}}, queued...
+[1717043309.75][HTST][INF] __notify_complete(True)
+[1717043309.75][HTST][INF] __exit_event_queue received
+[1717043309.75][HTST][INF] test suite run finished after 0.18 sec...
+[1717043309.76][CONN][INF] found KV pair in stream: {{__exit;0}}, queued...
+[1717043309.76][CONN][INF] received special event '__host_test_finished' value='True', finishing
+[1717043309.77][HTST][INF] CONN exited with code: 0
+[1717043309.77][HTST][INF] Some events in queue
+[1717043309.77][HTST][INF] stopped consuming events
+[1717043309.77][HTST][INF] host test result() call skipped, received: True
+[1717043309.77][HTST][WRN] missing __exit event from DUT
+[1717043309.77][HTST][INF] calling blocking teardown()
+[1717043309.77][HTST][INF] teardown() finished
+[1717043309.77][HTST][INF] {{result;success}}
+</system-out>
+	</testcase>
+	<testcase name="test-testshield-digitalio" classname="test-testshield-digitalio" time="16.7556" status="run">
+		<system-out>[1/3] Building CXX object CMakeFiles/test-testshield-digitalio.dir/DigitalIOTest.cpp.obj
+[2/3] Linking CXX executable test-testshield-digitalio.elf
+-- built: /home/jamie/Mbed/mbed-ce-test-tools/CI-Shield-Tests/build/LPC1768-Develop/test-testshield-digitalio.bin
+-- built: /home/jamie/Mbed/mbed-ce-test-tools/CI-Shield-Tests/build/LPC1768-Develop/test-testshield-digitalio.hex
+LPC Patch: test-testshield-digitalio.bin
+| Module                                   |     .text |    .data |     .bss |
+|------------------------------------------|-----------|----------|----------|
+| CMakeFiles/test-testshield-digitalio.dir |   998(+0) |    0(+0) |  252(+0) |
+| [fill]                                   |   640(+0) |    3(+0) |   21(+0) |
+| [lib]/c.a                                |  5592(+0) | 1344(+0) |  373(+0) |
+| [lib]/client_userio.a                    |  1480(+0) |   56(+0) |    8(+0) |
+| [lib]/gcc.a                              |  3136(+0) |    0(+0) |    0(+0) |
+| [lib]/mbed-greentea-io.a                 |    70(+0) |    0(+0) |    0(+0) |
+| [lib]/mbed-unity.a                       |   794(+0) |    0(+0) |  224(+0) |
+| [lib]/mbed-utest.a                       |  3410(+0) |   13(+0) |  201(+0) |
+| [lib]/misc                               |   264(+0) |    4(+0) |   25(+0) |
+| mbed-os/CMakeFiles                       | 19148(+0) |  436(+0) | 7301(+0) |
+| Subtotals                                | 35532(+0) | 1856(+0) | 8405(+0) |
+Total Static RAM memory (data + bss): 10261(+0) bytes
+Total Flash memory (text + data): 37388(+0) bytes
+
+[3/3] Flashing test-testshield-digitalio with OpenOCD...
+Open On-Chip Debugger 0.11.0
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+Info : auto-selecting first available session transport "swd". To override use 'transport select &lt;transport&gt;'.
+adapter speed: 4000 kHz
+
+Info : CMSIS-DAP: SWD  Supported
+Info : CMSIS-DAP: FW Version = 1.0
+Info : CMSIS-DAP: Interface Initialised (SWD)
+Info : SWCLK/TCK = 0 SWDIO/TMS = 1 TDI = 0 TDO = 0 nTRST = 0 nRESET = 1
+Info : CMSIS-DAP: Interface ready
+Info : clock speed 4000 kHz
+Info : SWD DPIDR 0x2ba01477
+Info : lpc17xx.cpu: hardware has 6 breakpoints, 4 watchpoints
+Info : gdb port disabled
+target halted due to debug-request, current mode: Thread
+xPSR: 0x01000000 pc: 0x1fff0080 msp: 0x10001ffc
+** Programming Started **
+Info : If auto-detection fails for this part, please email openocd-devel@lists.sourceforge.net, citing part id 0x26013f37.
+
+Warn : Boot verification checksum in image (0x00000000) to be written to flash is different from calculated vector checksum (0xeffee666).
+Warn : OpenOCD will write the correct checksum. To remove this warning modify build tools on developer PC to inject correct LPC vector checksum.
+** Programming Finished **
+** Resetting Target **
+Info : SWD DPIDR 0x2ba01477
+shutdown command invoked
+Executing: /home/jamie/Mbed/mbed-ce-test-tools/CI-Shield-Tests/mbed-os/venv/bin/python3.10 -m mbed_host_tests.mbedhtrun --skip-flashing -p /dev/ttyLPC1768 --skip-reset -m LPC1768 --baud-rate=115200
+[1717043326.30][HTST][INF] host test executor ver. 0.0.16
+[1717043326.30][HTST][INF] copy image onto target... SKIPPED!
+[1717043326.32][HTST][INF] starting host test process...
+[1717043326.34][CONN][INF] starting connection process...
+[1717043326.34][CONN][INF] notify event queue about extra 60 sec timeout for serial port pooling
+[1717043326.34][CONN][INF] initializing serial port listener...
+[1717043326.34][SERI][INF] using specified port '/dev/ttyLPC1768'
+[1717043326.34][SERI][INF] serial(port=/dev/ttyLPC1768, baudrate=115200, read_timeout=0.01, write_timeout=5)
+[1717043326.34][HTST][INF] setting timeout to: 60 sec
+[1717043326.35][SERI][TXD] mbedmbedmbedmbedmbedmbedmbedmbedmbedmbed
+[1717043326.35][CONN][INF] sending up to 2 __sync packets (specified with --sync=2)
+[1717043326.35][CONN][INF] sending preamble '4c8271b1-ef32-4a59-b952-f79b858981bf'
+[1717043326.35][SERI][TXD] {{__sync;4c8271b1-ef32-4a59-b952-f79b858981bf}}
+[1717043326.36][CONN][RXD] mbedmbedmbedmbedmbedmbedmbedmbed
+[1717043326.37][CONN][INF] found SYNC in stream: {{__sync;4c8271b1-ef32-4a59-b952-f79b858981bf}} it is #0 sent, queued...
+[1717043326.37][CONN][INF] found KV pair in stream: {{__version;1.3.0}}, queued...
+[1717043326.37][HTST][INF] sync KV found, uuid=4c8271b1-ef32-4a59-b952-f79b858981bf, timestamp=1717043326.369531
+[1717043326.37][CONN][INF] found KV pair in stream: {{__timeout;30}}, queued...
+[1717043326.37][CONN][INF] found KV pair in stream: {{__host_test_name;default_auto}}, queued...
+[1717043326.37][HTST][INF] DUT greentea-client version: 1.3.0
+[1717043326.37][HTST][INF] setting timeout to: 30 sec
+[1717043326.37][HTST][INF] host test class: '&lt;class 'mbed_os_tools.test.host_tests.default_auto.DefaultAuto'&gt;'
+[1717043326.37][HTST][INF] host test setup() call...
+[1717043326.37][HTST][INF] CALLBACKs updated
+[1717043326.37][HTST][INF] host test detected: default_auto
+[1717043326.38][CONN][RXD] &gt;&gt;&gt; Running 4 test cases...
+[1717043326.38][CONN][INF] found KV pair in stream: {{__testcase_name;Digital I/O GPOUT_0 -&gt; GPIN_0}}, queued...
+[1717043326.38][CONN][INF] found KV pair in stream: {{__testcase_name;Digital I/O GPOUT_1 -&gt; GPIN_1}}, queued...
+[1717043326.40][CONN][RXD]
+[1717043326.40][CONN][RXD] &gt;&gt;&gt; Running case #1: 'Digital I/O GPOUT_0 -&gt; GPIN_0'...
+[1717043326.40][CONN][INF] found KV pair in stream: {{__testcase_name;Digital I/O GPIN_2 -&gt; GPOUT_2}}, queued...
+[1717043326.40][CONN][INF] found KV pair in stream: {{__testcase_name;Digital I/O GPOUT_2 -&gt; GPIN_2}}, queued...
+[1717043326.41][CONN][RXD] &gt;&gt;&gt; 'Digital I/O GPOUT_0 -&gt; GPIN_0': 1 passed, 0 failed
+[1717043326.41][CONN][INF] found KV pair in stream: {{__testcase_start;Digital I/O GPOUT_0 -&gt; GPIN_0}}, queued...
+[1717043326.41][CONN][INF] found KV pair in stream: {{__testcase_finish;Digital I/O GPOUT_0 -&gt; GPIN_0;1;0}}, queued...
+[1717043326.42][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1717043326.42][CONN][RXD]
+[1717043326.42][CONN][RXD] &gt;&gt;&gt; Running case #2: 'Digital I/O GPOUT_1 -&gt; GPIN_1'...
+[1717043326.42][CONN][INF] found KV pair in stream: {{__testcase_start;Digital I/O GPOUT_1 -&gt; GPIN_1}}, queued...
+[1717043326.43][CONN][RXD] &gt;&gt;&gt; 'Digital I/O GPOUT_1 -&gt; GPIN_1': 1 passed, 0 failed
+[1717043326.43][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1717043326.43][CONN][RXD]
+[1717043326.43][CONN][INF] found KV pair in stream: {{__testcase_finish;Digital I/O GPOUT_1 -&gt; GPIN_1;1;0}}, queued...
+[1717043326.44][CONN][RXD] &gt;&gt;&gt; Running case #3: 'Digital I/O GPIN_2 -&gt; GPOUT_2'...
+[1717043326.44][CONN][INF] found KV pair in stream: {{__testcase_start;Digital I/O GPIN_2 -&gt; GPOUT_2}}, queued...
+[1717043326.46][CONN][RXD] &gt;&gt;&gt; 'Digital I/O GPIN_2 -&gt; GPOUT_2': 1 passed, 0 failed
+[1717043326.46][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1717043326.46][CONN][RXD]
+[1717043326.46][CONN][INF] found KV pair in stream: {{__testcase_finish;Digital I/O GPIN_2 -&gt; GPOUT_2;1;0}}, queued...
+[1717043326.47][CONN][RXD] &gt;&gt;&gt; Running case #4: 'Digital I/O GPOUT_2 -&gt; GPIN_2'...
+[1717043326.47][CONN][INF] found KV pair in stream: {{__testcase_start;Digital I/O GPOUT_2 -&gt; GPIN_2}}, queued...
+[1717043326.47][CONN][INF] found KV pair in stream: {{__testcase_finish;Digital I/O GPOUT_2 -&gt; GPIN_2;1;0}}, queued...
+[1717043326.48][CONN][RXD] &gt;&gt;&gt; 'Digital I/O GPOUT_2 -&gt; GPIN_2': 1 passed, 0 failed
+[1717043326.48][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1717043326.48][CONN][RXD]
+[1717043326.48][CONN][RXD] &gt;&gt;&gt; Test cases: 4 passed, 0 failed
+[1717043326.48][CONN][RXD]
+[1717043326.49][CONN][RXD] -----------------------
+[1717043326.49][CONN][RXD] 0 Tests 0 Failures 0 Ignored
+[1717043326.49][CONN][RXD] OK
+[1717043326.49][CONN][INF] found KV pair in stream: {{__testcase_summary;4;0}}, queued...
+[1717043326.49][CONN][INF] found KV pair in stream: {{end;success}}, queued...
+[1717043326.49][CONN][INF] found KV pair in stream: {{__exit;0}}, queued...
+[1717043326.50][HTST][INF] __exit(0)
+[1717043326.50][HTST][INF] __notify_complete(True)
+[1717043326.50][HTST][INF] __exit_event_queue received
+[1717043326.50][HTST][INF] test suite run finished after 0.13 sec...
+[1717043326.50][CONN][INF] received special event '__host_test_finished' value='True', finishing
+[1717043326.51][HTST][INF] CONN exited with code: 0
+[1717043326.51][HTST][INF] Some events in queue
+[1717043326.51][HTST][INF] stopped consuming events
+[1717043326.51][HTST][INF] host test result() call skipped, received: True
+[1717043326.51][HTST][INF] calling blocking teardown()
+[1717043326.51][HTST][INF] teardown() finished
+[1717043326.51][HTST][INF] {{result;success}}
+</system-out>
+	</testcase>
+	<testcase name="test-testshield-i2c-basic" classname="test-testshield-i2c-basic" time="31.0078" status="run">
+		<system-out>[1/3] Building CXX object CMakeFiles/test-testshield-i2c-basic.dir/I2CBasicTest.cpp.obj
+[2/3] Linking CXX executable test-testshield-i2c-basic.elf
+-- built: /home/jamie/Mbed/mbed-ce-test-tools/CI-Shield-Tests/build/LPC1768-Develop/test-testshield-i2c-basic.bin
+-- built: /home/jamie/Mbed/mbed-ce-test-tools/CI-Shield-Tests/build/LPC1768-Develop/test-testshield-i2c-basic.hex
+LPC Patch: test-testshield-i2c-basic.bin
+| Module                                   |     .text |    .data |     .bss |
+|------------------------------------------|-----------|----------|----------|
+| CMakeFiles/test-testshield-i2c-basic.dir |  2254(+0) |    0(+0) |  524(+0) |
+| [fill]                                   |   648(+0) |    3(+0) |   21(+0) |
+| [lib]/c.a                                |  5732(+0) | 1344(+0) |  373(+0) |
+| [lib]/client_userio.a                    |  1480(+0) |   56(+0) |    8(+0) |
+| [lib]/gcc.a                              |  3136(+0) |    0(+0) |    0(+0) |
+| [lib]/mbed-greentea-io.a                 |    70(+0) |    0(+0) |    0(+0) |
+| [lib]/mbed-unity.a                       |  1270(+0) |    0(+0) |  224(+0) |
+| [lib]/mbed-utest.a                       |  3410(+0) |   13(+0) |  201(+0) |
+| [lib]/misc                               |   264(+0) |    4(+0) |   25(+0) |
+| mbed-os/CMakeFiles                       | 21112(+0) |  436(+0) | 7301(+0) |
+| Subtotals                                | 39376(+0) | 1856(+0) | 8677(+0) |
+Total Static RAM memory (data + bss): 10533(+0) bytes
+Total Flash memory (text + data): 41232(+0) bytes
+
+[3/3] Flashing test-testshield-i2c-basic with OpenOCD...
+Open On-Chip Debugger 0.11.0
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+Info : auto-selecting first available session transport "swd". To override use 'transport select &lt;transport&gt;'.
+adapter speed: 4000 kHz
+
+Info : CMSIS-DAP: SWD  Supported
+Info : CMSIS-DAP: FW Version = 1.0
+Info : CMSIS-DAP: Interface Initialised (SWD)
+Info : SWCLK/TCK = 0 SWDIO/TMS = 1 TDI = 0 TDO = 0 nTRST = 0 nRESET = 1
+Info : CMSIS-DAP: Interface ready
+Info : clock speed 4000 kHz
+Info : SWD DPIDR 0x2ba01477
+Info : lpc17xx.cpu: hardware has 6 breakpoints, 4 watchpoints
+Info : gdb port disabled
+target halted due to debug-request, current mode: Thread
+xPSR: 0x01000000 pc: 0x1fff0080 msp: 0x10001ffc
+** Programming Started **
+Info : If auto-detection fails for this part, please email openocd-devel@lists.sourceforge.net, citing part id 0x26013f37.
+
+Warn : Boot verification checksum in image (0x00000000) to be written to flash is different from calculated vector checksum (0xeffec35e).
+Warn : OpenOCD will write the correct checksum. To remove this warning modify build tools on developer PC to inject correct LPC vector checksum.
+** Programming Finished **
+** Resetting Target **
+Info : SWD DPIDR 0x2ba01477
+shutdown command invoked
+Executing: /home/jamie/Mbed/mbed-ce-test-tools/CI-Shield-Tests/mbed-os/venv/bin/python3.10 -m mbed_host_tests.mbedhtrun --skip-flashing -p /dev/ttyLPC1768 --skip-reset -e /home/jamie/Mbed/mbed-ce-test-tools/CI-Shield-Tests/host_tests -m LPC1768 --baud-rate=115200
+[1717043343.68][TEST][INF] Will use any connected CI shield for this test.  Export the MBED_CI_SHIELD_SERIAL_NUMBER environment var to select a specific shield.
+[1717043343.68][TEST][INF] e.g. 'export MBED_CI_SHIELD_SERIAL_NUMBER=SN002'
+[1717043343.73][HTST][INF] host test executor ver. 0.0.16
+[1717043343.73][HTST][INF] copy image onto target... SKIPPED!
+[1717043343.74][HTST][INF] starting host test process...
+[1717043343.75][CONN][INF] starting connection process...
+[1717043343.76][CONN][INF] notify event queue about extra 60 sec timeout for serial port pooling
+[1717043343.76][CONN][INF] initializing serial port listener...
+[1717043343.76][SERI][INF] using specified port '/dev/ttyLPC1768'
+[1717043343.76][HTST][INF] setting timeout to: 60 sec
+[1717043343.76][SERI][INF] serial(port=/dev/ttyLPC1768, baudrate=115200, read_timeout=0.01, write_timeout=5)
+[1717043343.76][SERI][TXD] mbedmbedmbedmbedmbedmbedmbedmbedmbedmbed
+[1717043343.76][CONN][INF] sending up to 2 __sync packets (specified with --sync=2)
+[1717043343.77][CONN][INF] sending preamble 'e69a533d-90d1-411e-8b46-ad3e65e107c3'
+[1717043343.77][SERI][TXD] {{__sync;e69a533d-90d1-411e-8b46-ad3e65e107c3}}
+[1717043343.78][CONN][RXD] mbedmbedmbedmbedmbedmbedmbedmbed
+[1717043343.79][CONN][INF] found SYNC in stream: {{__sync;e69a533d-90d1-411e-8b46-ad3e65e107c3}} it is #0 sent, queued...
+[1717043343.79][CONN][INF] found KV pair in stream: {{__version;1.3.0}}, queued...
+[1717043343.79][HTST][INF] sync KV found, uuid=e69a533d-90d1-411e-8b46-ad3e65e107c3, timestamp=1717043343.789017
+[1717043343.79][HTST][INF] DUT greentea-client version: 1.3.0
+[1717043343.79][CONN][INF] found KV pair in stream: {{__timeout;20}}, queued...
+[1717043343.79][CONN][INF] found KV pair in stream: {{__host_test_name;i2c_basic_test}}, queued...
+[1717043343.79][HTST][INF] setting timeout to: 20 sec
+[1717043343.79][HTST][INF] host test class: '&lt;class 'i2c_basic_test.I2CBasicTestHostTest'&gt;'
+[1717043343.79][TEST][INF] I2C Basic Test host test setup complete.
+[1717043343.79][HTST][INF] host test setup() call...
+[1717043343.79][HTST][INF] CALLBACKs updated
+[1717043343.79][HTST][INF] host test detected: i2c_basic_test
+[1717043343.80][CONN][RXD] &gt;&gt;&gt; Running 13 test cases...
+[1717043343.80][CONN][INF] found KV pair in stream: {{__testcase_name;Correct Address - Single Byte}}, queued...
+[1717043343.80][CONN][INF] found KV pair in stream: {{__testcase_name;Correct Address - Transaction}}, queued...
+[1717043343.81][CONN][INF] found KV pair in stream: {{__testcase_name;Incorrect Address - Single Byte}}, queued...
+[1717043343.82][CONN][INF] found KV pair in stream: {{__testcase_name;Incorrect Address - Zero Length Transaction}}, queued...
+[1717043343.82][CONN][INF] found KV pair in stream: {{__testcase_name;Incorrect Address - Write Transaction}}, queued...
+[1717043343.83][CONN][INF] found KV pair in stream: {{__testcase_name;Incorrect Address - Read Transaction}}, queued...
+[1717043343.83][CONN][INF] found KV pair in stream: {{__testcase_name;Simple Write - Single Byte}}, queued...
+[1717043343.83][CONN][INF] found KV pair in stream: {{__testcase_name;Destroy and Recreate Object}}, queued...
+[1717043343.84][CONN][INF] found KV pair in stream: {{__testcase_name;Simple Read - Single Byte}}, queued...
+[1717043343.84][CONN][INF] found KV pair in stream: {{__testcase_name;Simple Write - Transaction}}, queued...
+[1717043343.84][CONN][INF] found KV pair in stream: {{__testcase_name;Simple Read - Transaction}}, queued...
+[1717043343.85][CONN][RXD]
+[1717043343.85][CONN][INF] found KV pair in stream: {{__testcase_name;Mixed Usage - Single Byte -&gt; repeated -&gt; Transaction}}, queued...
+[1717043343.85][CONN][INF] found KV pair in stream: {{__testcase_name;Mixed Usage - Transaction -&gt; repeated -&gt; Single Byte}}, queued...
+[1717043343.87][CONN][RXD] &gt;&gt;&gt; Running case #1: 'Correct Address - Single Byte'...
+[1717043343.87][CONN][INF] found KV pair in stream: {{__testcase_start;Correct Address - Single Byte}}, queued...
+[1717043343.87][CONN][INF] found KV pair in stream: {{start_recording_i2c;please}}, queued...
+[1717043344.88][SERI][TXD] {{start_recording_i2c;complete}}
+[1717043344.89][CONN][INF] found KV pair in stream: {{verify_sequence;correct_addr_only}}, queued...
+[1717043344.97][TEST][INF] Saw on the I2C bus:
+Start Wr[0xa0] Ack Stop
+
+[1717043344.98][SERI][TXD] {{verify_sequence;complete}}
+[1717043344.99][CONN][INF] found KV pair in stream: {{__testcase_finish;Correct Address - Single Byte;1;0}}, queued...
+[1717043345.00][CONN][RXD] &gt;&gt;&gt; 'Correct Address - Single Byte': 1 passed, 0 failed
+[1717043345.00][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1717043345.00][CONN][RXD]
+[1717043345.00][CONN][RXD] &gt;&gt;&gt; Running case #2: 'Correct Address - Transaction'...
+[1717043345.01][CONN][INF] found KV pair in stream: {{__testcase_start;Correct Address - Transaction}}, queued...
+[1717043345.01][CONN][INF] found KV pair in stream: {{start_recording_i2c;please}}, queued...
+[1717043346.02][SERI][TXD] {{start_recording_i2c;complete}}
+[1717043346.03][CONN][INF] found KV pair in stream: {{verify_sequence;correct_addr_only}}, queued...
+[1717043346.10][TEST][INF] Saw on the I2C bus:
+Start Wr[0xa0] Ack Stop
+
+[1717043346.10][SERI][TXD] {{verify_sequence;complete}}
+[1717043346.11][CONN][INF] found KV pair in stream: {{__testcase_finish;Correct Address - Transaction;1;0}}, queued...
+[1717043346.13][CONN][RXD] &gt;&gt;&gt; 'Correct Address - Transaction': 1 passed, 0 failed
+[1717043346.13][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1717043346.13][CONN][RXD]
+[1717043346.13][CONN][RXD] &gt;&gt;&gt; Running case #3: 'Incorrect Address - Single Byte'...
+[1717043346.14][CONN][INF] found KV pair in stream: {{__testcase_start;Incorrect Address - Single Byte}}, queued...
+[1717043346.14][CONN][INF] found KV pair in stream: {{start_recording_i2c;please}}, queued...
+[1717043347.14][SERI][TXD] {{start_recording_i2c;complete}}
+[1717043347.16][CONN][INF] found KV pair in stream: {{verify_sequence;incorrect_addr_only_write}}, queued...
+[1717043347.23][TEST][INF] Saw on the I2C bus:
+Start Wr[0x20] Nack Stop
+
+[1717043347.23][SERI][TXD] {{verify_sequence;complete}}
+[1717043347.24][CONN][INF] found KV pair in stream: {{__testcase_finish;Incorrect Address - Single Byte;1;0}}, queued...
+[1717043347.25][CONN][RXD] &gt;&gt;&gt; 'Incorrect Address - Single Byte': 1 passed, 0 failed
+[1717043347.25][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1717043347.25][CONN][RXD]
+[1717043347.26][CONN][RXD] &gt;&gt;&gt; Running case #4: 'Incorrect Address - Zero Length Transaction'...
+[1717043347.26][CONN][INF] found KV pair in stream: {{__testcase_start;Incorrect Address - Zero Length Transaction}}, queued...
+[1717043347.26][CONN][INF] found KV pair in stream: {{start_recording_i2c;please}}, queued...
+[1717043348.27][SERI][TXD] {{start_recording_i2c;complete}}
+[1717043348.28][CONN][INF] found KV pair in stream: {{verify_sequence;incorrect_addr_only_write}}, queued...
+[1717043348.36][TEST][INF] Saw on the I2C bus:
+Start Wr[0x20] Nack Stop
+
+[1717043348.37][SERI][TXD] {{verify_sequence;complete}}
+[1717043348.38][CONN][INF] found KV pair in stream: {{__testcase_finish;Incorrect Address - Zero Length Transaction;1;0}}, queued...
+[1717043348.39][CONN][RXD] &gt;&gt;&gt; 'Incorrect Address - Zero Length Transaction': 1 passed, 0 failed
+[1717043348.39][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1717043348.39][CONN][RXD]
+[1717043348.40][CONN][RXD] &gt;&gt;&gt; Running case #5: 'Incorrect Address - Write Transaction'...
+[1717043348.40][CONN][INF] found KV pair in stream: {{__testcase_start;Incorrect Address - Write Transaction}}, queued...
+[1717043348.40][CONN][INF] found KV pair in stream: {{start_recording_i2c;please}}, queued...
+[1717043349.41][SERI][TXD] {{start_recording_i2c;complete}}
+[1717043349.42][CONN][INF] found KV pair in stream: {{verify_sequence;incorrect_addr_only_write}}, queued...
+[1717043349.49][TEST][INF] Saw on the I2C bus:
+Start Wr[0x20] Nack Stop
+
+[1717043349.50][SERI][TXD] {{verify_sequence;complete}}
+[1717043349.51][CONN][INF] found KV pair in stream: {{__testcase_finish;Incorrect Address - Write Transaction;1;0}}, queued...
+[1717043349.52][CONN][RXD] &gt;&gt;&gt; 'Incorrect Address - Write Transaction': 1 passed, 0 failed
+[1717043349.52][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1717043349.53][CONN][RXD]
+[1717043349.54][CONN][RXD] &gt;&gt;&gt; Running case #6: 'Incorrect Address - Read Transaction'...
+[1717043349.54][CONN][INF] found KV pair in stream: {{__testcase_start;Incorrect Address - Read Transaction}}, queued...
+[1717043349.54][CONN][INF] found KV pair in stream: {{start_recording_i2c;please}}, queued...
+[1717043350.54][SERI][TXD] {{start_recording_i2c;complete}}
+[1717043350.55][CONN][INF] found KV pair in stream: {{verify_sequence;incorrect_addr_only_read}}, queued...
+[1717043350.63][TEST][INF] Saw on the I2C bus:
+Start Rd[0x21] Nack Stop
+
+[1717043350.64][SERI][TXD] {{verify_sequence;complete}}
+[1717043350.65][CONN][INF] found KV pair in stream: {{__testcase_finish;Incorrect Address - Read Transaction;1;0}}, queued...
+[1717043350.66][CONN][RXD] &gt;&gt;&gt; 'Incorrect Address - Read Transaction': 1 passed, 0 failed
+[1717043350.66][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1717043350.66][CONN][RXD]
+[1717043350.66][CONN][RXD] &gt;&gt;&gt; Running case #7: 'Simple Write - Single Byte'...
+[1717043350.67][CONN][INF] found KV pair in stream: {{__testcase_start;Simple Write - Single Byte}}, queued...
+[1717043350.67][CONN][INF] found KV pair in stream: {{start_recording_i2c;please}}, queued...
+[1717043351.69][SERI][TXD] {{start_recording_i2c;complete}}
+[1717043351.71][CONN][INF] found KV pair in stream: {{verify_sequence;write_2_to_0x1}}, queued...
+[1717043351.77][TEST][INF] Saw on the I2C bus:
+Start Wr[0xa0] Ack 0x00 Ack 0x01 Ack 0x02 Ack Stop
+
+[1717043351.77][SERI][TXD] {{verify_sequence;complete}}
+[1717043351.78][CONN][INF] found KV pair in stream: {{__testcase_finish;Simple Write - Single Byte;1;0}}, queued...
+[1717043351.79][CONN][RXD] &gt;&gt;&gt; 'Simple Write - Single Byte': 1 passed, 0 failed
+[1717043351.80][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1717043351.80][CONN][RXD]
+[1717043351.80][CONN][RXD] &gt;&gt;&gt; Running case #8: 'Destroy and Recreate Object'...
+[1717043351.81][CONN][INF] found KV pair in stream: {{__testcase_start;Destroy and Recreate Object}}, queued...
+[1717043351.81][CONN][INF] found KV pair in stream: {{__testcase_finish;Destroy and Recreate Object;1;0}}, queued...
+[1717043351.82][CONN][RXD] &gt;&gt;&gt; 'Destroy and Recreate Object': 1 passed, 0 failed
+[1717043351.82][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1717043351.82][CONN][RXD]
+[1717043351.82][CONN][RXD] &gt;&gt;&gt; Running case #9: 'Simple Read - Single Byte'...
+[1717043351.83][CONN][INF] found KV pair in stream: {{__testcase_start;Simple Read - Single Byte}}, queued...
+[1717043351.83][CONN][INF] found KV pair in stream: {{start_recording_i2c;please}}, queued...
+[1717043352.84][SERI][TXD] {{start_recording_i2c;complete}}
+[1717043352.85][CONN][INF] found KV pair in stream: {{verify_sequence;read_2_from_0x1}}, queued...
+[1717043352.92][TEST][INF] Saw on the I2C bus:
+Start Wr[0xa0] Ack 0x00 Ack 0x01 Ack RepeatedStart Rd[0xa1] Ack 0x02 Nack Stop
+
+[1717043352.92][SERI][TXD] {{verify_sequence;complete}}
+[1717043352.93][CONN][INF] found KV pair in stream: {{__testcase_finish;Simple Read - Single Byte;1;0}}, queued...
+[1717043352.94][CONN][RXD] &gt;&gt;&gt; 'Simple Read - Single Byte': 1 passed, 0 failed
+[1717043352.94][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1717043352.94][CONN][RXD]
+[1717043352.94][CONN][RXD] &gt;&gt;&gt; Running case #10: 'Simple Write - Transaction'...
+[1717043352.95][CONN][INF] found KV pair in stream: {{__testcase_start;Simple Write - Transaction}}, queued...
+[1717043352.95][CONN][INF] found KV pair in stream: {{start_recording_i2c;please}}, queued...
+[1717043353.97][SERI][TXD] {{start_recording_i2c;complete}}
+[1717043353.99][CONN][INF] found KV pair in stream: {{verify_sequence;write_3_to_0x1}}, queued...
+[1717043354.06][TEST][INF] Saw on the I2C bus:
+Start Wr[0xa0] Ack 0x00 Ack 0x01 Ack 0x03 Ack Stop
+
+[1717043354.06][SERI][TXD] {{verify_sequence;complete}}
+[1717043354.07][CONN][INF] found KV pair in stream: {{__testcase_finish;Simple Write - Transaction;1;0}}, queued...
+[1717043354.09][CONN][RXD] &gt;&gt;&gt; 'Simple Write - Transaction': 1 passed, 0 failed
+[1717043354.09][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1717043354.09][CONN][RXD]
+[1717043354.09][CONN][RXD] &gt;&gt;&gt; Running case #11: 'Simple Read - Transaction'...
+[1717043354.10][CONN][INF] found KV pair in stream: {{__testcase_start;Simple Read - Transaction}}, queued...
+[1717043354.10][CONN][INF] found KV pair in stream: {{start_recording_i2c;please}}, queued...
+[1717043355.10][SERI][TXD] {{start_recording_i2c;complete}}
+[1717043355.11][CONN][INF] found KV pair in stream: {{verify_sequence;read_3_from_0x1}}, queued...
+[1717043355.19][TEST][INF] Saw on the I2C bus:
+Start Wr[0xa0] Ack 0x00 Ack 0x01 Ack RepeatedStart Rd[0xa1] Ack 0x03 Nack Stop
+
+[1717043355.19][SERI][TXD] {{verify_sequence;complete}}
+[1717043355.20][CONN][INF] found KV pair in stream: {{__testcase_finish;Simple Read - Transaction;1;0}}, queued...
+[1717043355.21][CONN][RXD] &gt;&gt;&gt; 'Simple Read - Transaction': 1 passed, 0 failed
+[1717043355.21][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1717043355.21][CONN][RXD]
+[1717043355.22][CONN][RXD] &gt;&gt;&gt; Running case #12: 'Mixed Usage - Single Byte -&gt; repeated -&gt; Transaction'...
+[1717043355.22][CONN][INF] found KV pair in stream: {{__testcase_start;Mixed Usage - Single Byte -&gt; repeated -&gt; Transaction}}, queued...
+[1717043355.22][CONN][INF] found KV pair in stream: {{start_recording_i2c;please}}, queued...
+[1717043356.23][SERI][TXD] {{start_recording_i2c;complete}}
+[1717043356.25][CONN][INF] found KV pair in stream: {{verify_sequence;read_3_from_0x1}}, queued...
+[1717043356.32][TEST][INF] Saw on the I2C bus:
+Start Wr[0xa0] Ack 0x00 Ack 0x01 Ack RepeatedStart Rd[0xa1] Ack 0x03 Nack Stop
+
+[1717043356.33][SERI][TXD] {{verify_sequence;complete}}
+[1717043356.34][CONN][INF] found KV pair in stream: {{__testcase_finish;Mixed Usage - Single Byte -&gt; repeated -&gt; Transaction;1;0}}, queued...
+[1717043356.35][CONN][RXD] &gt;&gt;&gt; 'Mixed Usage - Single Byte -&gt; repeated -&gt; Transaction': 1 passed, 0 failed
+[1717043356.35][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1717043356.35][CONN][RXD]
+[1717043356.36][CONN][RXD] &gt;&gt;&gt; Running case #13: 'Mixed Usage - Transaction -&gt; repeated -&gt; Single Byte'...
+[1717043356.37][CONN][INF] found KV pair in stream: {{__testcase_start;Mixed Usage - Transaction -&gt; repeated -&gt; Single Byte}}, queued...
+[1717043356.37][CONN][INF] found KV pair in stream: {{start_recording_i2c;please}}, queued...
+[1717043357.39][SERI][TXD] {{start_recording_i2c;complete}}
+[1717043357.40][CONN][INF] found KV pair in stream: {{verify_sequence;read_3_from_0x1}}, queued...
+[1717043357.47][TEST][INF] Saw on the I2C bus:
+Start Wr[0xa0] Ack 0x00 Ack 0x01 Ack RepeatedStart Rd[0xa1] Ack 0x03 Nack Stop
+
+[1717043357.48][SERI][TXD] {{verify_sequence;complete}}
+[1717043357.49][CONN][INF] found KV pair in stream: {{__testcase_finish;Mixed Usage - Transaction -&gt; repeated -&gt; Single Byte;1;0}}, queued...
+[1717043357.50][CONN][RXD] &gt;&gt;&gt; 'Mixed Usage - Transaction -&gt; repeated -&gt; Single Byte': 1 passed, 0 failed
+[1717043357.50][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1717043357.50][CONN][RXD]
+[1717043357.51][CONN][RXD] &gt;&gt;&gt; Test cases: 13 passed, 0 failed
+[1717043357.51][CONN][RXD]
+[1717043357.52][CONN][RXD] -----------------------
+[1717043357.52][CONN][RXD] 0 Tests 0 Failures 0 Ignored
+[1717043357.52][CONN][RXD] OK
+[1717043357.52][CONN][INF] found KV pair in stream: {{__testcase_summary;13;0}}, queued...
+[1717043357.52][CONN][INF] found KV pair in stream: {{end;success}}, queued...
+[1717043357.52][HTST][INF] __notify_complete(True)
+[1717043357.52][HTST][INF] __exit_event_queue received
+[1717043357.52][HTST][INF] test suite run finished after 13.73 sec...
+[1717043357.53][CONN][INF] found KV pair in stream: {{__exit;0}}, queued...
+[1717043357.53][CONN][INF] received special event '__host_test_finished' value='True', finishing
+[1717043357.53][HTST][INF] CONN exited with code: 0
+[1717043357.54][HTST][INF] Some events in queue
+[1717043357.54][HTST][INF] stopped consuming events
+[1717043357.54][HTST][INF] host test result() call skipped, received: True
+[1717043357.54][HTST][WRN] missing __exit event from DUT
+[1717043357.54][HTST][INF] calling blocking teardown()
+[1717043357.54][HTST][INF] teardown() finished
+[1717043357.54][HTST][INF] {{result;success}}
+</system-out>
+	</testcase>
+	<testcase name="test-testshield-i2c-slave-comms" classname="test-testshield-i2c-slave-comms" time="25.7734" status="run">
+		<system-out>[1/3] Building CXX object CMakeFiles/test-testshield-i2c-slave-comms.dir/I2CSlaveCommsTest.cpp.obj
+[2/3] Linking CXX executable test-testshield-i2c-slave-comms.elf
+-- built: /home/jamie/Mbed/mbed-ce-test-tools/CI-Shield-Tests/build/LPC1768-Develop/test-testshield-i2c-slave-comms.bin
+-- built: /home/jamie/Mbed/mbed-ce-test-tools/CI-Shield-Tests/build/LPC1768-Develop/test-testshield-i2c-slave-comms.hex
+LPC Patch: test-testshield-i2c-slave-comms.bin
+| Module                                         |     .text |    .data |     .bss |
+|------------------------------------------------|-----------|----------|----------|
+| CMakeFiles/test-testshield-i2c-slave-comms.dir |  1630(+0) |    0(+0) |  412(+0) |
+| [fill]                                         |   642(+0) |    3(+0) |   21(+0) |
+| [lib]/c.a                                      |  5732(+0) | 1344(+0) |  373(+0) |
+| [lib]/client_userio.a                          |  1480(+0) |   56(+0) |    8(+0) |
+| [lib]/gcc.a                                    |  3136(+0) |    0(+0) |    0(+0) |
+| [lib]/mbed-greentea-io.a                       |    70(+0) |    0(+0) |    0(+0) |
+| [lib]/mbed-unity.a                             |  1402(+0) |    0(+0) |  224(+0) |
+| [lib]/mbed-utest.a                             |  3410(+0) |   13(+0) |  201(+0) |
+| [lib]/misc                                     |   264(+0) |    4(+0) |   25(+0) |
+| mbed-os/CMakeFiles                             | 20450(+0) |  436(+0) | 7301(+0) |
+| Subtotals                                      | 38216(+0) | 1856(+0) | 8565(+0) |
+Total Static RAM memory (data + bss): 10421(+0) bytes
+Total Flash memory (text + data): 40072(+0) bytes
+
+[3/3] Flashing test-testshield-i2c-slave-comms with OpenOCD...
+Open On-Chip Debugger 0.11.0
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+Info : auto-selecting first available session transport "swd". To override use 'transport select &lt;transport&gt;'.
+adapter speed: 4000 kHz
+
+Info : CMSIS-DAP: SWD  Supported
+Info : CMSIS-DAP: FW Version = 1.0
+Info : CMSIS-DAP: Interface Initialised (SWD)
+Info : SWCLK/TCK = 0 SWDIO/TMS = 1 TDI = 0 TDO = 0 nTRST = 0 nRESET = 1
+Info : CMSIS-DAP: Interface ready
+Info : clock speed 4000 kHz
+Info : SWD DPIDR 0x2ba01477
+Info : lpc17xx.cpu: hardware has 6 breakpoints, 4 watchpoints
+Info : gdb port disabled
+target halted due to debug-request, current mode: Thread
+xPSR: 0x01000000 pc: 0x1fff0080 msp: 0x10001ffc
+** Programming Started **
+Info : If auto-detection fails for this part, please email openocd-devel@lists.sourceforge.net, citing part id 0x26013f37.
+
+Warn : Boot verification checksum in image (0x00000000) to be written to flash is different from calculated vector checksum (0xeffece1e).
+Warn : OpenOCD will write the correct checksum. To remove this warning modify build tools on developer PC to inject correct LPC vector checksum.
+** Programming Finished **
+** Resetting Target **
+Info : SWD DPIDR 0x2ba01477
+shutdown command invoked
+Executing: /home/jamie/Mbed/mbed-ce-test-tools/CI-Shield-Tests/mbed-os/venv/bin/python3.10 -m mbed_host_tests.mbedhtrun --skip-flashing -p /dev/ttyLPC1768 --skip-reset -e /home/jamie/Mbed/mbed-ce-test-tools/CI-Shield-Tests/host_tests -m LPC1768 --baud-rate=115200
+[1717043374.31][TEST][INF] Will use any connected CI shield for this test.  Export the MBED_CI_SHIELD_SERIAL_NUMBER environment var to select a specific shield.
+[1717043374.31][TEST][INF] e.g. 'export MBED_CI_SHIELD_SERIAL_NUMBER=SN002'
+[1717043374.35][HTST][INF] host test executor ver. 0.0.16
+[1717043374.35][HTST][INF] copy image onto target... SKIPPED!
+[1717043374.37][HTST][INF] starting host test process...
+[1717043374.38][CONN][INF] starting connection process...
+[1717043374.38][CONN][INF] notify event queue about extra 60 sec timeout for serial port pooling
+[1717043374.38][CONN][INF] initializing serial port listener...
+[1717043374.38][SERI][INF] using specified port '/dev/ttyLPC1768'
+[1717043374.38][HTST][INF] setting timeout to: 60 sec
+[1717043374.38][SERI][INF] serial(port=/dev/ttyLPC1768, baudrate=115200, read_timeout=0.01, write_timeout=5)
+[1717043374.39][SERI][TXD] mbedmbedmbedmbedmbedmbedmbedmbedmbedmbed
+[1717043374.39][CONN][INF] sending up to 2 __sync packets (specified with --sync=2)
+[1717043374.39][CONN][INF] sending preamble '2a77588a-e786-46ab-a25a-88b3e8b08a2e'
+[1717043374.39][SERI][TXD] {{__sync;2a77588a-e786-46ab-a25a-88b3e8b08a2e}}
+[1717043374.40][CONN][RXD] mbedmbedmbedmbedmbedmbedmbedmbed
+[1717043374.41][CONN][INF] found SYNC in stream: {{__sync;2a77588a-e786-46ab-a25a-88b3e8b08a2e}} it is #0 sent, queued...
+[1717043374.41][HTST][INF] sync KV found, uuid=2a77588a-e786-46ab-a25a-88b3e8b08a2e, timestamp=1717043374.413489
+[1717043374.42][CONN][INF] found KV pair in stream: {{__version;1.3.0}}, queued...
+[1717043374.42][CONN][INF] found KV pair in stream: {{__timeout;30}}, queued...
+[1717043374.42][HTST][INF] DUT greentea-client version: 1.3.0
+[1717043374.42][CONN][INF] found KV pair in stream: {{__host_test_name;i2c_slave_comms}}, queued...
+[1717043374.42][HTST][INF] setting timeout to: 30 sec
+[1717043374.42][HTST][INF] host test class: '&lt;class 'i2c_slave_comms.I2CSlaveCommsTest'&gt;'
+[1717043374.43][CONN][RXD] &gt;&gt;&gt; Running 9 test cases...
+[1717043374.43][CONN][INF] found KV pair in stream: {{__testcase_name;Write one byte to slave}}, queued...
+[1717043374.43][CONN][INF] found KV pair in stream: {{__testcase_name;Does not acknowledge other slave address}}, queued...
+[1717043374.43][cy_serial_bridge]Discovered USB endpoints successfully
+[1717043374.43][CONN][INF] found KV pair in stream: {{__testcase_name;Destroy &amp; recreate I2C object}}, queued...
+[1717043374.44][CONN][INF] found KV pair in stream: {{__testcase_name;Write multiple bytes to slave}}, queued...
+[1717043374.44][CONN][INF] found KV pair in stream: {{__testcase_name;Write less bytes than expected to slave}}, queued...
+[1717043374.44][CONN][INF] found KV pair in stream: {{__testcase_name;Read one byte from slave}}, queued...
+[1717043374.45][CONN][INF] found KV pair in stream: {{__testcase_name;Destroy &amp; recreate I2C object}}, queued...
+[1717043374.46][CONN][INF] found KV pair in stream: {{__testcase_name;Read multiple bytes from slave}}, queued...
+[1717043374.47][CONN][RXD]
+[1717043374.47][CONN][RXD] &gt;&gt;&gt; Running case #1: 'Write one byte to slave'...
+[1717043374.47][CONN][INF] found KV pair in stream: {{__testcase_name;Read less bytes than expected from slave}}, queued...
+[1717043374.47][CONN][INF] found KV pair in stream: {{__testcase_start;Write one byte to slave}}, queued...
+[1717043374.47][CONN][INF] found KV pair in stream: {{start_recording_i2c;please}}, queued...
+[1717043374.52][cy_serial_bridge]Device signature: b'CYUS'
+Connected to I2C interface of CY7C652xx device, firmware version 2.0.3 build 112
+[1717043374.53][TEST][INF] I2C Record-Only Test host test setup complete.
+[1717043374.53][HTST][INF] host test setup() call...
+[1717043374.53][HTST][INF] CALLBACKs updated
+[1717043374.53][HTST][INF] host test detected: i2c_slave_comms
+[1717043375.55][SERI][TXD] {{start_recording_i2c;complete}}
+[1717043375.56][CONN][INF] found KV pair in stream: {{write_bytes_to_slave;addr 0xE4 data 0x1}}, queued...
+[1717043375.69][TEST][INF] Saw on the I2C bus:
+Start Wr[0xe4] Ack 0x01 Ack Stop
+
+[1717043375.70][SERI][TXD] {{read_bytes_from_slave;complete}}
+[1717043375.71][SERI][TXD] {{write_bytes_to_slave;complete}}
+[1717043375.72][CONN][INF] found KV pair in stream: {{__testcase_finish;Write one byte to slave;1;0}}, queued...
+[1717043375.73][CONN][RXD] &gt;&gt;&gt; 'Write one byte to slave': 1 passed, 0 failed
+[1717043375.73][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1717043375.73][CONN][RXD]
+[1717043375.73][CONN][RXD] &gt;&gt;&gt; Running case #2: 'Does not acknowledge other slave address'...
+[1717043375.74][CONN][INF] found KV pair in stream: {{__testcase_start;Does not acknowledge other slave address}}, queued...
+[1717043375.74][CONN][INF] found KV pair in stream: {{start_recording_i2c;please}}, queued...
+[1717043376.76][SERI][TXD] {{start_recording_i2c;complete}}
+[1717043376.77][CONN][INF] found KV pair in stream: {{try_write_to_wrong_address;0xE6}}, queued...
+[1717043376.90][TEST][INF] Saw on the I2C bus:
+Start Wr[0xe6] Nack Stop
+
+[1717043376.90][SERI][TXD] {{try_write_to_wrong_address;complete}}
+[1717043377.03][CONN][RXD] &gt;&gt;&gt; 'Does not acknowledge other slave address': 1 passed, 0 failed
+[1717043377.03][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1717043377.03][CONN][RXD]
+[1717043377.03][CONN][INF] found KV pair in stream: {{__testcase_finish;Does not acknowledge other slave address;1;0}}, queued...
+[1717043377.04][CONN][RXD] &gt;&gt;&gt; Running case #3: 'Destroy &amp; recreate I2C object'...
+[1717043377.04][CONN][INF] found KV pair in stream: {{__testcase_start;Destroy &amp; recreate I2C object}}, queued...
+[1717043377.04][CONN][INF] found KV pair in stream: {{reinit_i2c_bridge;please}}, queued...
+[1717043377.05][cy_serial_bridge]Discovered USB endpoints successfully
+[1717043377.12][cy_serial_bridge]Device signature: b'CYUS'
+[1717043377.13][SERI][TXD] {{reinit_i2c_bridge;complete}}
+[1717043377.14][CONN][INF] found KV pair in stream: {{__testcase_finish;Destroy &amp; recreate I2C object;1;0}}, queued...
+[1717043377.15][CONN][RXD] &gt;&gt;&gt; 'Destroy &amp; recreate I2C object': 1 passed, 0 failed
+[1717043377.15][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1717043377.15][CONN][RXD]
+[1717043377.15][CONN][RXD] &gt;&gt;&gt; Running case #4: 'Write multiple bytes to slave'...
+[1717043377.16][CONN][INF] found KV pair in stream: {{__testcase_start;Write multiple bytes to slave}}, queued...
+[1717043377.16][CONN][INF] found KV pair in stream: {{start_recording_i2c;please}}, queued...
+[1717043378.18][SERI][TXD] {{start_recording_i2c;complete}}
+[1717043378.19][CONN][INF] found KV pair in stream: {{write_bytes_to_slave;addr 0xE4 data 0x4 0x5 0x6 0x7}}, queued...
+Connected to I2C interface of CY7C652xx device, firmware version 2.0.3 build 112
+[1717043378.32][TEST][INF] Saw on the I2C bus:
+Start Wr[0xe4] Ack 0x04 Ack 0x05 Ack 0x06 Ack 0x07 Ack Stop
+
+[1717043378.32][SERI][TXD] {{read_bytes_from_slave;complete}}
+[1717043378.33][SERI][TXD] {{write_bytes_to_slave;complete}}
+[1717043378.35][CONN][INF] found KV pair in stream: {{__testcase_finish;Write multiple bytes to slave;1;0}}, queued...
+[1717043378.36][CONN][RXD] &gt;&gt;&gt; 'Write multiple bytes to slave': 1 passed, 0 failed
+[1717043378.36][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1717043378.36][CONN][RXD]
+[1717043378.37][CONN][RXD] &gt;&gt;&gt; Running case #5: 'Write less bytes than expected to slave'...
+[1717043378.37][CONN][INF] found KV pair in stream: {{__testcase_start;Write less bytes than expected to slave}}, queued...
+[1717043378.37][CONN][INF] found KV pair in stream: {{start_recording_i2c;please}}, queued...
+[1717043379.38][SERI][TXD] {{start_recording_i2c;complete}}
+[1717043379.39][CONN][INF] found KV pair in stream: {{write_bytes_to_slave;addr 0xE4 data 0x8 0x9}}, queued...
+[1717043379.52][TEST][INF] Saw on the I2C bus:
+Start Wr[0xe4] Ack 0x08 Ack 0x09 Ack Stop
+
+[1717043379.53][SERI][TXD] {{read_bytes_from_slave;complete}}
+[1717043379.54][SERI][TXD] {{write_bytes_to_slave;complete}}
+[1717043379.55][CONN][INF] found KV pair in stream: {{__testcase_finish;Write less bytes than expected to slave;1;0}}, queued...
+[1717043379.56][CONN][RXD] &gt;&gt;&gt; 'Write less bytes than expected to slave': 1 passed, 0 failed
+[1717043379.56][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1717043379.56][CONN][RXD]
+[1717043379.57][CONN][RXD] &gt;&gt;&gt; Running case #6: 'Read one byte from slave'...
+[1717043379.57][CONN][INF] found KV pair in stream: {{__testcase_start;Read one byte from slave}}, queued...
+[1717043379.57][CONN][INF] found KV pair in stream: {{start_recording_i2c;please}}, queued...
+[1717043380.59][SERI][TXD] {{start_recording_i2c;complete}}
+[1717043380.60][CONN][INF] found KV pair in stream: {{read_bytes_from_slave;addr 0xE4 expected-data 0x10}}, queued...
+[1717043380.73][TEST][INF] Saw on the I2C bus:
+Start Rd[0xe5] Ack 0x10 Nack Stop
+
+[1717043380.73][SERI][TXD] {{read_bytes_from_slave;complete}}
+[1717043380.75][CONN][INF] found KV pair in stream: {{__testcase_finish;Read one byte from slave;1;0}}, queued...
+[1717043380.76][CONN][RXD] &gt;&gt;&gt; 'Read one byte from slave': 1 passed, 0 failed
+[1717043380.76][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1717043380.76][CONN][RXD]
+[1717043380.76][CONN][RXD] &gt;&gt;&gt; Running case #7: 'Destroy &amp; recreate I2C object'...
+[1717043380.77][CONN][INF] found KV pair in stream: {{__testcase_start;Destroy &amp; recreate I2C object}}, queued...
+[1717043380.77][CONN][INF] found KV pair in stream: {{reinit_i2c_bridge;please}}, queued...
+[1717043380.78][cy_serial_bridge]Discovered USB endpoints successfully
+[1717043380.86][cy_serial_bridge]Device signature: b'CYUS'
+[1717043380.86][SERI][TXD] {{reinit_i2c_bridge;complete}}
+[1717043380.88][CONN][INF] found KV pair in stream: {{__testcase_finish;Destroy &amp; recreate I2C object;1;0}}, queued...
+[1717043380.89][CONN][RXD] &gt;&gt;&gt; 'Destroy &amp; recreate I2C object': 1 passed, 0 failed
+[1717043380.89][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1717043380.89][CONN][RXD]
+[1717043380.89][CONN][RXD] &gt;&gt;&gt; Running case #8: 'Read multiple bytes from slave'...
+[1717043380.90][CONN][INF] found KV pair in stream: {{__testcase_start;Read multiple bytes from slave}}, queued...
+[1717043380.90][CONN][INF] found KV pair in stream: {{start_recording_i2c;please}}, queued...
+[1717043381.91][SERI][TXD] {{start_recording_i2c;complete}}
+[1717043381.92][CONN][INF] found KV pair in stream: {{read_bytes_from_slave;addr 0xE4 expected-data 0x11 0x12 0x13 0x14}}, queued...
+Connected to I2C interface of CY7C652xx device, firmware version 2.0.3 build 112
+[1717043382.05][TEST][INF] Saw on the I2C bus:
+Start Rd[0xe5] Ack 0x11 Ack 0x12 Ack 0x13 Ack 0x14 Nack Stop
+
+[1717043382.06][SERI][TXD] {{read_bytes_from_slave;complete}}
+[1717043382.07][CONN][INF] found KV pair in stream: {{__testcase_finish;Read multiple bytes from slave;1;0}}, queued...
+[1717043382.08][CONN][RXD] &gt;&gt;&gt; 'Read multiple bytes from slave': 1 passed, 0 failed
+[1717043382.08][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1717043382.08][CONN][RXD]
+[1717043382.09][CONN][RXD] &gt;&gt;&gt; Running case #9: 'Read less bytes than expected from slave'...
+[1717043382.09][CONN][INF] found KV pair in stream: {{__testcase_start;Read less bytes than expected from slave}}, queued...
+[1717043382.09][CONN][INF] found KV pair in stream: {{start_recording_i2c;please}}, queued...
+[1717043383.11][SERI][TXD] {{start_recording_i2c;complete}}
+[1717043383.12][CONN][INF] found KV pair in stream: {{read_bytes_from_slave;addr 0xE4 expected-data 0x15 0x16}}, queued...
+[1717043383.25][TEST][INF] Saw on the I2C bus:
+Start Rd[0xe5] Ack 0x15 Ack 0x16 Nack Stop
+
+[1717043383.25][SERI][TXD] {{read_bytes_from_slave;complete}}
+[1717043383.26][CONN][INF] found KV pair in stream: {{__testcase_finish;Read less bytes than expected from slave;1;0}}, queued...
+[1717043383.28][CONN][RXD] &gt;&gt;&gt; 'Read less bytes than expected from slave': 1 passed, 0 failed
+[1717043383.28][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1717043383.28][CONN][RXD]
+[1717043383.28][CONN][RXD] &gt;&gt;&gt; Test cases: 9 passed, 0 failed
+[1717043383.28][CONN][RXD]
+[1717043383.29][CONN][RXD] -----------------------
+[1717043383.29][CONN][RXD] 0 Tests 0 Failures 0 Ignored
+[1717043383.29][CONN][RXD] OK
+[1717043383.29][CONN][INF] found KV pair in stream: {{__testcase_summary;9;0}}, queued...
+[1717043383.29][CONN][INF] found KV pair in stream: {{end;success}}, queued...
+[1717043383.29][CONN][INF] found KV pair in stream: {{__exit;0}}, queued...
+[1717043383.29][HTST][INF] __exit(0)
+[1717043383.29][HTST][INF] __notify_complete(True)
+[1717043383.29][HTST][INF] __exit_event_queue received
+[1717043383.29][HTST][INF] test suite run finished after 8.88 sec...
+[1717043383.30][CONN][INF] received special event '__host_test_finished' value='True', finishing
+[1717043383.31][HTST][INF] CONN exited with code: 0
+[1717043383.31][HTST][INF] Some events in queue
+[1717043383.31][HTST][INF] stopped consuming events
+[1717043383.31][HTST][INF] host test result() call skipped, received: True
+[1717043383.31][HTST][INF] calling blocking teardown()
+[1717043383.31][HTST][INF] teardown() finished
+[1717043383.31][HTST][INF] {{result;success}}
+</system-out>
+	</testcase>
+	<testcase name="test-testshield-i2c-eeprom" classname="test-testshield-i2c-eeprom" time="35.2615" status="run">
+		<system-out>[1/5] Building CXX object mbed-os/storage/blockdevice/COMPONENT_I2CEE/CMakeFiles/mbed-storage-i2cee.dir/source/I2CEEBlockDevice.cpp.obj
+[2/5] Linking CXX static library mbed-os/storage/blockdevice/COMPONENT_I2CEE/libmbed-storage-i2cee.a
+[3/5] Building CXX object CMakeFiles/test-testshield-i2c-eeprom.dir/I2CEEPROMTest.cpp.obj
+[4/5] Linking CXX executable test-testshield-i2c-eeprom.elf
+-- built: /home/jamie/Mbed/mbed-ce-test-tools/CI-Shield-Tests/build/LPC1768-Develop/test-testshield-i2c-eeprom.bin
+-- built: /home/jamie/Mbed/mbed-ce-test-tools/CI-Shield-Tests/build/LPC1768-Develop/test-testshield-i2c-eeprom.hex
+LPC Patch: test-testshield-i2c-eeprom.bin
+| Module                                    |     .text |    .data |      .bss |
+|-------------------------------------------|-----------|----------|-----------|
+| CMakeFiles/test-testshield-i2c-eeprom.dir |  4402(+0) |    0(+0) |  4644(+0) |
+| [fill]                                    |   652(+0) |    3(+0) |    21(+0) |
+| [lib]/c.a                                 |  5880(+0) | 1344(+0) |   373(+0) |
+| [lib]/client_userio.a                     |  1480(+0) |   56(+0) |     8(+0) |
+| [lib]/gcc.a                               |  3136(+0) |    0(+0) |     0(+0) |
+| [lib]/mbed-greentea-io.a                  |    70(+0) |    0(+0) |     0(+0) |
+| [lib]/mbed-storage-i2cee.a                |   886(+0) |    0(+0) |     0(+0) |
+| [lib]/mbed-unity.a                        |  1610(+0) |    0(+0) |   224(+0) |
+| [lib]/mbed-utest.a                        |  3412(+0) |   13(+0) |   201(+0) |
+| [lib]/misc                                |   264(+0) |    4(+0) |    25(+0) |
+| mbed-os/CMakeFiles                        | 21192(+0) |  436(+0) |  7301(+0) |
+| Subtotals                                 | 42984(+0) | 1856(+0) | 12797(+0) |
+Total Static RAM memory (data + bss): 14653(+0) bytes
+Total Flash memory (text + data): 44840(+0) bytes
+
+[5/5] Flashing test-testshield-i2c-eeprom with OpenOCD...
+Open On-Chip Debugger 0.11.0
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+Info : auto-selecting first available session transport "swd". To override use 'transport select &lt;transport&gt;'.
+adapter speed: 4000 kHz
+
+Info : CMSIS-DAP: SWD  Supported
+Info : CMSIS-DAP: FW Version = 1.0
+Info : CMSIS-DAP: Interface Initialised (SWD)
+Info : SWCLK/TCK = 0 SWDIO/TMS = 1 TDI = 0 TDO = 0 nTRST = 0 nRESET = 1
+Info : CMSIS-DAP: Interface ready
+Info : clock speed 4000 kHz
+Info : SWD DPIDR 0x2ba01477
+Info : lpc17xx.cpu: hardware has 6 breakpoints, 4 watchpoints
+Info : gdb port disabled
+target halted due to debug-request, current mode: Thread
+xPSR: 0x01000000 pc: 0x1fff0080 msp: 0x10001ffc
+** Programming Started **
+Info : If auto-detection fails for this part, please email openocd-devel@lists.sourceforge.net, citing part id 0x26013f37.
+
+Warn : Boot verification checksum in image (0x00000000) to be written to flash is different from calculated vector checksum (0xeffec186).
+Warn : OpenOCD will write the correct checksum. To remove this warning modify build tools on developer PC to inject correct LPC vector checksum.
+** Programming Finished **
+** Resetting Target **
+Info : SWD DPIDR 0x2ba01477
+shutdown command invoked
+Executing: /home/jamie/Mbed/mbed-ce-test-tools/CI-Shield-Tests/mbed-os/venv/bin/python3.10 -m mbed_host_tests.mbedhtrun --skip-flashing -p /dev/ttyLPC1768 --skip-reset -e /home/jamie/Mbed/mbed-ce-test-tools/CI-Shield-Tests/host_tests -m LPC1768 --baud-rate=115200
+[1717043400.87][TEST][INF] Will use any connected CI shield for this test.  Export the MBED_CI_SHIELD_SERIAL_NUMBER environment var to select a specific shield.
+[1717043400.87][TEST][INF] e.g. 'export MBED_CI_SHIELD_SERIAL_NUMBER=SN002'
+[1717043400.91][HTST][INF] host test executor ver. 0.0.16
+[1717043400.91][HTST][INF] copy image onto target... SKIPPED!
+[1717043400.92][HTST][INF] starting host test process...
+[1717043400.93][CONN][INF] starting connection process...
+[1717043400.94][CONN][INF] notify event queue about extra 60 sec timeout for serial port pooling
+[1717043400.94][CONN][INF] initializing serial port listener...
+[1717043400.94][SERI][INF] using specified port '/dev/ttyLPC1768'
+[1717043400.94][HTST][INF] setting timeout to: 60 sec
+[1717043400.94][SERI][INF] serial(port=/dev/ttyLPC1768, baudrate=115200, read_timeout=0.01, write_timeout=5)
+[1717043400.95][SERI][TXD] mbedmbedmbedmbedmbedmbedmbedmbedmbedmbed
+[1717043400.95][CONN][INF] sending up to 2 __sync packets (specified with --sync=2)
+[1717043400.95][CONN][INF] sending preamble '2a91b888-1599-4483-ae6b-6526a4f553ae'
+[1717043400.95][SERI][TXD] {{__sync;2a91b888-1599-4483-ae6b-6526a4f553ae}}
+[1717043400.96][CONN][RXD] mbedmbedmbedmbedmbedmbedmbedmbed
+[1717043400.97][CONN][INF] found SYNC in stream: {{__sync;2a91b888-1599-4483-ae6b-6526a4f553ae}} it is #0 sent, queued...
+[1717043400.97][HTST][INF] sync KV found, uuid=2a91b888-1599-4483-ae6b-6526a4f553ae, timestamp=1717043400.971110
+[1717043400.97][CONN][INF] found KV pair in stream: {{__version;1.3.0}}, queued...
+[1717043400.97][CONN][INF] found KV pair in stream: {{__timeout;20}}, queued...
+[1717043400.97][HTST][INF] DUT greentea-client version: 1.3.0
+[1717043400.97][CONN][INF] found KV pair in stream: {{__host_test_name;i2c_record_only_test}}, queued...
+[1717043400.98][HTST][INF] setting timeout to: 20 sec
+[1717043400.98][HTST][INF] host test class: '&lt;class 'i2c_record_only_test.I2CRecordOnlyTestHostTest'&gt;'
+[1717043400.98][TEST][INF] I2C Record-Only Test host test setup complete.
+[1717043400.98][HTST][INF] host test setup() call...
+[1717043400.98][HTST][INF] CALLBACKs updated
+[1717043400.98][HTST][INF] host test detected: i2c_record_only_test
+[1717043400.99][CONN][RXD] &gt;&gt;&gt; Running 14 test cases...
+[1717043400.99][CONN][INF] found KV pair in stream: {{__testcase_name;I2C - 100kHz - EEPROM WR Single Byte}}, queued...
+[1717043400.99][CONN][INF] found KV pair in stream: {{__testcase_name;I2C - 100kHz - EEPROM 2nd WR Single Byte}}, queued...
+[1717043401.00][CONN][INF] found KV pair in stream: {{__testcase_name;I2C - 100kHz - EEPROM WR 2 Bytes}}, queued...
+[1717043401.00][CONN][INF] found KV pair in stream: {{__testcase_name;I2C - 100kHz - EEPROM 2nd WR 2 Bytes}}, queued...
+[1717043401.00][CONN][INF] found KV pair in stream: {{__testcase_name;I2C - 100kHz - EEPROM WR 1 Page}}, queued...
+[1717043401.01][CONN][INF] found KV pair in stream: {{__testcase_name;I2C - 100kHz - EEPROM 2nd WR 1 Page}}, queued...
+[1717043401.01][CONN][INF] found KV pair in stream: {{__testcase_name;I2C - 100kHz - EEPROM WR 2kiB}}, queued...
+[1717043401.01][CONN][INF] found KV pair in stream: {{__testcase_name;I2C - 400kHz - EEPROM WR Single Byte}}, queued...
+[1717043401.02][CONN][INF] found KV pair in stream: {{__testcase_name;I2C - 400kHz - EEPROM 2nd WR Single Byte}}, queued...
+[1717043401.02][CONN][INF] found KV pair in stream: {{__testcase_name;I2C - 400kHz - EEPROM WR 2 Bytes}}, queued...
+[1717043401.04][CONN][INF] found KV pair in stream: {{__testcase_name;I2C - 400kHz - EEPROM 2nd WR 2 Bytes}}, queued...
+[1717043401.04][CONN][INF] found KV pair in stream: {{__testcase_name;I2C - 400kHz - EEPROM WR 1 Page}}, queued...
+[1717043401.04][CONN][INF] found KV pair in stream: {{__testcase_name;I2C - 400kHz - EEPROM 2nd WR 1 Page}}, queued...
+[1717043401.05][CONN][INF] found KV pair in stream: {{__testcase_name;I2C - 400kHz - EEPROM WR 2kiB}}, queued...
+[1717043401.05][CONN][INF] found KV pair in stream: {{start_recording_i2c;please}}, queued...
+[1717043402.06][SERI][TXD] {{start_recording_i2c;complete}}
+[1717043402.07][CONN][RXD]
+[1717043402.07][CONN][RXD] &gt;&gt;&gt; Running case #1: 'I2C - 100kHz - EEPROM WR Single Byte'...
+[1717043402.08][CONN][INF] found KV pair in stream: {{__testcase_start;I2C - 100kHz - EEPROM WR Single Byte}}, queued...
+[1717043402.08][CONN][INF] found KV pair in stream: {{display_i2c_data;please}}, queued...
+[1717043402.20][TEST][INF] Saw on the I2C bus:
+Start Wr[0xa0] Ack 0x00 Ack 0x01 Ack 0x4c Ack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Ack Stop
+Start Wr[0xa0] Ack 0x00 Ack 0x01 Ack RepeatedStart Rd[0xa1] Ack 0x4c Nack Stop
+
+[1717043402.20][SERI][TXD] {{display_i2c_data;complete}}
+[1717043402.21][CONN][INF] found KV pair in stream: {{__testcase_finish;I2C - 100kHz - EEPROM WR Single Byte;1;0}}, queued...
+[1717043402.22][CONN][RXD] &gt;&gt;&gt; 'I2C - 100kHz - EEPROM WR Single Byte': 1 passed, 0 failed
+[1717043402.22][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1717043402.22][CONN][INF] found KV pair in stream: {{start_recording_i2c;please}}, queued...
+[1717043403.24][SERI][TXD] {{start_recording_i2c;complete}}
+[1717043403.25][CONN][RXD]
+[1717043403.25][CONN][RXD] &gt;&gt;&gt; Running case #2: 'I2C - 100kHz - EEPROM 2nd WR Single Byte'...
+[1717043403.26][CONN][INF] found KV pair in stream: {{__testcase_start;I2C - 100kHz - EEPROM 2nd WR Single Byte}}, queued...
+[1717043403.26][CONN][INF] found KV pair in stream: {{display_i2c_data;please}}, queued...
+[1717043403.37][TEST][INF] Saw on the I2C bus:
+Start Wr[0xa0] Ack 0x04 Ack 0x01 Ack 0x56 Ack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Ack Stop
+Start Wr[0xa0] Ack 0x04 Ack 0x01 Ack RepeatedStart Rd[0xa1] Ack 0x56 Nack Stop
+
+[1717043403.38][SERI][TXD] {{display_i2c_data;complete}}
+[1717043403.39][CONN][INF] found KV pair in stream: {{__testcase_finish;I2C - 100kHz - EEPROM 2nd WR Single Byte;1;0}}, queued...
+[1717043403.40][CONN][RXD] &gt;&gt;&gt; 'I2C - 100kHz - EEPROM 2nd WR Single Byte': 1 passed, 0 failed
+[1717043403.40][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1717043403.40][CONN][INF] found KV pair in stream: {{start_recording_i2c;please}}, queued...
+[1717043404.41][SERI][TXD] {{start_recording_i2c;complete}}
+[1717043404.42][CONN][RXD]
+[1717043404.42][CONN][RXD] &gt;&gt;&gt; Running case #3: 'I2C - 100kHz - EEPROM WR 2 Bytes'...
+[1717043404.43][CONN][INF] found KV pair in stream: {{__testcase_start;I2C - 100kHz - EEPROM WR 2 Bytes}}, queued...
+[1717043404.43][CONN][INF] found KV pair in stream: {{display_i2c_data;please}}, queued...
+[1717043404.54][TEST][INF] Saw on the I2C bus:
+Start Wr[0xa0] Ack 0x00 Ack 0x05 Ack 0x51 Ack 0x00 Ack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Ack Stop
+Start Wr[0xa0] Ack 0x00 Ack 0x05 Ack RepeatedStart Rd[0xa1] Ack 0x51 Ack 0x00 Nack Stop
+
+[1717043404.54][SERI][TXD] {{display_i2c_data;complete}}
+[1717043404.56][CONN][INF] found KV pair in stream: {{__testcase_finish;I2C - 100kHz - EEPROM WR 2 Bytes;1;0}}, queued...
+[1717043404.57][CONN][RXD] &gt;&gt;&gt; 'I2C - 100kHz - EEPROM WR 2 Bytes': 1 passed, 0 failed
+[1717043404.57][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1717043404.57][CONN][INF] found KV pair in stream: {{start_recording_i2c;please}}, queued...
+[1717043405.58][SERI][TXD] {{start_recording_i2c;complete}}
+[1717043405.59][CONN][RXD]
+[1717043405.59][CONN][RXD] &gt;&gt;&gt; Running case #4: 'I2C - 100kHz - EEPROM 2nd WR 2 Bytes'...
+[1717043405.60][CONN][INF] found KV pair in stream: {{__testcase_start;I2C - 100kHz - EEPROM 2nd WR 2 Bytes}}, queued...
+[1717043405.60][CONN][INF] found KV pair in stream: {{display_i2c_data;please}}, queued...
+[1717043405.72][TEST][INF] Saw on the I2C bus:
+Start Wr[0xa0] Ack 0x04 Ack 0x05 Ack 0x59 Ack 0x00 Ack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Ack Stop
+Start Wr[0xa0] Ack 0x04 Ack 0x05 Ack RepeatedStart Rd[0xa1] Ack 0x59 Ack 0x00 Nack Stop
+
+[1717043405.73][SERI][TXD] {{display_i2c_data;complete}}
+[1717043405.74][CONN][INF] found KV pair in stream: {{__testcase_finish;I2C - 100kHz - EEPROM 2nd WR 2 Bytes;1;0}}, queued...
+[1717043405.75][CONN][RXD] &gt;&gt;&gt; 'I2C - 100kHz - EEPROM 2nd WR 2 Bytes': 1 passed, 0 failed
+[1717043405.75][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1717043405.75][CONN][INF] found KV pair in stream: {{start_recording_i2c;please}}, queued...
+[1717043406.76][SERI][TXD] {{start_recording_i2c;complete}}
+[1717043406.78][CONN][RXD]
+[1717043406.78][CONN][RXD] &gt;&gt;&gt; Running case #5: 'I2C - 100kHz - EEPROM WR 1 Page'...
+[1717043406.79][CONN][INF] found KV pair in stream: {{__testcase_start;I2C - 100kHz - EEPROM WR 1 Page}}, queued...
+[1717043406.79][CONN][INF] found KV pair in stream: {{display_i2c_data;please}}, queued...
+[1717043406.90][TEST][INF] Saw on the I2C bus:
+Start Wr[0xa0] Ack 0x00 Ack 0x64 Ack 0x51 Ack 0x59 Ack 0x4b Ack 0x46 Ack 0x44 Ack 0x42 Ack 0x58 Ack 0x4e Ack 0x51 Ack 0x44 Ack 0x51 Ack 0x55 Ack 0x48 Ack 0x59 Ack 0x44 Ack 0x4a Ack 0x41 Ack 0x45 Ack 0x45 Ack 0x42 Ack 0x5a Ack 0x51 Ack 0x4d Ack 0x54 Ack 0x42 Ack 0x4c Ack 0x43 Ack 0x41 Ack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Ack Stop
+Start Wr[0xa0] Ack 0x00 Ack 0x80 Ack 0x42 Ack 0x57 Ack 0x47 Ack 0x00 Ack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Ack Stop
+Start Wr[0xa0] Ack 0x00 Ack 0x64 Ack RepeatedStart Rd[0xa1] Ack 0x51 Ack 0x59 Ack 0x4b Ack 0x46 Ack 0x44 Ack 0x42 Ack 0x58 Ack 0x4e Ack 0x51 Ack 0x44 Ack 0x51 Ack 0x55 Ack 0x48 Ack 0x59 Ack 0x44 Ack 0x4a Ack 0x41 Ack 0x45 Ack 0x45 Ack 0x42 Ack 0x5a Ack 0x51 Ack 0x4d Ack 0x54 Ack 0x42 Ack 0x4c Ack 0x43 Ack 0x41 Ack 0x42 Ack 0x57 Ack 0x47 Ack 0x00 Nack Stop
+
+[1717043406.90][SERI][TXD] {{display_i2c_data;complete}}
+[1717043406.92][CONN][INF] found KV pair in stream: {{__testcase_finish;I2C - 100kHz - EEPROM WR 1 Page;1;0}}, queued...
+[1717043406.93][CONN][RXD] &gt;&gt;&gt; 'I2C - 100kHz - EEPROM WR 1 Page': 1 passed, 0 failed
+[1717043406.93][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1717043406.93][CONN][INF] found KV pair in stream: {{start_recording_i2c;please}}, queued...
+[1717043407.94][SERI][TXD] {{start_recording_i2c;complete}}
+[1717043407.95][CONN][RXD]
+[1717043407.95][CONN][RXD] &gt;&gt;&gt; Running case #6: 'I2C - 100kHz - EEPROM 2nd WR 1 Page'...
+[1717043407.96][CONN][INF] found KV pair in stream: {{__testcase_start;I2C - 100kHz - EEPROM 2nd WR 1 Page}}, queued...
+[1717043407.96][CONN][INF] found KV pair in stream: {{display_i2c_data;please}}, queued...
+[1717043408.07][TEST][INF] Saw on the I2C bus:
+Start Wr[0xa0] Ack 0x04 Ack 0x64 Ack 0x53 Ack 0x43 Ack 0x52 Ack 0x4e Ack 0x4f Ack 0x49 Ack 0x41 Ack 0x46 Ack 0x54 Ack 0x4c Ack 0x46 Ack 0x50 Ack 0x43 Ack 0x55 Ack 0x51 Ack 0x46 Ack 0x46 Ack 0x41 Ack 0x58 Ack 0x4f Ack 0x5a Ack 0x51 Ack 0x45 Ack 0x47 Ack 0x58 Ack 0x4d Ack 0x57 Ack 0x47 Ack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Ack Stop
+Start Wr[0xa0] Ack 0x04 Ack 0x80 Ack 0x47 Ack 0x4c Ack 0x4b Ack 0x00 Ack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Ack Stop
+Start Wr[0xa0] Ack 0x04 Ack 0x64 Ack RepeatedStart Rd[0xa1] Ack 0x53 Ack 0x43 Ack 0x52 Ack 0x4e Ack 0x4f Ack 0x49 Ack 0x41 Ack 0x46 Ack 0x54 Ack 0x4c Ack 0x46 Ack 0x50 Ack 0x43 Ack 0x55 Ack 0x51 Ack 0x46 Ack 0x46 Ack 0x41 Ack 0x58 Ack 0x4f Ack 0x5a Ack 0x51 Ack 0x45 Ack 0x47 Ack 0x58 Ack 0x4d Ack 0x57 Ack 0x47 Ack 0x47 Ack 0x4c Ack 0x4b Ack 0x00 Nack Stop
+
+[1717043408.08][SERI][TXD] {{display_i2c_data;complete}}
+[1717043408.09][CONN][INF] found KV pair in stream: {{__testcase_finish;I2C - 100kHz - EEPROM 2nd WR 1 Page;1;0}}, queued...
+[1717043408.10][CONN][RXD] &gt;&gt;&gt; 'I2C - 100kHz - EEPROM 2nd WR 1 Page': 1 passed, 0 failed
+[1717043408.10][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1717043408.10][CONN][INF] found KV pair in stream: {{start_recording_i2c;please}}, queued...
+[1717043409.12][SERI][TXD] {{start_recording_i2c;complete}}
+[1717043409.13][CONN][RXD]
+[1717043409.13][CONN][RXD] &gt;&gt;&gt; Running case #7: 'I2C - 100kHz - EEPROM WR 2kiB'...
+[1717043409.14][CONN][INF] found KV pair in stream: {{__testcase_start;I2C - 100kHz - EEPROM WR 2kiB}}, queued...
+[1717043409.77][CONN][INF] found KV pair in stream: {{display_i2c_data;please}}, queued...
+[1717043409.80][TEST][INF] Saw on the I2C bus:
+Start Wr[0xa0] Ack 0x00 Ack 0x00 Ack 0x56 Ack 0x58 Ack 0x54 Ack 0x44 Ack 0x48 Ack 0x4e Ack 0x5a Ack 0x51 Ack 0x41 Ack 0x4e Ack 0x4b Ack 0x59 Ack 0x50 Ack 0x52 Ack 0x42 Ack 0x57 Ack 0x54 Ack 0x45 Ack 0x41 Ack 0x5a Ack 0x44 Ack 0x41 Ack 0x46 Ack 0x45 Ack 0x51 Ack 0x58 Ack 0x54 Ack 0x49 Ack 0x4a Ack 0x4a Ack 0x54 Ack 0x4b Ack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Ack Stop
+Start Wr[0xa0] Ack 0x00 Ack 0x20 Ack 0x57 Ack 0x45 Ack 0x41 Ack 0x5a Ack 0x51 Ack 0x47 Ack 0x4d Ack 0x50 Ack 0x4c Ack 0x4f Ack 0x48 Ack 0x59 Ack 0x58 Ack 0x52 Ack 0x55 Ack 0x54 Ack 0x4f Ack 0x4a Ack 0x56 Ack 0x42 Ack 0x5a Ack 0x4c Ack 0x4c Ack 0x51 Ack 0x47 Ack 0x4a Ack 0x41 Ack 0x49 Ack 0x44 Ack 0x42 Ack 0x54 Ack 0x51 Ack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Ack Stop
+Start Wr[0xa0] Ack 0x00 Ack 0x40 Ack 0x49 Ack 0x42 Ack 0x59 Ack 0x47 Ack 0x44 Ack 0x5a Ack 0x43 Ack 0x58 Ack 0x4b Ack 0x55 Ack 0x4a Ack 0x56 Ack 0x57 Ack 0x47 Ack 0x48 Ack 0x57 Ack 0x42 Ack 0x4d Ack 0x4a Ack 0x4a Ack 0x4d Ack 0x42 Ack 0x50 Ack 0x4b Ack 0x53 Ack 0x4e Ack 0x5a Ack 0x4b Ack 0x47 Ack 0x5a Ack 0x47 Ack 0x49 Ack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Ack Stop
+Start Wr[0xa0] Ack 0x00 Ack 0x60 Ack 0x4c Ack 0x55 Ack 0x49 Ack 0x47 Ack 0x47 Ack 0x50 Ack 0x4b Ack 0x5a Ack 0x57 Ack 0x48 Ack 0x41 Ack 0x45 Ack 0x54 Ack 0x43 Ack 0x4c Ack 0x52 Ack 0x43 Ack 0x59 Ack 0x58 Ack 0x43 Ack 0x53 Ack 0x49 Ack 0x58 Ack 0x53 Ack 0x55 Ack 0x54 Ack 0x4a Ack 0x4d Ack 0x52 Ack 0x4d Ack 0x56 Ack 0x51 Ack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Ack Stop
+Start Wr[0xa0] Ack 0x00 Ack 0x80 Ack 0x4c Ack 0x59 Ack 0x42 Ack 0x53 Ack 0x4a Ack 0x4e Ack 0x49 Ack 0x48 Ack 0x4e Ack 0x46 Ack 0x51 Ack 0x59 Ack 0x46 Ack 0x48 Ack 0x59 Ack 0x53 Ack 0x5a Ack 0x57 Ack 0x47 Ack 0x50 Ack 0x53 Ack 0x56 Ack 0x4e Ack 0x48 Ack 0x4e Ack 0x4e Ack 0x47 Ack 0x44 Ack 0x4e Ack 0x4a Ack 0x5a Ack 0x4a Ack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Ack Stop
+Start Wr[0xa0] Ack 0x00 Ack 0xa0 Ack 0x59 Ack 0x50 Ack 0x51 Ack 0x43 Ack 0x46 Ack 0x4c Ack 0x4e Ack 0x5a Ack 0x54 Ack 0x52 Ack 0x48 Ack 0x43 Ack 0x46 Ack 0x47 Ack 0x42 Ack 0x4b Ack 0x41 Ack 0x4b Ack 0x5a Ack 0x58 Ack 0x41 Ack 0x4d Ack 0x41 Ack 0x4c Ack 0x53 Ack 0x55 Ack 0x41 Ack 0x55 Ack 0x58 Ack 0x58 Ack 0x43 Ack 0x48 Ack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Ack Stop
+Start Wr[0xa0] Ack 0x00 Ack 0xc0 Ack 0x51 Ack 0x4a Ack 0x58 Ack 0x51 Ack 0x41 Ack 0x49 Ack 0x44 Ack 0x44 Ack 0x54 Ack 0x4a Ack 0x53 Ack 0x5a Ack 0x47 Ack 0x43 Ack 0x42 Ack 0x55 Ack 0x4c Ack 0x4c Ack 0x59 Ack 0x59 Ack 0x4a Ack 0x59 Ack 0x4d Ack 0x59 Ack 0x54 Ack 0x49 Ack 0x4f Ack 0x59 Ack 0x41 Ack 0x57 Ack 0x50 Ack 0x5a Ack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Ack Stop
+Start Wr[0xa0] Ack 0x00 Ack 0xe0 Ack 0x53 Ack 0x48 Ack 0x48 Ack 0x46 Ack 0x50 Ack 0x51 Ack 0x50 Ack 0x53 Ack 0x41 Ack 0x54 Ack 0x44 Ack 0x44 Ack 0x42 Ack 0x43 Ack 0x41 Ack 0x47 Ack 0x4a Ack 0x47 Ack 0x4f Ack 0x42 Ack 0x4d Ack 0x4e Ack 0x5a Ack 0x56 Ack 0x48 Ack 0x4b Ack 0x4f Ack 0x58 Ack 0x52 Ack 0x4c Ack 0x41 Ack 0x4d Ack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Ack Stop
+Start Wr[0xa0] Ack 0x01 Ack 0x00 Ack 0x55 Ack 0x5a Ack 0x4c Ack 0x54 Ack 0x54 Ack 0x53 Ack 0x41 Ack 0x58 Ack 0x4f Ack 0x41 Ack 0x51 Ack 0x42 Ack 0x54 Ack 0x48 Ack 0x58 Ack 0x41 Ack 0x4d Ack 0x53 Ack 0x44 Ack 0x56 Ack 0x4d Ack 0x56 Ack 0x4b Ack 0x5a Ack 0x47 Ack 0x47 Ack 0x48 Ack 0x54 Ack 0x5a Ack 0x42 Ack 0x46 Ack 0x4f Ack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Ack Stop
+Start Wr[0xa0] Ack 0x01 Ack 0x20 Ack 0x56 Ack 0x47 Ack 0x4c Ack 0x56 Ack 0x4c Ack 0x54 Ack 0x4c Ack 0x57 Ack 0x53 Ack 0x5a Ack 0x58 Ack 0x46 Ack 0x53 Ack 0x47 Ack 0x5a Ack 0x53 Ack 0x42 Ack 0x4a Ack 0x4d Ack 0x4f Ack 0x43 Ack 0x46 Ack 0x44 Ack 0x41 Ack 0x4d Ack 0x4a Ack 0x59 Ack 0x4d Ack 0x58 Ack 0x44 Ack 0x42 Ack 0x44 Ack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Ack Stop
+Start Wr[0xa0] Ack 0x01 Ack 0x40 Ack 0x55 Ack 0x5a Ack 0x53 Ack 0x49 Ack 0x54 Ack 0x56 Ack 0x41 Ack 0x44 Ack 0x57 Ack 0x4a Ack 0x41 Ack 0x59 Ack 0x4c Ack 0x49 Ack 0x45 Ack 0x5a Ack 0x4d Ack 0x50 Ack 0x50 Ack 0x41 Ack 0x54 Ack 0x53 Ack 0x52 Ack 0x41 Ack 0x4a Ack 0x55 Ack 0x4b Ack 0x4f Ack 0x54 Ack 0x51 Ack 0x49 Ack 0x4f Ack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Ack Stop
+Start Wr[0xa0] Ack 0x01 Ack 0x60 Ack 0x4c Ack 0x55 Ack 0x41 Ack 0x48 Ack 0x4f Ack 0x41 Ack 0x55 Ack 0x49 Ack 0x45 Ack 0x4d Ack 0x58 Ack 0x4e Ack 0x52 Ack 0x54 Ack 0x47 Ack 0x50 Ack 0x57 Ack 0x47 Ack 0x41 Ack 0x55 Ack 0x4b Ack 0x55 Ack 0x52 Ack 0x46 Ack 0x56 Ack 0x54 Ack 0x4f Ack 0x49 Ack 0x49 Ack 0x5a Ack 0x42 Ack 0x4a Ack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Ack Stop
+Start Wr[0xa0] Ack 0x01 Ack 0x80 Ack 0x45 Ack 0x54 Ack 0x4a Ack 0x4e Ack 0x58 Ack 0x52 Ack 0x51 Ack 0x4c Ack 0x48 Ack 0x4f Ack 0x49 Ack 0x4f Ack 0x4c Ack 0x58 Ack 0x51 Ack 0x54 Ack 0x47 Ack 0x47 Ack 0x4a Ack 0x4b Ack 0x4d Ack 0x57 Ack 0x49 Ack 0x43 Ack 0x49 Ack 0x58 Ack 0x4e Ack 0x44 Ack 0x48 Ack 0x45 Ack 0x54 Ack 0x59 Ack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Ack Stop
+Start Wr[0xa0] Ack 0x01 Ack 0xa0 Ack 0x43 Ack 0x57 Ack 0x57 Ack 0x4e Ack 0x53 Ack 0x4c Ack 0x43 Ack 0x48 Ack 0x46 Ack 0x52 Ack 0x4e Ack 0x4b Ack 0x52 Ack 0x4e Ack 0x45 Ack 0x41 Ack 0x55 Ack 0x45 Ack 0x45 Ack 0x57 Ack
+
+[1717043409.80][SERI][TXD] {{display_i2c_data;complete}}
+[1717043409.81][CONN][INF] found KV pair in stream: {{__testcase_finish;I2C - 100kHz - EEPROM WR 2kiB;1;0}}, queued...
+[1717043409.82][CONN][RXD] &gt;&gt;&gt; 'I2C - 100kHz - EEPROM WR 2kiB': 1 passed, 0 failed
+[1717043409.82][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1717043409.82][CONN][INF] found KV pair in stream: {{start_recording_i2c;please}}, queued...
+[1717043410.83][SERI][TXD] {{start_recording_i2c;complete}}
+[1717043410.84][CONN][RXD]
+[1717043410.84][CONN][RXD] &gt;&gt;&gt; Running case #8: 'I2C - 400kHz - EEPROM WR Single Byte'...
+[1717043410.85][CONN][INF] found KV pair in stream: {{__testcase_start;I2C - 400kHz - EEPROM WR Single Byte}}, queued...
+[1717043410.85][CONN][INF] found KV pair in stream: {{display_i2c_data;please}}, queued...
+[1717043410.97][TEST][INF] Saw on the I2C bus:
+Start Wr[0xa0] Ack 0x00 Ack 0x01 Ack 0x45 Ack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Ack Stop
+Start Wr[0xa0] Ack 0x00 Ack 0x01 Ack RepeatedStart Rd[0xa1] Ack 0x45 Nack Stop
+
+[1717043410.97][SERI][TXD] {{display_i2c_data;complete}}
+[1717043410.98][CONN][INF] found KV pair in stream: {{__testcase_finish;I2C - 400kHz - EEPROM WR Single Byte;1;0}}, queued...
+[1717043410.99][CONN][RXD] &gt;&gt;&gt; 'I2C - 400kHz - EEPROM WR Single Byte': 1 passed, 0 failed
+[1717043410.99][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1717043410.99][CONN][INF] found KV pair in stream: {{start_recording_i2c;please}}, queued...
+[1717043412.00][SERI][TXD] {{start_recording_i2c;complete}}
+[1717043412.01][CONN][RXD]
+[1717043412.01][CONN][RXD] &gt;&gt;&gt; Running case #9: 'I2C - 400kHz - EEPROM 2nd WR Single Byte'...
+[1717043412.02][CONN][INF] found KV pair in stream: {{__testcase_start;I2C - 400kHz - EEPROM 2nd WR Single Byte}}, queued...
+[1717043412.02][CONN][INF] found KV pair in stream: {{display_i2c_data;please}}, queued...
+[1717043412.13][TEST][INF] Saw on the I2C bus:
+Start Wr[0xa0] Ack 0x04 Ack 0x01 Ack 0x52 Ack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Ack Stop
+Start Wr[0xa0] Ack 0x04 Ack 0x01 Ack RepeatedStart Rd[0xa1] Ack 0x52 Nack Stop
+
+[1717043412.14][SERI][TXD] {{display_i2c_data;complete}}
+[1717043412.15][CONN][INF] found KV pair in stream: {{__testcase_finish;I2C - 400kHz - EEPROM 2nd WR Single Byte;1;0}}, queued...
+[1717043412.16][CONN][RXD] &gt;&gt;&gt; 'I2C - 400kHz - EEPROM 2nd WR Single Byte': 1 passed, 0 failed
+[1717043412.16][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1717043412.16][CONN][INF] found KV pair in stream: {{start_recording_i2c;please}}, queued...
+[1717043413.17][SERI][TXD] {{start_recording_i2c;complete}}
+[1717043413.18][CONN][RXD]
+[1717043413.18][CONN][RXD] &gt;&gt;&gt; Running case #10: 'I2C - 400kHz - EEPROM WR 2 Bytes'...
+[1717043413.19][CONN][INF] found KV pair in stream: {{__testcase_start;I2C - 400kHz - EEPROM WR 2 Bytes}}, queued...
+[1717043413.19][CONN][INF] found KV pair in stream: {{display_i2c_data;please}}, queued...
+[1717043413.30][TEST][INF] Saw on the I2C bus:
+Start Wr[0xa0] Ack 0x00 Ack 0x05 Ack 0x55 Ack 0x00 Ack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Ack Stop
+Start Wr[0xa0] Ack 0x00 Ack 0x05 Ack RepeatedStart Rd[0xa1] Ack 0x55 Ack 0x00 Nack Stop
+
+[1717043413.31][SERI][TXD] {{display_i2c_data;complete}}
+[1717043413.32][CONN][INF] found KV pair in stream: {{__testcase_finish;I2C - 400kHz - EEPROM WR 2 Bytes;1;0}}, queued...
+[1717043413.33][CONN][RXD] &gt;&gt;&gt; 'I2C - 400kHz - EEPROM WR 2 Bytes': 1 passed, 0 failed
+[1717043413.33][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1717043413.33][CONN][INF] found KV pair in stream: {{start_recording_i2c;please}}, queued...
+[1717043414.34][SERI][TXD] {{start_recording_i2c;complete}}
+[1717043414.35][CONN][RXD]
+[1717043414.35][CONN][RXD] &gt;&gt;&gt; Running case #11: 'I2C - 400kHz - EEPROM 2nd WR 2 Bytes'...
+[1717043414.36][CONN][INF] found KV pair in stream: {{__testcase_start;I2C - 400kHz - EEPROM 2nd WR 2 Bytes}}, queued...
+[1717043414.36][CONN][INF] found KV pair in stream: {{display_i2c_data;please}}, queued...
+[1717043414.47][TEST][INF] Saw on the I2C bus:
+Start Wr[0xa0] Ack 0x04 Ack 0x05 Ack 0x49 Ack 0x00 Ack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Ack Stop
+Start Wr[0xa0] Ack 0x04 Ack 0x05 Ack RepeatedStart Rd[0xa1] Ack 0x49 Ack 0x00 Nack Stop
+
+[1717043414.47][SERI][TXD] {{display_i2c_data;complete}}
+[1717043414.48][CONN][INF] found KV pair in stream: {{__testcase_finish;I2C - 400kHz - EEPROM 2nd WR 2 Bytes;1;0}}, queued...
+[1717043414.50][CONN][RXD] &gt;&gt;&gt; 'I2C - 400kHz - EEPROM 2nd WR 2 Bytes': 1 passed, 0 failed
+[1717043414.50][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1717043414.50][CONN][INF] found KV pair in stream: {{start_recording_i2c;please}}, queued...
+[1717043415.50][SERI][TXD] {{start_recording_i2c;complete}}
+[1717043415.51][CONN][RXD]
+[1717043415.51][CONN][RXD] &gt;&gt;&gt; Running case #12: 'I2C - 400kHz - EEPROM WR 1 Page'...
+[1717043415.53][CONN][INF] found KV pair in stream: {{__testcase_start;I2C - 400kHz - EEPROM WR 1 Page}}, queued...
+[1717043415.53][CONN][INF] found KV pair in stream: {{display_i2c_data;please}}, queued...
+[1717043415.64][TEST][INF] Saw on the I2C bus:
+Start Wr[0xa0] Ack 0x00 Ack 0x64 Ack 0x4c Ack 0x44 Ack 0x48 Ack 0x4e Ack 0x47 Ack 0x54 Ack 0x55 Ack 0x53 Ack 0x4c Ack 0x52 Ack 0x50 Ack 0x54 Ack 0x45 Ack 0x43 Ack 0x59 Ack 0x42 Ack 0x57 Ack 0x4d Ack 0x4f Ack 0x56 Ack 0x4b Ack 0x45 Ack 0x5a Ack 0x51 Ack 0x4d Ack 0x59 Ack 0x4b Ack 0x48 Ack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Ack Stop
+Start Wr[0xa0] Ack 0x00 Ack 0x80 Ack 0x50 Ack 0x49 Ack 0x4b Ack 0x00 Ack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Ack Stop
+Start Wr[0xa0] Ack 0x00 Ack 0x64 Ack RepeatedStart Rd[0xa1] Ack 0x4c Ack 0x44 Ack 0x48 Ack 0x4e Ack 0x47 Ack 0x54 Ack 0x55 Ack 0x53 Ack 0x4c Ack 0x52 Ack 0x50 Ack 0x54 Ack 0x45 Ack 0x43 Ack 0x59 Ack 0x42 Ack 0x57 Ack 0x4d Ack 0x4f Ack 0x56 Ack 0x4b Ack 0x45 Ack 0x5a Ack 0x51 Ack 0x4d Ack 0x59 Ack 0x4b Ack 0x48 Ack 0x50 Ack 0x49 Ack 0x4b Ack 0x00 Nack Stop
+
+[1717043415.65][SERI][TXD] {{display_i2c_data;complete}}
+[1717043415.66][CONN][INF] found KV pair in stream: {{__testcase_finish;I2C - 400kHz - EEPROM WR 1 Page;1;0}}, queued...
+[1717043415.67][CONN][RXD] &gt;&gt;&gt; 'I2C - 400kHz - EEPROM WR 1 Page': 1 passed, 0 failed
+[1717043415.67][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1717043415.67][CONN][INF] found KV pair in stream: {{start_recording_i2c;please}}, queued...
+[1717043416.69][SERI][TXD] {{start_recording_i2c;complete}}
+[1717043416.70][CONN][RXD]
+[1717043416.70][CONN][RXD] &gt;&gt;&gt; Running case #13: 'I2C - 400kHz - EEPROM 2nd WR 1 Page'...
+[1717043416.71][CONN][INF] found KV pair in stream: {{__testcase_start;I2C - 400kHz - EEPROM 2nd WR 1 Page}}, queued...
+[1717043416.71][CONN][INF] found KV pair in stream: {{display_i2c_data;please}}, queued...
+[1717043416.83][TEST][INF] Saw on the I2C bus:
+Start Wr[0xa0] Ack 0x04 Ack 0x64 Ack 0x4f Ack 0x59 Ack 0x4a Ack 0x5a Ack 0x54 Ack 0x4f Ack 0x53 Ack 0x51 Ack 0x56 Ack 0x47 Ack 0x46 Ack 0x59 Ack 0x48 Ack 0x4c Ack 0x4c Ack 0x57 Ack 0x4d Ack 0x46 Ack 0x50 Ack 0x4f Ack 0x4a Ack 0x41 Ack 0x48 Ack 0x55 Ack 0x46 Ack 0x43 Ack 0x5a Ack 0x57 Ack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Ack Stop
+Start Wr[0xa0] Ack 0x04 Ack 0x80 Ack 0x53 Ack 0x45 Ack 0x44 Ack 0x00 Ack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Ack Stop
+Start Wr[0xa0] Ack 0x04 Ack 0x64 Ack RepeatedStart Rd[0xa1] Ack 0x4f Ack 0x59 Ack 0x4a Ack 0x5a Ack 0x54 Ack 0x4f Ack 0x53 Ack 0x51 Ack 0x56 Ack 0x47 Ack 0x46 Ack 0x59 Ack 0x48 Ack 0x4c Ack 0x4c Ack 0x57 Ack 0x4d Ack 0x46 Ack 0x50 Ack 0x4f Ack 0x4a Ack 0x41 Ack 0x48 Ack 0x55 Ack 0x46 Ack 0x43 Ack 0x5a Ack 0x57 Ack 0x53 Ack 0x45 Ack 0x44 Ack 0x00 Nack Stop
+
+[1717043416.84][SERI][TXD] {{display_i2c_data;complete}}
+[1717043416.85][CONN][INF] found KV pair in stream: {{__testcase_finish;I2C - 400kHz - EEPROM 2nd WR 1 Page;1;0}}, queued...
+[1717043416.86][CONN][RXD] &gt;&gt;&gt; 'I2C - 400kHz - EEPROM 2nd WR 1 Page': 1 passed, 0 failed
+[1717043416.86][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1717043416.86][CONN][INF] found KV pair in stream: {{start_recording_i2c;please}}, queued...
+[1717043417.87][SERI][TXD] {{start_recording_i2c;complete}}
+[1717043417.88][CONN][RXD]
+[1717043417.88][CONN][RXD] &gt;&gt;&gt; Running case #14: 'I2C - 400kHz - EEPROM WR 2kiB'...
+[1717043417.89][CONN][INF] found KV pair in stream: {{__testcase_start;I2C - 400kHz - EEPROM WR 2kiB}}, queued...
+[1717043418.24][CONN][INF] found KV pair in stream: {{display_i2c_data;please}}, queued...
+[1717043418.51][TEST][INF] Saw on the I2C bus:
+Start Wr[0xa0] Ack 0x00 Ack 0x00 Ack 0x4b Ack 0x4d Ack 0x47 Ack 0x53 Ack 0x48 Ack 0x59 Ack 0x55 Ack 0x52 Ack 0x4d Ack 0x53 Ack 0x41 Ack 0x52 Ack 0x52 Ack 0x4d Ack 0x4a Ack 0x53 Ack 0x49 Ack 0x50 Ack 0x58 Ack 0x49 Ack 0x4d Ack 0x47 Ack 0x43 Ack 0x50 Ack 0x57 Ack 0x5a Ack 0x5a Ack 0x48 Ack 0x49 Ack 0x53 Ack 0x59 Ack 0x47 Ack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Ack Stop
+Start Wr[0xa0] Ack 0x00 Ack 0x20 Ack 0x45 Ack 0x4f Ack 0x42 Ack 0x4d Ack 0x5a Ack 0x4e Ack 0x58 Ack 0x48 Ack 0x51 Ack 0x43 Ack 0x59 Ack 0x45 Ack 0x4f Ack 0x56 Ack 0x42 Ack 0x57 Ack 0x48 Ack 0x51 Ack 0x45 Ack 0x4b Ack 0x55 Ack 0x54 Ack 0x55 Ack 0x49 Ack 0x4b Ack 0x43 Ack 0x44 Ack 0x46 Ack 0x51 Ack 0x49 Ack 0x4f Ack 0x54 Ack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Ack Stop
+Start Wr[0xa0] Ack 0x00 Ack 0x40 Ack 0x4b Ack 0x44 Ack 0x4e Ack 0x42 Ack 0x48 Ack 0x52 Ack 0x4e Ack 0x5a Ack 0x45 Ack 0x5a Ack 0x53 Ack 0x59 Ack 0x47 Ack 0x59 Ack 0x57 Ack 0x57 Ack 0x4d Ack 0x48 Ack 0x55 Ack 0x51 Ack 0x43 Ack 0x50 Ack 0x49 Ack 0x45 Ack 0x52 Ack 0x55 Ack 0x4f Ack 0x56 Ack 0x54 Ack 0x59 Ack 0x49 Ack 0x44 Ack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Ack Stop
+Start Wr[0xa0] Ack 0x00 Ack 0x60 Ack 0x59 Ack 0x4e Ack 0x51 Ack 0x58 Ack 0x54 Ack 0x58 Ack 0x55 Ack 0x4a Ack 0x45 Ack 0x42 Ack 0x56 Ack 0x54 Ack 0x46 Ack 0x4c Ack 0x52 Ack 0x49 Ack 0x5a Ack 0x4f Ack 0x49 Ack 0x46 Ack 0x56 Ack 0x4e Ack 0x46 Ack 0x48 Ack 0x44 Ack 0x49 Ack 0x4d Ack 0x41 Ack 0x41 Ack 0x46 Ack 0x49 Ack 0x56 Ack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Ack Stop
+Start Wr[0xa0] Ack 0x00 Ack 0x80 Ack 0x48 Ack 0x4e Ack 0x48 Ack 0x56 Ack 0x4c Ack 0x50 Ack 0x4c Ack 0x46 Ack 0x47 Ack 0x53 Ack 0x52 Ack 0x41 Ack 0x44 Ack 0x4c Ack 0x50 Ack 0x52 Ack 0x57 Ack 0x4c Ack 0x4f Ack 0x51 Ack 0x44 Ack 0x44 Ack 0x54 Ack 0x59 Ack 0x56 Ack 0x43 Ack 0x48 Ack 0x4b Ack 0x53 Ack 0x5a Ack 0x43 Ack 0x44 Ack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Ack Stop
+Start Wr[0xa0] Ack 0x00 Ack 0xa0 Ack 0x43 Ack 0x46 Ack 0x50 Ack 0x59 Ack 0x4c Ack 0x5a Ack 0x52 Ack 0x53 Ack 0x54 Ack 0x4e Ack 0x49 Ack 0x53 Ack 0x48 Ack 0x4f Ack 0x51 Ack 0x43 Ack 0x53 Ack 0x4c Ack 0x53 Ack 0x59 Ack 0x4b Ack 0x45 Ack 0x4c Ack 0x46 Ack 0x51 Ack 0x49 Ack 0x48 Ack 0x51 Ack 0x56 Ack 0x56 Ack 0x4e Ack 0x44 Ack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Ack Stop
+Start Wr[0xa0] Ack 0x00 Ack 0xc0 Ack 0x44 Ack 0x43 Ack 0x42 Ack 0x50 Ack 0x56 Ack 0x43 Ack 0x4b Ack 0x48 Ack 0x43 Ack 0x50 Ack 0x4d Ack 0x45 Ack 0x55 Ack 0x42 Ack 0x53 Ack 0x4a Ack 0x45 Ack 0x45 Ack 0x50 Ack 0x50 Ack 0x4a Ack 0x4c Ack 0x4d Ack 0x41 Ack 0x4c Ack 0x55 Ack 0x56 Ack 0x43 Ack 0x45 Ack 0x42 Ack 0x49 Ack 0x59 Ack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Ack Stop
+Start Wr[0xa0] Ack 0x00 Ack 0xe0 Ack 0x57 Ack 0x55 Ack 0x4b Ack 0x4a Ack 0x4b Ack 0x53 Ack 0x51 Ack 0x58 Ack 0x42 Ack 0x42 Ack 0x4e Ack 0x43 Ack 0x4b Ack 0x50 Ack 0x50 Ack 0x5a Ack 0x59 Ack 0x56 Ack 0x44 Ack 0x49 Ack 0x42 Ack 0x4f Ack 0x59 Ack 0x4f Ack 0x44 Ack 0x42 Ack 0x4d Ack 0x5a Ack 0x55 Ack 0x41 Ack 0x50 Ack 0x49 Ack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Ack Stop
+Start Wr[0xa0] Ack 0x01 Ack 0x00 Ack 0x4a Ack 0x45 Ack 0x4c Ack 0x48 Ack 0x41 Ack 0x4d Ack 0x4b Ack 0x44 Ack 0x44 Ack 0x4c Ack 0x54 Ack 0x4c Ack 0x4a Ack 0x53 Ack 0x49 Ack 0x44 Ack 0x54 Ack 0x43 Ack 0x44 Ack 0x58 Ack 0x51 Ack 0x52 Ack 0x57 Ack 0x50 Ack 0x48 Ack 0x52 Ack 0x47 Ack 0x42 Ack 0x57 Ack 0x46 Ack 0x59 Ack 0x54 Ack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Ack Stop
+Start Wr[0xa0] Ack 0x01 Ack 0x20 Ack 0x54 Ack 0x52 Ack 0x58 Ack 0x56 Ack 0x51 Ack 0x58 Ack 0x55 Ack 0x51 Ack 0x58 Ack 0x51 Ack 0x49 Ack 0x47 Ack 0x47 Ack 0x4c Ack 0x48 Ack 0x52 Ack 0x44 Ack 0x4a Ack 0x59 Ack 0x50 Ack 0x47 Ack 0x42 Ack 0x5a Ack 0x44 Ack 0x59 Ack 0x53 Ack 0x53 Ack 0x57 Ack 0x47 Ack 0x55 Ack 0x41 Ack 0x4d Ack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Ack Stop
+Start Wr[0xa0] Ack 0x01 Ack 0x40 Ack 0x5a Ack 0x52 Ack 0x54 Ack 0x4f Ack 0x59 Ack 0x43 Ack 0x58 Ack 0x44 Ack 0x58 Ack 0x48 Ack 0x44 Ack 0x56 Ack 0x59 Ack 0x51 Ack 0x4c Ack 0x46 Ack 0x50 Ack 0x46 Ack 0x41 Ack 0x56 Ack 0x41 Ack 0x42 Ack 0x42 Ack 0x46 Ack 0x59 Ack 0x50 Ack 0x41 Ack 0x43 Ack 0x4c Ack 0x43 Ack 0x46 Ack 0x45 Ack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Ack Stop
+Start Wr[0xa0] Ack 0x01 Ack 0x60 Ack 0x52 Ack 0x48 Ack 0x4a Ack 0x48 Ack 0x51 Ack 0x47 Ack 0x54 Ack 0x52 Ack 0x43 Ack 0x46 Ack 0x4e Ack 0x4a Ack 0x4b Ack 0x5a Ack 0x42 Ack 0x48 Ack 0x58 Ack 0x4b Ack 0x4d Ack 0x52 Ack 0x49 Ack 0x50 Ack 0x55 Ack 0x4e Ack 0x44 Ack 0x44 Ack 0x4e Ack 0x59 Ack 0x46 Ack 0x43 Ack 0x49 Ack 0x4a Ack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Ack Stop
+Start Wr[0xa0] Ack 0x01 Ack 0x80 Ack 0x57 Ack 0x4c Ack 0x46 Ack 0x4f Ack 0x59 Ack 0x56 Ack 0x53 Ack 0x52 Ack 0x4c Ack 0x56 Ack 0x5a Ack 0x4b Ack 0x59 Ack 0x4d Ack 0x47 Ack 0x4c Ack 0x57 Ack 0x47 Ack 0x4f Ack 0x51 Ack 0x4c Ack 0x56 Ack 0x4c Ack 0x42 Ack 0x47 Ack 0x4f Ack 0x55 Ack 0x57 Ack 0x4b Ack 0x45 Ack 0x4f Ack 0x43 Ack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Ack Stop
+Start Wr[0xa0] Ack 0x01 Ack 0xa0 Ack 0x51 Ack 0x41 Ack 0x5a Ack 0x49 Ack 0x50 Ack 0x56 Ack 0x54 Ack 0x42 Ack 0x49 Ack 0x43 Ack 0x4c Ack 0x49 Ack 0x4e Ack 0x42 Ack 0x56 Ack 0x55 Ack 0x4d Ack 0x50 Ack 0x49 Ack 0x57 Ack 0x51 Ack 0x47 Ack 0x4e Ack 0x4b Ack 0x4e Ack 0x58 Ack 0x43 Ack 0x4b Ack 0x48 Ack 0x58 Ack 0x48 Ack 0x49 Ack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Ack Stop
+Start Wr[0xa0] Ack 0x01 Ack 0xc0 Ack 0x55 Ack 0x51 Ack 0x52 Ack 0x5a Ack 0x44 Ack 0x4d Ack 0x48 Ack 0x42 Ack 0x59 Ack 0x47 Ack 0x4c Ack 0x48 Ack 0x59 Ack 0x4c Ack 0x4c Ack 0x5a Ack 0x59 Ack 0x42 Ack 0x58 Ack 0x56 Ack 0x56 Ack 0x51 Ack 0x59 Ack 0x4a Ack 0x54 Ack 0x52 Ack 0x52 Ack 0x46 Ack 0x41 Ack 0x4f Ack 0x46 Ack 0x44 Ack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Ack Stop
+Start Wr[0xa0] Ack 0x01 Ack 0xe0 Ack 0x4e Ack 0x4a Ack 0x4d Ack 0x55 Ack 0x5a Ack 0x53 Ack 0x50 Ack 0x56 Ack 0x4f Ack 0x4b Ack 0x4d Ack 0x56 Ack 0x42 Ack 0x5a Ack 0x42 Ack 0x55 Ack 0x53 Ack 0x42 Ack 0x50 Ack 0x48 Ack 0x44 Ack 0x5a Ack 0x50 Ack 0x4d Ack 0x41 Ack 0x59 Ack 0x59 Ack 0x54 Ack 0x43 Ack 0x42 Ack 0x45 Ack 0x52 Ack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Ack Stop
+Start Wr[0xa0] Ack 0x02 Ack 0x00 Ack 0x42 Ack 0x5a Ack 0x57 Ack 0x4d Ack 0x45 Ack 0x55 Ack 0x42 Ack 0x56 Ack 0x56 Ack 0x47 Ack 0x57 Ack 0x4f Ack 0x54 Ack 0x48 Ack 0x58 Ack 0x50 Ack 0x50 Ack 0x58 Ack 0x4d Ack 0x46 Ack 0x4a Ack 0x43 Ack 0x41 Ack 0x5a Ack 0x46 Ack 0x51 Ack 0x4c Ack 0x43 Ack 0x58 Ack 0x55 Ack 0x55 Ack 0x46 Ack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Ack Stop
+Start Wr[0xa0] Ack 0x02 Ack 0x20 Ack 0x51 Ack 0x4c Ack 0x52 Ack 0x53 Ack 0x48 Ack 0x4a Ack 0x48 Ack 0x4f Ack 0x51 Ack 0x45 Ack 0x52 Ack 0x54 Ack 0x4d Ack 0x42 Ack 0x53 Ack 0x49 Ack 0x4e Ack 0x59 Ack 0x42 Ack 0x4d Ack 0x5a Ack 0x59 Ack 0x56 Ack 0x56 Ack 0x54 Ack 0x4d Ack 0x45 Ack 0x4e Ack 0x46 Ack 0x54 Ack 0x52 Ack 0x42 Ack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Ack Stop
+Start Wr[0xa0] Ack 0x02 Ack 0x40 Ack 0x58 Ack 0x55 Ack 0x4a Ack 0x56 Ack 0x5a Ack 0x43 Ack 0x48 Ack 0x45 Ack 0x4c Ack 0x4a Ack 0x54 Ack 0x5a Ack 0x58 Ack 0x52 Ack 0x52 Ack 0x4d Ack 0x42 Ack 0x4a Ack 0x51 Ack 0x50 Ack 0x5a Ack 0x57 Ack 0x45 Ack 0x4a Ack 0x43 Ack 0x50 Ack 0x4f Ack 0x49 Ack 0x54 Ack 0x4e Ack 0x58 Ack 0x4a Ack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Ack Stop
+Start Wr[0xa0] Ack 0x02 Ack 0x60 Ack 0x45 Ack 0x5a Ack 0x51 Ack 0x50 Ack 0x4c Ack 0x54 Ack 0x52 Ack 0x4c Ack 0x4e Ack 0x44 Ack 0x48 Ack 0x55 Ack 0x58 Ack 0x57 Ack 0x59 Ack 0x57 Ack 0x55 Ack 0x44 Ack 0x4b Ack 0x4a Ack 0x43 Ack 0x53 Ack 0x4b Ack 0x47 Ack 0x47 Ack 0x45 Ack 0x42 Ack 0x49 Ack 0x51 Ack 0x53 Ack 0x4e Ack 0x41 Ack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+Start Wr[0xa0] Nack Stop
+
+[1717043418.52][SERI][TXD] {{display_i2c_data;complete}}
+[1717043418.53][CONN][INF] found KV pair in stream: {{__testcase_finish;I2C - 400kHz - EEPROM WR 2kiB;1;0}}, queued...
+[1717043418.54][CONN][RXD] &gt;&gt;&gt; 'I2C - 400kHz - EEPROM WR 2kiB': 1 passed, 0 failed
+[1717043418.54][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1717043418.54][CONN][RXD]
+[1717043418.54][CONN][RXD] &gt;&gt;&gt; Test cases: 14 passed, 0 failed
+[1717043418.54][CONN][RXD]
+[1717043418.54][CONN][RXD] -----------------------
+[1717043418.55][CONN][RXD] 0 Tests 0 Failures 0 Ignored
+[1717043418.55][CONN][RXD] OK
+[1717043418.55][CONN][INF] found KV pair in stream: {{__testcase_summary;14;0}}, queued...
+[1717043418.55][CONN][INF] found KV pair in stream: {{end;success}}, queued...
+[1717043418.55][CONN][INF] found KV pair in stream: {{__exit;0}}, queued...
+[1717043418.55][HTST][INF] __exit(0)
+[1717043418.56][HTST][INF] __notify_complete(True)
+[1717043418.56][HTST][INF] __exit_event_queue received
+[1717043418.56][HTST][INF] test suite run finished after 17.58 sec...
+[1717043418.56][CONN][INF] received special event '__host_test_finished' value='True', finishing
+[1717043418.57][HTST][INF] CONN exited with code: 0
+[1717043418.57][HTST][INF] Some events in queue
+[1717043418.57][HTST][INF] stopped consuming events
+[1717043418.57][HTST][INF] host test result() call skipped, received: True
+[1717043418.57][HTST][INF] calling blocking teardown()
+[1717043418.57][HTST][INF] teardown() finished
+[1717043418.57][HTST][INF] {{result;success}}
+</system-out>
+	</testcase>
+	<testcase name="test-testshield-spi-basic" classname="test-testshield-spi-basic" time="19.5594" status="run">
+		<system-out>[1/1] Flashing test-testshield-spi-basic with OpenOCD...
+Open On-Chip Debugger 0.11.0
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+Info : auto-selecting first available session transport "swd". To override use 'transport select &lt;transport&gt;'.
+adapter speed: 4000 kHz
+
+Info : CMSIS-DAP: SWD  Supported
+Info : CMSIS-DAP: FW Version = 1.0
+Info : CMSIS-DAP: Interface Initialised (SWD)
+Info : SWCLK/TCK = 0 SWDIO/TMS = 1 TDI = 0 TDO = 0 nTRST = 0 nRESET = 1
+Info : CMSIS-DAP: Interface ready
+Info : clock speed 4000 kHz
+Info : SWD DPIDR 0x2ba01477
+Info : lpc17xx.cpu: hardware has 6 breakpoints, 4 watchpoints
+Info : gdb port disabled
+target halted due to debug-request, current mode: Thread
+xPSR: 0x01000000 pc: 0x1fff0080 msp: 0x10001ffc
+** Programming Started **
+Info : If auto-detection fails for this part, please email openocd-devel@lists.sourceforge.net, citing part id 0x26013f37.
+
+Warn : Boot verification checksum in image (0x00000000) to be written to flash is different from calculated vector checksum (0xeffeb946).
+Warn : OpenOCD will write the correct checksum. To remove this warning modify build tools on developer PC to inject correct LPC vector checksum.
+** Programming Finished **
+** Resetting Target **
+Info : SWD DPIDR 0x2ba01477
+shutdown command invoked
+Executing: /home/jamie/Mbed/mbed-ce-test-tools/CI-Shield-Tests/mbed-os/venv/bin/python3.10 -m mbed_host_tests.mbedhtrun --skip-flashing -p /dev/ttyLPC1768 --skip-reset -e /home/jamie/Mbed/mbed-ce-test-tools/CI-Shield-Tests/host_tests -m LPC1768 --baud-rate=115200
+[1717043426.49][TEST][INF] Will use any connected CI shield for this test.  Export the MBED_CI_SHIELD_SERIAL_NUMBER environment var to select a specific shield.
+[1717043426.49][TEST][INF] e.g. 'export MBED_CI_SHIELD_SERIAL_NUMBER=SN002'
+[1717043426.53][HTST][INF] host test executor ver. 0.0.16
+[1717043426.53][HTST][INF] copy image onto target... SKIPPED!
+[1717043426.54][HTST][INF] starting host test process...
+[1717043426.55][CONN][INF] starting connection process...
+[1717043426.55][CONN][INF] notify event queue about extra 60 sec timeout for serial port pooling
+[1717043426.55][CONN][INF] initializing serial port listener...
+[1717043426.55][SERI][INF] using specified port '/dev/ttyLPC1768'
+[1717043426.55][HTST][INF] setting timeout to: 60 sec
+[1717043426.55][SERI][INF] serial(port=/dev/ttyLPC1768, baudrate=115200, read_timeout=0.01, write_timeout=5)
+[1717043426.56][SERI][TXD] mbedmbedmbedmbedmbedmbedmbedmbedmbedmbed
+[1717043426.56][CONN][INF] sending up to 2 __sync packets (specified with --sync=2)
+[1717043426.56][CONN][INF] sending preamble '820c64e9-273b-428c-bf28-aae1d0082c9a'
+[1717043426.56][SERI][TXD] {{__sync;820c64e9-273b-428c-bf28-aae1d0082c9a}}
+[1717043426.57][CONN][RXD] mbedmbedmbedmbedmbedmbedmbedmbed
+[1717043426.58][CONN][INF] found SYNC in stream: {{__sync;820c64e9-273b-428c-bf28-aae1d0082c9a}} it is #0 sent, queued...
+[1717043426.58][CONN][INF] found KV pair in stream: {{__version;1.3.0}}, queued...
+[1717043426.58][CONN][INF] found KV pair in stream: {{__timeout;45}}, queued...
+[1717043426.58][HTST][INF] sync KV found, uuid=820c64e9-273b-428c-bf28-aae1d0082c9a, timestamp=1717043426.579070
+[1717043426.58][CONN][INF] found KV pair in stream: {{__host_test_name;spi_basic_test}}, queued...
+[1717043426.58][HTST][INF] DUT greentea-client version: 1.3.0
+[1717043426.58][HTST][INF] setting timeout to: 45 sec
+[1717043426.58][HTST][INF] host test class: '&lt;class 'spi_basic_test.SpiBasicTestHostTest'&gt;'
+[1717043426.58][TEST][INF] SPI Basic Test host test setup complete.
+[1717043426.58][HTST][INF] host test setup() call...
+[1717043426.58][HTST][INF] CALLBACKs updated
+[1717043426.58][HTST][INF] host test detected: spi_basic_test
+[1717043426.59][CONN][RXD] &gt;&gt;&gt; Running 10 test cases...
+[1717043426.59][CONN][INF] found KV pair in stream: {{__testcase_name;Send 8 Bit Data via Single Word API}}, queued...
+[1717043426.60][CONN][INF] found KV pair in stream: {{__testcase_name;Send 16 Bit Data via Single Word API}}, queued...
+[1717043426.60][CONN][INF] found KV pair in stream: {{__testcase_name;Send 8 Bit Data via Transactional API (Tx only)}}, queued...
+[1717043426.61][CONN][INF] found KV pair in stream: {{__testcase_name;Send 16 Bit Data via Transactional API (Tx only)}}, queued...
+[1717043426.61][CONN][INF] found KV pair in stream: {{__testcase_name;Free and Reallocate SPI Instance (synchronous API)}}, queued...
+[1717043426.63][CONN][INF] found KV pair in stream: {{__testcase_name;Read 8 Bit Data via Transactional API (Rx only)}}, queued...
+[1717043426.63][CONN][INF] found KV pair in stream: {{__testcase_name;Read 16 Bit Data via Transactional API (Rx only)}}, queued...
+[1717043426.64][CONN][INF] found KV pair in stream: {{__testcase_name;Transfer 8 Bit Data via Transactional API (Tx/Rx)}}, queued...
+[1717043426.64][CONN][INF] found KV pair in stream: {{__testcase_name;Transfer 16 Bit Data via Transactional API (Tx/Rx)}}, queued...
+[1717043426.65][CONN][RXD]
+[1717043426.65][CONN][RXD] &gt;&gt;&gt; Running case #1: 'Send 8 Bit Data via Single Word API'...
+[1717043426.65][CONN][INF] found KV pair in stream: {{__testcase_name;Use Multiple SPI Instances (synchronous API)}}, queued...
+[1717043426.66][CONN][INF] found KV pair in stream: {{__testcase_start;Send 8 Bit Data via Single Word API}}, queued...
+[1717043426.66][CONN][INF] found KV pair in stream: {{start_recording_spi;please}}, queued...
+[1717043427.68][SERI][TXD] {{start_recording_spi;complete}}
+[1717043427.69][CONN][INF] found KV pair in stream: {{verify_sequence;standard_word}}, queued...
+[1717043427.77][TEST][INF] Saw on the SPI bus: [mosi: b'01020408', miso: b'01020408']
+[1717043427.77][TEST][INF] PASS
+[1717043427.77][SERI][TXD] {{verify_sequence;complete}}
+[1717043427.78][CONN][INF] found KV pair in stream: {{__testcase_finish;Send 8 Bit Data via Single Word API;1;0}}, queued...
+[1717043427.79][CONN][RXD] &gt;&gt;&gt; 'Send 8 Bit Data via Single Word API': 1 passed, 0 failed
+[1717043427.79][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1717043427.79][CONN][RXD]
+[1717043427.80][CONN][RXD] &gt;&gt;&gt; Running case #2: 'Send 16 Bit Data via Single Word API'...
+[1717043427.80][CONN][INF] found KV pair in stream: {{__testcase_start;Send 16 Bit Data via Single Word API}}, queued...
+[1717043427.80][CONN][INF] found KV pair in stream: {{start_recording_spi;please}}, queued...
+[1717043428.82][SERI][TXD] {{start_recording_spi;complete}}
+[1717043428.83][CONN][INF] found KV pair in stream: {{verify_sequence;standard_word}}, queued...
+[1717043428.91][TEST][INF] Saw on the SPI bus: [mosi: b'01020408', miso: b'01020408']
+[1717043428.91][TEST][INF] PASS
+[1717043428.91][SERI][TXD] {{verify_sequence;complete}}
+[1717043428.92][CONN][INF] found KV pair in stream: {{__testcase_finish;Send 16 Bit Data via Single Word API;1;0}}, queued...
+[1717043428.94][CONN][RXD] &gt;&gt;&gt; 'Send 16 Bit Data via Single Word API': 1 passed, 0 failed
+[1717043428.94][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1717043428.94][CONN][RXD]
+[1717043428.95][CONN][RXD] &gt;&gt;&gt; Running case #3: 'Send 8 Bit Data via Transactional API (Tx only)'...
+[1717043428.95][CONN][INF] found KV pair in stream: {{__testcase_start;Send 8 Bit Data via Transactional API (Tx only)}}, queued...
+[1717043428.95][CONN][INF] found KV pair in stream: {{start_recording_spi;please}}, queued...
+[1717043429.96][SERI][TXD] {{start_recording_spi;complete}}
+[1717043429.97][CONN][INF] found KV pair in stream: {{verify_sequence;standard_word}}, queued...
+[1717043430.05][TEST][INF] Saw on the SPI bus: [mosi: b'01020408', miso: b'01020408']
+[1717043430.05][TEST][INF] PASS
+[1717043430.06][SERI][TXD] {{verify_sequence;complete}}
+[1717043430.07][CONN][INF] found KV pair in stream: {{__testcase_finish;Send 8 Bit Data via Transactional API (Tx only);1;0}}, queued...
+[1717043430.08][CONN][RXD] &gt;&gt;&gt; 'Send 8 Bit Data via Transactional API (Tx only)': 1 passed, 0 failed
+[1717043430.08][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1717043430.08][CONN][RXD]
+[1717043430.09][CONN][RXD] &gt;&gt;&gt; Running case #4: 'Send 16 Bit Data via Transactional API (Tx only)'...
+[1717043430.09][CONN][INF] found KV pair in stream: {{__testcase_start;Send 16 Bit Data via Transactional API (Tx only)}}, queued...
+[1717043430.10][CONN][INF] found KV pair in stream: {{start_recording_spi;please}}, queued...
+[1717043431.11][SERI][TXD] {{start_recording_spi;complete}}
+[1717043431.12][CONN][INF] found KV pair in stream: {{verify_sequence;standard_word}}, queued...
+[1717043431.19][TEST][INF] Saw on the SPI bus: [mosi: b'01020408', miso: b'01020408']
+[1717043431.19][TEST][INF] PASS
+[1717043431.20][SERI][TXD] {{verify_sequence;complete}}
+[1717043431.21][CONN][INF] found KV pair in stream: {{__testcase_finish;Send 16 Bit Data via Transactional API (Tx only);1;0}}, queued...
+[1717043431.22][CONN][RXD] &gt;&gt;&gt; 'Send 16 Bit Data via Transactional API (Tx only)': 1 passed, 0 failed
+[1717043431.22][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1717043431.22][CONN][RXD]
+[1717043431.23][CONN][RXD] &gt;&gt;&gt; Running case #5: 'Free and Reallocate SPI Instance (synchronous API)'...
+[1717043431.23][CONN][INF] found KV pair in stream: {{__testcase_start;Free and Reallocate SPI Instance (synchronous API)}}, queued...
+[1717043431.25][CONN][INF] found KV pair in stream: {{start_recording_spi;please}}, queued...
+[1717043432.25][SERI][TXD] {{start_recording_spi;complete}}
+[1717043432.26][CONN][INF] found KV pair in stream: {{verify_sequence;standard_word}}, queued...
+[1717043432.34][TEST][INF] Saw on the SPI bus: [mosi: b'01020408', miso: b'01020408']
+[1717043432.34][TEST][INF] PASS
+[1717043432.35][SERI][TXD] {{verify_sequence;complete}}
+[1717043432.36][CONN][INF] found KV pair in stream: {{__testcase_finish;Free and Reallocate SPI Instance (synchronous API);1;0}}, queued...
+[1717043432.37][CONN][RXD] &gt;&gt;&gt; 'Free and Reallocate SPI Instance (synchronous API)': 1 passed, 0 failed
+[1717043432.37][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1717043432.37][CONN][RXD]
+[1717043432.38][CONN][RXD] &gt;&gt;&gt; Running case #6: 'Read 8 Bit Data via Transactional API (Rx only)'...
+[1717043432.38][CONN][INF] found KV pair in stream: {{__testcase_start;Read 8 Bit Data via Transactional API (Rx only)}}, queued...
+[1717043432.39][CONN][INF] found KV pair in stream: {{start_recording_spi;please}}, queued...
+[1717043433.40][SERI][TXD] {{start_recording_spi;complete}}
+[1717043433.41][CONN][INF] found KV pair in stream: {{print_spi_data;please}}, queued...
+[1717043433.48][TEST][INF] Saw on the SPI bus: [mosi: b'afafafaf', miso: b'afafafaf']
+[1717043433.49][SERI][TXD] {{print_spi_data;complete}}
+[1717043433.50][CONN][INF] found KV pair in stream: {{__testcase_finish;Read 8 Bit Data via Transactional API (Rx only);1;0}}, queued...
+[1717043433.51][CONN][RXD] &gt;&gt;&gt; 'Read 8 Bit Data via Transactional API (Rx only)': 1 passed, 0 failed
+[1717043433.52][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1717043433.52][CONN][RXD]
+[1717043433.53][CONN][RXD] &gt;&gt;&gt; Running case #7: 'Read 16 Bit Data via Transactional API (Rx only)'...
+[1717043433.53][CONN][INF] found KV pair in stream: {{__testcase_start;Read 16 Bit Data via Transactional API (Rx only)}}, queued...
+[1717043433.54][CONN][INF] found KV pair in stream: {{start_recording_spi;please}}, queued...
+[1717043434.54][SERI][TXD] {{start_recording_spi;complete}}
+[1717043434.56][CONN][RXD] rx_buffer_u16[0] &lt;= 0xafaf
+[1717043434.56][CONN][RXD] rx_buffer_u16[1] &lt;= 0xafaf
+[1717043434.57][CONN][INF] found KV pair in stream: {{print_spi_data;please}}, queued...
+[1717043434.63][TEST][INF] Saw on the SPI bus: [mosi: b'afafafaf', miso: b'afafafaf']
+[1717043434.64][SERI][TXD] {{print_spi_data;complete}}
+[1717043434.65][CONN][INF] found KV pair in stream: {{__testcase_finish;Read 16 Bit Data via Transactional API (Rx only);1;0}}, queued...
+[1717043434.66][CONN][RXD] &gt;&gt;&gt; 'Read 16 Bit Data via Transactional API (Rx only)': 1 passed, 0 failed
+[1717043434.66][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1717043434.66][CONN][RXD]
+[1717043434.67][CONN][RXD] &gt;&gt;&gt; Running case #8: 'Transfer 8 Bit Data via Transactional API (Tx/Rx)'...
+[1717043434.67][CONN][INF] found KV pair in stream: {{__testcase_start;Transfer 8 Bit Data via Transactional API (Tx/Rx)}}, queued...
+[1717043434.68][CONN][INF] found KV pair in stream: {{start_recording_spi;please}}, queued...
+[1717043435.69][SERI][TXD] {{start_recording_spi;complete}}
+[1717043435.70][CONN][INF] found KV pair in stream: {{verify_sequence;standard_word}}, queued...
+[1717043435.78][TEST][INF] Saw on the SPI bus: [mosi: b'01020408', miso: b'01020408']
+[1717043435.78][TEST][INF] PASS
+[1717043435.79][SERI][TXD] {{verify_sequence;complete}}
+[1717043435.80][CONN][INF] found KV pair in stream: {{__testcase_finish;Transfer 8 Bit Data via Transactional API (Tx/Rx);1;0}}, queued...
+[1717043435.81][CONN][RXD] &gt;&gt;&gt; 'Transfer 8 Bit Data via Transactional API (Tx/Rx)': 1 passed, 0 failed
+[1717043435.81][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1717043435.81][CONN][RXD]
+[1717043435.82][CONN][RXD] &gt;&gt;&gt; Running case #9: 'Transfer 16 Bit Data via Transactional API (Tx/Rx)'...
+[1717043435.82][CONN][INF] found KV pair in stream: {{__testcase_start;Transfer 16 Bit Data via Transactional API (Tx/Rx)}}, queued...
+[1717043435.83][CONN][INF] found KV pair in stream: {{start_recording_spi;please}}, queued...
+[1717043436.84][SERI][TXD] {{start_recording_spi;complete}}
+[1717043436.85][CONN][RXD] rx_buffer_u16[0] &lt;= 0x102
+[1717043436.85][CONN][RXD] rx_buffer_u16[1] &lt;= 0x408
+[1717043436.86][CONN][INF] found KV pair in stream: {{verify_sequence;standard_word}}, queued...
+[1717043436.92][TEST][INF] Saw on the SPI bus: [mosi: b'01020408', miso: b'01020408']
+[1717043436.92][TEST][INF] PASS
+[1717043436.93][SERI][TXD] {{verify_sequence;complete}}
+[1717043436.94][CONN][INF] found KV pair in stream: {{__testcase_finish;Transfer 16 Bit Data via Transactional API (Tx/Rx);1;0}}, queued...
+[1717043436.95][CONN][RXD] &gt;&gt;&gt; 'Transfer 16 Bit Data via Transactional API (Tx/Rx)': 1 passed, 0 failed
+[1717043436.95][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1717043436.95][CONN][RXD]
+[1717043436.97][CONN][RXD] &gt;&gt;&gt; Running case #10: 'Use Multiple SPI Instances (synchronous API)'...
+[1717043436.97][CONN][INF] found KV pair in stream: {{__testcase_start;Use Multiple SPI Instances (synchronous API)}}, queued...
+[1717043436.98][CONN][INF] found KV pair in stream: {{start_recording_spi;please}}, queued...
+[1717043437.98][SERI][TXD] {{start_recording_spi;complete}}
+[1717043437.99][CONN][INF] found KV pair in stream: {{verify_sequence;standard_word}}, queued...
+[1717043438.07][TEST][INF] Saw on the SPI bus: [mosi: b'01020408', miso: b'01020408']
+[1717043438.08][TEST][INF] PASS
+[1717043438.08][SERI][TXD] {{verify_sequence;complete}}
+[1717043438.09][CONN][INF] found KV pair in stream: {{__testcase_finish;Use Multiple SPI Instances (synchronous API);1;0}}, queued...
+[1717043438.10][CONN][RXD] &gt;&gt;&gt; 'Use Multiple SPI Instances (synchronous API)': 1 passed, 0 failed
+[1717043438.10][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1717043438.10][CONN][RXD]
+[1717043438.11][CONN][RXD] &gt;&gt;&gt; Test cases: 10 passed, 0 failed
+[1717043438.11][CONN][RXD]
+[1717043438.11][CONN][RXD] -----------------------
+[1717043438.11][CONN][RXD] 0 Tests 0 Failures 0 Ignored
+[1717043438.11][CONN][RXD] OK
+[1717043438.11][CONN][INF] found KV pair in stream: {{__testcase_summary;10;0}}, queued...
+[1717043438.11][CONN][INF] found KV pair in stream: {{end;success}}, queued...
+[1717043438.11][CONN][INF] found KV pair in stream: {{__exit;0}}, queued...
+[1717043438.12][HTST][INF] __exit(0)
+[1717043438.12][HTST][INF] __notify_complete(True)
+[1717043438.12][HTST][INF] __exit_event_queue received
+[1717043438.12][HTST][INF] test suite run finished after 11.54 sec...
+[1717043438.13][CONN][INF] received special event '__host_test_finished' value='True', finishing
+[1717043438.13][HTST][INF] CONN exited with code: 0
+[1717043438.13][HTST][INF] Some events in queue
+[1717043438.13][HTST][INF] stopped consuming events
+[1717043438.13][HTST][INF] host test result() call skipped, received: True
+[1717043438.13][HTST][INF] calling blocking teardown()
+[1717043438.13][HTST][INF] teardown() finished
+[1717043438.13][HTST][INF] {{result;success}}
+</system-out>
+	</testcase>
+	<testcase name="test-testshield-spi-microsd" classname="test-testshield-spi-microsd" time="135.804" status="fail">
+		<failure message=""/>
+		<system-out>[1/1] Flashing test-testshield-spi-microsd with OpenOCD...
+Open On-Chip Debugger 0.11.0
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+Info : auto-selecting first available session transport "swd". To override use 'transport select &lt;transport&gt;'.
+adapter speed: 4000 kHz
+
+Info : CMSIS-DAP: SWD  Supported
+Info : CMSIS-DAP: FW Version = 1.0
+Info : CMSIS-DAP: Interface Initialised (SWD)
+Info : SWCLK/TCK = 0 SWDIO/TMS = 1 TDI = 0 TDO = 0 nTRST = 0 nRESET = 1
+Info : CMSIS-DAP: Interface ready
+Info : clock speed 4000 kHz
+Info : SWD DPIDR 0x2ba01477
+Info : lpc17xx.cpu: hardware has 6 breakpoints, 4 watchpoints
+Info : gdb port disabled
+target halted due to debug-request, current mode: Thread
+xPSR: 0x01000000 pc: 0x1fff0080 msp: 0x10001ffc
+** Programming Started **
+Info : If auto-detection fails for this part, please email openocd-devel@lists.sourceforge.net, citing part id 0x26013f37.
+
+Warn : Boot verification checksum in image (0x00000000) to be written to flash is different from calculated vector checksum (0xeffeb216).
+Warn : OpenOCD will write the correct checksum. To remove this warning modify build tools on developer PC to inject correct LPC vector checksum.
+** Programming Finished **
+** Resetting Target **
+Info : SWD DPIDR 0x2ba01477
+shutdown command invoked
+Executing: /home/jamie/Mbed/mbed-ce-test-tools/CI-Shield-Tests/mbed-os/venv/bin/python3.10 -m mbed_host_tests.mbedhtrun --skip-flashing -p /dev/ttyLPC1768 --skip-reset -e /home/jamie/Mbed/mbed-ce-test-tools/CI-Shield-Tests/host_tests -m LPC1768 --baud-rate=115200
+[1717043734.60][TEST][INF] Will use any connected CI shield for this test.  Export the MBED_CI_SHIELD_SERIAL_NUMBER environment var to select a specific shield.
+[1717043734.60][TEST][INF] e.g. 'export MBED_CI_SHIELD_SERIAL_NUMBER=SN002'
+[1717043734.64][HTST][INF] host test executor ver. 0.0.16
+[1717043734.64][HTST][INF] copy image onto target... SKIPPED!
+[1717043734.65][HTST][INF] starting host test process...
+[1717043734.66][CONN][INF] starting connection process...
+[1717043734.66][CONN][INF] notify event queue about extra 60 sec timeout for serial port pooling
+[1717043734.67][CONN][INF] initializing serial port listener...
+[1717043734.67][SERI][INF] using specified port '/dev/ttyLPC1768'
+[1717043734.67][HTST][INF] setting timeout to: 60 sec
+[1717043734.67][SERI][INF] serial(port=/dev/ttyLPC1768, baudrate=115200, read_timeout=0.01, write_timeout=5)
+[1717043734.67][SERI][TXD] mbedmbedmbedmbedmbedmbedmbedmbedmbedmbed
+[1717043734.67][CONN][INF] sending up to 2 __sync packets (specified with --sync=2)
+[1717043734.67][CONN][INF] sending preamble '1fce521c-1f69-42c3-8c98-5cebd445fa89'
+[1717043734.67][SERI][TXD] {{__sync;1fce521c-1f69-42c3-8c98-5cebd445fa89}}
+[1717043734.68][CONN][RXD] mbedmbedmbedmbedmbedmbedmbedmbed
+[1717043734.69][CONN][INF] found SYNC in stream: {{__sync;1fce521c-1f69-42c3-8c98-5cebd445fa89}} it is #0 sent, queued...
+[1717043734.69][CONN][INF] found KV pair in stream: {{__version;1.3.0}}, queued...
+[1717043734.69][HTST][INF] sync KV found, uuid=1fce521c-1f69-42c3-8c98-5cebd445fa89, timestamp=1717043734.693579
+[1717043734.69][CONN][INF] found KV pair in stream: {{__timeout;120}}, queued...
+[1717043734.70][HTST][INF] DUT greentea-client version: 1.3.0
+[1717043734.70][CONN][INF] found KV pair in stream: {{__host_test_name;default_auto}}, queued...
+[1717043734.70][HTST][INF] setting timeout to: 120 sec
+[1717043734.70][HTST][INF] host test class: '&lt;class 'mbed_os_tools.test.host_tests.default_auto.DefaultAuto'&gt;'
+[1717043734.70][HTST][INF] host test setup() call...
+[1717043734.70][HTST][INF] CALLBACKs updated
+[1717043734.70][HTST][INF] host test detected: default_auto
+[1717043734.71][CONN][RXD] &gt;&gt;&gt; Running 4 test cases...
+[1717043734.71][CONN][INF] found KV pair in stream: {{__testcase_name;SPI - Object Definable}}, queued...
+[1717043734.71][CONN][INF] found KV pair in stream: {{__testcase_name;SPI - SD card present (1MHz)}}, queued...
+[1717043734.72][CONN][RXD]
+[1717043734.72][CONN][INF] found KV pair in stream: {{__testcase_name;SPI - Mount FS, Create File (1MHz)}}, queued...
+[1717043734.72][CONN][INF] found KV pair in stream: {{__testcase_name;SPI - Write, Read, and Delete File (1MHz)}}, queued...
+[1717043734.73][CONN][RXD] &gt;&gt;&gt; Running case #1: 'SPI - Object Definable'...
+[1717043734.73][CONN][INF] found KV pair in stream: {{__testcase_start;SPI - Object Definable}}, queued...
+[1717043734.73][CONN][INF] found KV pair in stream: {{__testcase_finish;SPI - Object Definable;1;0}}, queued...
+[1717043734.74][CONN][RXD] &gt;&gt;&gt; 'SPI - Object Definable': 1 passed, 0 failed
+[1717043734.74][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1717043734.74][CONN][RXD]
+[1717043734.74][CONN][RXD] &gt;&gt;&gt; Running case #2: 'SPI - SD card present (1MHz)'...
+[1717043734.75][CONN][INF] found KV pair in stream: {{__testcase_start;SPI - SD card present (1MHz)}}, queued...
+[1717043854.90][HTST][INF] test suite run finished after 120.20 sec...
+[1717043854.90][CONN][INF] received special event '__host_test_finished' value='True', finishing
+[1717043854.91][HTST][INF] CONN exited with code: 0
+[1717043854.91][HTST][INF] No events in queue
+[1717043854.91][HTST][INF] stopped consuming events
+[1717043854.91][HTST][INF] host test result(): None
+[1717043854.91][HTST][WRN] missing __exit event from DUT
+[1717043854.91][HTST][WRN] missing __exit_event_queue event from host test
+[1717043854.91][HTST][ERR] missing __exit_event_queue event from host test and no result from host test, timeout...
+[1717043854.91][HTST][INF] calling blocking teardown()
+[1717043854.91][HTST][INF] teardown() finished
+[1717043854.91][HTST][INF] {{result;timeout}}
+CMake Error at mbed-run-greentea-test-testshield-spi-microsd.cmake:20 (execute_process):
+  execute_process failed command indexes:
+
+    1: "Child return code: 5"
+
+
+
+</system-out>
+	</testcase>
+	<testcase name="test-testshield-pwm-and-adc" classname="test-testshield-pwm-and-adc" time="63.834" status="run">
+		<system-out>[1/1] Flashing test-testshield-pwm-and-adc with OpenOCD...
+Open On-Chip Debugger 0.11.0
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+Info : auto-selecting first available session transport "swd". To override use 'transport select &lt;transport&gt;'.
+adapter speed: 4000 kHz
+
+Info : CMSIS-DAP: SWD  Supported
+Info : CMSIS-DAP: FW Version = 1.0
+Info : CMSIS-DAP: Interface Initialised (SWD)
+Info : SWCLK/TCK = 0 SWDIO/TMS = 1 TDI = 0 TDO = 0 nTRST = 0 nRESET = 1
+Info : CMSIS-DAP: Interface ready
+Info : clock speed 4000 kHz
+Info : SWD DPIDR 0x2ba01477
+Info : lpc17xx.cpu: hardware has 6 breakpoints, 4 watchpoints
+Info : gdb port disabled
+target halted due to debug-request, current mode: Thread
+xPSR: 0x01000000 pc: 0x1fff0080 msp: 0x10001ffc
+** Programming Started **
+Info : If auto-detection fails for this part, please email openocd-devel@lists.sourceforge.net, citing part id 0x26013f37.
+
+Warn : Boot verification checksum in image (0x00000000) to be written to flash is different from calculated vector checksum (0xeffec756).
+Warn : OpenOCD will write the correct checksum. To remove this warning modify build tools on developer PC to inject correct LPC vector checksum.
+** Programming Finished **
+** Resetting Target **
+Info : SWD DPIDR 0x2ba01477
+shutdown command invoked
+Executing: /home/jamie/Mbed/mbed-ce-test-tools/CI-Shield-Tests/mbed-os/venv/bin/python3.10 -m mbed_host_tests.mbedhtrun --skip-flashing -p /dev/ttyLPC1768 --skip-reset -e /home/jamie/Mbed/mbed-ce-test-tools/CI-Shield-Tests/host_tests -m LPC1768 --baud-rate=115200
+[1717043867.25][TEST][INF] Will use any connected CI shield for this test.  Export the MBED_CI_SHIELD_SERIAL_NUMBER environment var to select a specific shield.
+[1717043867.25][TEST][INF] e.g. 'export MBED_CI_SHIELD_SERIAL_NUMBER=SN002'
+[1717043867.29][HTST][INF] host test executor ver. 0.0.16
+[1717043867.29][HTST][INF] copy image onto target... SKIPPED!
+[1717043867.30][HTST][INF] starting host test process...
+[1717043867.31][CONN][INF] starting connection process...
+[1717043867.31][CONN][INF] notify event queue about extra 60 sec timeout for serial port pooling
+[1717043867.32][CONN][INF] initializing serial port listener...
+[1717043867.32][SERI][INF] using specified port '/dev/ttyLPC1768'
+[1717043867.32][HTST][INF] setting timeout to: 60 sec
+[1717043867.32][SERI][INF] serial(port=/dev/ttyLPC1768, baudrate=115200, read_timeout=0.01, write_timeout=5)
+[1717043867.32][SERI][TXD] mbedmbedmbedmbedmbedmbedmbedmbedmbedmbed
+[1717043867.32][CONN][INF] sending up to 2 __sync packets (specified with --sync=2)
+[1717043867.32][CONN][INF] sending preamble '44108c0b-1b40-48e7-9fc3-c559e9f632d6'
+[1717043867.32][SERI][TXD] {{__sync;44108c0b-1b40-48e7-9fc3-c559e9f632d6}}
+[1717043867.33][CONN][RXD] mbedmbedmbedmbedmbedmbedmbedmbed
+[1717043867.34][CONN][INF] found SYNC in stream: {{__sync;44108c0b-1b40-48e7-9fc3-c559e9f632d6}} it is #0 sent, queued...
+[1717043867.35][CONN][INF] found KV pair in stream: {{__version;1.3.0}}, queued...
+[1717043867.35][HTST][INF] sync KV found, uuid=44108c0b-1b40-48e7-9fc3-c559e9f632d6, timestamp=1717043867.344138
+[1717043867.35][HTST][INF] DUT greentea-client version: 1.3.0
+[1717043867.35][CONN][INF] found KV pair in stream: {{__timeout;60}}, queued...
+[1717043867.35][CONN][INF] found KV pair in stream: {{__host_test_name;signal_analyzer_test}}, queued...
+[1717043867.35][HTST][INF] setting timeout to: 60 sec
+[1717043867.35][HTST][INF] host test class: '&lt;class 'signal_analyzer_test.SignalAnalyzerHostTest'&gt;'
+[1717043867.35][TEST][INF] Signal Analyzer Test host test setup complete.
+[1717043867.35][HTST][INF] host test setup() call...
+[1717043867.35][HTST][INF] CALLBACKs updated
+[1717043867.35][HTST][INF] host test detected: signal_analyzer_test
+[1717043867.36][CONN][RXD] &gt;&gt;&gt; Running 9 test cases...
+[1717043867.36][CONN][INF] found KV pair in stream: {{__testcase_name;Test reading digital values with the ADC}}, queued...
+[1717043867.36][CONN][INF] found KV pair in stream: {{__testcase_name;Test reading analog values with the ADC}}, queued...
+[1717043867.37][CONN][INF] found KV pair in stream: {{__testcase_name;Test PWM frequency and duty cycle (freq = 50 Hz)}}, queued...
+[1717043867.37][CONN][INF] found KV pair in stream: {{__testcase_name;Test PWM frequency and duty cycle (freq = 1 kHz)}}, queued...
+[1717043867.38][CONN][INF] found KV pair in stream: {{__testcase_name;Test PWM frequency and duty cycle (freq = 10 kHz)}}, queued...
+[1717043867.38][CONN][INF] found KV pair in stream: {{__testcase_name;Test PWM frequency and duty cycle (freq = 100 kHz)}}, queued...
+[1717043867.39][CONN][INF] found KV pair in stream: {{__testcase_name;Test PWM frequency and duty cycle (freq = 1 MHz)}}, queued...
+[1717043867.39][CONN][INF] found KV pair in stream: {{__testcase_name;Test PWM Suspend/Resume (freq = 1kHz)}}, queued...
+[1717043867.41][CONN][RXD]
+[1717043867.41][CONN][RXD] &gt;&gt;&gt; Running case #1: 'Test reading digital values with the ADC'...
+[1717043867.41][CONN][INF] found KV pair in stream: {{__testcase_name;Test PWM Maintains Duty Cycle (freq = 1kHz)}}, queued...
+[1717043867.42][CONN][INF] found KV pair in stream: {{__testcase_start;Test reading digital values with the ADC}}, queued...
+[1717043867.45][CONN][RXD] With the PWM at full off, the ADC reads 0.0% of reference voltage.
+[1717043867.50][CONN][RXD] With the PWM at full on, the ADC reads 99.8% of reference voltage.
+[1717043867.50][CONN][INF] found KV pair in stream: {{__testcase_finish;Test reading digital values with the ADC;1;0}}, queued...
+[1717043867.51][CONN][RXD] &gt;&gt;&gt; 'Test reading digital values with the ADC': 1 passed, 0 failed
+[1717043867.51][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1717043867.52][CONN][RXD] Cannot convert to volts, target.default-adc-vref is not set for this target
+[1717043867.52][CONN][RXD] &gt;&gt;&gt; Running case #2: 'Test reading analog values with the ADC'...
+[1717043867.53][CONN][INF] found KV pair in stream: {{__testcase_start;Test reading analog values with the ADC}}, queued...
+[1717043867.57][CONN][RXD] PWM duty cycle of 0.0% produced an ADC reading of 0.1% (expected 0.0%)
+[1717043867.62][CONN][RXD] PWM duty cycle of 10.0% produced an ADC reading of 10.1% (expected 10.0%)
+[1717043867.67][CONN][RXD] PWM duty cycle of 20.0% produced an ADC reading of 19.8% (expected 20.0%)
+[1717043867.71][CONN][RXD] PWM duty cycle of 30.0% produced an ADC reading of 30.3% (expected 29.9%)
+[1717043867.76][CONN][RXD] PWM duty cycle of 40.0% produced an ADC reading of 40.6% (expected 39.9%)
+[1717043867.81][CONN][RXD] PWM duty cycle of 50.0% produced an ADC reading of 50.6% (expected 49.9%)
+[1717043867.87][CONN][RXD] PWM duty cycle of 60.0% produced an ADC reading of 60.8% (expected 59.9%)
+[1717043867.92][CONN][RXD] PWM duty cycle of 70.0% produced an ADC reading of 70.2% (expected 69.9%)
+[1717043867.97][CONN][RXD] PWM duty cycle of 80.0% produced an ADC reading of 80.2% (expected 79.9%)
+[1717043868.01][CONN][RXD] PWM duty cycle of 90.0% produced an ADC reading of 90.0% (expected 89.8%)
+[1717043868.02][CONN][RXD] &gt;&gt;&gt; 'Test reading analog values with the ADC': 1 passed, 0 failed
+[1717043868.02][CONN][INF] found KV pair in stream: {{__testcase_finish;Test reading analog values with the ADC;1;0}}, queued...
+[1717043868.03][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1717043868.03][CONN][RXD]
+[1717043868.03][CONN][RXD] &gt;&gt;&gt; Running case #3: 'Test PWM frequency and duty cycle (freq = 50 Hz)'...
+[1717043868.04][CONN][INF] found KV pair in stream: {{__testcase_start;Test PWM frequency and duty cycle (freq = 50 Hz)}}, queued...
+[1717043868.04][CONN][INF] found KV pair in stream: {{analyze_signal;please}}, queued...
+[1717043869.63][SERI][TXD] {{frequency;50.0}}
+[1717043869.64][SERI][TXD] {{duty_cycle;0.05318986702533244}}
+[1717043869.66][CONN][RXD] Expected PWM frequency was 50 Hz (+- 20 Hz) and duty cycle was 5.32% (+-0.10%), host measured frequency 50 Hz and duty cycle 5.32%
+[1717043869.66][CONN][INF] found KV pair in stream: {{analyze_signal;please}}, queued...
+[1717043871.24][SERI][TXD] {{frequency;50.0}}
+[1717043871.25][SERI][TXD] {{duty_cycle;0.16010709973225068}}
+[1717043871.27][CONN][RXD] Expected PWM frequency was 50 Hz (+- 20 Hz) and duty cycle was 16.01% (+-0.10%), host measured frequency 50 Hz and duty cycle 16.01%
+[1717043871.27][CONN][INF] found KV pair in stream: {{analyze_signal;please}}, queued...
+[1717043872.87][SERI][TXD] {{frequency;50.0}}
+[1717043872.88][SERI][TXD] {{duty_cycle;0.6614108464728838}}
+[1717043872.90][CONN][RXD] Expected PWM frequency was 50 Hz (+- 20 Hz) and duty cycle was 66.14% (+-0.10%), host measured frequency 50 Hz and duty cycle 66.14%
+[1717043872.90][CONN][INF] found KV pair in stream: {{analyze_signal;please}}, queued...
+[1717043874.50][SERI][TXD] {{frequency;50.0}}
+[1717043874.51][SERI][TXD] {{duty_cycle;0.8503853740365649}}
+[1717043874.53][CONN][RXD] Expected PWM frequency was 50 Hz (+- 20 Hz) and duty cycle was 85.04% (+-0.10%), host measured frequency 50 Hz and duty cycle 85.04%
+[1717043874.53][CONN][INF] found KV pair in stream: {{analyze_signal;please}}, queued...
+[1717043876.12][SERI][TXD] {{frequency;50.0}}
+[1717043876.14][SERI][TXD] {{duty_cycle;0.6394784013039967}}
+[1717043876.16][CONN][RXD] Expected PWM frequency was 50 Hz (+- 20 Hz) and duty cycle was 63.95% (+-0.10%), host measured frequency 50 Hz and duty cycle 63.95%
+[1717043876.17][CONN][RXD] &gt;&gt;&gt; 'Test PWM frequency and duty cycle (freq = 50 Hz)': 1 passed, 0 failed
+[1717043876.17][CONN][INF] found KV pair in stream: {{__testcase_finish;Test PWM frequency and duty cycle (freq = 50 Hz);1;0}}, queued...
+[1717043876.18][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1717043876.18][CONN][RXD]
+[1717043876.18][CONN][RXD] &gt;&gt;&gt; Running case #4: 'Test PWM frequency and duty cycle (freq = 1 kHz)'...
+[1717043876.19][CONN][INF] found KV pair in stream: {{__testcase_start;Test PWM frequency and duty cycle (freq = 1 kHz)}}, queued...
+[1717043876.19][CONN][INF] found KV pair in stream: {{analyze_signal;please}}, queued...
+[1717043877.79][SERI][TXD] {{frequency;1000.0}}
+[1717043877.80][SERI][TXD] {{duty_cycle;0.6188959527601181}}
+[1717043877.82][CONN][RXD] Expected PWM frequency was 1000 Hz (+- 20 Hz) and duty cycle was 61.89% (+-0.10%), host measured frequency 1000 Hz and duty cycle 61.89%
+[1717043877.82][CONN][INF] found KV pair in stream: {{analyze_signal;please}}, queued...
+[1717043879.41][SERI][TXD] {{frequency;1000.0}}
+[1717043879.42][SERI][TXD] {{duty_cycle;0.4149564626088435}}
+[1717043879.44][CONN][RXD] Expected PWM frequency was 1000 Hz (+- 20 Hz) and duty cycle was 41.49% (+-0.10%), host measured frequency 1000 Hz and duty cycle 41.50%
+[1717043879.44][CONN][INF] found KV pair in stream: {{analyze_signal;please}}, queued...
+[1717043881.04][SERI][TXD] {{frequency;1000.0}}
+[1717043881.05][SERI][TXD] {{duty_cycle;0.7679555801110497}}
+[1717043881.07][CONN][RXD] Expected PWM frequency was 1000 Hz (+- 20 Hz) and duty cycle was 76.80% (+-0.10%), host measured frequency 1000 Hz and duty cycle 76.80%
+[1717043881.07][CONN][INF] found KV pair in stream: {{analyze_signal;please}}, queued...
+[1717043882.67][SERI][TXD] {{frequency;1000.0}}
+[1717043882.68][SERI][TXD] {{duty_cycle;0.9824975437561406}}
+[1717043882.70][CONN][RXD] Expected PWM frequency was 1000 Hz (+- 20 Hz) and duty cycle was 98.25% (+-0.10%), host measured frequency 1000 Hz and duty cycle 98.25%
+[1717043882.70][CONN][INF] found KV pair in stream: {{analyze_signal;please}}, queued...
+[1717043884.30][SERI][TXD] {{frequency;1000.0}}
+[1717043884.31][SERI][TXD] {{duty_cycle;0.4871387821530446}}
+[1717043884.33][CONN][RXD] Expected PWM frequency was 1000 Hz (+- 20 Hz) and duty cycle was 48.71% (+-0.10%), host measured frequency 1000 Hz and duty cycle 48.71%
+[1717043884.34][CONN][RXD] &gt;&gt;&gt; 'Test PWM frequency and duty cycle (freq = 1 kHz)': 1 passed, 0 failed
+[1717043884.34][CONN][INF] found KV pair in stream: {{__testcase_finish;Test PWM frequency and duty cycle (freq = 1 kHz);1;0}}, queued...
+[1717043884.35][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1717043884.35][CONN][RXD]
+[1717043884.35][CONN][RXD] &gt;&gt;&gt; Running case #5: 'Test PWM frequency and duty cycle (freq = 10 kHz)'...
+[1717043884.36][CONN][INF] found KV pair in stream: {{__testcase_start;Test PWM frequency and duty cycle (freq = 10 kHz)}}, queued...
+[1717043884.36][CONN][INF] found KV pair in stream: {{analyze_signal;please}}, queued...
+[1717043885.96][SERI][TXD] {{frequency;10000.0}}
+[1717043885.98][SERI][TXD] {{duty_cycle;0.7957405106487234}}
+[1717043886.00][CONN][RXD] Expected PWM frequency was 10000 Hz (+- 20 Hz) and duty cycle was 79.60% (+-0.10%), host measured frequency 10000 Hz and duty cycle 79.57%
+[1717043886.00][CONN][INF] found KV pair in stream: {{analyze_signal;please}}, queued...
+[1717043887.60][SERI][TXD] {{frequency;10000.0}}
+[1717043887.61][SERI][TXD] {{duty_cycle;0.9696325759185602}}
+[1717043887.63][CONN][RXD] Expected PWM frequency was 10000 Hz (+- 20 Hz) and duty cycle was 96.95% (+-0.10%), host measured frequency 10000 Hz and duty cycle 96.96%
+[1717043887.63][CONN][INF] found KV pair in stream: {{analyze_signal;please}}, queued...
+[1717043889.22][SERI][TXD] {{frequency;10000.0}}
+[1717043889.23][SERI][TXD] {{duty_cycle;0.24596938507653732}}
+[1717043889.25][CONN][RXD] Expected PWM frequency was 10000 Hz (+- 20 Hz) and duty cycle was 24.59% (+-0.10%), host measured frequency 10000 Hz and duty cycle 24.60%
+[1717043889.25][CONN][INF] found KV pair in stream: {{analyze_signal;please}}, queued...
+[1717043890.85][SERI][TXD] {{frequency;10000.0}}
+[1717043890.86][SERI][TXD] {{duty_cycle;0.8311154222114445}}
+[1717043890.88][CONN][RXD] Expected PWM frequency was 10000 Hz (+- 20 Hz) and duty cycle was 83.13% (+-0.10%), host measured frequency 10000 Hz and duty cycle 83.11%
+[1717043890.88][CONN][INF] found KV pair in stream: {{analyze_signal;please}}, queued...
+[1717043892.47][SERI][TXD] {{frequency;10000.0}}
+[1717043892.48][SERI][TXD] {{duty_cycle;0.2929742675643311}}
+[1717043892.50][CONN][RXD] Expected PWM frequency was 10000 Hz (+- 20 Hz) and duty cycle was 29.28% (+-0.10%), host measured frequency 10000 Hz and duty cycle 29.30%
+[1717043892.51][CONN][RXD] &gt;&gt;&gt; 'Test PWM frequency and duty cycle (freq = 10 kHz)': 1 passed, 0 failed
+[1717043892.51][CONN][INF] found KV pair in stream: {{__testcase_finish;Test PWM frequency and duty cycle (freq = 10 kHz);1;0}}, queued...
+[1717043892.52][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1717043892.52][CONN][RXD]
+[1717043892.52][CONN][RXD] &gt;&gt;&gt; Running case #6: 'Test PWM frequency and duty cycle (freq = 100 kHz)'...
+[1717043892.53][CONN][INF] found KV pair in stream: {{__testcase_start;Test PWM frequency and duty cycle (freq = 100 kHz)}}, queued...
+[1717043892.53][CONN][INF] found KV pair in stream: {{analyze_signal;please}}, queued...
+[1717043894.12][SERI][TXD] {{frequency;100000.0}}
+[1717043894.13][SERI][TXD] {{duty_cycle;0.3499866250334374}}
+[1717043894.15][CONN][RXD] Expected PWM frequency was 100000 Hz (+- 20 Hz) and duty cycle was 34.90% (+-1.00%), host measured frequency 100000 Hz and duty cycle 35.00%
+[1717043894.15][CONN][INF] found KV pair in stream: {{analyze_signal;please}}, queued...
+[1717043895.74][SERI][TXD] {{frequency;100000.0}}
+[1717043895.76][SERI][TXD] {{duty_cycle;0.22127194682013296}}
+[1717043895.78][CONN][RXD] Expected PWM frequency was 100000 Hz (+- 20 Hz) and duty cycle was 22.19% (+-1.00%), host measured frequency 100000 Hz and duty cycle 22.13%
+[1717043895.78][CONN][INF] found KV pair in stream: {{analyze_signal;please}}, queued...
+[1717043897.37][SERI][TXD] {{frequency;100000.0}}
+[1717043897.38][SERI][TXD] {{duty_cycle;0.6299334251664371}}
+[1717043897.40][CONN][RXD] Expected PWM frequency was 100000 Hz (+- 20 Hz) and duty cycle was 63.09% (+-1.00%), host measured frequency 100000 Hz and duty cycle 62.99%
+[1717043897.40][CONN][INF] found KV pair in stream: {{analyze_signal;please}}, queued...
+[1717043899.00][SERI][TXD] {{frequency;99990.0}}
+[1717043899.01][SERI][TXD] {{duty_cycle;0.8139029652425869}}
+[1717043899.03][CONN][RXD] Expected PWM frequency was 100000 Hz (+- 20 Hz) and duty cycle was 81.33% (+-1.00%), host measured frequency 99990 Hz and duty cycle 81.39%
+[1717043899.03][CONN][INF] found KV pair in stream: {{analyze_signal;please}}, queued...
+[1717043900.62][SERI][TXD] {{frequency;100000.0}}
+[1717043900.63][SERI][TXD] {{duty_cycle;0.49628375929060176}}
+[1717043900.65][CONN][RXD] Expected PWM frequency was 100000 Hz (+- 20 Hz) and duty cycle was 49.56% (+-1.00%), host measured frequency 100000 Hz and duty cycle 49.63%
+[1717043900.66][CONN][RXD] &gt;&gt;&gt; 'Test PWM frequency and duty cycle (freq = 100 kHz)': 1 passed, 0 failed
+[1717043900.66][CONN][INF] found KV pair in stream: {{__testcase_finish;Test PWM frequency and duty cycle (freq = 100 kHz);1;0}}, queued...
+[1717043900.67][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1717043900.67][CONN][RXD]
+[1717043900.67][CONN][RXD] &gt;&gt;&gt; Running case #7: 'Test PWM frequency and duty cycle (freq = 1 MHz)'...
+[1717043900.68][CONN][INF] found KV pair in stream: {{__testcase_start;Test PWM frequency and duty cycle (freq = 1 MHz)}}, queued...
+[1717043900.68][CONN][INF] found KV pair in stream: {{analyze_signal;please}}, queued...
+[1717043902.29][SERI][TXD] {{frequency;999990.0}}
+[1717043902.30][SERI][TXD] {{duty_cycle;0.2867867830330424}}
+[1717043902.32][CONN][RXD] Expected PWM frequency was 1000000 Hz (+- 20 Hz) and duty cycle was 30.80% (+-10.00%), host measured frequency 999990 Hz and duty cycle 28.68%
+[1717043902.32][CONN][INF] found KV pair in stream: {{analyze_signal;please}}, queued...
+[1717043903.93][SERI][TXD] {{frequency;999990.0}}
+[1717043903.94][SERI][TXD] {{duty_cycle;0.4627688430778923}}
+[1717043903.97][CONN][RXD] Expected PWM frequency was 1000000 Hz (+- 20 Hz) and duty cycle was 46.96% (+-10.00%), host measured frequency 999990 Hz and duty cycle 46.28%
+[1717043903.97][CONN][INF] found KV pair in stream: {{analyze_signal;please}}, queued...
+[1717043905.58][SERI][TXD] {{frequency;999990.0}}
+[1717043905.59][SERI][TXD] {{duty_cycle;0.35140912147719633}}
+[1717043905.61][CONN][RXD] Expected PWM frequency was 1000000 Hz (+- 20 Hz) and duty cycle was 34.13% (+-10.00%), host measured frequency 999990 Hz and duty cycle 35.14%
+[1717043905.61][CONN][INF] found KV pair in stream: {{analyze_signal;please}}, queued...
+[1717043907.22][SERI][TXD] {{frequency;999990.0}}
+[1717043907.23][SERI][TXD] {{duty_cycle;0.35137912155219614}}
+[1717043907.25][CONN][RXD] Expected PWM frequency was 1000000 Hz (+- 20 Hz) and duty cycle was 35.34% (+-10.00%), host measured frequency 999990 Hz and duty cycle 35.14%
+[1717043907.25][CONN][INF] found KV pair in stream: {{analyze_signal;please}}, queued...
+[1717043908.86][SERI][TXD] {{frequency;999990.0}}
+[1717043908.87][SERI][TXD] {{duty_cycle;0.4627863430341424}}
+[1717043908.89][CONN][RXD] Expected PWM frequency was 1000000 Hz (+- 20 Hz) and duty cycle was 44.74% (+-10.00%), host measured frequency 999990 Hz and duty cycle 46.28%
+[1717043908.90][CONN][RXD] &gt;&gt;&gt; 'Test PWM frequency and duty cycle (freq = 1 MHz)': 1 passed, 0 failed
+[1717043908.90][CONN][INF] found KV pair in stream: {{__testcase_finish;Test PWM frequency and duty cycle (freq = 1 MHz);1;0}}, queued...
+[1717043908.91][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1717043908.91][CONN][RXD]
+[1717043908.91][CONN][RXD] &gt;&gt;&gt; Running case #8: 'Test PWM Suspend/Resume (freq = 1kHz)'...
+[1717043908.92][CONN][INF] found KV pair in stream: {{__testcase_start;Test PWM Suspend/Resume (freq = 1kHz)}}, queued...
+[1717043908.92][CONN][INF] found KV pair in stream: {{analyze_signal;please}}, queued...
+[1717043910.52][SERI][TXD] {{frequency;1000.0}}
+[1717043910.53][SERI][TXD] {{duty_cycle;0.7499981250046875}}
+[1717043910.55][CONN][RXD] Expected PWM frequency was 1000 Hz (+- 20 Hz) and duty cycle was 75.00% (+-0.10%), host measured frequency 1000 Hz and duty cycle 75.00%
+[1717043910.55][CONN][INF] found KV pair in stream: {{analyze_signal;please}}, queued...
+[1717043912.13][SERI][TXD] {{frequency;0.0}}
+[1717043912.14][SERI][TXD] {{duty_cycle;0.0}}
+[1717043912.17][CONN][RXD] Expected PWM frequency was 0 Hz (+- 20 Hz) and duty cycle was 0.00% (+-0.10%), host measured frequency 0 Hz and duty cycle 0.00%
+[1717043912.17][CONN][INF] found KV pair in stream: {{analyze_signal;please}}, queued...
+[1717043913.76][SERI][TXD] {{frequency;1000.0}}
+[1717043913.77][SERI][TXD] {{duty_cycle;0.7499981250046875}}
+[1717043913.79][CONN][RXD] Expected PWM frequency was 1000 Hz (+- 20 Hz) and duty cycle was 75.00% (+-0.10%), host measured frequency 1000 Hz and duty cycle 75.00%
+[1717043913.80][CONN][RXD] &gt;&gt;&gt; 'Test PWM Suspend/Resume (freq = 1kHz)': 1 passed, 0 failed
+[1717043913.80][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1717043913.80][CONN][RXD]
+[1717043913.81][CONN][INF] found KV pair in stream: {{__testcase_finish;Test PWM Suspend/Resume (freq = 1kHz);1;0}}, queued...
+[1717043913.82][CONN][RXD] &gt;&gt;&gt; Running case #9: 'Test PWM Maintains Duty Cycle (freq = 1kHz)'...
+[1717043913.82][CONN][INF] found KV pair in stream: {{__testcase_start;Test PWM Maintains Duty Cycle (freq = 1kHz)}}, queued...
+[1717043913.83][CONN][INF] found KV pair in stream: {{analyze_signal;please}}, queued...
+[1717043915.41][SERI][TXD] {{frequency;1000.0}}
+[1717043915.42][SERI][TXD] {{duty_cycle;0.7499981250046875}}
+[1717043915.45][CONN][RXD] Expected PWM frequency was 1000 Hz (+- 20 Hz) and duty cycle was 75.00% (+-0.10%), host measured frequency 1000 Hz and duty cycle 75.00%
+[1717043915.45][CONN][INF] found KV pair in stream: {{analyze_signal;please}}, queued...
+[1717043917.04][SERI][TXD] {{frequency;40000.0}}
+[1717043917.05][SERI][TXD] {{duty_cycle;0.7500056249859375}}
+[1717043917.07][CONN][RXD] Expected PWM frequency was 40000 Hz (+- 20 Hz) and duty cycle was 75.00% (+-0.40%), host measured frequency 40000 Hz and duty cycle 75.00%
+[1717043917.07][CONN][INF] found KV pair in stream: {{analyze_signal;please}}, queued...
+[1717043918.67][SERI][TXD] {{frequency;200.0}}
+[1717043918.68][SERI][TXD] {{duty_cycle;0.7499981250046875}}
+[1717043918.70][CONN][RXD] Expected PWM frequency was 200 Hz (+- 20 Hz) and duty cycle was 75.00% (+-0.10%), host measured frequency 200 Hz and duty cycle 75.00%
+[1717043918.71][CONN][RXD] &gt;&gt;&gt; 'Test PWM Maintains Duty Cycle (freq = 1kHz)': 1 passed, 0 failed
+[1717043918.71][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1717043918.72][CONN][RXD]
+[1717043918.72][CONN][INF] found KV pair in stream: {{__testcase_finish;Test PWM Maintains Duty Cycle (freq = 1kHz);1;0}}, queued...
+[1717043918.73][CONN][RXD] &gt;&gt;&gt; Test cases: 9 passed, 0 failed
+[1717043918.73][CONN][RXD]
+[1717043918.73][CONN][RXD] -----------------------
+[1717043918.73][CONN][RXD] 0 Tests 0 Failures 0 Ignored
+[1717043918.73][CONN][RXD] OK
+[1717043918.73][CONN][INF] found KV pair in stream: {{__testcase_summary;9;0}}, queued...
+[1717043918.73][CONN][INF] found KV pair in stream: {{end;success}}, queued...
+[1717043918.73][HTST][INF] __notify_complete(True)
+[1717043918.73][HTST][INF] __exit_event_queue received
+[1717043918.73][HTST][INF] test suite run finished after 51.38 sec...
+[1717043918.74][CONN][INF] found KV pair in stream: {{__exit;0}}, queued...
+[1717043918.74][CONN][INF] received special event '__host_test_finished' value='True', finishing
+[1717043918.75][HTST][INF] CONN exited with code: 0
+[1717043918.75][HTST][INF] Some events in queue
+[1717043918.75][HTST][INF] stopped consuming events
+[1717043918.75][HTST][INF] host test result() call skipped, received: True
+[1717043918.75][HTST][WRN] missing __exit event from DUT
+[1717043918.75][HTST][INF] calling blocking teardown()
+[1717043918.75][HTST][INF] teardown() finished
+[1717043918.75][HTST][INF] {{result;success}}
+</system-out>
+	</testcase>
+</testsuite>

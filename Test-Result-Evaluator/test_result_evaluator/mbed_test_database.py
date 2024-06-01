@@ -34,6 +34,10 @@ class DriverType(enum.Enum):
     COMPONENT = "Component"  # External component present on this board
 
 
+# String to set for the MCU target family when there is none
+NO_MCU_TARGET_FAMILY = "NO_FAMILY"
+
+
 class MbedTestDatabase:
 
     def __init__(self, database_path: pathlib.Path):
@@ -72,11 +76,13 @@ class MbedTestDatabase:
                                     # (for example, STM32L4 is the family target for all STM32L4 MCUs and boards).
                                     # Family targets are used to group together documentation and test results.
                                     # 0 otherwise (target is above or below the family level).
-            "cpuVendorName TEXT, "  # Name of the vendor which the CPU on this target comes from.  From the CMSIS
+            "mcuVendorName TEXT, "  # Name of the vendor which the CPU on this target comes from.  From the CMSIS
                                     # database.  NULL if this target does not have a valid link to the CMSIS database.
-            "mcuFamilyTarget TEXT NULL, "  # Name of the MCU family target which is a parent of this target.
-                                           # Only set iff a target is or has a parent which is an MCU family target.
-                                           # If isMCUFamily = 1, this will contain the target's own name.
+            "mcuPartNumber TEXT NULL, "  # Part number of the MCU.  This is copied verbatim from the 'device_name' 
+                                         # property in target.json5.  May be NULL if there is no part number.
+            "mcuFamilyTarget TEXT NOT NULL, "  # Name of the MCU family target which is a parent of this target.
+                                               # If this target isn't part of an MCU family, this will contain NO_MCU_TARGET_FAMILY.
+                                               # If isMCUFamily = 1, this will contain the target's own name.
             "imageURL TEXT NULL  "  # URL of the image that will be shown in the target table for this board, if set 
                                     # in JSON.
             ")"
@@ -215,10 +221,11 @@ class MbedTestDatabase:
             image_url = target_data.get("image_url", None)
 
             self._database.execute(
-                "INSERT INTO Targets(name, isPublic, isMCUFamily, imageURL) VALUES(?, ?, ?, ?)",
+                "INSERT INTO Targets(name, isPublic, isMCUFamily, mcuFamilyTarget, imageURL) VALUES(?, ?, ?, ?, ?)",
                 (target_name,
                  is_public,
                  is_mcu_family,
+                 NO_MCU_TARGET_FAMILY,  # Default to no family unless it's set to one later
                  image_url))
 
             # Also add the parents for each target
@@ -283,22 +290,27 @@ class MbedTestDatabase:
 
             # Also, while we have the target attributes handy, look up the target in the CMSIS
             # CPU database if possible.
-            cmsis_device_name: Optional[str] = target_attrs.get("device_name", None)
+            cmsis_mcu_part_number: Optional[str] = target_attrs.get("device_name", None)
 
-            if cmsis_device_name is not None:
-                if cmsis_device_name not in cmsis_device_dict:
+            if cmsis_mcu_part_number is not None:
+                if cmsis_mcu_part_number not in cmsis_device_dict:
                     raise RuntimeError(
-                        f"Target {target_name} specifies CMSIS device name {cmsis_device_name} which "
+                        f"Target {target_name} specifies CMSIS MCU part number {cmsis_mcu_part_number} which "
                         f"does not exist in CMSIS pack index. Error in 'device_name' targets.json5 "
                         f"attribute?")
-                cmsis_cpu_data = cmsis_device_dict[cmsis_device_name]
+                cmsis_cpu_data = cmsis_device_dict[cmsis_mcu_part_number]
+
+                # Set MCU part number in the database
+                self._database.execute("UPDATE Targets SET mcuPartNumber = ? WHERE name == ?",
+                                       (cmsis_mcu_part_number, target_name))
+
                 cpu_vendor_name = cmsis_cpu_data["vendor"]
 
                 # Set vendor name in the database.
                 # In the JSON file the vendor name has a colon then a number after it.  I think this is
                 # some sort of vendor ID but can't find actual docs.
                 cpu_vendor_name = cpu_vendor_name.split(":")[0]
-                self._database.execute("UPDATE Targets SET cpuVendorName = ? WHERE name == ?",
+                self._database.execute("UPDATE Targets SET mcuVendorName = ? WHERE name == ?",
                                        (cpu_vendor_name, target_name))
 
                 # Add target memories based on the CMSIS json data
@@ -308,7 +320,7 @@ class MbedTestDatabase:
                     # actually represents the hardcoded ROM init code, not an actual flash bank on the device.
                     # Unfortunately, there is no way to know that it isn't programmable based on the JSON.
                     # So we have to exclude it from the output manually.
-                    if "MIMXRT" in cmsis_device_name and bank_name == "ROMCP":
+                    if "MIMXRT" in cmsis_mcu_part_number and bank_name == "ROMCP":
                         continue
 
                     self._database.execute(
@@ -401,7 +413,7 @@ WHERE
 SELECT name
 FROM Targets
 WHERE isMCUFamily == 1
-ORDER BY cpuVendorName ASC, name ASC
+ORDER BY mcuVendorName ASC, name ASC
 """)
 
         for row in cursor:
@@ -522,7 +534,7 @@ ORDER BY childTarget ASC
         Get all boards (public targets) which are in an MCU family.
         Returns a cursor containing the name, image, and the CPU vendor name
         """
-        return self._database.execute("SELECT name, imageURL, cpuVendorName "
+        return self._database.execute("SELECT name, imageURL, mcuVendorName, mcuPartNumber "
                                       "FROM Targets "
                                       "WHERE "
                                           "isPublic == 1 AND "
@@ -548,14 +560,14 @@ ORDER BY childTarget ASC
         Returns a cursor containing the MCU family and grouped targets
         """
 
-        # Note: In the query below, we use max(cpuVendorName) to select any non-null value for
-        # cpuVendorName.
+        # Note: In the query below, we use max(mcuVendorName) to select any non-null value for
+        # mcuVendorName.
 
         return self._database.execute("""
         SELECT
             group_concat(TargetDrivers.targetName, ',') AS targetNames,
             Targets.mcuFamilyTarget AS mcuFamilyTarget,
-            max(Targets.cpuVendorName) AS cpuVendorName
+            max(Targets.mcuVendorName) AS mcuVendorName
         FROM 
             TargetDrivers
             INNER JOIN Targets ON TargetDrivers.targetName = Targets.name
@@ -564,7 +576,7 @@ ORDER BY childTarget ASC
             AND Targets.isPublic == 1
         GROUP BY Targets.mcuFamilyTarget
         ORDER BY 
-            max(Targets.cpuVendorName) ASC, 
+            max(Targets.mcuVendorName) ASC, 
             Targets.mcuFamilyTarget ASC
             """,
                                       (driver_name,))

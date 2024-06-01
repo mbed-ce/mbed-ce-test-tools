@@ -5,7 +5,7 @@ import html
 
 import prettytable
 
-from .mbed_test_database import MbedTestDatabase, DriverType, TestResult
+from .mbed_test_database import MbedTestDatabase, DriverType, TestResult, NO_MCU_TARGET_FAMILY
 
 
 def write_global_stylesheet(gen_path: pathlib.Path):
@@ -19,6 +19,7 @@ body {
     margin-top: 30px;
     overflow: scroll;
 }
+/* Styles for test result tables */
 div.passed-marker {
     width: 100%;
     height: 100%;
@@ -34,7 +35,11 @@ div.failed-marker {
     height: 100%;
     background-color: lightpink
 }
+.test_result_table>tbody>tr>td {
+    padding: 0 !important;
+}
 """)
+
 
 def write_html_header(output_file: TextIO, page_title: str):
     """
@@ -125,7 +130,7 @@ def generate_driver_page(database: MbedTestDatabase, driver_info: MbedTestDataba
             mcu_family_target = row["mcuFamilyTarget"]
             target_family_link = f"<a href=\"../targets/{mcu_family_target}.html\">{mcu_family_target}</a>"
             all_targets_in_family = row["targetNames"].split(",")
-            cpu_vendor_name = row["cpuVendorName"]
+            cpu_vendor_name = row["mcuVendorName"]
 
             # Special handling for boards with no MCU target family (avoid linking to None.html)
             if mcu_family_target is None:
@@ -170,8 +175,9 @@ def generate_targets_index_page(database: MbedTestDatabase, mcu_family_targets: 
 
                 # Not every board may have the CPU vendor set (since the JSON doesn't require the 'device_name'
                 # property to be set so the board may not get linked to CMSIS) so only store this field if it exists.
-                if row["cpuVendorName"] is not None:
-                    mcu_vendor_name = row["cpuVendorName"]
+                # Also for NO_FAMILY we don't want to set the vendor name as there could be multiple.
+                if row["mcuVendorName"] is not None and mcu_family_target != NO_MCU_TARGET_FAMILY:
+                    mcu_vendor_name = row["mcuVendorName"]
             boards_cursor.close()
 
             target_features = database.get_target_drivers(mcu_family_target)
@@ -213,11 +219,11 @@ def generate_target_family_page(database: MbedTestDatabase, mcu_family_target: s
         # Lookup features for each target.  Builds a dict from a target name to its features,
         # and a set containing the intersections of all targets' features
         targets_cursor = database.get_all_boards_in_mcu_family(mcu_family_target)
-        targets_in_family_info = [(row["name"], row["imageURL"]) for row in targets_cursor]
+        targets_in_family_info = [(row["name"], row["imageURL"], row["mcuPartNumber"]) for row in targets_cursor]
         targets_cursor.close()
 
         target_features: Dict[str, Dict[DriverType, Set[MbedTestDatabase.TargetDriverInfo]]] = dict()
-        for target_name, _ in targets_in_family_info:
+        for target_name, _, _ in targets_in_family_info:
             this_target_features = database.get_target_drivers(target_name)
             this_target_features_by_type = collections.defaultdict(set)
             for feature in this_target_features:
@@ -240,8 +246,8 @@ def generate_target_family_page(database: MbedTestDatabase, mcu_family_target: s
         # Generate board table
         target_page.write("<h2>Boards in this Target Family</h2>")
         target_table = prettytable.PrettyTable()
-        target_table.field_names = ["Board", "Extra Features", "Extra Peripheral Drivers", "Components", "RAM Banks", "Flash Banks"]
-        for target_name, image_url in targets_in_family_info:
+        target_table.field_names = ["Board", "MCU Part Number", "Extra Features", "Extra Peripheral Drivers", "Components", "RAM Banks", "Flash Banks"]
+        for target_name, image_url, mcu_part_number in targets_in_family_info:
 
             # Format board image
             if image_url is None:
@@ -276,8 +282,11 @@ def generate_target_family_page(database: MbedTestDatabase, mcu_family_target: s
             ram_bank_string += "</ul>"
             rom_bank_string += "</ul>"
 
+            mcu_part_number_str = "" if mcu_part_number is None else mcu_part_number
+
             target_table.add_row([
                 target_name + board_image_html,
+                mcu_part_number_str,
                 ", ".join(target_unique_feature_strings),
                 ", ".join(target_unique_periph_strings),
                 ", ".join(target_component_strings),
@@ -291,15 +300,16 @@ def generate_target_family_page(database: MbedTestDatabase, mcu_family_target: s
         # seems to do)
         target_page.write(html.unescape(target_table.get_html_string(attributes={"class": "ui celled table"})))
 
-        # Generate inheritance graph
-        target_page.write("<h2>Inheritance Graph</h2>")
+        if mcu_family_target != NO_MCU_TARGET_FAMILY:
+            # Generate inheritance graph
+            target_page.write("<h2>Inheritance Graph</h2>")
 
-        inheritance_graph = database.get_inheritance_graph(mcu_family_target)
-        inheritance_graph_basename = out_path.parent / "assets" / f"{mcu_family_target}.dot"
-        inheritance_graph_svg_file = pathlib.Path(inheritance_graph.render(inheritance_graph_basename, format="svg"))
-        target_page.write(f'<img src="assets/{inheritance_graph_svg_file.name}" alt="Inheritance Graph"/>\n')
+            inheritance_graph = database.get_inheritance_graph(mcu_family_target)
+            inheritance_graph_basename = out_path.parent / "assets" / f"{mcu_family_target}.dot"
+            inheritance_graph_svg_file = pathlib.Path(inheritance_graph.render(inheritance_graph_basename, format="svg"))
+            target_page.write(f'<img src="assets/{inheritance_graph_svg_file.name}" alt="Inheritance Graph"/>\n')
 
-        target_page.write("\n</body>")
+            target_page.write("\n</body>")
 
 
 def generate_tests_index_page(database: MbedTestDatabase, out_path: pathlib.Path):
@@ -309,7 +319,7 @@ def generate_tests_index_page(database: MbedTestDatabase, out_path: pathlib.Path
     """
 
     with open(out_path, "w") as targets_index:
-        write_html_header(targets_index, "Mbed CE MCU Target Families")
+        write_html_header(targets_index, "All Test Results by Target")
 
         test_table = prettytable.PrettyTable()
 
@@ -342,7 +352,7 @@ def generate_tests_index_page(database: MbedTestDatabase, out_path: pathlib.Path
         # Note: html.unescape() prevents HTML in the cells from being escaped in the page (which prettytable
         # seems to do)
         test_table.field_names = target_table_header_text
-        targets_index.write(html.unescape(test_table.get_html_string(attributes={"class": "ui celled table"})))
+        targets_index.write(html.unescape(test_table.get_html_string(attributes={"class": "ui celled table test_result_table"})))
 
         targets_index.write("\n</body>")
 
@@ -376,6 +386,8 @@ def generate_tests_and_targets_website(database: MbedTestDatabase, gen_path: pat
     targets_assets_dir.mkdir(exist_ok=True)
 
     mcu_family_targets = database.get_mcu_family_targets()
+    mcu_family_targets.append(NO_MCU_TARGET_FAMILY) # Also generate a page for the NO_FAMILY target
+
     generate_targets_index_page(database, mcu_family_targets, targets_dir / "index.html")
     for mcu_family_target in mcu_family_targets:
         generate_target_family_page(database, mcu_family_target, targets_dir / f"{mcu_family_target}.html")
