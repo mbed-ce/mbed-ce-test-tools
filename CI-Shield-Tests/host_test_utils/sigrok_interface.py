@@ -16,6 +16,10 @@ import time
 from typing import List, cast, Optional, Tuple
 from dataclasses import dataclass
 
+import usb1
+
+from . import usb_serial_numbers
+
 from mbed_host_tests.host_tests_logger import HtrunLogger
 
 LOGIC_ANALYZER_FREQUENCY = 4 # MHz
@@ -26,18 +30,6 @@ if sys.platform == "win32":
     SIGROK_COMMAND = ["wsl", "sigrok-cli"]
 else:
     SIGROK_COMMAND = ["sigrok-cli"]
-
-# common sigrok command -- for all protocols
-SIGROK_COMMON_COMMAND = [*SIGROK_COMMAND,
-                         "--driver", "fx2lafw",  # Set driver to FX2LAFW
-                         "--config",
-                         # For decoding messages right at the trigger, we need to change the "capture ratio"
-                         # option so that just a few samples are kept from before the trigger.
-                         # Details here: https://sigrok.org/bugzilla/show_bug.cgi?id=1657
-                         # The hard part was figuring out how to change the capture ratio as there is zero documentation.
-                         # It appears that it's a percentage from 0 to 100.
-                         f"samplerate={LOGIC_ANALYZER_FREQUENCY} MHz:captureratio=5"
-                         ]
 
 
 # How long to wait, in seconds, after starting a sigrok recording before we can start the test.
@@ -53,6 +45,30 @@ class SigrokRecorderBase(abc.ABC):
 
     def __init__(self):
         self._sigrok_process: Optional[subprocess.Popen] = None
+        self.logger = HtrunLogger('SigrokRecorderBase')
+
+    def _search_for_fx2lafw_usb_device(self, serno: str) -> Tuple[int, int]:
+        """
+        Search for an FX2LAFW USB device with the given serial number.
+        Returns tuple of (bus, address) that can be passed to Sigrok.
+        """
+
+        # See example here of how to iterate through USB devices:
+        # https://github.com/vpelletier/python-libusb1/blob/master/examples/scan_device_tree.py
+        with usb1.USBContext() as context:
+            for dev in context.getDeviceIterator(skip_on_error=True):
+                dev: usb1.USBDevice
+                if dev.getVendorID() == 0x1d50 and dev.getProductID() == 0x608c: # FX2LAFW VID and PID
+                    try:
+                        # The script that builds fx2lafw firmware images sets the serial number to this format
+                        # (see here: https://github.com/mbed-ce/mbed-ce-ci-shield-v2/blob/master/Firmware/fx2lafw_update_serial_number.py#L29)
+                        if dev.getSerialNumber() == serno:
+                            return (dev.getBusNumber(), dev.getDeviceAddress())
+                    except usb1.USBError:
+                        self.logger.prn_wrn(f"Found USB device matching FX2LAFW logic analyzer VID & PID, but cannot open it.  Check udev rules (on Linux) or WinUSB driver (on Windows)")
+            
+            raise RuntimeError("Could not find logic analyzer USB device for shield with serial number " + usb_serial_numbers.CI_SHIELD_SERNO)
+
 
     def _start_sigrok(self, sigrok_args: List[str], record_time: float):
         """
@@ -60,9 +76,32 @@ class SigrokRecorderBase(abc.ABC):
         :param record_time: Time to run sigrok for in seconds.  If the command includes a trigger clause,
             this is the time after the trigger occurs.
         """
+
+        if usb_serial_numbers.FX2LAFW_SERIAL_NUMBER is None:
+            driver_conn_string = ""
+        else:
+            # Connect to specific bus and address where this serial number of logic analyzer lives
+            # https://manpages.ubuntu.com/manpages/jammy/man1/sigrok-cli.1.html#:~:text=To%20select%20a%20specific%20USB,%2Dut61e%3Aconn%3D1a86.
+            fx2lafw_bus, fx2lafw_address = self._search_for_fx2lafw_usb_device(usb_serial_numbers.FX2LAFW_SERIAL_NUMBER)
+            driver_conn_string = f":conn={fx2lafw_bus}.{fx2lafw_address}"
+
         # Run sigrok for the specified amount of milliseconds
-        command = [*SIGROK_COMMON_COMMAND, *sigrok_args, "--time", str(round(record_time * 1000))]
-        #print("Executing: " + " ".join(command))
+        command = [*SIGROK_COMMAND,
+                    "--driver", "fx2lafw" + driver_conn_string,  # Set driver to FX2LAFW
+
+                    # For decoding messages right at the trigger, we need to change the "capture ratio"
+                    # option so that just a few samples are kept from before the trigger.
+                    # Details here: https://sigrok.org/bugzilla/show_bug.cgi?id=1657
+                    # The hard part was figuring out how to change the capture ratio from the CLI as 
+                    # there is zero documentation.
+                    # It appears that it's a percentage from 0 to 100.
+                    "--config", f"samplerate={LOGIC_ANALYZER_FREQUENCY} MHz:captureratio=5",
+
+                    "--time", str(round(record_time * 1000)),
+
+                    *sigrok_args]
+        
+        # print("Executing: " + " ".join(command))
         self._sigrok_process = subprocess.Popen(command, text=True, stdout = subprocess.PIPE)
         time.sleep(SIGROK_START_DELAY)
 
@@ -287,6 +326,7 @@ class SigrokI2CRecorder(SigrokRecorderBase):
                           ]
     def __init__(self):
         super().__init__()
+        self.logger = HtrunLogger('SigrokI2CRecorder')
 
     def record(self, record_time: float):
         """
@@ -336,7 +376,7 @@ class SigrokI2CRecorder(SigrokRecorderBase):
                 # we can ignore these ones
                 pass
             else:
-                print(f"Warning: Unparsed Sigrok output: '{line}'")
+                self.logger.prn_wrn(f"Unparsed Sigrok output: '{line}'")
 
         return i2c_transaction
 
@@ -388,6 +428,7 @@ class SigrokSPIRecorder(SigrokRecorderBase):
 
     def __init__(self):
         super().__init__()
+        self.logger = HtrunLogger('SigrokSPIRecorder')
 
     def record(self, cs_pin: Optional[str], record_time: float):
         """
@@ -452,7 +493,7 @@ class SigrokSPIRecorder(SigrokRecorderBase):
 
                 match_info = SR_SPI_DATA_BYTES.match(line)
                 if not match_info:
-                    print(f"Warning: Unparsed Sigrok output: '{line}'")
+                    self.logger.prn_wrn(f"Unparsed Sigrok output: '{line}'")
                     continue
 
                 # Parse list of hex bytes
@@ -487,7 +528,7 @@ class SigrokSPIRecorder(SigrokRecorderBase):
 
                 match_info = SR_SPI_DATA_BYTES.match(line)
                 if not match_info:
-                    print(f"Warning: Unparsed Sigrok output: '{line}'")
+                    self.logger.prn_wrn(f"Unparsed Sigrok output: '{line}'")
                     continue
 
                 byte_value = int(match_info.group(1), 16)

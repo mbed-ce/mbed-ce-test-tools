@@ -70,7 +70,7 @@ inline void const * getMessage(size_t wordSize)
 // Long data message used in a few tests.  Starts with a recognizeable pattern.
 uint8_t const longMessage[32] = {0x01, 0x02, };
 
-const uint32_t spiFreq = 1000000;
+const uint32_t spiFreq = 500000;
 const uint8_t spiMode = 0;
 
 #if STATIC_PINMAP_READY

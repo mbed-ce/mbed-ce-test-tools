@@ -14,10 +14,10 @@ import cy_serial_bridge
 
 # Unfortunately there's no easy way to make the test runner add a directory to its module path...
 this_script_dir = pathlib.Path(os.path.dirname(__file__))
-sys.path.append(str(this_script_dir / ".." / "host_test_utils"))
+sys.path.append(str(this_script_dir / ".."))
 
-from sigrok_interface import SigrokI2CRecorder, pretty_print_i2c_data, I2CStart, I2CRepeatedStart, I2CWriteToAddr, I2CReadFromAddr, I2CDataByte, I2CAck, I2CNack, I2CStop, I2CBusData, pretty_diff_i2c_data
-
+from host_test_utils.sigrok_interface import SigrokI2CRecorder, pretty_print_i2c_data, I2CStart, I2CRepeatedStart, I2CWriteToAddr, I2CReadFromAddr, I2CDataByte, I2CAck, I2CNack, I2CStop, I2CBusData, pretty_diff_i2c_data
+from host_test_utils.usb_serial_numbers import CY7C65211_SERIAL_NUMBER
 
 class I2CSlaveCommsTest(BaseHostTest):
 
@@ -31,20 +31,10 @@ class I2CSlaveCommsTest(BaseHostTest):
 
         self.logger = HtrunLogger('TEST')
 
-        if "MBED_CI_SHIELD_SERIAL_NUMBER" in os.environ:
-            self.ci_shield_serno = "Shield" + os.environ["MBED_CI_SHIELD_SERIAL_NUMBER"]
-            self.logger.prn_inf("Connecting to CI shield with serial number " + ci_shield_serno)
-        else:
-            self.ci_shield_serno = None
-            self.logger.prn_inf("Will use any connected CI shield for this test.  Export the MBED_CI_SHIELD_SERIAL_NUMBER environment var to select a specific shield.")
-            self.logger.prn_inf("e.g. 'export MBED_CI_SHIELD_SERIAL_NUMBER=SN002'")
-
         self.recorder = SigrokI2CRecorder()
     
         # Open serial bridge chip
         self.cy_usb_context = cy_serial_bridge.CyScbContext()
-        
-
 
     def _callback_start_recording_i2c(self, key: str, value: str, timestamp):
         """
@@ -177,7 +167,7 @@ class I2CSlaveCommsTest(BaseHostTest):
                                 cy_serial_bridge.DEFAULT_VID, 
                                 cy_serial_bridge.DEFAULT_PID, 
                                 cy_serial_bridge.OpenMode.I2C_CONTROLLER,
-                                self.ci_shield_serno)
+                                CY7C65211_SERIAL_NUMBER)
         
         # Enter serial bridge
         with contextlib.ExitStack() as temp_exit_stack: # Creates a temporary ExitStack

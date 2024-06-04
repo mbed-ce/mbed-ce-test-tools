@@ -8,9 +8,9 @@ import pathlib
 
 # Unfortunately there's no easy way to make the test runner add a directory to its module path...
 this_script_dir = pathlib.Path(os.path.dirname(__file__))
-sys.path.append(str(this_script_dir / ".." / "host_test_utils"))
+sys.path.append(str(this_script_dir / ".."))
 
-from sigrok_interface import SPITransaction, SigrokSPIRecorder
+from host_test_utils.sigrok_interface import SPITransaction, SigrokSPIRecorder
 
 class SpiBasicTestHostTest(BaseHostTest):
 

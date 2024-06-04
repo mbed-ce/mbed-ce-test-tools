@@ -10,9 +10,9 @@ import subprocess
 
 # Unfortunately there's no easy way to make the test runner add a directory to its module path...
 this_script_dir = pathlib.Path(os.path.dirname(__file__))
-sys.path.append(str(this_script_dir / ".." / "host_test_utils"))
+sys.path.append(str(this_script_dir / ".."))
 
-from sigrok_interface import I2CStart, I2CRepeatedStart, I2CWriteToAddr, I2CReadFromAddr, I2CDataByte, I2CAck, I2CNack, I2CStop, SigrokI2CRecorder, pretty_print_i2c_data, pretty_diff_i2c_data
+from host_test_utils.sigrok_interface import I2CStart, I2CRepeatedStart, I2CWriteToAddr, I2CReadFromAddr, I2CDataByte, I2CAck, I2CNack, I2CStop, SigrokI2CRecorder, pretty_print_i2c_data, pretty_diff_i2c_data
 
 
 class I2CBasicTestHostTest(BaseHostTest):
