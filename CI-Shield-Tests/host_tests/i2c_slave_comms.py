@@ -8,7 +8,7 @@ import subprocess
 import contextlib
 import binascii
 import traceback
-from typing import List
+from typing import List, Optional
 
 import cy_serial_bridge
 
@@ -32,6 +32,8 @@ class I2CSlaveCommsTest(BaseHostTest):
         self.logger = HtrunLogger('TEST')
 
         self.recorder = SigrokI2CRecorder()
+
+        self.exit_stack: Optional[contextlib.ExitStack] = None
     
         # Open serial bridge chip
         self.cy_usb_context = cy_serial_bridge.CyScbContext()

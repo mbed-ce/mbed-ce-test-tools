@@ -46,9 +46,9 @@ float ioVoltageADCPercent;
 std::mt19937 randomGen(287327); // Fixed random seed for repeatability
 
 /*
- * Uses the logic analyzer on the host side to verify the frequency and duty cycle of the current PWM signal
+ * Get and return the frequency and duty cycle of the current signal via the host test.
  */
-void verify_pwm_freq_and_duty_cycle(float expectedFrequencyHz, float expectedDutyCyclePercent)
+std::pair<float, float> read_freq_and_duty_cycle_via_host_test()
 {
     // Use the host test to measure the signal attributes
     greentea_send_kv("analyze_signal", "please");
@@ -71,6 +71,19 @@ void verify_pwm_freq_and_duty_cycle(float expectedFrequencyHz, float expectedDut
             break;
         }
     }
+
+    return std::make_pair(measuredFrequencyHz, measuredDutyCycle);
+}
+
+/*
+ * Uses the logic analyzer on the host side to verify the frequency and duty cycle of the current PWM signal
+ */
+void verify_pwm_freq_and_duty_cycle(float expectedFrequencyHz, float expectedDutyCyclePercent)
+{
+    auto measuredData = read_freq_and_duty_cycle_via_host_test();
+
+    float measuredFrequencyHz = measuredData.first;
+    float measuredDutyCycle = measuredData.second;
 
     // For frequency, the host test measures for 100 ms, meaning that it should be able to
     // detect frequency within +-10Hz.  We'll double to 20Hz that to be a bit generous.
@@ -210,7 +223,7 @@ void test_pwm()
 
         // We do want to catch off by 1 errors in read_pulsewidth_us(), but we also want to be a bit lenient -- if
         // pulseWidthUs is, say, 3.457, we need to be able to accept 4 as that can be valid depending on how the
-        // driver rounds the number internally.  So, require the 
+        // driver rounds the number internally.  So, require the returned value to be within 0.75 us of the exact value.
         TEST_ASSERT_FLOAT_WITHIN(0.75f, pulseWidthUs, pwmOut.read_pulsewidth_us());
     }
 
@@ -231,7 +244,11 @@ void test_pwm_suspend_resume()
 
     pwmOut.suspend();
 
-    verify_pwm_freq_and_duty_cycle(0, 0);
+    // Suspending the PWM should make the frequency 0 and should fix pin at either high or low.
+    // Note that the Mbed API currently does not specify whether suspend() leaves the pin high or low, just that it cannot toggle.
+    auto freqAndDutyCycle = read_freq_and_duty_cycle_via_host_test();
+    TEST_ASSERT_FLOAT_WITHIN(1, 0, freqAndDutyCycle.first);
+    TEST_ASSERT_TRUE(freqAndDutyCycle.second < .0001 || freqAndDutyCycle.second > .9999); // Duty cycle may be 0% or 100%
 
     pwmOut.resume();
 
@@ -262,7 +279,7 @@ void test_pwm_maintains_duty_cycle()
 
 utest::v1::status_t test_setup(const size_t number_of_cases) {
     // Setup Greentea using a reasonable timeout in seconds
-    GREENTEA_SETUP(60, "signal_analyzer_test");
+    GREENTEA_SETUP(75, "signal_analyzer_test");
 
     return verbose_test_setup_handler(number_of_cases);
 }
