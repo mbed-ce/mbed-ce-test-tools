@@ -30,8 +30,14 @@ jobs:
         run: |
           export PYTHONPATH=$(pwd)/CI-Shield-Tests/mbed-os/tools/python
           cd Test-Result-Evaluator
+          # Create database
           python -m test_result_evaluator.create_database ../CI-Shield-Tests/mbed-os mbed_tests.db
-          python -m test_result_evaluator.generate_results mbed_tests.db generated-site  
+          # Import test runs (static data for now)
+          python -m test_result_evaluator.parse_test_run mbed_tests.db RASPBERRY_PI_PICO Test-Result-Evaluator/demo-test-configs/mbed-tests-RASPBERRY_PI_PICO.xml 
+          python -m test_result_evaluator.parse_test_run mbed_tests.db ARDUINO_NANO33BLE Test-Result-Evaluator/demo-test-configs/mbed-tests-ARDUINO_NANO33BLE.xml
+          # Generate website
+          python -m test_result_evaluator.generate_results mbed_tests.db generated-site 
+
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:

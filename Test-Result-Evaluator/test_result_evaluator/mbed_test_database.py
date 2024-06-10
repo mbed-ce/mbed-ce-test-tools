@@ -174,17 +174,20 @@ class MbedTestDatabase:
         # now commit the initial transaction
         self._database.commit()
 
-    def populate_targets_and_drivers(self, mbed_os_path: pathlib.Path, cmsis_device_dict: Dict[str, Any]):
+    def populate_targets_and_drivers(self, mbed_os_path: pathlib.Path):
         """
         Populate Targets, Drivers, and related tables from a given Mbed OS path.
         CMSIS cache is used to get attributes like RAM sizes from CMSIS.
         """
 
         target_json5_file = mbed_os_path / "targets" / "targets.json5"
-        targets_data = json5.loads(target_json5_file.read_text())
+        targets_data: Dict[str, Any] = json5.loads(target_json5_file.read_text())
 
         drivers_json5_file = mbed_os_path / "targets" / "drivers.json5"
-        drivers_data = json5.loads(drivers_json5_file.read_text())
+        drivers_data: Dict[str, Any] = json5.loads(drivers_json5_file.read_text())
+
+        cmsis_mcu_descriptions_json5_file = mbed_os_path / "targets" / "cmsis_mcu_descriptions.json5"
+        cmsis_mcu_description_data: Dict[str, Any] = json5.loads(cmsis_mcu_descriptions_json5_file.read_text())
 
         # First assemble a list of all the drivers.
         # For this we want to process the JSON directly rather than dealing with target inheritance, because
@@ -212,21 +215,20 @@ class MbedTestDatabase:
                 component_names.update("COMPONENT_" + entry for entry in target_data["components_add"])
 
         # First add the targets
-        # Note that we don't need to use get_target_attributes() here because none of the attributes we care
-        # about are inherited (so far)
+        # Note that we don't need to use get_target_attributes() here because none of the attributes we need
+        # are inherited
         for target_name, target_data in targets_data.items():
 
             is_public = 1 if target_data.get("public", True) else 0  # targets are public by default
             is_mcu_family = 1 if target_data.get("is_mcu_family_target", False) else 0
-            image_url = target_data.get("image_url", None)
 
             self._database.execute(
-                "INSERT INTO Targets(name, isPublic, isMCUFamily, mcuFamilyTarget, imageURL) VALUES(?, ?, ?, ?, ?)",
+                "INSERT INTO Targets(name, isPublic, isMCUFamily, mcuFamilyTarget) VALUES(?, ?, ?, ?)",
                 (target_name,
                  is_public,
                  is_mcu_family,
                  NO_MCU_TARGET_FAMILY,  # Default to no family unless it's set to one later
-                 image_url))
+                ))
 
             # Also add the parents for each target
             for parent in target_data.get("inherits", []):
@@ -288,17 +290,23 @@ class MbedTestDatabase:
                     "INSERT INTO TargetDrivers(targetName, driver) VALUES(?, ?)",
                     (target_name, peripheral_full_name))
 
+            # Set image URL into database
+            image_url = target_attrs.get("image_url", None)
+            if image_url is not None:
+                self._database.execute("UPDATE Targets SET imageURL = ? WHERE name == ?",
+                                       (image_url, target_name))
+
             # Also, while we have the target attributes handy, look up the target in the CMSIS
             # CPU database if possible.
             cmsis_mcu_part_number: Optional[str] = target_attrs.get("device_name", None)
 
             if cmsis_mcu_part_number is not None:
-                if cmsis_mcu_part_number not in cmsis_device_dict:
+                if cmsis_mcu_part_number not in cmsis_mcu_description_data:
                     raise RuntimeError(
                         f"Target {target_name} specifies CMSIS MCU part number {cmsis_mcu_part_number} which "
                         f"does not exist in CMSIS pack index. Error in 'device_name' targets.json5 "
                         f"attribute?")
-                cmsis_cpu_data = cmsis_device_dict[cmsis_mcu_part_number]
+                cmsis_cpu_data = cmsis_mcu_description_data[cmsis_mcu_part_number]
 
                 # Set MCU part number in the database
                 self._database.execute("UPDATE Targets SET mcuPartNumber = ? WHERE name == ?",
@@ -315,13 +323,6 @@ class MbedTestDatabase:
 
                 # Add target memories based on the CMSIS json data
                 for bank_name, bank_data in cmsis_cpu_data["memories"].items():
-
-                    # The MIMXRT series of devices list a "ROMCP" memory bank, but this
-                    # actually represents the hardcoded ROM init code, not an actual flash bank on the device.
-                    # Unfortunately, there is no way to know that it isn't programmable based on the JSON.
-                    # So we have to exclude it from the output manually.
-                    if "MIMXRT" in cmsis_mcu_part_number and bank_name == "ROMCP":
-                        continue
 
                     self._database.execute(
                         "INSERT INTO TargetMemories(targetName, bankName, size, isFlash) VALUES(?, ?, ?, ?)",
