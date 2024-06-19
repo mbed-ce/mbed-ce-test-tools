@@ -406,15 +406,23 @@ WHERE
     def get_mcu_family_targets(self) -> List[str]:
         """
         Get all the targets that are MCU family targets and should have
-        webpages generated for them
+        webpages generated for them.  Ordering goes by vendor first, then alphabetically by name.
         """
         mcu_family_targets = []
 
+        # Note: in the below query, we use a subquery to find any target in the given MCU family with a non-null mcuVendorName.
+        # This gets the vendor name for ordering.
+        # We can't query it directly because family targets usually don't have specific device_names associated with them
+        # in targets.json5, so they won't have a vendor name set.
         cursor = self._database.execute("""
-SELECT name
-FROM Targets
+SELECT 
+    OuterTargets.name AS name, 
+	(SELECT max(InnerTargets.mcuVendorName) FROM Targets AS InnerTargets WHERE InnerTargets.mcuFamilyTarget == OuterTargets.name) AS aggregateVendorName
+FROM Targets AS OuterTargets
 WHERE isMCUFamily == 1
-ORDER BY mcuVendorName ASC, name ASC
+ORDER BY 
+	aggregateVendorName ASC,
+	name ASC
 """)
 
         for row in cursor:
