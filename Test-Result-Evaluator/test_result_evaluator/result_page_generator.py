@@ -1,7 +1,8 @@
 import collections
 import pathlib
-from typing import TextIO, List, Dict, Set
+from typing import TextIO, List, Dict, Set, Tuple
 import html
+import base64
 
 import prettytable
 
@@ -35,29 +36,47 @@ div.failed-marker {
     height: 100%;
     background-color: lightpink
 }
+div.prior-crashed-marker {
+    width: 100%;
+    height: 100%;
+    background-color: burlywood
+}
 .test_result_table>tbody>tr>td {
     padding: 0 !important;
 }
 """)
 
 
-def write_html_header(output_file: TextIO, page_title: str):
+def get_test_case_run_path(test_name: str, test_case_name: str, target_name: str) -> pathlib.Path:
+    """
+    Get the (relative) path for a test case run's HTML file within the tests dir
+    """
+    # Convert test case name (which could be any string) into a filesystem-safe string by base64 encoding it
+    test_case_name_b64 = base64.urlsafe_b64encode(test_case_name.encode("UTF-8")).decode("ASCII")
+    return pathlib.Path("runs") / target_name / f"{test_name}-case-{test_case_name_b64}.html"
+
+
+def write_html_header(output_file: TextIO, page_title: str, levels_deep=1):
     """
     Write the common HTML header to a file.  Includes Semantic CSS and applies the given title.
+
+    :param levels_deep: How many levels deep from the root folder of the site this page is
     """
+
+    up_to_root_path = "../" * levels_deep
     output_file.write(f"""
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
     <title>{page_title}</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
-    <link rel="stylesheet" href="../mbed-results-site.css">
     <script
       src="https://code.jquery.com/jquery-3.1.1.min.js"
       integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
       crossorigin="anonymous"></script>
-    <script src="https://code.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+    <script src=" https://cdn.jsdelivr.net/npm/semantic-ui@2.5.0/dist/semantic.min.js "></script>
+    <link href=" https://cdn.jsdelivr.net/npm/semantic-ui@2.5.0/dist/semantic.min.css " rel="stylesheet">
+    <link rel="stylesheet" href="{up_to_root_path}mbed-results-site.css">
 </head>
 <body>
     <h1>{page_title}</h1>""")
@@ -324,28 +343,28 @@ def generate_tests_index_page(database: MbedTestDatabase, out_path: pathlib.Path
         test_table = prettytable.PrettyTable()
 
         # Figure out list of targets that we have test data for
-        targets_with_test_data = []
         target_table_header_text = ["Test Name"]
-        targets_cursor = database.get_targets_with_tests()
-        for row in targets_cursor:
-            targets_with_test_data.append(row["targetName"])
-            target_table_header_text.append(f'<div style="writing-mode: vertical-lr;"><a href="../targets/{row["mcuFamilyTarget"]}.html">{row["targetName"]}</a></div>')
-        targets_cursor.close()
+
+        targets_and_families_with_tests = database.get_targets_with_tests()
+        for target_name, mcu_family_target in targets_and_families_with_tests:
+            target_table_header_text.append(f'<div style="writing-mode: vertical-lr;"><a href="../targets/{mcu_family_target}.html">{target_name}</a></div>')
 
         # Now fill in test results
         for test_name, target_test_results in database.get_test_results().items():
-            row_content = [test_name]
+            row_content = [f'<a href="{test_name}.html">{test_name}</a>']
 
-            for target in targets_with_test_data:
+            for target, _ in targets_and_families_with_tests:
                 if target in target_test_results:
                     if target_test_results[target] == TestResult.PASSED:
                         row_content.append('<div class="passed-marker">Passed</div>')
                     elif target_test_results[target] == TestResult.FAILED:
                         row_content.append('<div class="failed-marker">Failed</div>')
-                    else: # skipped
+                    else:  # skipped
                         row_content.append('<div class="skipped-marker">Skipped</div>')
                 else:
-                    row_content.append("") # Test not supported for this target
+                    # Not run for this target, e.g. due to the test folder being
+                    # excluded for this target by the build system
+                    row_content.append('<div class="skipped-marker">Skipped</div>')
             test_table.add_row(row_content)
 
         # Write the table to the page.
@@ -355,6 +374,77 @@ def generate_tests_index_page(database: MbedTestDatabase, out_path: pathlib.Path
         targets_index.write(html.unescape(test_table.get_html_string(attributes={"class": "ui celled table test_result_table"})))
 
         targets_index.write("\n</body>")
+
+
+def generate_test_page(database: MbedTestDatabase, test_name: str, out_path: pathlib.Path):
+
+    """
+    Generate the page that shows each test case of a test and its results on each target
+    """
+
+    with open(out_path, "w") as test_page:
+        write_html_header(test_page, f"Results of {test_name}")
+
+        test_page.write('<p><a href="index.html">Back to All Test Results ^</a></p>')
+
+        test_table = prettytable.PrettyTable()
+
+        # Figure out list of targets that we have test data for
+        targets_with_test_data = []
+        target_table_header_text = ["Test Case"]
+        targets_cursor = database.get_targets_with_test(test_name)
+        for row in targets_cursor:
+            targets_with_test_data.append(row["targetName"])
+            target_table_header_text.append(f'<div style="writing-mode: vertical-lr;"><a href="../targets/{row["mcuFamilyTarget"]}.html">{row["targetName"]}</a></div>')
+        targets_cursor.close()
+
+        # Now fill in test results
+        for test_case_name, target_test_results in database.get_test_details(test_name).items():
+            row_content = [test_case_name]
+
+            for target in targets_with_test_data:
+                if target in target_test_results:
+                    if target_test_results[target] == TestResult.PASSED:
+                        row_content.append(f'<div class="passed-marker"><a href="{str(get_test_case_run_path(test_name, test_case_name, target))}">Passed</a></div>')
+                    elif target_test_results[target] == TestResult.FAILED:
+                        row_content.append(f'<div class="failed-marker"><a href="{str(get_test_case_run_path(test_name, test_case_name, target))}">Failed</a></div>')
+                    elif target_test_results[target] == TestResult.PRIOR_TEST_CASE_CRASHED:
+                        row_content.append('<div class="prior-crashed-marker">Prior Case Crashed</div>')
+                    else:  # skipped
+                        row_content.append('<div class="skipped-marker">Skipped</div>')
+                else:
+                    # Test case does not exist for this target, e.g. due to an ifdef
+                    row_content.append('<div class="skipped-marker">Skipped</div>')
+            test_table.add_row(row_content)
+
+        # Write the table to the page.
+        # Note: html.unescape() prevents HTML in the cells from being escaped in the page (which prettytable
+        # seems to do)
+        test_table.field_names = target_table_header_text
+        test_page.write(html.unescape(test_table.get_html_string(attributes={"class": "ui celled table test_result_table"})))
+
+        test_page.write("\n</body>")
+
+
+def generate_test_case_run_page(database: MbedTestDatabase, test_name: str, test_case_name: str, target_name: str, out_path: pathlib.Path):
+    """
+    Generate a page that shows the result of running a test case on a target.
+    """
+    with open(out_path, "w") as test_page:
+        write_html_header(test_page, f"Test Case Output", levels_deep=3)
+        test_page.write(f'<p><a href="../../{test_name}.html">Back to {test_name} Results ^</a></p>')
+
+        test_page.write(f"""
+<p class="ui">
+<b>Target:</b> {target_name}<br>
+<b>Test:</b> {test_name}<br>
+<b>Test Case:</b> {test_case_name}
+</p>
+""")
+
+        test_page.write(f'<div class="ui raised segment"><pre><code class="code">{database.get_test_case_run_output(test_name, test_case_name, target_name)}</code></pre></div>')
+
+        test_page.write("\n</body>")
 
 
 def generate_tests_and_targets_website(database: MbedTestDatabase, gen_path: pathlib.Path):
@@ -395,6 +485,16 @@ def generate_tests_and_targets_website(database: MbedTestDatabase, gen_path: pat
     # Generate tests subdirectory
     tests_dir = gen_path / "tests"
     tests_dir.mkdir(exist_ok=True)
-
     generate_tests_index_page(database, tests_dir / "index.html")
+
+    for test_name in database.get_tests():
+        generate_test_page(database, test_name, tests_dir / f"{test_name}.html")
+        test_details = database.get_test_details(test_name)
+
+        for test_case_name in test_details.keys():
+            for target_name, result in test_details[test_case_name].items():
+                if result == TestResult.PASSED or result == TestResult.FAILED:
+                    run_path = tests_dir / get_test_case_run_path(test_name, test_case_name, target_name)
+                    run_path.parent.mkdir(exist_ok=True, parents=True)
+                    generate_test_case_run_page(database, test_name, test_case_name, target_name, run_path)
 

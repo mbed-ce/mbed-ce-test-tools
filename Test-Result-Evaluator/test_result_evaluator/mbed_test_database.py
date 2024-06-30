@@ -23,6 +23,7 @@ class TestResult(enum.IntEnum):
     PASSED = 1  # Test ran and passed
     FAILED = 2  # Test ran and failed
     SKIPPED = 3  # Test was not run because it is not supported on this target
+    PRIOR_TEST_CASE_CRASHED = 4  # Test case was not executed because a prior test case crashed
 
 
 class DriverType(enum.Enum):
@@ -107,6 +108,7 @@ class MbedTestDatabase:
             "CREATE TABLE TestCases("
             "testName TEXT NOT NULL, "  # Name of the test
             "testCaseName TEXT NOT NULL, "  # Name of the test case
+            "testCaseIndex INTEGER NOT NULL, "  # 0-indexed order that this test case ran in
             "targetName TEXT NOT NULL REFERENCES Targets(name), "  # Name of the target it was ran for
             "result INTEGER NOT NULL,"  # TestResult of the test
             "output TEXT NOT NULL,"  # Output that this test case printed specifically, or empty string for skipped tests
@@ -592,25 +594,56 @@ ORDER BY childTarget ASC
 
     def add_test_record(self, test_name: str, target_name: str, execution_time: float, result: TestResult, output: str):
         """
-        Add a record of a test to the Tests table.
+        Add or update a record of a test to the Tests table.
         Replaces the record if it already exists
         """
         self._database.execute("INSERT OR REPLACE INTO Tests(testName, targetName, executionTime, result, output) "
                                "VALUES(?, ?, ?, ?, ?)",
                                (test_name, target_name, execution_time, result.value, output))
 
-    def add_test_case_record(self, test_name: str, test_case_name: str, target_name: str, result: TestResult, output: str):
+    def add_test_case_record(self, test_name: str, test_case_name: str, test_case_index: int, target_name: str, result: TestResult, output: str):
         """
-        Add a record of a test to the TestCases table.
+        Add or update a record of a test to the TestCases table.
         Replaces the record if it already exists
         """
-        self._database.execute("INSERT OR REPLACE INTO TestCases(testName, testCaseName, targetName, result, output) "
-                               "VALUES(?, ?, ?, ?, ?)",
-                               (test_name, test_case_name, target_name, result.value, output))
+        self._database.execute("INSERT OR REPLACE INTO TestCases(testName, testCaseName, testCaseIndex, targetName, result, output) "
+                               "VALUES(?, ?, ?, ?, ?, ?)",
+                               (test_name, test_case_name, test_case_index, target_name, result.value, output))
 
-    def get_targets_with_tests(self) -> sqlite3.Cursor:
+    def get_targets_with_tests(self) -> List[Tuple[str, str]]:
         """
         Get a cursor containing the target names for which we have test records available.
+        Also returns their target families.
+        """
+
+        cursor = self._database.execute("""
+SELECT DISTINCT targetName, mcuFamilyTarget
+FROM
+    Tests
+    INNER JOIN Targets ON Tests.targetName == Targets.name
+ORDER BY targetName ASC
+""")
+        targets_with_tests = [(row["targetName"], row["mcuFamilyTarget"]) for row in cursor]
+        cursor.close()
+        return targets_with_tests
+
+    def get_tests(self) -> List[str]:
+        """
+        Get a list of all tests that have data for any target.
+        """
+        cursor = self._database.execute("""
+SELECT DISTINCT testName
+FROM
+    Tests
+ORDER BY testName ASC
+        """)
+        tests = [row["testName"] for row in cursor]
+        cursor.close()
+        return tests
+
+    def get_targets_with_test(self, test_name: str) -> sqlite3.Cursor:
+        """
+        Get a cursor containing the target names for which we have test records available for a given test.
         Also returns their target families.
         """
 
@@ -619,8 +652,10 @@ SELECT DISTINCT targetName, mcuFamilyTarget
 FROM
     Tests
     INNER JOIN Targets ON Tests.targetName == Targets.name
+WHERE
+    testName = ?
 ORDER BY targetName ASC
-""")
+""", (test_name, ))
 
     def get_test_results(self) -> Dict[str, Dict[str, TestResult]]:
         """
@@ -655,3 +690,58 @@ ORDER BY testName ASC
 
         cursor.close()
         return all_test_results
+
+    def get_test_details(self, test_name: str) -> Dict[str, Dict[str, TestResult]]:
+        """
+        Get the results of all cases for the given test for all targets.
+        Returns {test case name: {target name: TestResult}}.
+        """
+
+        # Note: Ordering the test cases is slightly complicated because not every target might run every test case.
+        # e.g. if an #ifdef blocks a target from executing a test case, test cases after that one will be at a
+        # lower index for Y than other targets.  We fix this by ordering by the maximum test case index that any
+        # target saw from running the test.
+        cursor = self._database.execute("""
+SELECT
+    testCaseName,
+    group_concat(targetName, ",") AS targets,
+    group_concat(result, ",") AS results
+FROM TestCases
+WHERE testName = ?
+GROUP BY testCaseName
+ORDER BY max(testCaseIndex) ASC
+""", (test_name, ))
+
+        all_test_case_results: Dict[str, Dict[str, TestResult]] = {}
+
+        for row in cursor:
+            this_test_case_results: Dict[str, TestResult] = {}
+
+            # Split up the targets and results into individual elements
+            target_names = row["targets"].split(",")
+            results = row["results"].split(",")
+
+            # Store data in dict
+            for target_idx, target in enumerate(target_names):
+                this_test_case_results[target] = TestResult(int(results[target_idx]))
+
+            all_test_case_results[row["testCaseName"]] = this_test_case_results
+
+        cursor.close()
+        return all_test_case_results
+
+    def get_test_case_run_output(self, test_name: str, test_case_name: str, target_name: str) -> str:
+        """
+        Get the output from running a test case on a target.
+        """
+        cursor = self._database.execute("""
+SELECT output
+FROM TestCases
+WHERE
+    testName = ?
+    AND testCaseName = ?
+    AND targetName = ?
+""", (test_name, test_case_name, target_name))
+        output = next(cursor)["output"]
+        cursor.close()
+        return output

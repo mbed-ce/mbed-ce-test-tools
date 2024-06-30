@@ -24,12 +24,12 @@ from mbed_host_tests.host_tests_logger import HtrunLogger
 
 LOGIC_ANALYZER_FREQUENCY = 8 # MHz
 
-if sys.platform == "win32":
+#if sys.platform == "win32":
     # Sigrok must be run through WSL on Windows, see
     # https://github.com/mbed-ce/mbed-ce-ci-shield-v2?tab=readme-ov-file#side-note-sigrok-windows-issues
-    SIGROK_COMMAND = ["wsl", "sigrok-cli"]
-else:
-    SIGROK_COMMAND = ["sigrok-cli"]
+#    SIGROK_COMMAND = ["wsl", "sigrok-cli"]
+#else:
+SIGROK_COMMAND = ["sigrok-cli"]
 
 
 # How long to wait, in seconds, after starting a sigrok recording before we can start the test.
