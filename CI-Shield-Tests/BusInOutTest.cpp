@@ -33,7 +33,7 @@ void busin_define_test(){
 
 // test that all pins can be marked as GPOUT
 void busout_define_test(){
-	BusOut bout(PIN_I2C_SCL,PIN_I2C_SDA,PIN_SPI_SCLK,PIN_SPI_MISO,PIN_SPI_MOSI,PIN_ANALOG_IN,PIN_GPOUT_2,PIN_GPOUT_1_PWM, PIN_GPOUT_0);
+	BusOut bout(PIN_I2C_SCL,PIN_I2C_SDA,PIN_SPI_SCLK,PIN_SPI_MISO,PIN_SPI_MOSI,PIN_GPOUT_2,PIN_GPOUT_1_PWM,PIN_GPOUT_0);
 	bout = 0;
 	volatile int x = 0;
 	while(x < 0xFF){
@@ -58,7 +58,7 @@ void businout_bidirectional_test(){
 		bio1 = x;
 		wait_us(GPIO_PROPAGATION_TIME);
 		volatile int y = bio2.read();
-		printf("\r\n*********\r\nvalue of x,bio is: 0x%x, 0x%x\r\n********\r\n",x,y);
+		printf("\r\n*********\r\nvalue of x,bio2 is: 0x%x, 0x%x\r\n********\r\n",x,y);
 		TEST_ASSERT_MESSAGE(y == x,"Value read on bus does not equal value written. ");
 
         x = x + 1;
@@ -77,7 +77,7 @@ void businout_bidirectional_test(){
 		bio2 = x;
         wait_us(GPIO_PROPAGATION_TIME);
 		volatile int y = bio1.read();
-		printf("\r\n*********\r\nvalue of x,bio is: 0x%x, 0x%x\r\n********\r\n",x,y);
+		printf("\r\n*********\r\nvalue of x,bio1 is: 0x%x, 0x%x\r\n********\r\n",x,y);
 		TEST_ASSERT_MESSAGE(y == x,"Value read on bus does not equal value written. ");
 
         x = x + 1;
