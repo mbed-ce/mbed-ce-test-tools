@@ -125,6 +125,18 @@ void host_assert_standard_message()
 }
 
 /*
+ * Generate a failure if the HAL does not provide the new DEVICE_SPI_COUNT /
+ * spi_get_peripheral_name() functionality.
+ * See https://github.com/mbed-ce/mbed-os/issues/255 for details.
+ */
+void verify_spi_get_peripheral_name_exists()
+{
+#ifndef DEVICE_SPI_COUNT
+    TEST_FAIL_MESSAGE("HAL should provide DEVICE_SPI_COUNT and spi_get_peripheral_name()")
+#endif
+}
+
+/*
  * Uses the single-word API, transfers bytes
  */
 void write_single_word_uint8()
@@ -513,6 +525,7 @@ void test_teardown(const size_t passed, const size_t failed, const failure_t fai
 }
 
 Case cases[] = {
+        Case("Verify spi_get_peripheral_name() Exists", verify_spi_get_peripheral_name_exists),
         Case("Send 8 Bit Data via Single Word API", write_single_word_uint8),
         Case("Send 16 Bit Data via Single Word API", write_single_word_uint16),
 #if DEVICE_SPI_32BIT_WORDS

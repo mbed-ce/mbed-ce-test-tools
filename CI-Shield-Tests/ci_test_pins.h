@@ -76,6 +76,12 @@
 #define PIN_ANALOG_OUT p18
 #endif
 
+// Overrides for Nucleo H563ZI
+#if TARGET_NUCLEO_H563ZI
+// PA4 must be jumpered to PIN_GPOUT_1_PWM.  SB56 must be disconnected.
+#define PIN_ANALOG_OUT PA_4
+#endif
+
 // Default definitions, if not overridden above.  These use the Arduino Uno form factor.
 #ifdef TARGET_FF_ARDUINO_UNO
 

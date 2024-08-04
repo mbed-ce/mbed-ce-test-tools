@@ -73,6 +73,19 @@ std::pair<float, float> read_freq_and_duty_cycle_via_host_test()
 }
 
 /*
+ * Generate a failure if the HAL does not provide the new DEVICE_SPI_COUNT /
+ * spi_get_peripheral_name() functionality.
+ * See https://github.com/mbed-ce/mbed-os/issues/255 for details.
+ */
+void verify_target_default_adc_vref_set()
+{
+    if(isnan(MBED_CONF_TARGET_DEFAULT_ADC_VREF))
+    {
+        TEST_FAIL_MESSAGE("target.default-adc-vref not defined!");
+    }
+}
+
+/*
  * Uses the logic analyzer on the host side to verify the frequency and duty cycle of the current PWM signal
  */
 void verify_pwm_freq_and_duty_cycle(float expectedFrequencyHz, float expectedDutyCyclePercent)
@@ -283,6 +296,7 @@ utest::v1::status_t test_setup(const size_t number_of_cases) {
 
 // Test cases
 Case cases[] = {
+    Case("Test that target.default-adc-vref is set", verify_target_default_adc_vref_set),
     Case("Test reading digital values with the ADC", test_adc_digital_value),
     Case("Test reading analog values with the ADC", test_adc_analog_value),
     Case("Test PWM frequency and duty cycle (freq = 50 Hz)", test_pwm<20000>),
