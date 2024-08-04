@@ -37,9 +37,6 @@ AnalogIn adc(PIN_ANALOG_IN);
 PwmOut pwmOut(PIN_GPOUT_1_PWM);
 #endif
 
-// How long to wait when setting a PWM value for the hardware filter to settle
-constexpr std::chrono::milliseconds PWM_FILTER_DELAY = 50ms; // nominal time constant 10ms
-
 // GPIO output voltage expressed as a percent of the ADC reference voltage.  Experimentally determined by the first test case.
 float ioVoltageADCPercent;
 
@@ -168,17 +165,12 @@ void test_adc_analog_value()
     // The filter in hardware is set up for a PWM signal of ~10kHz.
     pwmOut.period(.0001);
 
-    const size_t numSteps = 10;
+    const size_t maxStep = 10;
 
-    // Allow a 1.5% tolerance on the read ADC values.  That should be about right because most Mbed targets
-    // have between an 8 bit and a 12 bit ADC.
-    // The least accurate ADC observed so far is on the RP2040, which was up to 1.1% off.
-    const float adcTolerancePercent = .015f;
-
-    for(size_t stepIdx = 0; stepIdx < numSteps; ++stepIdx)
+    for(size_t stepIdx = 0; stepIdx <= maxStep; ++stepIdx)
     {
         // Write the analog value
-        float dutyCyclePercent = stepIdx / static_cast<float>(numSteps);
+        const float dutyCyclePercent = stepIdx / static_cast<float>(maxStep);
         pwmOut.write(dutyCyclePercent);
         ThisThread::sleep_for(PWM_FILTER_DELAY);
 
@@ -187,7 +179,7 @@ void test_adc_analog_value()
         float expectedADCPercent = dutyCyclePercent * ioVoltageADCPercent;
         printf("PWM duty cycle of %.01f%% produced an ADC reading of %.01f%% (expected %.01f%%)\n",
                dutyCyclePercent * 100.0f, adcPercent * 100.0f, expectedADCPercent * 100.0f);
-        TEST_ASSERT_FLOAT_WITHIN(adcTolerancePercent, expectedADCPercent, adcPercent);
+        TEST_ASSERT_FLOAT_WITHIN(ADC_TOLERANCE_PERCENT, expectedADCPercent, adcPercent);
     }
 }
 
@@ -280,6 +272,11 @@ void test_pwm_maintains_duty_cycle()
 utest::v1::status_t test_setup(const size_t number_of_cases) {
     // Setup Greentea using a reasonable timeout in seconds
     GREENTEA_SETUP(75, "signal_analyzer_test");
+
+#ifdef PIN_ANALOG_OUT
+    // DAC pin is connected to GPOUT1 so make sure to tristate it for this test
+    static DigitalIn dacPin(PIN_ANALOG_OUT, PullNone);
+#endif
 
     return verbose_test_setup_handler(number_of_cases);
 }

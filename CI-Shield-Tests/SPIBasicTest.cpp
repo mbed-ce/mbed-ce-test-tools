@@ -70,7 +70,7 @@ inline void const * getMessage(size_t wordSize)
 // Long data message used in a few tests.  Starts with a recognizeable pattern.
 uint8_t const longMessage[32] = {0x01, 0x02, };
 
-const uint32_t spiFreq = 500000;
+const uint32_t spiFreq = 100000;
 const uint8_t spiMode = 0;
 
 #if STATIC_PINMAP_READY
@@ -270,6 +270,7 @@ void free_and_reallocate_spi()
 #if DEVICE_SPI_ASYNCH
 
 StaticCacheAlignedBuffer<uint8_t, sizeof(standardMessageBytes)> dmaRxBuffer;
+StaticCacheAlignedBuffer<uint16_t, sizeof(standardMessageUint16s) / sizeof(uint16_t)> dmaRxBufferUint16;
 
 template<DMAUsage dmaUsage>
 void write_async_tx_only()
@@ -310,6 +311,19 @@ void write_async_tx_rx()
     host_assert_standard_message();
 }
 
+template<DMAUsage dmaUsage>
+void write_async_tx_rx_16_bit()
+{
+    host_start_spi_logging();
+    spi->set_dma_usage(dmaUsage);
+    spi->format(16, spiMode);
+
+    auto ret = spi->transfer_and_wait(standardMessageUint16s, sizeof(standardMessageUint16s), dmaRxBufferUint16, sizeof(standardMessageUint16s), 1s);
+    TEST_ASSERT_EQUAL(ret, 0);
+    TEST_ASSERT_EQUAL_HEX16_ARRAY(standardMessageBytes, dmaRxBuffer.data(), dmaRxBufferUint16.capacity());
+    host_assert_standard_message();
+}
+
 /*
  * This test measures how long it takes to do an asynchronous transaction and how much of that time may
  * be used to execute a foreground thread.
@@ -318,6 +332,7 @@ template<DMAUsage dmaUsage>
 void benchmark_async_transaction()
 {
     spi->set_dma_usage(dmaUsage);
+    spi->format(8, spiMode);
 
     Timer transactionTimer;
     Timer backgroundTimer;
@@ -411,8 +426,8 @@ void async_queue_and_abort()
 
     // The first transfer should have delivered no flags.
     // The second transfer should have delivered a completion flag.
-    TEST_ASSERT_EQUAL(callbackEvent1, 0);
-    TEST_ASSERT_EQUAL(callbackEvent2, SPI_EVENT_COMPLETE);
+    TEST_ASSERT_EQUAL(0, callbackEvent1);
+    TEST_ASSERT_EQUAL(SPI_EVENT_COMPLETE, callbackEvent2);
 
     greentea_send_kv("verify_queue_and_abort_test", "please");
     assert_next_message_from_host("verify_queue_and_abort_test", "pass");
@@ -529,6 +544,7 @@ Case cases[] = {
         Case("Send Data via Async Interrupt API (Rx only)", write_async_rx_only<DMA_USAGE_NEVER>),
         Case("Free and Reallocate SPI Instance with Interrupts", async_free_and_reallocate_spi<DMA_USAGE_NEVER>),
         Case("Send Data via Async Interrupt API (Tx/Rx)", write_async_tx_rx<DMA_USAGE_NEVER>),
+        Case("Send 16-Bit Data via Interrupt API (Tx/Rx)", write_async_tx_rx_16_bit<DMA_USAGE_NEVER>),
         Case("Benchmark Async SPI via Interrupts", benchmark_async_transaction<DMA_USAGE_NEVER>),
         Case("Queueing and Aborting Async SPI via Interrupts", async_queue_and_abort<DMA_USAGE_NEVER>),
         Case("Use Multiple SPI Instances with Interrupts", async_use_multiple_spi_objects<DMA_USAGE_NEVER>),
@@ -536,9 +552,13 @@ Case cases[] = {
         Case("Send Data via Async DMA API (Rx only)", write_async_rx_only<DMA_USAGE_ALWAYS>),
         Case("Free and Reallocate SPI Instance with DMA", async_free_and_reallocate_spi<DMA_USAGE_ALWAYS>),
         Case("Send Data via Async DMA API (Tx/Rx)", write_async_tx_rx<DMA_USAGE_ALWAYS>),
+        Case("Send 16-Bit Data via Async DMA API (Tx/Rx)", write_async_tx_rx_16_bit<DMA_USAGE_ALWAYS>),
         Case("Benchmark Async SPI via DMA", benchmark_async_transaction<DMA_USAGE_ALWAYS>),
         Case("Queueing and Aborting Async SPI via DMA", async_queue_and_abort<DMA_USAGE_ALWAYS>),
         Case("Use Multiple SPI Instances with DMA", async_use_multiple_spi_objects<DMA_USAGE_ALWAYS>),
+
+        // Verify that the non-async API can still be used after enabling and using the async API
+        Case("Transfer 8 Bit Data via Transactional API (Tx/Rx)", write_transactional_tx_rx<uint8_t>),
 #endif
 };
 

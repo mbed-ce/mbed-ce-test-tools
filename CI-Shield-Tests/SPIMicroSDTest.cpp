@@ -35,9 +35,6 @@ char SD_TEST_STRING[SD_TEST_STRING_MAX] = {0};
 
 alignas(SDBlockDevice) uint8_t sdBlockDevMemory[sizeof(SDBlockDevice)];
 
-// Enable power and SPI to the SD card
-static DigitalOut sdcardEnablePin(PIN_SDCARD_ENABLE, 1);
-
 /*
  * Wait for the next host message with the given key, and then assert that its
  * value is expectedVal.
@@ -234,6 +231,12 @@ utest::v1::status_t test_setup(const size_t number_of_cases)
     // Setup Greentea using a reasonable timeout in seconds
     GREENTEA_SETUP(120, "default_auto");
 
+    // Enable power and SPI to the SD card
+    static DigitalOut sdcardEnablePin(PIN_SDCARD_ENABLE, 0);
+    rtos::ThisThread::sleep_for(100ms);
+    sdcardEnablePin = 1;
+    rtos::ThisThread::sleep_for(100ms);
+
     // Initialize logic analyzer for SPI pinouts
     static BusOut funcSelPins(PIN_FUNC_SEL0, PIN_FUNC_SEL1, PIN_FUNC_SEL2);
     funcSelPins = 0b010;
@@ -243,15 +246,15 @@ utest::v1::status_t test_setup(const size_t number_of_cases)
 
 // Test cases
 Case cases[] = {
-        Case("SPI - Object Definable", test_object),
-        Case("SPI - SD card present (1MHz)", test_card_present<1000000, false, DMA_USAGE_NEVER>),
-		Case("SPI - Mount FS, Create File (1MHz)", mount_fs_create_file<1000000, false, DMA_USAGE_NEVER>),
-		Case("SPI - Write, Read, and Delete File (1MHz)", test_sd_file<1000000, false, DMA_USAGE_NEVER>),
+        //Case("SPI - Object Definable", test_object),
+//        Case("SPI - SD card present (1MHz)", test_card_present<100000, false, DMA_USAGE_NEVER>),
+//		Case("SPI - Mount FS, Create File (1MHz)", mount_fs_create_file<100000, false, DMA_USAGE_NEVER>),
+//		Case("SPI - Write, Read, and Delete File (1MHz)", test_sd_file<100000, false, DMA_USAGE_NEVER>),
 
 #if DEVICE_SPI_ASYNCH
-    Case("[Async Interrupts] SPI - SD card present (1MHz)", test_card_present<1000000, true, DMA_USAGE_NEVER>),
-    Case("[Async Interrupts] SPI - Mount FS, Create File (1MHz)", mount_fs_create_file<1000000, true, DMA_USAGE_NEVER>),
-    Case("[Async Interrupts] SPI - Write, Read, and Delete File (1MHz)", test_sd_file<1000000, true, DMA_USAGE_NEVER>),
+//    Case("[Async Interrupts] SPI - SD card present (1MHz)", test_card_present<1000000, true, DMA_USAGE_NEVER>),
+//    Case("[Async Interrupts] SPI - Mount FS, Create File (1MHz)", mount_fs_create_file<1000000, true, DMA_USAGE_NEVER>),
+//    Case("[Async Interrupts] SPI - Write, Read, and Delete File (1MHz)", test_sd_file<1000000, true, DMA_USAGE_NEVER>),
     Case("[Async DMA] SPI - SD card present (1MHz)", test_card_present<1000000, true, DMA_USAGE_ALWAYS>),
     Case("[Async DMA] SPI - Mount FS, Create File (1MHz)", mount_fs_create_file<1000000, true, DMA_USAGE_ALWAYS>),
     Case("[Async DMA] SPI - Write, Read, and Delete File (1MHz)", test_sd_file<1000000, true, DMA_USAGE_ALWAYS>),

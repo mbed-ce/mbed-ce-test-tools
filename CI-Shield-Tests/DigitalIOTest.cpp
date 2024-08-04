@@ -69,6 +69,12 @@ void DigitalIO_StackAllocated_Test()
 utest::v1::status_t test_setup(const size_t number_of_cases) {
     // Setup Greentea using a reasonable timeout in seconds
     GREENTEA_SETUP(30, "default_auto");
+
+#ifdef PIN_ANALOG_OUT
+    // DAC pin is connected to GPOUT1 so make sure to tristate it for this test
+    static DigitalIn dacPin(PIN_ANALOG_OUT, PullNone);
+#endif
+
     return verbose_test_setup_handler(number_of_cases);
 }
 

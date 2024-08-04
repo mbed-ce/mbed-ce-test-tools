@@ -43,6 +43,7 @@
 // PIN_GPIN_0        - Pin connected to GPIN_0 on the test shield.  Can be any GPIO.  Default D2.
 // PIN_UART_MCU_TX   - Pin connected to UART_MCU_TX on the test shield.  Must be mappable as UART Tx. Default D0.
 // PIN_UART_MCU_RX   - Pin connected to UART_MCU_RX on the test shield.  Must be mappable as UART Rx. Default D1.
+// PIN_ANALOG_OUT    - Pin connected to the DAC on the MCU.  Should be looped back to PIN_GPOUT_1_PWM.  Don't define if not available.
 
 // Overrides for RP2040
 #if TARGET_RASPBERRY_PI_PICO
@@ -72,6 +73,7 @@
 #define PIN_SPI_SCLK p7
 #define PIN_SPI_HW_CS p8 // This is a HW CS pin despite HW CS pins not being labeled in the pinout diagram
 #define PIN_SPI_SD_CS p11
+#define PIN_ANALOG_OUT p18
 #endif
 
 // Default definitions, if not overridden above.  These use the Arduino Uno form factor.

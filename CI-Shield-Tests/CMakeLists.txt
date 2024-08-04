@@ -39,6 +39,11 @@ mbed_greentea_add_test(
 )
 
 mbed_greentea_add_test(
+	TEST_NAME testshield-digitalio-prop-time
+	TEST_SOURCES DigitalIOPropagationTimeTest.cpp
+)
+
+mbed_greentea_add_test(
     TEST_NAME testshield-i2c-basic
     TEST_SOURCES I2CBasicTest.cpp
 	HOST_TESTS_DIR host_tests
@@ -74,6 +79,15 @@ mbed_greentea_add_test(
 	TEST_NAME testshield-pwm-and-adc
 	TEST_SOURCES PWMAndADCTest.cpp
 	HOST_TESTS_DIR host_tests
+)
+
+if(NOT "DEVICE_ANALOGOUT=1" IN_LIST MBED_TARGET_DEFINITIONS)
+	set(DAC_ADC_TEST_SKIPPED "No DAC support")
+endif()
+mbed_greentea_add_test(
+	TEST_NAME testshield-dac-to-adc
+	TEST_SOURCES DACToADCTest.cpp
+	TEST_SKIPPED ${DAC_ADC_TEST_SKIPPED}
 )
 
 mbed_finalize_build()

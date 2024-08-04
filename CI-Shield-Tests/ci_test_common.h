@@ -32,6 +32,14 @@
 // How long to wait after changing a GPIO output pin for the signal to propagate to the input pin.
 constexpr int GPIO_PROPAGATION_TIME = 100; // us
 
+// Allow a 1.5% tolerance on the read ADC values.  That should be about right because most Mbed targets
+// have between an 8 bit and a 12 bit ADC.
+// The least accurate ADC observed so far is on the RP2040, which was up to 1.1% off.
+constexpr float ADC_TOLERANCE_PERCENT = .015f;
+
+// How long to wait when setting a PWM value for the hardware filter to settle
+constexpr std::chrono::milliseconds PWM_FILTER_DELAY = 50ms; // nominal time constant 10ms
+
 /*
  * Wait for the next host message with the given key, and then assert that its
  * value is expectedVal.
