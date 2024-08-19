@@ -22,7 +22,7 @@ from . import usb_serial_numbers
 
 from mbed_host_tests.host_tests_logger import HtrunLogger
 
-LOGIC_ANALYZER_FREQUENCY = 8 # MHz
+LOGIC_ANALYZER_FREQUENCY = 2 # MHz
 
 #if sys.platform == "win32":
     # Sigrok must be run through WSL on Windows, see
@@ -497,7 +497,7 @@ class SigrokSPIRecorder(SigrokRecorderBase):
                     continue
 
                 # Parse list of hex bytes
-                byte_strings = match_info.group(1).split("")
+                byte_strings = match_info.group(1).split(" ")
                 byte_values = [int(byte_string, 16) for byte_string in byte_strings]
 
                 if previous_line_data is None:
@@ -551,6 +551,40 @@ class SigrokSPIRecorder(SigrokRecorderBase):
             if self._sigrok_process.poll() is None:
                 self._sigrok_process.terminate()
 
+
+def pretty_diff_spi_data(logger: HtrunLogger, expected: List[SPITransaction], actual: List[SPITransaction]) -> bool:
+    """
+    Diff expected SPI data against actual.  Always prints the actual data to the console, and prints the expected
+    too if they don't match.
+    """
+    if len(actual) > 0:
+        logger.prn_inf("Saw on the SPI bus:\n" + "\n".join(str(transaction) for transaction in actual))
+    else:
+        logger.prn_inf("Saw nothing the SPI bus.")
+
+    if len(actual) != len(expected):
+        logger.prn_err("Expected %d transactions but saw %d", len(expected), len(actual))
+        return False
+
+    match = True
+    for transaction_idx, (actual_txn, expected_txn) in enumerate(zip(actual, expected)):
+        if len(actual_txn.mosi_bytes) != len(expected_txn.mosi_bytes):
+            logger.prn_err("Transaction %d: expected length %d but saw %d", transaction_idx, len(expected_txn.mosi_bytes), len(actual_txn.mosi_bytes))
+            match = False
+            continue
+
+        for byte_idx in range(0, len(actual_txn.mosi_bytes)):
+            if actual_txn.mosi_bytes[byte_idx] != expected_txn.mosi_bytes[byte_idx]:
+                logger.prn_err("Transaction %d MOSI byte %d: expected 0x%x but saw 0x%x", transaction_idx, byte_idx, expected_txn.mosi_bytes[byte_idx], actual_txn.mosi_bytes[byte_idx])
+                match = False
+            if actual_txn.miso_bytes[byte_idx] != expected_txn.miso_bytes[byte_idx]:
+                logger.prn_err("Transaction %d miso byte %d: expected 0x%x but saw 0x%x", transaction_idx, byte_idx, expected_txn.miso_bytes[byte_idx], actual_txn.miso_bytes[byte_idx])
+                match = False
+
+    if not match:
+        logger.prn_inf("We expected:\n" + "\n".join(str(transaction) for transaction in actual))
+
+    return match
 
 class SigrokSignalAnalyzer(SigrokRecorderBase):
     """

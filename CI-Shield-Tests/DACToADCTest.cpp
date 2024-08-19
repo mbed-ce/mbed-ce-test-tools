@@ -25,7 +25,7 @@
 
 using namespace utest::v1;
 
-// Tristate GPOUT1
+// Tristate GPOUT1 as it is jumpered to the analog out pin
 DigitalIn gpout1Pin(PIN_GPOUT_1_PWM, PullNone);
 
 // DAC and ADC
@@ -55,7 +55,7 @@ void dac_adc_test()
         // Get and check the result
         float adcPercent = adc.read();
         printf("DAC output of %.01f%% produced an ADC reading of %.01f%%\n",
-               dutyCyclePercent * 100.0f, adcPercent * 100.0f, dutyCyclePercent * 100.0f);
+               dutyCyclePercent * 100.0f, adcPercent * 100.0f);
         TEST_ASSERT_FLOAT_WITHIN(ADC_TOLERANCE_PERCENT, dutyCyclePercent, adcPercent);
 
         // Also check the read value

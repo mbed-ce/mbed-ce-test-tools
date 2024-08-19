@@ -5,12 +5,13 @@ import binascii
 import sys
 import os
 import pathlib
+from typing import Dict, List
 
 # Unfortunately there's no easy way to make the test runner add a directory to its module path...
 this_script_dir = pathlib.Path(os.path.dirname(__file__))
 sys.path.append(str(this_script_dir / ".."))
 
-from host_test_utils.sigrok_interface import SPITransaction, SigrokSPIRecorder
+from host_test_utils.sigrok_interface import SPITransaction, SigrokSPIRecorder, pretty_diff_spi_data
 
 class SpiBasicTestHostTest(BaseHostTest):
 
@@ -19,13 +20,13 @@ class SpiBasicTestHostTest(BaseHostTest):
     Handles logging data using the logic analyzer and verifying certain test results.
     """
 
-    SEQUENCES = {
+    SEQUENCES: Dict[str, List[SPITransaction]] = {
 
         # Standard word data sent from the basic tests
-        "standard_word": SPITransaction(
+        "standard_word": [SPITransaction(
             mosi_bytes=[0x1, 0x2, 0x4, 0x8],
             miso_bytes=[0x1, 0x2, 0x4, 0x8]
-        )
+        )]
     }
 
     def __init__(self):
@@ -48,16 +49,10 @@ class SpiBasicTestHostTest(BaseHostTest):
         Verify that the current recorded SPI data matches the given sequence
         """
 
-        spi_transaction = self.recorder.get_result()[0]
-        self.logger.prn_inf("Saw on the SPI bus: " + str(spi_transaction))
+        spi_transactions = self.recorder.get_result()
+        success = pretty_diff_spi_data(self.logger, self.SEQUENCES[value], spi_transactions)
 
-        if self.SEQUENCES[value] == spi_transaction:
-            self.logger.prn_inf("PASS")
-            self.send_kv('verify_sequence', 'complete')
-        else:
-            self.logger.prn_inf("We expected: " + str(self.SEQUENCES[value]))
-            self.logger.prn_inf("FAIL")
-            self.send_kv('verify_sequence', 'failed')
+        self.send_kv('verify_sequence', 'complete' if success else 'failed')
 
     def _callback_verify_queue_and_abort_test(self, key: str, value: str, timestamp):
         """

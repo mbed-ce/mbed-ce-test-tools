@@ -83,9 +83,7 @@ class I2CSlaveCommsTest(BaseHostTest):
         if not pretty_diff_i2c_data(self.logger, expected_i2c_data, i2c_data):
             success = False
 
-        self.send_kv('read_bytes_from_slave', 'complete' if success else 'error')
-
-        self.send_kv('write_bytes_to_slave', 'complete')
+        self.send_kv('write_bytes_to_slave', 'complete' if success else 'error')
 
     def _callback_try_write_to_wrong_address(self, key: str, value: str, timestamp):
         """
@@ -177,7 +175,7 @@ class I2CSlaveCommsTest(BaseHostTest):
 
             self.i2c_bridge.set_i2c_configuration(cy_serial_bridge.driver.CyI2CConfig(frequency=400000))
 
-            self.exit_stack = temp_exit_stack.pop_all() # Creates a new exit stack with ownership of mcast_socket "moved" into it
+            self.exit_stack = temp_exit_stack.pop_all() # Creates a new exit stack with ownership of i2c_bridge "moved" into it
 
     def _destroy_i2c_bridge(self):
         """
@@ -198,7 +196,7 @@ class I2CSlaveCommsTest(BaseHostTest):
         self.register_callback('read_bytes_from_slave', self._callback_read_bytes_from_slave)
         self.register_callback('reinit_i2c_bridge', self._callback_reinit_i2c_bridge)
 
-        self.logger.prn_inf("I2C Record-Only Test host test setup complete.")
+        self.logger.prn_inf("I2C Slave Comms host test setup complete.")
 
     def teardown(self):
         self.recorder.teardown()

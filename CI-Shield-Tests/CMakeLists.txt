@@ -76,6 +76,12 @@ mbed_greentea_add_test(
 )
 
 mbed_greentea_add_test(
+	TEST_NAME testshield-spi-slave-comms
+	TEST_SOURCES SPISlaveCommsTest.cpp
+	HOST_TESTS_DIR host_tests
+)
+
+mbed_greentea_add_test(
 	TEST_NAME testshield-pwm-and-adc
 	TEST_SOURCES PWMAndADCTest.cpp
 	HOST_TESTS_DIR host_tests
