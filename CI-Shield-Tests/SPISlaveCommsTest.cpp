@@ -42,7 +42,7 @@ constexpr auto spiPinmap = get_spi_pinmap(PIN_SPI_MOSI, PIN_SPI_MISO, PIN_SPI_SC
 void create_spi_object(bool mosiNC, bool misoNC)
 {
     // Destroy if previously created
-    if(spi)
+    if(spi != nullptr)
     {
         delete spi;
     }
@@ -68,11 +68,15 @@ void host_start_spi_logging()
     assert_next_message_from_host("start_recording_spi", "complete");
 }
 
+template<int SPIMode>
 void test_one_byte_transaction()
 {
-    host_start_spi_logging();
+    spi->format(8, SPIMode);
+    std::string spiMode = std::to_string(SPIMode);
+    greentea_send_kv("set_spi_mode", spiMode.c_str());
 
     // Kick off the host test doing an SPI transaction
+    host_start_spi_logging();
     greentea_send_kv("do_transaction", "0x1 expected_response 0x2");
 
     // Preload reply
@@ -88,7 +92,71 @@ void test_one_byte_transaction()
         }
     }
 
-    TEST_ASSERT_EQUAL_UINT8(byteRxed, 0x1);
+    TEST_ASSERT_EQUAL_UINT8(0x1, byteRxed);
+
+    assert_next_message_from_host("do_transaction", "complete");
+}
+
+template<int SPIMode>
+void test_one_16bit_word_transaction()
+{
+    spi->format(16, SPIMode);
+    std::string spiMode = std::to_string(SPIMode);
+    greentea_send_kv("set_spi_mode", spiMode.c_str());
+
+    // Kick off the host test doing an SPI transaction.
+    host_start_spi_logging();
+    greentea_send_kv("do_transaction", "0x1 0x2 expected_response 0x3 0x4");
+
+    // Preload reply
+    spi->reply(0x0304);
+
+    uint16_t wordRxed = 0;
+    while(true)
+    {
+        if(spi->receive())
+        {
+            wordRxed = spi->read();
+            break;
+        }
+    }
+
+    TEST_ASSERT_EQUAL_UINT16(0x0102, wordRxed);
+
+    assert_next_message_from_host("do_transaction", "complete");
+}
+
+/*
+ * NOTE: If this test fails, check that the spi_free() function remaps all pins back to GPIO
+ * function.  If it does not, then the MISO pin will still have its previous MISO function
+ * instead of being tristated.
+ */
+void test_one_byte_rx_only()
+{
+    // Set mode back to 8 and start recording.
+    // Also reduce SCLK frequency so that the mirror resistor can work
+    spi->format(8, 0);
+    greentea_send_kv("set_spi_mode", "0");
+    greentea_send_kv("set_sclk_freq", "100000");
+    host_start_spi_logging();
+
+    // disable MISO
+    create_spi_object(false, true);
+
+    // Note: because of the SPI mirror resistor, if this MCU does not drive MISO, MISO it should match MOSI.
+    greentea_send_kv("do_transaction", "0x25 expected_response 0x25");
+
+    uint8_t byteRxed = 0;
+    while(true)
+    {
+        if(spi->receive())
+        {
+            byteRxed = spi->read();
+            break;
+        }
+    }
+
+    TEST_ASSERT_EQUAL_UINT8(0x25, byteRxed);
 
     assert_next_message_from_host("do_transaction", "complete");
 }
@@ -97,7 +165,15 @@ void test_one_byte_transaction()
 // It's not defined in the HAL API what happens in this case so we currently cannot test it.
 
 utest::v1::Case cases[] = {
-    utest::v1::Case("One byte transaction", test_one_byte_transaction),
+    utest::v1::Case("One byte transaction (mode 0)", test_one_byte_transaction<0>),
+    utest::v1::Case("One byte transaction (mode 1)", test_one_byte_transaction<1>),
+    utest::v1::Case("One byte transaction (mode 2)", test_one_byte_transaction<2>),
+    utest::v1::Case("One byte transaction (mode 3)", test_one_byte_transaction<3>),
+    utest::v1::Case("One word transaction (mode 0)", test_one_16bit_word_transaction<0>),
+    utest::v1::Case("One word transaction (mode 1)", test_one_16bit_word_transaction<1>),
+    utest::v1::Case("One word transaction (mode 2)", test_one_16bit_word_transaction<2>),
+    utest::v1::Case("One word transaction (mode 3)", test_one_16bit_word_transaction<3>),
+    utest::v1::Case("One byte, MISO tristated", test_one_byte_rx_only),
 };
 
 utest::v1::status_t test_setup(const size_t number_of_cases)

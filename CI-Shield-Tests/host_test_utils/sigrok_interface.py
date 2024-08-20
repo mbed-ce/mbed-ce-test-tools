@@ -22,7 +22,7 @@ from . import usb_serial_numbers
 
 from mbed_host_tests.host_tests_logger import HtrunLogger
 
-LOGIC_ANALYZER_FREQUENCY = 2 # MHz
+LOGIC_ANALYZER_FREQUENCY = 8 # MHz
 
 #if sys.platform == "win32":
     # Sigrok must be run through WSL on Windows, see
@@ -430,22 +430,25 @@ class SigrokSPIRecorder(SigrokRecorderBase):
         super().__init__()
         self.logger = HtrunLogger('SigrokSPIRecorder')
 
-    def record(self, cs_pin: Optional[str], record_time: float):
+    def record(self, cs_pin: Optional[str], record_time: float, spi_mode:int = 0):
         """
         Starts recording SPI data from the logic analyzer.
         :param cs_pin: Logic analyzer pin to use for chip select.  e.g. "D3" or "D4".  May be set to None
            to not use the CS line and record all traffic.
         :param record_time: Time after the first clock edge to record data for
+        :param spi_mode: SPI mode from 0-3
         """
 
         self._has_cs_pin = cs_pin is not None
 
         # spi sigrok command
+        cpol = spi_mode // 2
+        cpha = spi_mode % 2
         sigrok_spi_command = [
               # Set up SPI decoder.
-              # Note that for now we always use mode 0 and a word size of 8, but that can be changed later.
+              # Note that for now we always use a word size of 8, but that can be changed later.
               "--protocol-decoders",
-              f"spi:clk=D3:mosi=D2:miso=D1{':cs=' + cs_pin if self._has_cs_pin else ''}:cpol=0:cpha=0:wordsize=8",
+              f"spi:clk=D3:mosi=D2:miso=D1{':cs=' + cs_pin if self._has_cs_pin else ''}:cpol={cpol}:cpha={cpha}:wordsize=8",
               ]
 
         if self._has_cs_pin:
@@ -563,28 +566,29 @@ def pretty_diff_spi_data(logger: HtrunLogger, expected: List[SPITransaction], ac
         logger.prn_inf("Saw nothing the SPI bus.")
 
     if len(actual) != len(expected):
-        logger.prn_err("Expected %d transactions but saw %d", len(expected), len(actual))
+        logger.prn_err("Expected %d transactions but saw %d" % (len(expected), len(actual)))
         return False
 
     match = True
     for transaction_idx, (actual_txn, expected_txn) in enumerate(zip(actual, expected)):
         if len(actual_txn.mosi_bytes) != len(expected_txn.mosi_bytes):
-            logger.prn_err("Transaction %d: expected length %d but saw %d", transaction_idx, len(expected_txn.mosi_bytes), len(actual_txn.mosi_bytes))
+            logger.prn_err("Transaction %d: expected length %d but saw %d" % (transaction_idx, len(expected_txn.mosi_bytes), len(actual_txn.mosi_bytes)))
             match = False
             continue
 
         for byte_idx in range(0, len(actual_txn.mosi_bytes)):
             if actual_txn.mosi_bytes[byte_idx] != expected_txn.mosi_bytes[byte_idx]:
-                logger.prn_err("Transaction %d MOSI byte %d: expected 0x%x but saw 0x%x", transaction_idx, byte_idx, expected_txn.mosi_bytes[byte_idx], actual_txn.mosi_bytes[byte_idx])
+                logger.prn_err("Transaction %d MOSI byte %d: expected 0x%x but saw 0x%x" % (transaction_idx, byte_idx, expected_txn.mosi_bytes[byte_idx], actual_txn.mosi_bytes[byte_idx]))
                 match = False
             if actual_txn.miso_bytes[byte_idx] != expected_txn.miso_bytes[byte_idx]:
-                logger.prn_err("Transaction %d miso byte %d: expected 0x%x but saw 0x%x", transaction_idx, byte_idx, expected_txn.miso_bytes[byte_idx], actual_txn.miso_bytes[byte_idx])
+                logger.prn_err("Transaction %d miso byte %d: expected 0x%x but saw 0x%x" % (transaction_idx, byte_idx, expected_txn.miso_bytes[byte_idx], actual_txn.miso_bytes[byte_idx]))
                 match = False
 
     if not match:
-        logger.prn_inf("We expected:\n" + "\n".join(str(transaction) for transaction in actual))
+        logger.prn_inf("We expected:\n" + "\n".join(str(transaction) for transaction in expected))
 
     return match
+
 
 class SigrokSignalAnalyzer(SigrokRecorderBase):
     """

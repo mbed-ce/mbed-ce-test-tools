@@ -1,3 +1,5 @@
+from cy_serial_bridge import CySPIMode
+
 from mbed_host_tests import BaseHostTest
 from mbed_host_tests.host_tests_logger import HtrunLogger
 
@@ -33,18 +35,50 @@ class SPISlaveCommsTest(BaseHostTest):
         self.logger = HtrunLogger('TEST')
 
         self.recorder = SigrokSPIRecorder()
+        self.spi_mode = 0
 
         self.exit_stack: Optional[contextlib.ExitStack] = None
     
         # Open serial bridge chip
         self.cy_usb_context = cy_serial_bridge.CyScbContext()
 
+    def _callback_set_spi_mode(self, key: str, value: str, timestamp):
+        """
+        Set the SPI mode that the SPI bridge will use.
+        Value is a string of the integer mode.
+        """
+
+        cy_spi_mode_mapping = [
+            CySPIMode.MOTOROLA_MODE_0,
+            CySPIMode.MOTOROLA_MODE_1,
+            CySPIMode.MOTOROLA_MODE_2,
+            CySPIMode.MOTOROLA_MODE_3
+        ]
+
+        self.spi_mode = int(value)
+
+        # Update serial bridge configuration
+        curr_config = self.spi_bridge.read_spi_configuration()
+        curr_config.mode = cy_spi_mode_mapping[self.spi_mode]
+        self.spi_bridge.set_spi_configuration(curr_config)
+
+    def _callback_set_sclk_freq(self, key: str, value: str, timestamp):
+        """
+        Set the SCLK frequency that the SPI bridge will use.
+        Value is a string of the integer frequency.
+        """
+
+        curr_config = self.spi_bridge.read_spi_configuration()
+        curr_config.frequency = int(value)
+        self.spi_bridge.set_spi_configuration(curr_config)
+
     def _callback_start_recording_spi(self, key: str, value: str, timestamp):
         """
         Called at the start of every test case.  Should start a recording of SPI data.
         """
 
-        self.recorder.record(cs_pin="D0", record_time=0.1) # Everything we do in this test should complete in under 0.1s
+        # Everything we do in this test should complete in under 0.1s
+        self.recorder.record(cs_pin="D0", record_time=0.1, spi_mode=self.spi_mode)
 
         self.send_kv('start_recording_spi', 'complete')
 
@@ -63,18 +97,24 @@ class SPISlaveCommsTest(BaseHostTest):
         # Write data to slave device
         success = True
         try:
-            self.spi_bridge.spi_write(bytes_to_write)
+            result = self.spi_bridge.spi_transfer(bytes_to_write)
         except Exception:
             self.logger.prn_err("Error writing to SPI slave: " + traceback.format_exc())
             success = False
+            result = None
 
         # Check logic analyzer data
         recorded_transactions = self.recorder.get_result()
         expected_transactions = [SPITransaction(mosi_bytes=bytes_to_write, miso_bytes=expected_response)]
         success = pretty_diff_spi_data(self.logger, expected_transactions, recorded_transactions)
 
-        self.send_kv('do_transaction', 'complete' if success else 'error')
+        # Check returned data
+        self.logger.prn_inf("Serial bridge sent %s and got back %s" % (binascii.b2a_hex(bytes_to_write).decode("ASCII"), binascii.b2a_hex(result).decode("ASCII")))
+        if result != expected_response:
+            self.logger.prn_err("Incorrect response read back on master.  Expected %s" % (binascii.b2a_hex(expected_response).decode("ASCII"),))
+            success = False
 
+        self.send_kv('do_transaction', 'complete' if success else 'error')
 
     def _initialize_spi_bridge(self):
         """
@@ -108,6 +148,8 @@ class SPISlaveCommsTest(BaseHostTest):
         self._initialize_spi_bridge()
 
         self.register_callback('start_recording_spi', self._callback_start_recording_spi)
+        self.register_callback('set_spi_mode', self._callback_set_spi_mode)
+        self.register_callback('set_sclk_freq', self._callback_set_sclk_freq)
         self.register_callback('do_transaction', self._callback_do_transaction)
 
         self.logger.prn_inf("SPI Slave Comms host test setup complete.")
