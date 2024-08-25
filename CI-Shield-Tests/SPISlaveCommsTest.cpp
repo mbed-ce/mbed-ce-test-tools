@@ -133,15 +133,15 @@ void test_one_16bit_word_transaction()
  */
 void test_one_byte_rx_only()
 {
+    // disable MISO
+    create_spi_object(false, true);
+
     // Set word size back to 8 and start recording.
     // Also reduce SCLK frequency so that the mirror resistor can work
     spi->format(8, 0);
     greentea_send_kv("set_spi_mode", "0");
     greentea_send_kv("set_sclk_freq", "100000");
     host_start_spi_logging();
-
-    // disable MISO
-    create_spi_object(false, true);
 
     // Note: because of the SPI mirror resistor, if this MCU does not drive MISO, MISO it should match MOSI.
     greentea_send_kv("do_transaction", "0x25 expected_response 0x25");
@@ -163,15 +163,15 @@ void test_one_byte_rx_only()
 
 void test_one_byte_tx_only()
 {
+    // disable MISO
+    create_spi_object(true, false);
+
     // Set word size back to 8 and start recording.
     // Also change SCLK frequency back to the orig value
     spi->format(8, 3);
     greentea_send_kv("set_spi_mode", "3");
     greentea_send_kv("set_sclk_freq", "500000");
     host_start_spi_logging();
-
-    // disable MISO
-    create_spi_object(true, false);
 
     greentea_send_kv("do_transaction", "0x77 expected_response 0x88");
 
@@ -205,11 +205,17 @@ void test_four_byte_transaction()
     size_t rxIndex = 0;
     greentea_send_kv("do_transaction", "0x5 0x6 0x7 0x8 expected_response 0x1 0x2 0x3 0x4");
 
+    // Pre-fill the FIFO with data.  This is the only way I've found to get even moderately fast
+    // clock rates (100kHz) to work for multi-byte transfers.
+    // What sucks is that SPISlave does not provide an API to determine how many bytes can be sent...
     for(size_t dataIndex = 0; dataIndex < sizeof(txData); ++dataIndex)
     {
         // Preload reply
         spi->reply(txData[txIndex++]);
+    }
 
+    for(size_t dataIndex = 0; dataIndex < sizeof(txData); ++dataIndex)
+    {
         // Wait for data
         while(!spi->receive()){}
 
@@ -227,16 +233,16 @@ void test_four_byte_transaction()
 // It's not defined in the HAL API what happens in this case so we currently cannot test it.
 
 utest::v1::Case cases[] = {
-//    utest::v1::Case("One byte transaction (mode 0)", test_one_byte_transaction<0>),
-//    utest::v1::Case("One byte transaction (mode 1)", test_one_byte_transaction<1>),
-//    utest::v1::Case("One byte transaction (mode 2)", test_one_byte_transaction<2>),
-//    utest::v1::Case("One byte transaction (mode 3)", test_one_byte_transaction<3>),
-//    utest::v1::Case("One word transaction (mode 0)", test_one_16bit_word_transaction<0>),
-//    utest::v1::Case("One word transaction (mode 1)", test_one_16bit_word_transaction<1>),
-//    utest::v1::Case("One word transaction (mode 2)", test_one_16bit_word_transaction<2>),
-//    utest::v1::Case("One word transaction (mode 3)", test_one_16bit_word_transaction<3>),
-//    utest::v1::Case("One byte, MISO tristated", test_one_byte_rx_only),
-//    utest::v1::Case("One byte, MOSI tristated", test_one_byte_tx_only),
+    utest::v1::Case("One byte transaction (mode 0)", test_one_byte_transaction<0>),
+    utest::v1::Case("One byte transaction (mode 1)", test_one_byte_transaction<1>),
+    utest::v1::Case("One byte transaction (mode 2)", test_one_byte_transaction<2>),
+    utest::v1::Case("One byte transaction (mode 3)", test_one_byte_transaction<3>),
+    utest::v1::Case("One word transaction (mode 0)", test_one_16bit_word_transaction<0>),
+    utest::v1::Case("One word transaction (mode 1)", test_one_16bit_word_transaction<1>),
+    utest::v1::Case("One word transaction (mode 2)", test_one_16bit_word_transaction<2>),
+    utest::v1::Case("One word transaction (mode 3)", test_one_16bit_word_transaction<3>),
+    utest::v1::Case("One byte, MISO tristated", test_one_byte_rx_only),
+    utest::v1::Case("One byte, MOSI tristated", test_one_byte_tx_only),
     utest::v1::Case("Four bytes", test_four_byte_transaction),
 };
 

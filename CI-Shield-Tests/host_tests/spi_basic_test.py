@@ -1,6 +1,7 @@
 from mbed_host_tests import BaseHostTest
 from mbed_host_tests.host_tests_logger import HtrunLogger
 
+import subprocess
 import binascii
 import sys
 import os
@@ -49,8 +50,12 @@ class SpiBasicTestHostTest(BaseHostTest):
         Verify that the current recorded SPI data matches the given sequence
         """
 
-        spi_transactions = self.recorder.get_result()
-        success = pretty_diff_spi_data(self.logger, self.SEQUENCES[value], spi_transactions)
+        try:
+            spi_transactions = self.recorder.get_result()
+            success = pretty_diff_spi_data(self.logger, self.SEQUENCES[value], spi_transactions)
+        except subprocess.TimeoutExpired:
+            self.logger.prn_err("Logic analyzer did not trigger")
+            success = False
 
         self.send_kv('verify_sequence', 'complete' if success else 'failed')
 
