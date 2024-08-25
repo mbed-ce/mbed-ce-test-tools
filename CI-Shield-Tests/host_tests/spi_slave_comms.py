@@ -101,7 +101,7 @@ class SPISlaveCommsTest(BaseHostTest):
         except Exception:
             self.logger.prn_err("Error writing to SPI slave: " + traceback.format_exc())
             success = False
-            result = None
+            result = b""
 
         # Check logic analyzer data
         recorded_transactions = self.recorder.get_result()

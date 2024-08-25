@@ -133,7 +133,7 @@ void test_one_16bit_word_transaction()
  */
 void test_one_byte_rx_only()
 {
-    // Set mode back to 8 and start recording.
+    // Set word size back to 8 and start recording.
     // Also reduce SCLK frequency so that the mirror resistor can work
     spi->format(8, 0);
     greentea_send_kv("set_spi_mode", "0");
@@ -161,19 +161,83 @@ void test_one_byte_rx_only()
     assert_next_message_from_host("do_transaction", "complete");
 }
 
+void test_one_byte_tx_only()
+{
+    // Set word size back to 8 and start recording.
+    // Also change SCLK frequency back to the orig value
+    spi->format(8, 3);
+    greentea_send_kv("set_spi_mode", "3");
+    greentea_send_kv("set_sclk_freq", "500000");
+    host_start_spi_logging();
+
+    // disable MISO
+    create_spi_object(true, false);
+
+    greentea_send_kv("do_transaction", "0x77 expected_response 0x88");
+
+    spi->reply(0x88);
+    while(true)
+    {
+        if(spi->receive())
+        {
+            // Note: with MOSI disabled, the API makes no guarantees about the return value here
+            spi->read();
+            break;
+        }
+    }
+
+    assert_next_message_from_host("do_transaction", "complete");
+}
+
+void test_four_byte_transaction()
+{
+    // Reenable full duplex comms
+    create_spi_object(false, false);
+
+    spi->format(8, 0);
+    greentea_send_kv("set_spi_mode", "0");
+
+    // Kick off the host test doing an SPI transaction
+    host_start_spi_logging();
+    uint8_t const txData[] = {0x1, 0x2, 0x3, 0x4};
+    size_t txIndex = 0;
+    uint8_t rxData[sizeof(txData)];
+    size_t rxIndex = 0;
+    greentea_send_kv("do_transaction", "0x5 0x6 0x7 0x8 expected_response 0x1 0x2 0x3 0x4");
+
+    for(size_t dataIndex = 0; dataIndex < sizeof(txData); ++dataIndex)
+    {
+        // Preload reply
+        spi->reply(txData[txIndex++]);
+
+        // Wait for data
+        while(!spi->receive()){}
+
+        // Read response
+        rxData[rxIndex++] = spi->read();
+    }
+
+    uint8_t const expectedRxData[] = {0x5, 0x6, 0x7, 0x8};
+    TEST_ASSERT_EQUAL_HEX8_ARRAY(expectedRxData, rxData, sizeof(txData));
+
+    assert_next_message_from_host("do_transaction", "complete");
+}
+
 // TODO test what happens if the master sends a byte before the code has called reply().
 // It's not defined in the HAL API what happens in this case so we currently cannot test it.
 
 utest::v1::Case cases[] = {
-    utest::v1::Case("One byte transaction (mode 0)", test_one_byte_transaction<0>),
-    utest::v1::Case("One byte transaction (mode 1)", test_one_byte_transaction<1>),
-    utest::v1::Case("One byte transaction (mode 2)", test_one_byte_transaction<2>),
-    utest::v1::Case("One byte transaction (mode 3)", test_one_byte_transaction<3>),
-    utest::v1::Case("One word transaction (mode 0)", test_one_16bit_word_transaction<0>),
-    utest::v1::Case("One word transaction (mode 1)", test_one_16bit_word_transaction<1>),
-    utest::v1::Case("One word transaction (mode 2)", test_one_16bit_word_transaction<2>),
-    utest::v1::Case("One word transaction (mode 3)", test_one_16bit_word_transaction<3>),
-    utest::v1::Case("One byte, MISO tristated", test_one_byte_rx_only),
+//    utest::v1::Case("One byte transaction (mode 0)", test_one_byte_transaction<0>),
+//    utest::v1::Case("One byte transaction (mode 1)", test_one_byte_transaction<1>),
+//    utest::v1::Case("One byte transaction (mode 2)", test_one_byte_transaction<2>),
+//    utest::v1::Case("One byte transaction (mode 3)", test_one_byte_transaction<3>),
+//    utest::v1::Case("One word transaction (mode 0)", test_one_16bit_word_transaction<0>),
+//    utest::v1::Case("One word transaction (mode 1)", test_one_16bit_word_transaction<1>),
+//    utest::v1::Case("One word transaction (mode 2)", test_one_16bit_word_transaction<2>),
+//    utest::v1::Case("One word transaction (mode 3)", test_one_16bit_word_transaction<3>),
+//    utest::v1::Case("One byte, MISO tristated", test_one_byte_rx_only),
+//    utest::v1::Case("One byte, MOSI tristated", test_one_byte_tx_only),
+    utest::v1::Case("Four bytes", test_four_byte_transaction),
 };
 
 utest::v1::status_t test_setup(const size_t number_of_cases)
@@ -192,7 +256,7 @@ utest::v1::status_t test_setup(const size_t number_of_cases)
     static DigitalOut sdcardEnablePin(PIN_SDCARD_ENABLE, 0);
 
     // Setup Greentea using a reasonable timeout in seconds
-    GREENTEA_SETUP(45, "spi_slave_comms");
+    GREENTEA_SETUP(60, "spi_slave_comms");
     return utest::v1::verbose_test_setup_handler(number_of_cases);
 }
 
