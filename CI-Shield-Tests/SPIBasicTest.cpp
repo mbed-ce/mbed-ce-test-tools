@@ -283,6 +283,7 @@ void free_and_reallocate_spi()
 
 StaticCacheAlignedBuffer<uint8_t, sizeof(standardMessageBytes)> dmaRxBuffer;
 StaticCacheAlignedBuffer<uint16_t, sizeof(standardMessageUint16s) / sizeof(uint16_t)> dmaRxBufferUint16;
+StaticCacheAlignedBuffer<uint32_t, 1> dmaRxBufferUint32;
 
 template<DMAUsage dmaUsage>
 void write_async_tx_only()
@@ -332,7 +333,20 @@ void write_async_tx_rx_16_bit()
 
     auto ret = spi->transfer_and_wait(standardMessageUint16s, sizeof(standardMessageUint16s), dmaRxBufferUint16, sizeof(standardMessageUint16s), 1s);
     TEST_ASSERT_EQUAL(ret, 0);
-    TEST_ASSERT_EQUAL_HEX16_ARRAY(standardMessageBytes, dmaRxBuffer.data(), dmaRxBufferUint16.capacity());
+    TEST_ASSERT_EQUAL_HEX16_ARRAY(standardMessageUint16s, dmaRxBufferUint16.data(), dmaRxBufferUint16.capacity());
+    host_assert_standard_message();
+}
+
+template<DMAUsage dmaUsage>
+void write_async_tx_rx_32_bit()
+{
+    host_start_spi_logging();
+    spi->set_dma_usage(dmaUsage);
+    spi->format(32, spiMode);
+
+    auto ret = spi->transfer_and_wait(&standardMessageUint32, sizeof(standardMessageUint32), dmaRxBufferUint32, sizeof(standardMessageUint32), 1s);
+    TEST_ASSERT_EQUAL(ret, 0);
+    TEST_ASSERT_EQUAL_HEX32(standardMessageUint32, dmaRxBufferUint32[0]);
     host_assert_standard_message();
 }
 
@@ -558,6 +572,7 @@ Case cases[] = {
         Case("Free and Reallocate SPI Instance with Interrupts", async_free_and_reallocate_spi<DMA_USAGE_NEVER>),
         Case("Send Data via Async Interrupt API (Tx/Rx)", write_async_tx_rx<DMA_USAGE_NEVER>),
         Case("Send 16-Bit Data via Interrupt API (Tx/Rx)", write_async_tx_rx_16_bit<DMA_USAGE_NEVER>),
+        Case("Send 32-Bit Data via Interrupt API (Tx/Rx)", write_async_tx_rx_32_bit<DMA_USAGE_NEVER>),
         Case("Benchmark Async SPI via Interrupts", benchmark_async_transaction<DMA_USAGE_NEVER>),
         Case("Queueing and Aborting Async SPI via Interrupts", async_queue_and_abort<DMA_USAGE_NEVER>),
         Case("Use Multiple SPI Instances with Interrupts", async_use_multiple_spi_objects<DMA_USAGE_NEVER>),
@@ -566,6 +581,7 @@ Case cases[] = {
         Case("Free and Reallocate SPI Instance with DMA", async_free_and_reallocate_spi<DMA_USAGE_ALWAYS>),
         Case("Send Data via Async DMA API (Tx/Rx)", write_async_tx_rx<DMA_USAGE_ALWAYS>),
         Case("Send 16-Bit Data via Async DMA API (Tx/Rx)", write_async_tx_rx_16_bit<DMA_USAGE_ALWAYS>),
+        Case("Send 32-Bit Data via Async DMA API (Tx/Rx)", write_async_tx_rx_32_bit<DMA_USAGE_ALWAYS>),
         Case("Benchmark Async SPI via DMA", benchmark_async_transaction<DMA_USAGE_ALWAYS>),
         Case("Queueing and Aborting Async SPI via DMA", async_queue_and_abort<DMA_USAGE_ALWAYS>),
         Case("Use Multiple SPI Instances with DMA", async_use_multiple_spi_objects<DMA_USAGE_ALWAYS>),

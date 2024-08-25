@@ -80,6 +80,10 @@
 #if TARGET_NUCLEO_H563ZI
 // PA4 must be jumpered to PIN_GPOUT_1_PWM.  SB56 must be disconnected.
 #define PIN_ANALOG_OUT PA_4
+
+// STM forgot to use a pin for D10 that had the HW CS alternate function... oops!
+// To fix this, you must attach a jumper from pin D24 on the bottom of the board to the SPI.HW_CS shield pin
+#define PIN_SPI_HW_CS PG_10
 #endif
 
 // Default definitions, if not overridden above.  These use the Arduino Uno form factor.

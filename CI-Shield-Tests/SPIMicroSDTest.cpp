@@ -88,7 +88,7 @@ void init_string()
 // Construct an SPI object in spiMemory
 SDBlockDevice * constructSDBlockDev(uint64_t spiFreq)
 {
-    return new (sdBlockDevMemory) SDBlockDevice(PIN_SPI_MOSI, PIN_SPI_MISO, PIN_SPI_SCLK, PIN_SPI_SD_CS,spiFreq, true);
+    return new (sdBlockDevMemory) SDBlockDevice(PIN_SPI_MOSI, PIN_SPI_MISO, PIN_SPI_SCLK, PIN_SPI_SD_CS, spiFreq, true);
 }
 
 void destroySDBlockDev(SDBlockDevice * sdDev)
@@ -247,9 +247,9 @@ utest::v1::status_t test_setup(const size_t number_of_cases)
 // Test cases
 Case cases[] = {
     Case("SPI - Object Definable", test_object),
-    Case("SPI - SD card present (1MHz)", test_card_present<100000, false, DMA_USAGE_NEVER>),
-    Case("SPI - Mount FS, Create File (1MHz)", mount_fs_create_file<100000, false, DMA_USAGE_NEVER>),
-    Case("SPI - Write, Read, and Delete File (1MHz)", test_sd_file<100000, false, DMA_USAGE_NEVER>),
+    Case("SPI - SD card present (100kHz)", test_card_present<100000, false, DMA_USAGE_NEVER>),
+    Case("SPI - Mount FS, Create File (100kHz)", mount_fs_create_file<100000, false, DMA_USAGE_NEVER>),
+    Case("SPI - Write, Read, and Delete File (100kHz)", test_sd_file<100000, false, DMA_USAGE_NEVER>),
 
 #if DEVICE_SPI_ASYNCH
     Case("[Async Interrupts] SPI - SD card present (1MHz)", test_card_present<1000000, true, DMA_USAGE_NEVER>),
