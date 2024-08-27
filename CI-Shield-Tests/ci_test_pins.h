@@ -86,6 +86,12 @@
 #define PIN_SPI_HW_CS PG_10
 #endif
 
+// Overrides for Nucleo L452RE_P
+#if TARGET_NUCLEO_L452RE_P
+// PA4 (CN8 pin A2) must be jumpered to the analog in pin (A0)
+#define PIN_ANALOG_OUT PA_4
+#endif
+
 // Default definitions, if not overridden above.  These use the Arduino Uno form factor.
 #ifdef TARGET_FF_ARDUINO_UNO
 

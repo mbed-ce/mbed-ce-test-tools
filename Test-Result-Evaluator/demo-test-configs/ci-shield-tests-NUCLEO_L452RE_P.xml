@@ -1,0 +1,2751 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="(empty)"
+	tests="12"
+	failures="12"
+	disabled="0"
+	skipped="0"
+	hostname=""
+	time="1023"
+	timestamp="2024-08-26T20:06:21"
+	>
+	<testcase name="test-testshield-businout" classname="test-testshield-businout" time="6.29423" status="fail">
+		<failure message=""/>
+		<system-out>[1/1] Flashing test-testshield-businout with OpenOCD...
+Open On-Chip Debugger 0.12.0+dev-00499-g151b74371 (2024-01-22-10:06)
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+DEPRECATED! use 'adapter driver' not 'interface'
+Info : The selected transport took over low-level target control. The results might differ compared to plain JTAG/SWD
+DEPRECATED! use 'adapter serial' not 'hla_serial'
+Info : clock speed 500 kHz
+Info : STLINK V2J39M27 (API v2) VID:PID 0483:374B
+Info : Target voltage: 3.240553
+Info : [stm32l4x.cpu] Cortex-M4 r0p1 processor detected
+Info : [stm32l4x.cpu] target has 6 breakpoints, 4 watchpoints
+Info : [stm32l4x.cpu] Examination succeed
+Info : gdb port disabled
+Info : Unable to match requested speed 500 kHz, using 480 kHz
+Info : Unable to match requested speed 500 kHz, using 480 kHz
+[stm32l4x.cpu] halted due to debug-request, current mode: Thread 
+xPSR: 0x01000000 pc: 0x08000318 msp: 0x10000698
+** Programming Started **
+Info : device idcode = 0x20016462 (STM32L45/L46xx - Rev Y : 0x2001)
+Info : RDP level 0 (0xAA)
+Info : flash size = 512 KiB
+Info : flash mode : single-bank
+Info : Padding image section 1 at 0x0800e1dc with 4 bytes (bank write end alignment)
+Warn : Adding extra erase range, 0x0800e1e0 .. 0x0800e7ff
+** Programming Finished **
+** Resetting Target **
+Info : Unable to match requested speed 500 kHz, using 480 kHz
+Info : Unable to match requested speed 500 kHz, using 480 kHz
+shutdown command invoked
+Executing: /home/jamie/Mbed/mbed-ce-test-tools/CI-Shield-Tests/mbed-os/venv/bin/python3.10 -m mbed_host_tests.mbedhtrun --skip-flashing -p /dev/ttyNUCLEO_L452RE_P --skip-reset -m NUCLEO_L452RE_P --baud-rate=115200
+[1724727999.33][HTST][INF] host test executor ver. 0.0.16
+[1724727999.33][HTST][INF] copy image onto target... SKIPPED!
+[1724727999.36][HTST][INF] starting host test process...
+[1724727999.37][CONN][INF] starting connection process...
+[1724727999.37][CONN][INF] notify event queue about extra 60 sec timeout for serial port pooling
+[1724727999.37][CONN][INF] initializing serial port listener... 
+[1724727999.37][SERI][INF] using specified port '/dev/ttyNUCLEO_L452RE_P'
+[1724727999.37][HTST][INF] setting timeout to: 60 sec
+[1724727999.38][SERI][INF] serial(port=/dev/ttyNUCLEO_L452RE_P, baudrate=115200, read_timeout=0.01, write_timeout=5)
+[1724727999.38][SERI][TXD] mbedmbedmbedmbedmbedmbedmbedmbedmbedmbed
+[1724727999.38][CONN][INF] sending up to 2 __sync packets (specified with --sync=2)
+[1724727999.38][CONN][INF] sending preamble '81d160ea-8b69-4f02-9ebb-1e247eec0634'
+[1724727999.39][SERI][TXD] {{__sync;81d160ea-8b69-4f02-9ebb-1e247eec0634}}
+[1724727999.40][CONN][RXD] mbedmbedmbedmbedmbedmbedmbedmbed
+[1724727999.40][CONN][INF] found SYNC in stream: {{__sync;81d160ea-8b69-4f02-9ebb-1e247eec0634}} it is #0 sent, queued...
+[1724727999.40][HTST][INF] sync KV found, uuid=81d160ea-8b69-4f02-9ebb-1e247eec0634, timestamp=1724727999.400736
+[1724727999.41][CONN][RXD] &gt;&gt;&gt; Running 4 test cases...
+[1724727999.41][CONN][INF] found KV pair in stream: {{__version;1.3.0}}, queued...
+[1724727999.41][CONN][INF] found KV pair in stream: {{__timeout;40}}, queued...
+[1724727999.41][CONN][INF] found KV pair in stream: {{__host_test_name;default_auto}}, queued...
+[1724727999.41][HTST][INF] DUT greentea-client version: 1.3.0
+[1724727999.42][CONN][INF] found KV pair in stream: {{__testcase_name;BusIn definable}}, queued...
+[1724727999.42][HTST][INF] setting timeout to: 40 sec
+[1724727999.42][HTST][INF] host test class: '&lt;class 'mbed_os_tools.test.host_tests.default_auto.DefaultAuto'&gt;'
+[1724727999.42][HTST][INF] host test setup() call...
+[1724727999.42][HTST][INF] CALLBACKs updated
+[1724727999.42][HTST][INF] host test detected: default_auto
+[1724727999.43][CONN][RXD] 
+[1724727999.43][CONN][RXD] &gt;&gt;&gt; Running case #1: 'BusIn definable'...
+[1724727999.43][CONN][INF] found KV pair in stream: {{__testcase_name;BusOut definable}}, queued...
+[1724727999.43][CONN][INF] found KV pair in stream: {{__testcase_name;BusInOut to BusInOut}}, queued...
+[1724727999.43][CONN][INF] found KV pair in stream: {{__testcase_name;BusIn to BusOut}}, queued...
+[1724727999.44][CONN][RXD] &gt;&gt;&gt; 'BusIn definable': 1 passed, 0 failed
+[1724727999.44][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1724727999.44][CONN][RXD] 
+[1724727999.44][CONN][INF] found KV pair in stream: {{__testcase_start;BusIn definable}}, queued...
+[1724727999.44][CONN][INF] found KV pair in stream: {{__testcase_finish;BusIn definable;1;0}}, queued...
+[1724727999.46][CONN][RXD] &gt;&gt;&gt; Running case #2: 'BusOut definable'...
+[1724727999.46][CONN][RXD] &gt;&gt;&gt; 'BusOut definable': 1 passed, 0 failed
+[1724727999.46][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1724727999.46][CONN][RXD] 
+[1724727999.46][CONN][INF] found KV pair in stream: {{__testcase_start;BusOut definable}}, queued...
+[1724727999.46][CONN][INF] found KV pair in stream: {{__testcase_finish;BusOut definable;1;0}}, queued...
+[1724727999.48][CONN][RXD] &gt;&gt;&gt; Running case #3: 'BusInOut to BusInOut'...
+[1724727999.48][CONN][RXD] 
+[1724727999.48][CONN][RXD] *********
+[1724727999.48][CONN][RXD] value of x,bio2 is: 0x0, 0x0
+[1724727999.48][CONN][RXD] ********
+[1724727999.48][CONN][RXD] 
+[1724727999.48][CONN][RXD] *********
+[1724727999.49][CONN][RXD] value of x,bio2 is: 0x1, 0x1
+[1724727999.49][CONN][RXD] ********
+[1724727999.49][CONN][RXD] 
+[1724727999.49][CONN][RXD] *********
+[1724727999.49][CONN][RXD] value of x,bio2 is: 0x2, 0x2
+[1724727999.49][CONN][RXD] ********
+[1724727999.50][CONN][RXD] 
+[1724727999.50][CONN][INF] found KV pair in stream: {{__testcase_start;BusInOut to BusInOut}}, queued...
+[1724727999.51][CONN][RXD] *********
+[1724727999.51][CONN][RXD] value of x,bio2 is: 0x3, 0x3
+[1724727999.51][CONN][RXD] ********
+[1724727999.51][CONN][RXD] 
+[1724727999.51][CONN][RXD] *********
+[1724727999.52][CONN][RXD] value of x,bio2 is: 0x4, 0x0
+[1724727999.52][CONN][RXD] ********
+[1724727999.52][CONN][RXD] &lt;greentea test suite&gt;:62::FAIL: Value read on bus does not equal value written. 
+[1724727999.52][CONN][RXD] 
+[1724727999.52][CONN][RXD] *********
+[1724727999.52][CONN][RXD] value of x,bio2 is: 0x5, 0x1
+[1724727999.53][CONN][RXD] ********
+[1724727999.53][CONN][RXD] 
+[1724727999.53][CONN][RXD] *********
+[1724727999.53][CONN][RXD] value of x,bio2 is: 0x6, 0x2
+[1724727999.53][CONN][RXD] ********
+[1724727999.53][CONN][RXD] 
+[1724727999.53][CONN][RXD] *********
+[1724727999.54][CONN][RXD] value of x,bio2 is: 0x7, 0x3
+[1724727999.54][CONN][RXD] ********
+[1724727999.54][CONN][RXD] 
+[1724727999.54][CONN][RXD] *********
+[1724727999.55][CONN][RXD] value of x,bio1 is: 0x0, 0x4
+[1724727999.55][CONN][RXD] ********
+[1724727999.55][CONN][RXD] 
+[1724727999.55][CONN][RXD] *********
+[1724727999.55][CONN][RXD] value of x,bio1 is: 0x1, 0x5
+[1724727999.55][CONN][RXD] ********
+[1724727999.55][CONN][RXD] 
+[1724727999.56][CONN][RXD] *********
+[1724727999.56][CONN][RXD] value of x,bio1 is: 0x2, 0x6
+[1724727999.56][CONN][RXD] ********
+[1724727999.56][CONN][RXD] 
+[1724727999.56][CONN][RXD] *********
+[1724727999.56][CONN][RXD] value of x,bio1 is: 0x3, 0x7
+[1724727999.56][CONN][RXD] ********
+[1724727999.56][CONN][RXD] 
+[1724727999.56][CONN][RXD] *********
+[1724727999.56][CONN][RXD] value of x,bio1 is: 0x4, 0x4
+[1724727999.56][CONN][RXD] ********
+[1724727999.56][CONN][RXD] 
+[1724727999.57][CONN][RXD] *********
+[1724727999.57][CONN][RXD] value of x,bio1 is: 0x5, 0x5
+[1724727999.57][CONN][RXD] ********
+[1724727999.57][CONN][RXD] 
+[1724727999.57][CONN][RXD] *********
+[1724727999.57][CONN][RXD] value of x,bio1 is: 0x6, 0x6
+[1724727999.57][CONN][RXD] ********
+[1724727999.57][CONN][RXD] 
+[1724727999.57][CONN][RXD] *********
+[1724727999.57][CONN][RXD] value of x,bio1 is: 0x7, 0x7
+[1724727999.57][CONN][RXD] ********
+[1724727999.58][CONN][INF] found KV pair in stream: {{__testcase_finish;BusInOut to BusInOut;0;1}}, queued...
+[1724727999.59][CONN][RXD] &gt;&gt;&gt; 'BusInOut to BusInOut': 0 passed, 1 failed with reason 'Test Cases Failed'
+[1724727999.59][CONN][RXD] 
+[1724727999.59][CONN][RXD] 
+[1724727999.59][CONN][RXD] &gt;&gt;&gt; Running case #4: 'BusIn to BusOut'...
+[1724727999.59][CONN][RXD] 
+[1724727999.59][CONN][RXD] *********
+[1724727999.59][CONN][RXD] value of bin,bout,x is: 0x5, 0x1, 0x1
+[1724727999.59][CONN][RXD] ********
+[1724727999.59][CONN][RXD] &lt;greentea test suite&gt;:102::FAIL: Value read on bin does not equal value written on bout. 
+[1724727999.59][CONN][RXD] 
+[1724727999.59][CONN][RXD] *********
+[1724727999.60][CONN][RXD] value of bin,bout,x is: 0x6, 0x2, 0x2
+[1724727999.60][CONN][RXD] ********
+[1724727999.60][CONN][RXD] 
+[1724727999.60][CONN][RXD] *********
+[1724727999.60][CONN][RXD] value of bin,bout,x is: 0x7, 0x3, 0x3
+[1724727999.60][CONN][RXD] ********
+[1724727999.60][CONN][RXD] 
+[1724727999.60][CONN][INF] found KV pair in stream: {{__testcase_start;BusIn to BusOut}}, queued...
+[1724727999.61][CONN][RXD] *********
+[1724727999.61][CONN][RXD] value of bin,bout,x is: 0x4, 0x4, 0x4
+[1724727999.61][CONN][RXD] ********
+[1724727999.61][CONN][RXD] 
+[1724727999.62][CONN][RXD] *********
+[1724727999.62][CONN][RXD] value of bin,bout,x is: 0x5, 0x5, 0x5
+[1724727999.62][CONN][RXD] ********
+[1724727999.62][CONN][RXD] 
+[1724727999.62][CONN][RXD] *********
+[1724727999.62][CONN][RXD] value of bin,bout,x is: 0x6, 0x6, 0x6
+[1724727999.62][CONN][RXD] ********
+[1724727999.62][CONN][RXD] 
+[1724727999.62][CONN][RXD] *********
+[1724727999.62][CONN][RXD] value of bin,bout,x is: 0x7, 0x7, 0x7
+[1724727999.62][CONN][RXD] ********
+[1724727999.62][CONN][INF] found KV pair in stream: {{__testcase_finish;BusIn to BusOut;0;1}}, queued...
+[1724727999.64][CONN][RXD] &gt;&gt;&gt; 'BusIn to BusOut': 0 passed, 1 failed with reason 'Test Cases Failed'
+[1724727999.64][CONN][RXD] 
+[1724727999.64][CONN][RXD] 
+[1724727999.64][CONN][RXD] &gt;&gt;&gt; Test cases: 2 passed, 2 failed with reason 'Test Cases Failed'
+[1724727999.64][CONN][RXD] &gt;&gt;&gt; TESTS FAILED!
+[1724727999.64][CONN][RXD] 
+[1724727999.64][CONN][RXD] -----------------------
+[1724727999.64][CONN][RXD] 0 Tests 2 Failures 0 Ignored 
+[1724727999.64][CONN][RXD] FAIL
+[1724727999.64][CONN][INF] found KV pair in stream: {{__testcase_summary;2;2}}, queued...
+[1724727999.64][CONN][INF] found KV pair in stream: {{end;failure}}, queued...
+[1724727999.65][CONN][INF] found KV pair in stream: {{__exit;0}}, queued...
+[1724727999.65][HTST][INF] __exit(0)
+[1724727999.65][HTST][INF] __notify_complete(False)
+[1724727999.65][HTST][INF] __exit_event_queue received
+[1724727999.65][HTST][INF] test suite run finished after 0.24 sec...
+[1724727999.66][CONN][INF] received special event '__host_test_finished' value='True', finishing
+[1724727999.67][HTST][INF] CONN exited with code: 0
+[1724727999.67][HTST][INF] Some events in queue
+[1724727999.67][HTST][INF] stopped consuming events
+[1724727999.67][HTST][INF] host test result() call skipped, received: False
+[1724727999.67][HTST][INF] calling blocking teardown()
+[1724727999.67][HTST][INF] teardown() finished
+[1724727999.67][HTST][INF] {{result;failure}}
+CMake Error at mbed-run-greentea-test-testshield-businout.cmake:19 (execute_process):
+  execute_process failed command indexes:
+
+    1: "Child return code: 1"
+
+
+
+</system-out>
+	</testcase>
+	<testcase name="test-testshield-interruptin" classname="test-testshield-interruptin" time="6.33988" status="fail">
+		<failure message=""/>
+		<system-out>[1/1] Flashing test-testshield-interruptin with OpenOCD...
+Open On-Chip Debugger 0.12.0+dev-00499-g151b74371 (2024-01-22-10:06)
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+DEPRECATED! use 'adapter driver' not 'interface'
+Info : The selected transport took over low-level target control. The results might differ compared to plain JTAG/SWD
+DEPRECATED! use 'adapter serial' not 'hla_serial'
+Info : clock speed 500 kHz
+Info : STLINK V2J39M27 (API v2) VID:PID 0483:374B
+Info : Target voltage: 3.240553
+Info : [stm32l4x.cpu] Cortex-M4 r0p1 processor detected
+Info : [stm32l4x.cpu] target has 6 breakpoints, 4 watchpoints
+Info : [stm32l4x.cpu] Examination succeed
+Info : gdb port disabled
+Info : Unable to match requested speed 500 kHz, using 480 kHz
+Info : Unable to match requested speed 500 kHz, using 480 kHz
+[stm32l4x.cpu] halted due to debug-request, current mode: Thread 
+xPSR: 0x01000000 pc: 0x08000318 msp: 0x10000698
+** Programming Started **
+Info : device idcode = 0x20016462 (STM32L45/L46xx - Rev Y : 0x2001)
+Info : RDP level 0 (0xAA)
+Info : flash size = 512 KiB
+Info : flash mode : single-bank
+Info : Padding image section 1 at 0x0800e51c with 4 bytes (bank write end alignment)
+Warn : Adding extra erase range, 0x0800e520 .. 0x0800e7ff
+** Programming Finished **
+** Resetting Target **
+Info : Unable to match requested speed 500 kHz, using 480 kHz
+Info : Unable to match requested speed 500 kHz, using 480 kHz
+shutdown command invoked
+Executing: /home/jamie/Mbed/mbed-ce-test-tools/CI-Shield-Tests/mbed-os/venv/bin/python3.10 -m mbed_host_tests.mbedhtrun --skip-flashing -p /dev/ttyNUCLEO_L452RE_P --skip-reset -m NUCLEO_L452RE_P --baud-rate=115200
+[1724728018.13][HTST][INF] host test executor ver. 0.0.16
+[1724728018.13][HTST][INF] copy image onto target... SKIPPED!
+[1724728018.15][HTST][INF] starting host test process...
+[1724728018.17][CONN][INF] starting connection process...
+[1724728018.17][CONN][INF] notify event queue about extra 60 sec timeout for serial port pooling
+[1724728018.17][CONN][INF] initializing serial port listener... 
+[1724728018.17][SERI][INF] using specified port '/dev/ttyNUCLEO_L452RE_P'
+[1724728018.17][HTST][INF] setting timeout to: 60 sec
+[1724728018.17][SERI][INF] serial(port=/dev/ttyNUCLEO_L452RE_P, baudrate=115200, read_timeout=0.01, write_timeout=5)
+[1724728018.18][SERI][TXD] mbedmbedmbedmbedmbedmbedmbedmbedmbedmbed
+[1724728018.18][CONN][INF] sending up to 2 __sync packets (specified with --sync=2)
+[1724728018.18][CONN][INF] sending preamble '1265aa66-5000-4140-add0-a6202f9b652d'
+[1724728018.18][SERI][TXD] {{__sync;1265aa66-5000-4140-add0-a6202f9b652d}}
+[1724728018.19][CONN][WRN] UnicodeDecodeError encountered!
+[1724728018.20][CONN][RXD] 
+
+
+[NON-XML-CHAR-0x11]
+
+
+
+[NON-XML-CHAR-0x1]
+
+
+
+
+
+
+
+
+
+
+ۋR
+
+j
+ߏL
+[NON-XML-CHAR-0x12]
+[NON-XML-CHAR-0x3]![NON-XML-CHAR-0x2]
+
+
+
+[NON-XML-CHAR-0xB]"
+[NON-XML-CHAR-0x10][NON-XML-CHAR-0x12][NON-XML-CHAR-0x1][NON-XML-CHAR-0x13]L[NON-XML-CHAR-0x4]
+cb
+OL
+B[NON-XML-CHAR-0x10]
+[NON-XML-CHAR-0x2]
+I
+rb
+
+
+[NON-XML-CHAR-0x16]
+j
+[1724728018.20][CONN][RXD] [NON-XML-CHAR-0x1]_,
+[NON-XML-CHAR-0x1A][NON-XML-CHAR-0x2]
+
+[NON-XML-CHAR-0x12]2
+B
+
+
+
+[NON-XML-CHAR-0x7][NON-XML-CHAR-0x15][NON-XML-CHAR-0x6]
+
+[NON-XML-CHAR-0xC]
+
+[NON-XML-CHAR-0x8]
+
+
+[NON-XML-CHAR-0x6][NON-XML-CHAR-0x2][NON-XML-CHAR-0x4][NON-XML-CHAR-0x7][NON-XML-CHAR-0x5]
+
+
+[NON-XML-CHAR-0x5]
+mbedmbedmbedmbedmbedmbedmbedmbed
+[1724728018.20][CONN][INF] found SYNC in stream: {{__sync;1265aa66-5000-4140-add0-a6202f9b652d}} it is #0 sent, queued...
+[1724728018.20][HTST][INF] sync KV found, uuid=1265aa66-5000-4140-add0-a6202f9b652d, timestamp=1724728018.196371
+[1724728018.21][CONN][RXD] &gt;&gt;&gt; Running 6 test cases...
+[1724728018.21][CONN][INF] found KV pair in stream: {{__version;1.3.0}}, queued...
+[1724728018.21][CONN][INF] found KV pair in stream: {{__timeout;40}}, queued...
+[1724728018.21][CONN][INF] found KV pair in stream: {{__host_test_name;default_auto}}, queued...
+[1724728018.21][CONN][INF] found KV pair in stream: {{__testcase_name;Interrupt from GPOUT_2 -&gt; GPIN_2}}, queued...
+[1724728018.21][HTST][INF] DUT greentea-client version: 1.3.0
+[1724728018.21][HTST][INF] setting timeout to: 40 sec
+[1724728018.21][HTST][INF] host test class: '&lt;class 'mbed_os_tools.test.host_tests.default_auto.DefaultAuto'&gt;'
+[1724728018.21][HTST][INF] host test setup() call...
+[1724728018.21][HTST][INF] CALLBACKs updated
+[1724728018.21][HTST][INF] host test detected: default_auto
+[1724728018.22][CONN][INF] found KV pair in stream: {{__testcase_name;Interrupt from GPIN_2 -&gt; GPOUT_2}}, queued...
+[1724728018.22][CONN][INF] found KV pair in stream: {{__testcase_name;Interrupt from GPOUT_1 -&gt; GPIN_1}}, queued...
+[1724728018.23][CONN][RXD] 
+[1724728018.23][CONN][INF] found KV pair in stream: {{__testcase_name;Interrupt from GPIN_1 -&gt; GPOUT_1}}, queued...
+[1724728018.23][CONN][INF] found KV pair in stream: {{__testcase_name;Interrupt from GPOUT_0 -&gt; GPIN_0}}, queued...
+[1724728018.23][CONN][INF] found KV pair in stream: {{__testcase_name;Interrupt from GPIN_0 -&gt; GPOUT_0}}, queued...
+[1724728018.24][CONN][RXD] &gt;&gt;&gt; Running case #1: 'Interrupt from GPOUT_2 -&gt; GPIN_2'...
+[1724728018.25][CONN][INF] found KV pair in stream: {{__testcase_start;Interrupt from GPOUT_2 -&gt; GPIN_2}}, queued...
+[1724728018.26][CONN][RXD] &gt;&gt;&gt; 'Interrupt from GPOUT_2 -&gt; GPIN_2': 1 passed, 0 failed
+[1724728018.26][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1724728018.26][CONN][RXD] 
+[1724728018.26][CONN][INF] found KV pair in stream: {{__testcase_finish;Interrupt from GPOUT_2 -&gt; GPIN_2;1;0}}, queued...
+[1724728018.27][CONN][RXD] &gt;&gt;&gt; Running case #2: 'Interrupt from GPIN_2 -&gt; GPOUT_2'...
+[1724728018.27][CONN][INF] found KV pair in stream: {{__testcase_start;Interrupt from GPIN_2 -&gt; GPOUT_2}}, queued...
+[1724728018.27][CONN][INF] found KV pair in stream: {{__testcase_finish;Interrupt from GPIN_2 -&gt; GPOUT_2;1;0}}, queued...
+[1724728018.28][CONN][RXD] &gt;&gt;&gt; 'Interrupt from GPIN_2 -&gt; GPOUT_2': 1 passed, 0 failed
+[1724728018.28][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1724728018.28][CONN][RXD] 
+[1724728018.28][CONN][RXD] &gt;&gt;&gt; Running case #3: 'Interrupt from GPOUT_1 -&gt; GPIN_1'...
+[1724728018.30][CONN][INF] found KV pair in stream: {{__testcase_start;Interrupt from GPOUT_1 -&gt; GPIN_1}}, queued...
+[1724728018.30][CONN][INF] found KV pair in stream: {{__testcase_finish;Interrupt from GPOUT_1 -&gt; GPIN_1;1;0}}, queued...
+[1724728018.31][CONN][RXD] &gt;&gt;&gt; 'Interrupt from GPOUT_1 -&gt; GPIN_1': 1 passed, 0 failed
+[1724728018.31][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1724728018.31][CONN][RXD] 
+[1724728018.31][CONN][RXD] &gt;&gt;&gt; Running case #4: 'Interrupt from GPIN_1 -&gt; GPOUT_1'...
+[1724728018.32][CONN][RXD] &gt;&gt;&gt; 'Interrupt from GPIN_1 -&gt; GPOUT_1': 1 passed, 0 failed
+[1724728018.32][CONN][INF] found KV pair in stream: {{__testcase_start;Interrupt from GPIN_1 -&gt; GPOUT_1}}, queued...
+[1724728018.32][CONN][INF] found KV pair in stream: {{__testcase_finish;Interrupt from GPIN_1 -&gt; GPOUT_1;1;0}}, queued...
+[1724728018.33][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1724728018.33][CONN][RXD] 
+[1724728018.33][CONN][RXD] &gt;&gt;&gt; Running case #5: 'Interrupt from GPOUT_0 -&gt; GPIN_0'...
+[1724728018.34][CONN][INF] found KV pair in stream: {{__testcase_start;Interrupt from GPOUT_0 -&gt; GPIN_0}}, queued...
+[1724728018.35][CONN][RXD] &lt;greentea test suite&gt;:54::FAIL: cbfn was not triggered on rising edge of pin
+[1724728018.35][CONN][INF] found KV pair in stream: {{__testcase_finish;Interrupt from GPOUT_0 -&gt; GPIN_0;0;1}}, queued...
+[1724728018.36][CONN][RXD] &gt;&gt;&gt; 'Interrupt from GPOUT_0 -&gt; GPIN_0': 0 passed, 1 failed with reason 'Test Cases Failed'
+[1724728018.36][CONN][RXD] 
+[1724728018.36][CONN][RXD] 
+[1724728018.36][CONN][RXD] &gt;&gt;&gt; Running case #6: 'Interrupt from GPIN_0 -&gt; GPOUT_0'...
+[1724728018.37][CONN][RXD] &lt;greentea test suite&gt;:54::FAIL: cbfn was not triggered on rising edge of pin
+[1724728018.37][CONN][INF] found KV pair in stream: {{__testcase_start;Interrupt from GPIN_0 -&gt; GPOUT_0}}, queued...
+[1724728018.38][CONN][RXD] &gt;&gt;&gt; 'Interrupt from GPIN_0 -&gt; GPOUT_0': 0 passed, 1 failed with reason 'Test Cases Failed'
+[1724728018.38][CONN][RXD] 
+[1724728018.38][CONN][RXD] 
+[1724728018.39][CONN][INF] found KV pair in stream: {{__testcase_finish;Interrupt from GPIN_0 -&gt; GPOUT_0;0;1}}, queued...
+[1724728018.40][CONN][RXD] &gt;&gt;&gt; Test cases: 4 passed, 2 failed with reason 'Test Cases Failed'
+[1724728018.40][CONN][RXD] &gt;&gt;&gt; TESTS FAILED!
+[1724728018.40][CONN][RXD] 
+[1724728018.40][CONN][RXD] -----------------------
+[1724728018.40][CONN][RXD] 0 Tests 2 Failures 0 Ignored 
+[1724728018.40][CONN][RXD] FAIL
+[1724728018.40][CONN][INF] found KV pair in stream: {{__testcase_summary;4;2}}, queued...
+[1724728018.41][CONN][INF] found KV pair in stream: {{end;failure}}, queued...
+[1724728018.41][CONN][INF] found KV pair in stream: {{__exit;0}}, queued...
+[1724728018.41][HTST][INF] __exit(0)
+[1724728018.41][HTST][INF] __notify_complete(False)
+[1724728018.42][HTST][INF] __exit_event_queue received
+[1724728018.42][HTST][INF] test suite run finished after 0.21 sec...
+[1724728018.42][CONN][INF] received special event '__host_test_finished' value='True', finishing
+[1724728018.43][HTST][INF] CONN exited with code: 0
+[1724728018.43][HTST][INF] Some events in queue
+[1724728018.43][HTST][INF] stopped consuming events
+[1724728018.43][HTST][INF] host test result() call skipped, received: False
+[1724728018.44][HTST][INF] calling blocking teardown()
+[1724728018.44][HTST][INF] teardown() finished
+[1724728018.44][HTST][INF] {{result;failure}}
+CMake Error at mbed-run-greentea-test-testshield-interruptin.cmake:19 (execute_process):
+  execute_process failed command indexes:
+
+    1: "Child return code: 1"
+
+
+
+</system-out>
+	</testcase>
+	<testcase name="test-testshield-digitalio" classname="test-testshield-digitalio" time="5.58564" status="fail">
+		<failure message=""/>
+		<system-out>[1/1] Flashing test-testshield-digitalio with OpenOCD...
+Open On-Chip Debugger 0.12.0+dev-00499-g151b74371 (2024-01-22-10:06)
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+DEPRECATED! use 'adapter driver' not 'interface'
+Info : The selected transport took over low-level target control. The results might differ compared to plain JTAG/SWD
+DEPRECATED! use 'adapter serial' not 'hla_serial'
+Info : clock speed 500 kHz
+Info : STLINK V2J39M27 (API v2) VID:PID 0483:374B
+Info : Target voltage: 3.240553
+Info : [stm32l4x.cpu] Cortex-M4 r0p1 processor detected
+Info : [stm32l4x.cpu] target has 6 breakpoints, 4 watchpoints
+Info : [stm32l4x.cpu] Examination succeed
+Info : gdb port disabled
+Info : Unable to match requested speed 500 kHz, using 480 kHz
+Info : Unable to match requested speed 500 kHz, using 480 kHz
+[stm32l4x.cpu] halted due to debug-request, current mode: Thread 
+xPSR: 0x01000000 pc: 0x08000318 msp: 0x10000698
+** Programming Started **
+Info : device idcode = 0x20016462 (STM32L45/L46xx - Rev Y : 0x2001)
+Info : RDP level 0 (0xAA)
+Info : flash size = 512 KiB
+Info : flash mode : single-bank
+Info : Padding image section 1 at 0x0800dc1c with 4 bytes (bank write end alignment)
+Warn : Adding extra erase range, 0x0800dc20 .. 0x0800dfff
+** Programming Finished **
+** Resetting Target **
+Info : Unable to match requested speed 500 kHz, using 480 kHz
+Info : Unable to match requested speed 500 kHz, using 480 kHz
+shutdown command invoked
+Executing: /home/jamie/Mbed/mbed-ce-test-tools/CI-Shield-Tests/mbed-os/venv/bin/python3.10 -m mbed_host_tests.mbedhtrun --skip-flashing -p /dev/ttyNUCLEO_L452RE_P --skip-reset -m NUCLEO_L452RE_P --baud-rate=115200
+[1724728035.01][HTST][INF] host test executor ver. 0.0.16
+[1724728035.01][HTST][INF] copy image onto target... SKIPPED!
+[1724728035.04][HTST][INF] starting host test process...
+[1724728035.05][CONN][INF] starting connection process...
+[1724728035.05][CONN][INF] notify event queue about extra 60 sec timeout for serial port pooling
+[1724728035.05][CONN][INF] initializing serial port listener... 
+[1724728035.06][SERI][INF] using specified port '/dev/ttyNUCLEO_L452RE_P'
+[1724728035.06][HTST][INF] setting timeout to: 60 sec
+[1724728035.06][SERI][INF] serial(port=/dev/ttyNUCLEO_L452RE_P, baudrate=115200, read_timeout=0.01, write_timeout=5)
+[1724728035.06][SERI][TXD] mbedmbedmbedmbedmbedmbedmbedmbedmbedmbed
+[1724728035.06][CONN][INF] sending up to 2 __sync packets (specified with --sync=2)
+[1724728035.06][CONN][INF] sending preamble 'fecaf9ac-ccd3-464f-9884-f2569a43b50c'
+[1724728035.07][SERI][TXD] {{__sync;fecaf9ac-ccd3-464f-9884-f2569a43b50c}}
+[1724728035.08][CONN][WRN] UnicodeDecodeError encountered!
+[1724728035.08][CONN][RXD] KA
+B[NON-XML-CHAR-0xF]j[NON-XML-CHAR-0x1A]R
+[NON-XML-CHAR-0x1A]L
+
+`bb[NON-XML-CHAR-0xC]l
+
+
+~[NON-XML-CHAR-0x2][NON-XML-CHAR-0x2][NON-XML-CHAR-0x12]
+l[NON-XML-CHAR-0x7][NON-XML-CHAR-0x12]
+\[NON-XML-CHAR-0x12]
+LI[NON-XML-CHAR-0x1]l[NON-XML-CHAR-0x2][NON-XML-CHAR-0x18].
+_[NON-XML-CHAR-0xC]
+~[NON-XML-CHAR-0x4][NON-XML-CHAR-0x6]
+[NON-XML-CHAR-0x2]
+,[NON-XML-CHAR-0x2][NON-XML-CHAR-0xC][NON-XML-CHAR-0x12]
+_I
+
+[NON-XML-CHAR-0xC][NON-XML-CHAR-0x2][NON-XML-CHAR-0x8]\
+^[NON-XML-CHAR-0x2][M
+
+
+r[NON-XML-CHAR-0x12]
+
+[NON-XML-CHAR-0xC]
+[NON-XML-CHAR-0x6]
+
+[NON-XML-CHAR-0x16]
+[NON-XML-CHAR-0x4]
+[NON-XML-CHAR-0x1][NON-XML-CHAR-0x1]
+[NON-XML-CHAR-0x5][NON-XML-CHAR-0x10]
+
+
+f[NON-XML-CHAR-0x1]
+
+mbedmbedmbedmbedmbedmbedmbedmbed
+[1724728035.08][CONN][INF] found SYNC in stream: {{__sync;fecaf9ac-ccd3-464f-9884-f2569a43b50c}} it is #0 sent, queued...
+[1724728035.08][HTST][INF] sync KV found, uuid=fecaf9ac-ccd3-464f-9884-f2569a43b50c, timestamp=1724728035.079664
+[1724728035.09][CONN][RXD] &gt;&gt;&gt; Running 4 test cases...
+[1724728035.09][CONN][INF] found KV pair in stream: {{__version;1.3.0}}, queued...
+[1724728035.09][CONN][INF] found KV pair in stream: {{__timeout;30}}, queued...
+[1724728035.09][CONN][INF] found KV pair in stream: {{__host_test_name;default_auto}}, queued...
+[1724728035.09][HTST][INF] DUT greentea-client version: 1.3.0
+[1724728035.09][HTST][INF] setting timeout to: 30 sec
+[1724728035.09][CONN][INF] found KV pair in stream: {{__testcase_name;Digital I/O GPOUT_0 -&gt; GPIN_0}}, queued...
+[1724728035.09][HTST][INF] host test class: '&lt;class 'mbed_os_tools.test.host_tests.default_auto.DefaultAuto'&gt;'
+[1724728035.09][HTST][INF] host test setup() call...
+[1724728035.09][HTST][INF] CALLBACKs updated
+[1724728035.09][HTST][INF] host test detected: default_auto
+[1724728035.10][CONN][RXD] 
+[1724728035.10][CONN][INF] found KV pair in stream: {{__testcase_name;Digital I/O GPOUT_1 -&gt; GPIN_1}}, queued...
+[1724728035.10][CONN][INF] found KV pair in stream: {{__testcase_name;Digital I/O GPIN_2 -&gt; GPOUT_2}}, queued...
+[1724728035.11][CONN][INF] found KV pair in stream: {{__testcase_name;Digital I/O GPOUT_2 -&gt; GPIN_2}}, queued...
+[1724728035.12][CONN][RXD] &gt;&gt;&gt; Running case #1: 'Digital I/O GPOUT_0 -&gt; GPIN_0'...
+[1724728035.12][CONN][INF] found KV pair in stream: {{__testcase_start;Digital I/O GPOUT_0 -&gt; GPIN_0}}, queued...
+[1724728035.13][CONN][RXD] &lt;greentea test suite&gt;:45::FAIL: Toggled state of input pin doesn't match toggled value of output pin.
+[1724728035.13][CONN][INF] found KV pair in stream: {{__testcase_finish;Digital I/O GPOUT_0 -&gt; GPIN_0;0;1}}, queued...
+[1724728035.14][CONN][RXD] &gt;&gt;&gt; 'Digital I/O GPOUT_0 -&gt; GPIN_0': 0 passed, 1 failed with reason 'Test Cases Failed'
+[1724728035.14][CONN][RXD] 
+[1724728035.14][CONN][RXD] 
+[1724728035.14][CONN][RXD] &gt;&gt;&gt; Running case #2: 'Digital I/O GPOUT_1 -&gt; GPIN_1'...
+[1724728035.15][CONN][INF] found KV pair in stream: {{__testcase_start;Digital I/O GPOUT_1 -&gt; GPIN_1}}, queued...
+[1724728035.15][CONN][INF] found KV pair in stream: {{__testcase_finish;Digital I/O GPOUT_1 -&gt; GPIN_1;1;0}}, queued...
+[1724728035.16][CONN][RXD] &gt;&gt;&gt; 'Digital I/O GPOUT_1 -&gt; GPIN_1': 1 passed, 0 failed
+[1724728035.16][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1724728035.16][CONN][RXD] 
+[1724728035.16][CONN][RXD] &gt;&gt;&gt; Running case #3: 'Digital I/O GPIN_2 -&gt; GPOUT_2'...
+[1724728035.18][CONN][RXD] &gt;&gt;&gt; 'Digital I/O GPIN_2 -&gt; GPOUT_2': 1 passed, 0 failed
+[1724728035.18][CONN][INF] found KV pair in stream: {{__testcase_start;Digital I/O GPIN_2 -&gt; GPOUT_2}}, queued...
+[1724728035.18][CONN][INF] found KV pair in stream: {{__testcase_finish;Digital I/O GPIN_2 -&gt; GPOUT_2;1;0}}, queued...
+[1724728035.19][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1724728035.19][CONN][RXD] 
+[1724728035.19][CONN][RXD] &gt;&gt;&gt; Running case #4: 'Digital I/O GPOUT_2 -&gt; GPIN_2'...
+[1724728035.19][CONN][INF] found KV pair in stream: {{__testcase_start;Digital I/O GPOUT_2 -&gt; GPIN_2}}, queued...
+[1724728035.20][CONN][RXD] &gt;&gt;&gt; 'Digital I/O GPOUT_2 -&gt; GPIN_2': 1 passed, 0 failed
+[1724728035.20][CONN][INF] found KV pair in stream: {{__testcase_finish;Digital I/O GPOUT_2 -&gt; GPIN_2;1;0}}, queued...
+[1724728035.21][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1724728035.21][CONN][RXD] 
+[1724728035.21][CONN][RXD] &gt;&gt;&gt; Test cases: 3 passed, 1 failed with reason 'Test Cases Failed'
+[1724728035.21][CONN][RXD] &gt;&gt;&gt; TESTS FAILED!
+[1724728035.21][CONN][RXD] 
+[1724728035.21][CONN][RXD] -----------------------
+[1724728035.22][CONN][RXD] 0 Tests 1 Failures 0 Ignored 
+[1724728035.22][CONN][RXD] FAIL
+[1724728035.22][CONN][INF] found KV pair in stream: {{__testcase_summary;3;1}}, queued...
+[1724728035.22][CONN][INF] found KV pair in stream: {{end;failure}}, queued...
+[1724728035.22][CONN][INF] found KV pair in stream: {{__exit;0}}, queued...
+[1724728035.23][HTST][INF] __exit(0)
+[1724728035.23][HTST][INF] __notify_complete(False)
+[1724728035.23][HTST][INF] __exit_event_queue received
+[1724728035.23][HTST][INF] test suite run finished after 0.14 sec...
+[1724728035.24][CONN][INF] received special event '__host_test_finished' value='True', finishing
+[1724728035.24][HTST][INF] CONN exited with code: 0
+[1724728035.24][HTST][INF] Some events in queue
+[1724728035.24][HTST][INF] stopped consuming events
+[1724728035.25][HTST][INF] host test result() call skipped, received: False
+[1724728035.25][HTST][INF] calling blocking teardown()
+[1724728035.25][HTST][INF] teardown() finished
+[1724728035.25][HTST][INF] {{result;failure}}
+CMake Error at mbed-run-greentea-test-testshield-digitalio.cmake:19 (execute_process):
+  execute_process failed command indexes:
+
+    1: "Child return code: 1"
+
+
+
+</system-out>
+	</testcase>
+	<testcase name="test-testshield-digitalio-prop-time" classname="test-testshield-digitalio-prop-time" time="35.3456" status="fail">
+		<failure message=""/>
+		<system-out>[1/1] Flashing test-testshield-digitalio-prop-time with OpenOCD...
+Open On-Chip Debugger 0.12.0+dev-00499-g151b74371 (2024-01-22-10:06)
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+DEPRECATED! use 'adapter driver' not 'interface'
+Info : The selected transport took over low-level target control. The results might differ compared to plain JTAG/SWD
+DEPRECATED! use 'adapter serial' not 'hla_serial'
+Info : clock speed 500 kHz
+Info : STLINK V2J39M27 (API v2) VID:PID 0483:374B
+Info : Target voltage: 3.240553
+Info : [stm32l4x.cpu] Cortex-M4 r0p1 processor detected
+Info : [stm32l4x.cpu] target has 6 breakpoints, 4 watchpoints
+Info : [stm32l4x.cpu] Examination succeed
+Info : gdb port disabled
+Info : Unable to match requested speed 500 kHz, using 480 kHz
+Info : Unable to match requested speed 500 kHz, using 480 kHz
+[stm32l4x.cpu] halted due to debug-request, current mode: Thread 
+xPSR: 0x01000000 pc: 0x08000318 msp: 0x10000698
+** Programming Started **
+Info : device idcode = 0x20016462 (STM32L45/L46xx - Rev Y : 0x2001)
+Info : RDP level 0 (0xAA)
+Info : flash size = 512 KiB
+Info : flash mode : single-bank
+** Programming Finished **
+** Resetting Target **
+Info : Unable to match requested speed 500 kHz, using 480 kHz
+Info : Unable to match requested speed 500 kHz, using 480 kHz
+shutdown command invoked
+Executing: /home/jamie/Mbed/mbed-ce-test-tools/CI-Shield-Tests/mbed-os/venv/bin/python3.10 -m mbed_host_tests.mbedhtrun --skip-flashing -p /dev/ttyNUCLEO_L452RE_P --skip-reset -m NUCLEO_L452RE_P --baud-rate=115200
+[1724728111.21][HTST][INF] host test executor ver. 0.0.16
+[1724728111.21][HTST][INF] copy image onto target... SKIPPED!
+[1724728111.23][HTST][INF] starting host test process...
+[1724728111.24][CONN][INF] starting connection process...
+[1724728111.25][CONN][INF] notify event queue about extra 60 sec timeout for serial port pooling
+[1724728111.25][CONN][INF] initializing serial port listener... 
+[1724728111.25][SERI][INF] using specified port '/dev/ttyNUCLEO_L452RE_P'
+[1724728111.25][SERI][INF] serial(port=/dev/ttyNUCLEO_L452RE_P, baudrate=115200, read_timeout=0.01, write_timeout=5)
+[1724728111.25][HTST][INF] setting timeout to: 60 sec
+[1724728111.26][SERI][TXD] mbedmbedmbedmbedmbedmbedmbedmbedmbedmbed
+[1724728111.26][CONN][INF] sending up to 2 __sync packets (specified with --sync=2)
+[1724728111.26][CONN][INF] sending preamble 'c09ab0bd-3bad-4b5a-8704-3ff6f00baa27'
+[1724728111.26][SERI][TXD] {{__sync;c09ab0bd-3bad-4b5a-8704-3ff6f00baa27}}
+[1724728111.27][CONN][RXD] mbedmbedmbedmbedmbedmbedmbedmbed
+[1724728111.27][CONN][INF] found SYNC in stream: {{__sync;c09ab0bd-3bad-4b5a-8704-3ff6f00baa27}} it is #0 sent, queued...
+[1724728111.27][HTST][INF] sync KV found, uuid=c09ab0bd-3bad-4b5a-8704-3ff6f00baa27, timestamp=1724728111.270669
+[1724728111.28][CONN][RXD] &gt;&gt;&gt; Running 6 test cases...
+[1724728111.28][CONN][INF] found KV pair in stream: {{__version;1.3.0}}, queued...
+[1724728111.28][CONN][INF] found KV pair in stream: {{__timeout;30}}, queued...
+[1724728111.28][HTST][INF] DUT greentea-client version: 1.3.0
+[1724728111.28][CONN][INF] found KV pair in stream: {{__host_test_name;default_auto}}, queued...
+[1724728111.28][HTST][INF] setting timeout to: 30 sec
+[1724728111.28][HTST][INF] host test class: '&lt;class 'mbed_os_tools.test.host_tests.default_auto.DefaultAuto'&gt;'
+[1724728111.28][HTST][INF] host test setup() call...
+[1724728111.29][HTST][INF] CALLBACKs updated
+[1724728111.29][HTST][INF] host test detected: default_auto
+[1724728111.29][CONN][INF] found KV pair in stream: {{__testcase_name;Digital I/O GPOUT_0 -&gt; GPIN_0}}, queued...
+[1724728111.29][CONN][INF] found KV pair in stream: {{__testcase_name;Digital I/O GPIN_0 -&gt; GPOUT_0}}, queued...
+[1724728111.30][CONN][INF] found KV pair in stream: {{__testcase_name;Digital I/O GPOUT_1 -&gt; GPIN_1}}, queued...
+[1724728111.31][CONN][RXD] 
+[1724728111.31][CONN][INF] found KV pair in stream: {{__testcase_name;Digital I/O GPIN_1 -&gt; GPOUT_1}}, queued...
+[1724728111.31][CONN][INF] found KV pair in stream: {{__testcase_name;Digital I/O GPOUT_2 -&gt; GPIN_2}}, queued...
+[1724728111.31][CONN][INF] found KV pair in stream: {{__testcase_name;Digital I/O GPIN_2 -&gt; GPOUT_2}}, queued...
+[1724728111.32][CONN][RXD] &gt;&gt;&gt; Running case #1: 'Digital I/O GPOUT_0 -&gt; GPIN_0'...
+[1724728111.32][CONN][INF] found KV pair in stream: {{__testcase_start;Digital I/O GPOUT_0 -&gt; GPIN_0}}, queued...
+[1724728141.36][HTST][INF] test suite run finished after 30.07 sec...
+[1724728141.36][CONN][INF] received special event '__host_test_finished' value='True', finishing
+[1724728141.37][HTST][INF] CONN exited with code: 0
+[1724728141.37][HTST][INF] No events in queue
+[1724728141.37][HTST][INF] stopped consuming events
+[1724728141.37][HTST][INF] host test result(): None
+[1724728141.37][HTST][WRN] missing __exit event from DUT
+[1724728141.37][HTST][WRN] missing __exit_event_queue event from host test
+[1724728141.37][HTST][ERR] missing __exit_event_queue event from host test and no result from host test, timeout...
+[1724728141.37][HTST][INF] calling blocking teardown()
+[1724728141.37][HTST][INF] teardown() finished
+[1724728141.37][HTST][INF] {{result;timeout}}
+CMake Error at mbed-run-greentea-test-testshield-digitalio-prop-time.cmake:19 (execute_process):
+  execute_process failed command indexes:
+
+    1: "Child return code: 5"
+
+
+
+</system-out>
+	</testcase>
+	<testcase name="test-testshield-i2c-basic" classname="test-testshield-i2c-basic" time="28.8709" status="fail">
+		<failure message=""/>
+		<system-out>[1/1] Flashing test-testshield-i2c-basic with OpenOCD...
+Open On-Chip Debugger 0.12.0+dev-00499-g151b74371 (2024-01-22-10:06)
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+DEPRECATED! use 'adapter driver' not 'interface'
+Info : The selected transport took over low-level target control. The results might differ compared to plain JTAG/SWD
+DEPRECATED! use 'adapter serial' not 'hla_serial'
+Info : clock speed 500 kHz
+Info : STLINK V2J39M27 (API v2) VID:PID 0483:374B
+Info : Target voltage: 3.240553
+Info : [stm32l4x.cpu] Cortex-M4 r0p1 processor detected
+Info : [stm32l4x.cpu] target has 6 breakpoints, 4 watchpoints
+Info : [stm32l4x.cpu] Examination succeed
+Info : gdb port disabled
+Info : Unable to match requested speed 500 kHz, using 480 kHz
+Info : Unable to match requested speed 500 kHz, using 480 kHz
+[stm32l4x.cpu] halted due to debug-request, current mode: Thread 
+xPSR: 0x01000000 pc: 0x08000318 msp: 0x10000698
+** Programming Started **
+Info : device idcode = 0x20016462 (STM32L45/L46xx - Rev Y : 0x2001)
+Info : RDP level 0 (0xAA)
+Info : flash size = 512 KiB
+Info : flash mode : single-bank
+Warn : Adding extra erase range, 0x08012210 .. 0x080127ff
+** Programming Finished **
+** Resetting Target **
+Info : Unable to match requested speed 500 kHz, using 480 kHz
+Info : Unable to match requested speed 500 kHz, using 480 kHz
+shutdown command invoked
+Executing: /home/jamie/Mbed/mbed-ce-test-tools/CI-Shield-Tests/mbed-os/venv/bin/python3.10 -m mbed_host_tests.mbedhtrun --skip-flashing -p /dev/ttyNUCLEO_L452RE_P --skip-reset -e /home/jamie/Mbed/mbed-ce-test-tools/CI-Shield-Tests/host_tests -m NUCLEO_L452RE_P --baud-rate=115200
+Will use any connected CI shield for this test.  Export the MBED_CI_SHIELD_SERIAL_NUMBER environment var to select a specific shield.
+e.g. 'export MBED_CI_SHIELD_SERIAL_NUMBER=SN002'
+[1724728204.76][HTST][INF] host test executor ver. 0.0.16
+[1724728204.76][HTST][INF] copy image onto target... SKIPPED!
+[1724728204.77][HTST][INF] starting host test process...
+[1724728204.78][CONN][INF] starting connection process...
+[1724728204.79][CONN][INF] notify event queue about extra 60 sec timeout for serial port pooling
+[1724728204.79][CONN][INF] initializing serial port listener... 
+[1724728204.79][SERI][INF] using specified port '/dev/ttyNUCLEO_L452RE_P'
+[1724728204.79][SERI][INF] serial(port=/dev/ttyNUCLEO_L452RE_P, baudrate=115200, read_timeout=0.01, write_timeout=5)
+[1724728204.79][HTST][INF] setting timeout to: 60 sec
+[1724728204.80][SERI][TXD] mbedmbedmbedmbedmbedmbedmbedmbedmbedmbed
+[1724728204.80][CONN][INF] sending up to 2 __sync packets (specified with --sync=2)
+[1724728204.80][CONN][INF] sending preamble '1a7df4ab-ed88-406e-ae63-d6aba53aa537'
+[1724728204.80][SERI][TXD] {{__sync;1a7df4ab-ed88-406e-ae63-d6aba53aa537}}
+[1724728204.81][CONN][WRN] UnicodeDecodeError encountered!
+[1724728204.81][CONN][RXD] 
+
+
+
+
+[NON-XML-CHAR-0x5]
+
+
+
+[NON-XML-CHAR-0x14]
+
+
+
+
+
+
+
+
+
+
+
+[NON-XML-CHAR-0x1]
+
+
+
+s&gt;[NON-XML-CHAR-0x4]
+[NON-XML-CHAR-0x12]
+[NON-XML-CHAR-0x2]
+[NON-XML-CHAR-0x13][NON-XML-CHAR-0xC][NON-XML-CHAR-0x12]
+L?
+
+rb
+[NON-XML-CHAR-0x2]
+
+h[NON-XML-CHAR-0xC]
+B
+
+
+
+[NON-XML-CHAR-0x1C][NON-XML-CHAR-0x3][NON-XML-CHAR-0x2][NON-XML-CHAR-0x4]"
+[NON-XML-CHAR-0x12][NON-XML-CHAR-0x2]
+[NON-XML-CHAR-0x1A]R~[NON-XML-CHAR-0x10][NON-XML-CHAR-0x2]
+L?
+
+[NON-XML-CHAR-0x2]R"
+
+[NON-XML-CHAR-0xC]
+
+H
+
+[1724728204.81][CONN][RXD] 
+b
+jrL[NON-XML-CHAR-0x2][NON-XML-CHAR-0x2](
+[NON-XML-CHAR-0x16]
+
+[NON-XML-CHAR-0x6]
+
+[NON-XML-CHAR-0x10]
+r[NON-XML-CHAR-0x12]
+[NON-XML-CHAR-0x17]
+
+[NON-XML-CHAR-0x4]
+
+[NON-XML-CHAR-0x6]
+
+[NON-XML-CHAR-0x8]
+[1724728204.81][CONN][RXD] 
+
+
+[NON-XML-CHAR-0xC]
+4
+[NON-XML-CHAR-0x18]mbedmbedmbedmbedmbedmbedmbedmbed
+[1724728204.81][CONN][INF] found SYNC in stream: {{__sync;1a7df4ab-ed88-406e-ae63-d6aba53aa537}} it is #0 sent, queued...
+[1724728204.81][HTST][INF] sync KV found, uuid=1a7df4ab-ed88-406e-ae63-d6aba53aa537, timestamp=1724728204.812186
+[1724728204.82][CONN][RXD] &gt;&gt;&gt; Running 22 test cases...
+[1724728204.82][CONN][INF] found KV pair in stream: {{__version;1.3.0}}, queued...
+[1724728204.82][CONN][INF] found KV pair in stream: {{__timeout;30}}, queued...
+[1724728204.83][CONN][INF] found KV pair in stream: {{__host_test_name;i2c_basic_test}}, queued...
+[1724728204.83][CONN][INF] found KV pair in stream: {{__testcase_name;Correct Address - Single Byte}}, queued...
+[1724728204.83][HTST][INF] DUT greentea-client version: 1.3.0
+[1724728204.83][HTST][INF] setting timeout to: 30 sec
+[1724728204.83][HTST][INF] host test class: '&lt;class 'i2c_basic_test.I2CBasicTestHostTest'&gt;'
+[1724728204.83][TEST][INF] I2C Basic Test host test setup complete.
+[1724728204.83][HTST][INF] host test setup() call...
+[1724728204.83][HTST][INF] CALLBACKs updated
+[1724728204.83][HTST][INF] host test detected: i2c_basic_test
+[1724728204.84][CONN][INF] found KV pair in stream: {{__testcase_name;Correct Address - Transaction}}, queued...
+[1724728204.84][CONN][INF] found KV pair in stream: {{__testcase_name;Incorrect Address - Single Byte}}, queued...
+[1724728204.85][CONN][INF] found KV pair in stream: {{__testcase_name;Incorrect Address - Zero Length Transaction}}, queued...
+[1724728204.85][CONN][INF] found KV pair in stream: {{__testcase_name;Incorrect Address - Write Transaction}}, queued...
+[1724728204.85][CONN][INF] found KV pair in stream: {{__testcase_name;Incorrect Address - Read Transaction}}, queued...
+[1724728204.86][CONN][INF] found KV pair in stream: {{__testcase_name;Incorrect Address - Async}}, queued...
+[1724728204.86][CONN][INF] found KV pair in stream: {{__testcase_name;Simple Write - Single Byte}}, queued...
+[1724728204.86][CONN][INF] found KV pair in stream: {{__testcase_name;Destroy and Recreate Object}}, queued...
+[1724728204.87][CONN][INF] found KV pair in stream: {{__testcase_name;Simple Read - Single Byte}}, queued...
+[1724728204.87][CONN][INF] found KV pair in stream: {{__testcase_name;Simple Write - Transaction}}, queued...
+[1724728204.88][CONN][INF] found KV pair in stream: {{__testcase_name;Simple Read - Transaction}}, queued...
+[1724728204.88][CONN][INF] found KV pair in stream: {{__testcase_name;Mixed Usage - Single Byte -&gt; repeated -&gt; Transaction}}, queued...
+[1724728204.89][CONN][INF] found KV pair in stream: {{__testcase_name;Mixed Usage - Transaction -&gt; repeated -&gt; Single Byte}}, queued...
+[1724728204.90][CONN][INF] found KV pair in stream: {{__testcase_name;Simple Write - Async}}, queued...
+[1724728204.90][CONN][INF] found KV pair in stream: {{__testcase_name;Destroy and Recreate Object (between async calls)}}, queued...
+[1724728204.91][CONN][INF] found KV pair in stream: {{__testcase_name;Simple Read - Async}}, queued...
+[1724728204.91][CONN][INF] found KV pair in stream: {{__testcase_name;Mixed Usage - Async -&gt; repeated -&gt; Transaction}}, queued...
+[1724728204.92][CONN][INF] found KV pair in stream: {{__testcase_name;Mixed Usage - Async -&gt; repeated -&gt; Single Byte}}, queued...
+[1724728204.92][CONN][INF] found KV pair in stream: {{__testcase_name;Mixed Usage - Transaction -&gt; repeated -&gt; Async}}, queued...
+[1724728204.93][CONN][RXD] 
+[1724728204.93][CONN][INF] found KV pair in stream: {{__testcase_name;Mixed Usage - Single Byte -&gt; repeated -&gt; Async}}, queued...
+[1724728204.93][CONN][INF] found KV pair in stream: {{__testcase_name;Async causes thread to sleep?}}, queued...
+[1724728204.94][CONN][RXD] &gt;&gt;&gt; Running case #1: 'Correct Address - Single Byte'...
+[1724728204.94][CONN][INF] found KV pair in stream: {{__testcase_start;Correct Address - Single Byte}}, queued...
+[1724728204.94][CONN][INF] found KV pair in stream: {{start_recording_i2c;please}}, queued...
+[1724728205.96][SERI][TXD] {{start_recording_i2c;complete}}
+[1724728205.97][CONN][INF] found KV pair in stream: {{verify_sequence;correct_addr_only}}, queued...
+[1724728206.04][TEST][INF] Saw on the I2C bus:
+Start Wr[0xa0] Ack 0x00 Ack Stop
+
+[1724728206.05][TEST][ERR] Expected length differs from actual!
+[1724728206.05][TEST][INF] We expected:
+Start Wr[0xa0] Ack Stop
+
+[1724728206.05][SERI][TXD] {{verify_sequence;failed}}
+[1724728206.07][CONN][RXD] &lt;greentea test suite&gt;:55::FAIL: Expected 'complete' Was 'failed'
+[1724728206.08][CONN][RXD] &gt;&gt;&gt; 'Correct Address - Single Byte': 0 passed, 1 failed with reason 'Test Cases Failed'
+[1724728206.08][CONN][RXD] 
+[1724728206.08][CONN][RXD] 
+[1724728206.08][CONN][INF] found KV pair in stream: {{__testcase_finish;Correct Address - Single Byte;0;1}}, queued...
+[1724728206.09][CONN][RXD] &gt;&gt;&gt; Running case #2: 'Correct Address - Transaction'...
+[1724728206.09][CONN][INF] found KV pair in stream: {{__testcase_start;Correct Address - Transaction}}, queued...
+[1724728206.09][CONN][INF] found KV pair in stream: {{start_recording_i2c;please}}, queued...
+[1724728207.10][SERI][TXD] {{start_recording_i2c;complete}}
+[1724728207.12][CONN][INF] found KV pair in stream: {{verify_sequence;correct_addr_only}}, queued...
+[1724728207.19][TEST][INF] Saw on the I2C bus:
+Start Wr[0xa0] Ack Stop
+
+[1724728207.20][SERI][TXD] {{verify_sequence;complete}}
+[1724728207.21][CONN][INF] found KV pair in stream: {{__testcase_finish;Correct Address - Transaction;1;0}}, queued...
+[1724728207.22][CONN][RXD] &gt;&gt;&gt; 'Correct Address - Transaction': 1 passed, 0 failed
+[1724728207.22][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1724728207.22][CONN][RXD] 
+[1724728207.22][CONN][RXD] &gt;&gt;&gt; Running case #3: 'Incorrect Address - Single Byte'...
+[1724728207.23][CONN][INF] found KV pair in stream: {{__testcase_start;Incorrect Address - Single Byte}}, queued...
+[1724728207.23][CONN][INF] found KV pair in stream: {{start_recording_i2c;please}}, queued...
+[1724728208.25][SERI][TXD] {{start_recording_i2c;complete}}
+[1724728208.26][CONN][INF] found KV pair in stream: {{verify_sequence;incorrect_addr_only_write}}, queued...
+[1724728208.33][TEST][INF] Saw on the I2C bus:
+Start Wr[0x20] Nack Stop
+
+[1724728208.35][SERI][TXD] {{verify_sequence;complete}}
+[1724728208.36][CONN][INF] found KV pair in stream: {{__testcase_finish;Incorrect Address - Single Byte;1;0}}, queued...
+[1724728208.37][CONN][RXD] &gt;&gt;&gt; 'Incorrect Address - Single Byte': 1 passed, 0 failed
+[1724728208.37][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1724728208.37][CONN][RXD] 
+[1724728208.37][CONN][RXD] &gt;&gt;&gt; Running case #4: 'Incorrect Address - Zero Length Transaction'...
+[1724728208.38][CONN][INF] found KV pair in stream: {{__testcase_start;Incorrect Address - Zero Length Transaction}}, queued...
+[1724728208.38][CONN][INF] found KV pair in stream: {{start_recording_i2c;please}}, queued...
+[1724728209.40][SERI][TXD] {{start_recording_i2c;complete}}
+[1724728209.41][CONN][INF] found KV pair in stream: {{verify_sequence;incorrect_addr_only_write}}, queued...
+[1724728209.48][TEST][INF] Saw on the I2C bus:
+Start Wr[0x20] Nack Stop
+
+[1724728209.49][SERI][TXD] {{verify_sequence;complete}}
+[1724728209.50][CONN][INF] found KV pair in stream: {{__testcase_finish;Incorrect Address - Zero Length Transaction;1;0}}, queued...
+[1724728209.51][CONN][RXD] &gt;&gt;&gt; 'Incorrect Address - Zero Length Transaction': 1 passed, 0 failed
+[1724728209.51][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1724728209.51][CONN][RXD] 
+[1724728209.52][CONN][RXD] &gt;&gt;&gt; Running case #5: 'Incorrect Address - Write Transaction'...
+[1724728209.52][CONN][INF] found KV pair in stream: {{__testcase_start;Incorrect Address - Write Transaction}}, queued...
+[1724728209.52][CONN][INF] found KV pair in stream: {{start_recording_i2c;please}}, queued...
+[1724728210.54][SERI][TXD] {{start_recording_i2c;complete}}
+[1724728210.55][CONN][INF] found KV pair in stream: {{verify_sequence;incorrect_addr_only_write}}, queued...
+[1724728210.62][TEST][INF] Saw on the I2C bus:
+Start Wr[0x20] Nack Stop
+
+[1724728210.63][SERI][TXD] {{verify_sequence;complete}}
+[1724728210.65][CONN][INF] found KV pair in stream: {{__testcase_finish;Incorrect Address - Write Transaction;1;0}}, queued...
+[1724728210.66][CONN][RXD] &gt;&gt;&gt; 'Incorrect Address - Write Transaction': 1 passed, 0 failed
+[1724728210.66][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1724728210.66][CONN][RXD] 
+[1724728210.67][CONN][RXD] &gt;&gt;&gt; Running case #6: 'Incorrect Address - Read Transaction'...
+[1724728210.67][CONN][INF] found KV pair in stream: {{__testcase_start;Incorrect Address - Read Transaction}}, queued...
+[1724728210.67][CONN][INF] found KV pair in stream: {{start_recording_i2c;please}}, queued...
+[1724728211.68][SERI][TXD] {{start_recording_i2c;complete}}
+[1724728211.70][CONN][INF] found KV pair in stream: {{verify_sequence;incorrect_addr_only_read}}, queued...
+[1724728211.77][TEST][INF] Saw on the I2C bus:
+Start Rd[0x21] Nack Stop
+
+[1724728211.78][SERI][TXD] {{verify_sequence;complete}}
+[1724728211.79][CONN][INF] found KV pair in stream: {{__testcase_finish;Incorrect Address - Read Transaction;1;0}}, queued...
+[1724728211.80][CONN][RXD] &gt;&gt;&gt; 'Incorrect Address - Read Transaction': 1 passed, 0 failed
+[1724728211.80][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1724728211.80][CONN][RXD] 
+[1724728211.80][CONN][RXD] &gt;&gt;&gt; Running case #7: 'Incorrect Address - Async'...
+[1724728211.81][CONN][INF] found KV pair in stream: {{__testcase_start;Incorrect Address - Async}}, queued...
+[1724728211.81][CONN][INF] found KV pair in stream: {{start_recording_i2c;please}}, queued...
+[1724728212.83][SERI][TXD] {{start_recording_i2c;complete}}
+[1724728212.84][CONN][INF] found KV pair in stream: {{verify_sequence;incorrect_addr_only_write}}, queued...
+[1724728212.91][TEST][INF] Saw on the I2C bus:
+Start Wr[0x20] Nack Stop
+
+[1724728212.92][SERI][TXD] {{verify_sequence;complete}}
+[1724728212.94][CONN][INF] found KV pair in stream: {{__testcase_finish;Incorrect Address - Async;1;0}}, queued...
+[1724728212.95][CONN][RXD] &gt;&gt;&gt; 'Incorrect Address - Async': 1 passed, 0 failed
+[1724728212.95][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1724728212.95][CONN][RXD] 
+[1724728212.95][CONN][RXD] &gt;&gt;&gt; Running case #8: 'Simple Write - Single Byte'...
+[1724728212.96][CONN][INF] found KV pair in stream: {{__testcase_start;Simple Write - Single Byte}}, queued...
+[1724728212.96][CONN][INF] found KV pair in stream: {{start_recording_i2c;please}}, queued...
+[1724728213.97][SERI][TXD] {{start_recording_i2c;complete}}
+[1724728213.98][CONN][INF] found KV pair in stream: {{verify_sequence;write_2_to_0x1}}, queued...
+[1724728214.05][TEST][INF] Saw on the I2C bus:
+Start Wr[0xa0] Ack 0x00 Ack 0x01 Ack 0x02 Ack Stop
+
+[1724728214.06][SERI][TXD] {{verify_sequence;complete}}
+[1724728214.07][CONN][INF] found KV pair in stream: {{__testcase_finish;Simple Write - Single Byte;1;0}}, queued...
+[1724728214.08][CONN][RXD] &gt;&gt;&gt; 'Simple Write - Single Byte': 1 passed, 0 failed
+[1724728214.09][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1724728214.09][CONN][RXD] 
+[1724728214.09][CONN][RXD] &gt;&gt;&gt; Running case #9: 'Destroy and Recreate Object'...
+[1724728214.10][CONN][RXD] &gt;&gt;&gt; 'Destroy and Recreate Object': 1 passed, 0 failed
+[1724728214.10][CONN][INF] found KV pair in stream: {{__testcase_start;Destroy and Recreate Object}}, queued...
+[1724728214.10][CONN][INF] found KV pair in stream: {{__testcase_finish;Destroy and Recreate Object;1;0}}, queued...
+[1724728214.11][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1724728214.11][CONN][RXD] 
+[1724728214.11][CONN][RXD] &gt;&gt;&gt; Running case #10: 'Simple Read - Single Byte'...
+[1724728214.12][CONN][INF] found KV pair in stream: {{__testcase_start;Simple Read - Single Byte}}, queued...
+[1724728214.12][CONN][INF] found KV pair in stream: {{start_recording_i2c;please}}, queued...
+[1724728215.13][SERI][TXD] {{start_recording_i2c;complete}}
+[1724728215.15][CONN][INF] found KV pair in stream: {{verify_sequence;read_2_from_0x1}}, queued...
+[1724728215.22][TEST][INF] Saw on the I2C bus:
+Start Wr[0xa0] Ack 0x00 Ack 0x01 Ack RepeatedStart Rd[0xa1] Ack 0x02 Nack Stop
+
+[1724728215.23][SERI][TXD] {{verify_sequence;complete}}
+[1724728215.24][CONN][INF] found KV pair in stream: {{__testcase_finish;Simple Read - Single Byte;1;0}}, queued...
+[1724728215.25][CONN][RXD] &gt;&gt;&gt; 'Simple Read - Single Byte': 1 passed, 0 failed
+[1724728215.25][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1724728215.25][CONN][RXD] 
+[1724728215.25][CONN][RXD] &gt;&gt;&gt; Running case #11: 'Simple Write - Transaction'...
+[1724728215.26][CONN][INF] found KV pair in stream: {{__testcase_start;Simple Write - Transaction}}, queued...
+[1724728215.26][CONN][INF] found KV pair in stream: {{start_recording_i2c;please}}, queued...
+[1724728216.28][SERI][TXD] {{start_recording_i2c;complete}}
+[1724728216.29][CONN][INF] found KV pair in stream: {{verify_sequence;write_3_to_0x1}}, queued...
+[1724728216.37][TEST][INF] Saw on the I2C bus:
+Start Wr[0xa0] Ack 0x00 Ack 0x01 Ack 0x03 Ack Stop
+
+[1724728216.38][SERI][TXD] {{verify_sequence;complete}}
+[1724728216.39][CONN][INF] found KV pair in stream: {{__testcase_finish;Simple Write - Transaction;1;0}}, queued...
+[1724728216.40][CONN][RXD] &gt;&gt;&gt; 'Simple Write - Transaction': 1 passed, 0 failed
+[1724728216.40][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1724728216.40][CONN][RXD] 
+[1724728216.40][CONN][RXD] &gt;&gt;&gt; Running case #12: 'Simple Read - Transaction'...
+[1724728216.41][CONN][INF] found KV pair in stream: {{__testcase_start;Simple Read - Transaction}}, queued...
+[1724728216.41][CONN][INF] found KV pair in stream: {{start_recording_i2c;please}}, queued...
+[1724728217.43][SERI][TXD] {{start_recording_i2c;complete}}
+[1724728217.44][CONN][INF] found KV pair in stream: {{verify_sequence;read_3_from_0x1}}, queued...
+[1724728217.51][TEST][INF] Saw on the I2C bus:
+Start Wr[0xa0] Ack 0x00 Ack 0x01 Ack RepeatedStart Rd[0xa1] Ack 0x03 Nack Stop
+
+[1724728217.53][SERI][TXD] {{verify_sequence;complete}}
+[1724728217.54][CONN][INF] found KV pair in stream: {{__testcase_finish;Simple Read - Transaction;1;0}}, queued...
+[1724728217.55][CONN][RXD] &gt;&gt;&gt; 'Simple Read - Transaction': 1 passed, 0 failed
+[1724728217.55][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1724728217.55][CONN][RXD] 
+[1724728217.55][CONN][RXD] &gt;&gt;&gt; Running case #13: 'Mixed Usage - Single Byte -&gt; repeated -&gt; Transaction'...
+[1724728217.56][CONN][INF] found KV pair in stream: {{__testcase_start;Mixed Usage - Single Byte -&gt; repeated -&gt; Transaction}}, queued...
+[1724728217.56][CONN][INF] found KV pair in stream: {{start_recording_i2c;please}}, queued...
+[1724728218.58][SERI][TXD] {{start_recording_i2c;complete}}
+[1724728218.59][CONN][INF] found KV pair in stream: {{verify_sequence;read_3_from_0x1}}, queued...
+[1724728218.66][TEST][INF] Saw on the I2C bus:
+Start Wr[0xa0] Ack 0x00 Ack 0x01 Ack RepeatedStart Rd[0xa1] Ack 0x03 Nack Stop
+
+[1724728218.67][SERI][TXD] {{verify_sequence;complete}}
+[1724728218.68][CONN][INF] found KV pair in stream: {{__testcase_finish;Mixed Usage - Single Byte -&gt; repeated -&gt; Transaction;1;0}}, queued...
+[1724728218.70][CONN][RXD] &gt;&gt;&gt; 'Mixed Usage - Single Byte -&gt; repeated -&gt; Transaction': 1 passed, 0 failed
+[1724728218.70][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1724728218.70][CONN][RXD] 
+[1724728218.71][CONN][RXD] &gt;&gt;&gt; Running case #14: 'Mixed Usage - Transaction -&gt; repeated -&gt; Single Byte'...
+[1724728218.71][CONN][INF] found KV pair in stream: {{__testcase_start;Mixed Usage - Transaction -&gt; repeated -&gt; Single Byte}}, queued...
+[1724728218.72][CONN][INF] found KV pair in stream: {{start_recording_i2c;please}}, queued...
+[1724728219.74][SERI][TXD] {{start_recording_i2c;complete}}
+[1724728219.75][CONN][INF] found KV pair in stream: {{verify_sequence;read_3_from_0x1}}, queued...
+[1724728219.82][TEST][INF] Saw on the I2C bus:
+Start Wr[0xa0] Ack 0x00 Ack 0x01 Ack RepeatedStart Rd[0xa1] Ack 0x03 Ack 0x47 Nack Stop
+
+[1724728219.82][TEST][ERR] Expected length differs from actual!
+[1724728219.82][TEST][INF] We expected:
+Start Wr[0xa0] Ack 0x00 Ack 0x01 Ack RepeatedStart Rd[0xa1] Ack 0x03 Nack Stop
+
+[1724728219.83][SERI][TXD] {{verify_sequence;failed}}
+[1724728219.84][CONN][RXD] &lt;greentea test suite&gt;:55::FAIL: Expected 'complete' Was 'failed'
+[1724728219.85][CONN][INF] found KV pair in stream: {{__testcase_finish;Mixed Usage - Transaction -&gt; repeated -&gt; Single Byte;0;1}}, queued...
+[1724728219.87][CONN][RXD] &gt;&gt;&gt; 'Mixed Usage - Transaction -&gt; repeated -&gt; Single Byte': 0 passed, 1 failed with reason 'Test Cases Failed'
+[1724728219.87][CONN][RXD] 
+[1724728219.87][CONN][RXD] 
+[1724728219.87][CONN][RXD] &gt;&gt;&gt; Running case #15: 'Simple Write - Async'...
+[1724728219.87][CONN][INF] found KV pair in stream: {{__testcase_start;Simple Write - Async}}, queued...
+[1724728219.88][CONN][INF] found KV pair in stream: {{start_recording_i2c;please}}, queued...
+[1724728220.89][SERI][TXD] {{start_recording_i2c;complete}}
+[1724728220.90][CONN][INF] found KV pair in stream: {{verify_sequence;write_2_to_0x1}}, queued...
+[1724728220.98][TEST][INF] Saw on the I2C bus:
+Start Wr[0xa0] Ack 0x00 Ack 0x01 Ack 0x02 Ack Stop
+
+[1724728220.99][SERI][TXD] {{verify_sequence;complete}}
+[1724728221.00][CONN][RXD] &gt;&gt;&gt; 'Simple Write - Async': 1 passed, 0 failed
+[1724728221.00][CONN][INF] found KV pair in stream: {{__testcase_finish;Simple Write - Async;1;0}}, queued...
+[1724728221.01][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1724728221.01][CONN][RXD] 
+[1724728221.01][CONN][RXD] &gt;&gt;&gt; Running case #16: 'Destroy and Recreate Object (between async calls)'...
+[1724728221.02][CONN][INF] found KV pair in stream: {{__testcase_start;Destroy and Recreate Object (between async calls)}}, queued...
+[1724728221.02][CONN][INF] found KV pair in stream: {{__testcase_finish;Destroy and Recreate Object (between async calls);1;0}}, queued...
+[1724728221.03][CONN][RXD] &gt;&gt;&gt; 'Destroy and Recreate Object (between async calls)': 1 passed, 0 failed
+[1724728221.03][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1724728221.03][CONN][RXD] 
+[1724728221.04][CONN][RXD] &gt;&gt;&gt; Running case #17: 'Simple Read - Async'...
+[1724728221.05][CONN][INF] found KV pair in stream: {{__testcase_start;Simple Read - Async}}, queued...
+[1724728221.05][CONN][INF] found KV pair in stream: {{start_recording_i2c;please}}, queued...
+[1724728222.06][SERI][TXD] {{start_recording_i2c;complete}}
+[1724728222.07][CONN][INF] found KV pair in stream: {{verify_sequence;read_2_from_0x1}}, queued...
+[1724728222.15][TEST][INF] Saw on the I2C bus:
+Start Wr[0xa0] Ack 0x00 Ack 0x01 Ack RepeatedStart Rd[0xa1] Ack 0x02 Nack Stop
+
+[1724728222.15][SERI][TXD] {{verify_sequence;complete}}
+[1724728222.16][CONN][INF] found KV pair in stream: {{__testcase_finish;Simple Read - Async;1;0}}, queued...
+[1724728222.17][CONN][RXD] &gt;&gt;&gt; 'Simple Read - Async': 1 passed, 0 failed
+[1724728222.17][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1724728222.17][CONN][RXD] 
+[1724728222.17][CONN][RXD] &gt;&gt;&gt; Running case #18: 'Mixed Usage - Async -&gt; repeated -&gt; Transaction'...
+[1724728222.18][CONN][INF] found KV pair in stream: {{__testcase_start;Mixed Usage - Async -&gt; repeated -&gt; Transaction}}, queued...
+[1724728222.18][CONN][INF] found KV pair in stream: {{start_recording_i2c;please}}, queued...
+[1724728223.20][SERI][TXD] {{start_recording_i2c;complete}}
+[1724728223.21][CONN][INF] found KV pair in stream: {{verify_sequence;read_2_from_0x1}}, queued...
+[1724728223.28][TEST][INF] Saw on the I2C bus:
+Start Wr[0xa0] Ack 0x00 Ack 0x01 Ack RepeatedStart Rd[0xa1] Ack 0x02 Nack Stop
+
+[1724728223.30][SERI][TXD] {{verify_sequence;complete}}
+[1724728223.31][CONN][INF] found KV pair in stream: {{__testcase_finish;Mixed Usage - Async -&gt; repeated -&gt; Transaction;1;0}}, queued...
+[1724728223.32][CONN][RXD] &gt;&gt;&gt; 'Mixed Usage - Async -&gt; repeated -&gt; Transaction': 1 passed, 0 failed
+[1724728223.32][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1724728223.32][CONN][RXD] 
+[1724728223.33][CONN][RXD] &gt;&gt;&gt; Running case #19: 'Mixed Usage - Async -&gt; repeated -&gt; Single Byte'...
+[1724728223.33][CONN][INF] found KV pair in stream: {{__testcase_start;Mixed Usage - Async -&gt; repeated -&gt; Single Byte}}, queued...
+[1724728223.34][CONN][INF] found KV pair in stream: {{start_recording_i2c;please}}, queued...
+[1724728224.36][SERI][TXD] {{start_recording_i2c;complete}}
+[1724728224.37][CONN][INF] found KV pair in stream: {{verify_sequence;read_2_from_0x1}}, queued...
+[1724728224.44][TEST][INF] Saw on the I2C bus:
+Start Wr[0xa0] Ack 0x00 Ack 0x01 Ack RepeatedStart Rd[0xa1] Ack 0x02 Ack 0x47 Nack Stop
+
+[1724728224.44][TEST][ERR] Expected length differs from actual!
+[1724728224.44][TEST][INF] We expected:
+Start Wr[0xa0] Ack 0x00 Ack 0x01 Ack RepeatedStart Rd[0xa1] Ack 0x02 Nack Stop
+
+[1724728224.45][SERI][TXD] {{verify_sequence;failed}}
+[1724728224.46][CONN][RXD] &lt;greentea test suite&gt;:55::FAIL: Expected 'complete' Was 'failed'
+[1724728224.48][CONN][INF] found KV pair in stream: {{__testcase_finish;Mixed Usage - Async -&gt; repeated -&gt; Single Byte;0;1}}, queued...
+[1724728224.49][CONN][RXD] &gt;&gt;&gt; 'Mixed Usage - Async -&gt; repeated -&gt; Single Byte': 0 passed, 1 failed with reason 'Test Cases Failed'
+[1724728224.49][CONN][RXD] 
+[1724728224.49][CONN][RXD] 
+[1724728224.49][CONN][RXD] &gt;&gt;&gt; Running case #20: 'Mixed Usage - Transaction -&gt; repeated -&gt; Async'...
+[1724728224.50][CONN][INF] found KV pair in stream: {{__testcase_start;Mixed Usage - Transaction -&gt; repeated -&gt; Async}}, queued...
+[1724728224.50][CONN][INF] found KV pair in stream: {{start_recording_i2c;please}}, queued...
+[1724728225.51][SERI][TXD] {{start_recording_i2c;complete}}
+[1724728225.52][CONN][INF] found KV pair in stream: {{verify_sequence;read_2_from_0x1}}, queued...
+[1724728225.60][TEST][INF] Saw on the I2C bus:
+Start Wr[0xa0] Ack 0x00 Ack 0x01 Ack RepeatedStart Rd[0xa1] Ack 0x02 Nack Stop
+
+[1724728225.61][SERI][TXD] {{verify_sequence;complete}}
+[1724728225.62][CONN][INF] found KV pair in stream: {{__testcase_finish;Mixed Usage - Transaction -&gt; repeated -&gt; Async;1;0}}, queued...
+[1724728225.63][CONN][RXD] &gt;&gt;&gt; 'Mixed Usage - Transaction -&gt; repeated -&gt; Async': 1 passed, 0 failed
+[1724728225.63][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1724728225.63][CONN][RXD] 
+[1724728225.64][CONN][RXD] &gt;&gt;&gt; Running case #21: 'Mixed Usage - Single Byte -&gt; repeated -&gt; Async'...
+[1724728225.64][CONN][INF] found KV pair in stream: {{__testcase_start;Mixed Usage - Single Byte -&gt; repeated -&gt; Async}}, queued...
+[1724728225.64][CONN][INF] found KV pair in stream: {{start_recording_i2c;please}}, queued...
+[1724728226.66][SERI][TXD] {{start_recording_i2c;complete}}
+[1724728226.67][CONN][INF] found KV pair in stream: {{verify_sequence;read_2_from_0x1}}, queued...
+[1724728226.74][TEST][INF] Saw on the I2C bus:
+Start Wr[0xa0] Ack 0x00 Ack 0x01 Ack RepeatedStart Rd[0xa1] Ack 0x02 Nack Stop
+
+[1724728226.75][SERI][TXD] {{verify_sequence;complete}}
+[1724728226.76][CONN][INF] found KV pair in stream: {{__testcase_finish;Mixed Usage - Single Byte -&gt; repeated -&gt; Async;1;0}}, queued...
+[1724728226.77][CONN][RXD] &gt;&gt;&gt; 'Mixed Usage - Single Byte -&gt; repeated -&gt; Async': 1 passed, 0 failed
+[1724728226.77][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1724728226.77][CONN][RXD] 
+[1724728226.78][CONN][RXD] &gt;&gt;&gt; Running case #22: 'Async causes thread to sleep?'...
+[1724728226.79][CONN][INF] found KV pair in stream: {{__testcase_start;Async causes thread to sleep?}}, queued...
+[1724728226.79][CONN][INF] found KV pair in stream: {{start_recording_i2c;please}}, queued...
+[1724728227.80][SERI][TXD] {{start_recording_i2c;complete}}
+[1724728227.81][CONN][INF] found KV pair in stream: {{verify_sequence;read_2_from_0x1}}, queued...
+[1724728227.89][TEST][INF] Saw on the I2C bus:
+Start Wr[0xa0] Ack 0x00 Ack 0x01 Ack RepeatedStart Rd[0xa1] Ack 0x02 Nack Stop
+
+[1724728227.90][SERI][TXD] {{verify_sequence;complete}}
+[1724728227.91][CONN][INF] found KV pair in stream: {{__testcase_finish;Async causes thread to sleep?;1;0}}, queued...
+[1724728227.92][CONN][RXD] &gt;&gt;&gt; 'Async causes thread to sleep?': 1 passed, 0 failed
+[1724728227.92][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1724728227.92][CONN][RXD] 
+[1724728227.92][CONN][RXD] &gt;&gt;&gt; Test cases: 19 passed, 3 failed with reason 'Test Cases Failed'
+[1724728227.93][CONN][RXD] &gt;&gt;&gt; TESTS FAILED!
+[1724728227.93][CONN][RXD] 
+[1724728227.93][CONN][RXD] -----------------------
+[1724728227.93][CONN][RXD] 0 Tests 3 Failures 0 Ignored 
+[1724728227.93][CONN][RXD] FAIL
+[1724728227.93][CONN][INF] found KV pair in stream: {{__testcase_summary;19;3}}, queued...
+[1724728227.93][CONN][INF] found KV pair in stream: {{end;failure}}, queued...
+[1724728227.93][CONN][INF] found KV pair in stream: {{__exit;0}}, queued...
+[1724728227.93][HTST][INF] __exit(0)
+[1724728227.93][HTST][INF] __notify_complete(False)
+[1724728227.93][HTST][INF] __exit_event_queue received
+[1724728227.94][HTST][INF] test suite run finished after 23.11 sec...
+[1724728227.94][CONN][INF] received special event '__host_test_finished' value='True', finishing
+[1724728227.95][HTST][INF] CONN exited with code: 0
+[1724728227.95][HTST][INF] Some events in queue
+[1724728227.95][HTST][INF] stopped consuming events
+[1724728227.95][HTST][INF] host test result() call skipped, received: False
+[1724728227.95][HTST][INF] calling blocking teardown()
+[1724728227.95][HTST][INF] teardown() finished
+[1724728227.95][HTST][INF] {{result;failure}}
+CMake Error at mbed-run-greentea-test-testshield-i2c-basic.cmake:19 (execute_process):
+  execute_process failed command indexes:
+
+    1: "Child return code: 1"
+
+
+
+</system-out>
+	</testcase>
+	<testcase name="test-testshield-i2c-slave-comms" classname="test-testshield-i2c-slave-comms" time="35.6734" status="fail">
+		<failure message=""/>
+		<system-out>[1/1] Flashing test-testshield-i2c-slave-comms with OpenOCD...
+Open On-Chip Debugger 0.12.0+dev-00499-g151b74371 (2024-01-22-10:06)
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+DEPRECATED! use 'adapter driver' not 'interface'
+Info : The selected transport took over low-level target control. The results might differ compared to plain JTAG/SWD
+DEPRECATED! use 'adapter serial' not 'hla_serial'
+Info : clock speed 500 kHz
+Info : STLINK V2J39M27 (API v2) VID:PID 0483:374B
+Info : Target voltage: 3.240553
+Info : [stm32l4x.cpu] Cortex-M4 r0p1 processor detected
+Info : [stm32l4x.cpu] target has 6 breakpoints, 4 watchpoints
+Info : [stm32l4x.cpu] Examination succeed
+Info : gdb port disabled
+Info : Unable to match requested speed 500 kHz, using 480 kHz
+Info : Unable to match requested speed 500 kHz, using 480 kHz
+[stm32l4x.cpu] halted due to debug-request, current mode: Thread 
+xPSR: 0x01000000 pc: 0x08000318 msp: 0x10000698
+** Programming Started **
+Info : device idcode = 0x20016462 (STM32L45/L46xx - Rev Y : 0x2001)
+Info : RDP level 0 (0xAA)
+Info : flash size = 512 KiB
+Info : flash mode : single-bank
+Info : Padding image section 1 at 0x0800ffd4 with 4 bytes (bank write end alignment)
+Warn : Adding extra erase range, 0x0800ffd8 .. 0x0800ffff
+** Programming Finished **
+** Resetting Target **
+Info : Unable to match requested speed 500 kHz, using 480 kHz
+Info : Unable to match requested speed 500 kHz, using 480 kHz
+shutdown command invoked
+Executing: /home/jamie/Mbed/mbed-ce-test-tools/CI-Shield-Tests/mbed-os/venv/bin/python3.10 -m mbed_host_tests.mbedhtrun --skip-flashing -p /dev/ttyNUCLEO_L452RE_P --skip-reset -e /home/jamie/Mbed/mbed-ce-test-tools/CI-Shield-Tests/host_tests -m NUCLEO_L452RE_P --baud-rate=115200
+Will use any connected CI shield for this test.  Export the MBED_CI_SHIELD_SERIAL_NUMBER environment var to select a specific shield.
+e.g. 'export MBED_CI_SHIELD_SERIAL_NUMBER=SN002'
+[1724728304.84][HTST][INF] host test executor ver. 0.0.16
+[1724728304.84][HTST][INF] copy image onto target... SKIPPED!
+[1724728304.85][HTST][INF] starting host test process...
+[1724728304.86][CONN][INF] starting connection process...
+[1724728304.87][CONN][INF] notify event queue about extra 60 sec timeout for serial port pooling
+[1724728304.87][CONN][INF] initializing serial port listener... 
+[1724728304.87][SERI][INF] using specified port '/dev/ttyNUCLEO_L452RE_P'
+[1724728304.87][SERI][INF] serial(port=/dev/ttyNUCLEO_L452RE_P, baudrate=115200, read_timeout=0.01, write_timeout=5)
+[1724728304.87][HTST][INF] setting timeout to: 60 sec
+[1724728304.88][SERI][TXD] mbedmbedmbedmbedmbedmbedmbedmbedmbedmbed
+[1724728304.88][CONN][INF] sending up to 2 __sync packets (specified with --sync=2)
+[1724728304.88][CONN][INF] sending preamble '5ed00263-d18f-4fce-b0e8-ada55958131d'
+[1724728304.88][SERI][TXD] {{__sync;5ed00263-d18f-4fce-b0e8-ada55958131d}}
+[1724728304.89][CONN][WRN] UnicodeDecodeError encountered!
+[1724728304.89][CONN][RXD] 
+[NON-XML-CHAR-0x7]}
+Z1
+RN
+
+[NON-XML-CHAR-0x12]
+b~[NON-XML-CHAR-0x12][NON-XML-CHAR-0x3]bB
+
+
+[NON-XML-CHAR-0xC][NON-XML-CHAR-0x3]
+[NON-XML-CHAR-0xC]b~o
+[NON-XML-CHAR-0xC]~,[NON-XML-CHAR-0x1]M
+[B
+
+
+[NON-XML-CHAR-0x1B]
+
+
+
+
+#A
+
+
+
+b
+[NON-XML-CHAR-0xE][NON-XML-CHAR-0x3]
+
+
+[1724728304.89][CONN][RXD] 
+
+
+[NON-XML-CHAR-0x3]
+[NON-XML-CHAR-0x12]
+
+
+
+
+
+[NON-XML-CHAR-0x2]
+
+
+
+
+
+
+[NON-XML-CHAR-0x4]
+[NON-XML-CHAR-0x4]
+
+mbedmbedmbedmbedmbedmbedmbedmbed
+[1724728304.89][CONN][INF] found SYNC in stream: {{__sync;5ed00263-d18f-4fce-b0e8-ada55958131d}} it is #0 sent, queued...
+[1724728304.89][HTST][INF] sync KV found, uuid=5ed00263-d18f-4fce-b0e8-ada55958131d, timestamp=1724728304.891590
+[1724728304.90][CONN][RXD] &gt;&gt;&gt; Running 9 test cases...
+[1724728304.90][CONN][INF] found KV pair in stream: {{__version;1.3.0}}, queued...
+[1724728304.90][CONN][INF] found KV pair in stream: {{__timeout;30}}, queued...
+[1724728304.90][CONN][INF] found KV pair in stream: {{__host_test_name;i2c_slave_comms}}, queued...
+[1724728304.91][CONN][INF] found KV pair in stream: {{__testcase_name;Write one byte to slave}}, queued...
+[1724728304.91][HTST][INF] DUT greentea-client version: 1.3.0
+[1724728304.91][HTST][INF] setting timeout to: 30 sec
+[1724728304.91][HTST][INF] host test class: '&lt;class 'i2c_slave_comms.I2CSlaveCommsTest'&gt;'
+[1724728304.91][cy_serial_bridge]Discovered USB endpoints successfully
+[1724728304.92][CONN][INF] found KV pair in stream: {{__testcase_name;Does not acknowledge other slave address}}, queued...
+[1724728304.92][CONN][INF] found KV pair in stream: {{__testcase_name;Destroy &amp; recreate I2C object}}, queued...
+[1724728304.93][CONN][INF] found KV pair in stream: {{__testcase_name;Write multiple bytes to slave}}, queued...
+[1724728304.93][CONN][INF] found KV pair in stream: {{__testcase_name;Write less bytes than expected to slave}}, queued...
+[1724728304.93][CONN][INF] found KV pair in stream: {{__testcase_name;Read one byte from slave}}, queued...
+[1724728304.94][CONN][INF] found KV pair in stream: {{__testcase_name;Destroy &amp; recreate I2C object}}, queued...
+[1724728304.94][CONN][INF] found KV pair in stream: {{__testcase_name;Read multiple bytes from slave}}, queued...
+[1724728304.95][CONN][RXD] 
+[1724728304.95][CONN][RXD] &gt;&gt;&gt; Running case #1: 'Write one byte to slave'...
+[1724728304.95][CONN][INF] found KV pair in stream: {{__testcase_name;Read less bytes than expected from slave}}, queued...
+[1724728304.95][CONN][INF] found KV pair in stream: {{__testcase_start;Write one byte to slave}}, queued...
+[1724728304.96][CONN][INF] found KV pair in stream: {{start_recording_i2c;please}}, queued...
+[1724728304.98][cy_serial_bridge]Device signature: b'CYUS'
+Connected to I2C interface of CY7C652xx device, firmware version 2.0.3 build 112
+[1724728304.99][TEST][INF] I2C Slave Comms host test setup complete.
+[1724728304.99][HTST][INF] host test setup() call...
+[1724728304.99][HTST][INF] CALLBACKs updated
+[1724728304.99][HTST][INF] host test detected: i2c_slave_comms
+[1724728306.00][SERI][TXD] {{start_recording_i2c;complete}}
+[1724728306.01][CONN][INF] found KV pair in stream: {{write_bytes_to_slave;addr 0xE4 data 0x1}}, queued...
+[1724728307.02][TEST][ERR] Error writing to I2C slave: Traceback (most recent call last):
+  File "/home/jamie/Mbed/mbed-ce-test-tools/CI-Shield-Tests/host_tests/i2c_slave_comms.py", line 68, in _callback_write_bytes_to_slave
+    self.i2c_bridge.i2c_write(addr &gt;&gt; 1, bytes_to_write)
+  File "/home/jamie/Mbed/mbed-ce-test-tools/CI-Shield-Tests/mbed-os/venv/lib/python3.10/site-packages/cy_serial_bridge/driver.py", line 817, in i2c_write
+    post_transfer_status = self.dev.interruptRead(self.ep_intr, CyI2c.EVENT_NOTIFICATION_LEN, io_timeout)
+  File "/home/jamie/Mbed/mbed-ce-test-tools/CI-Shield-Tests/mbed-os/venv/lib/python3.10/site-packages/usb1/__init__.py", line 1482, in interruptRead
+    transferred = self._interruptTransfer(
+  File "/home/jamie/Mbed/mbed-ce-test-tools/CI-Shield-Tests/mbed-os/venv/lib/python3.10/site-packages/usb1/__init__.py", line 1423, in _interruptTransfer
+    mayRaiseUSBError(libusb1.libusb_interrupt_transfer(
+  File "/home/jamie/Mbed/mbed-ce-test-tools/CI-Shield-Tests/mbed-os/venv/lib/python3.10/site-packages/usb1/__init__.py", line 127, in mayRaiseUSBError
+    __raiseUSBError(value)
+  File "/home/jamie/Mbed/mbed-ce-test-tools/CI-Shield-Tests/mbed-os/venv/lib/python3.10/site-packages/usb1/__init__.py", line 119, in raiseUSBError
+    raise __STATUS_TO_EXCEPTION_DICT.get(value, __USBError)(value)
+usb1.USBErrorTimeout: LIBUSB_ERROR_TIMEOUT [-7]
+
+[1724728307.02][TEST][INF] Saw on the I2C bus:
+Start Wr[0xe4] Nack
+
+[1724728307.02][TEST][ERR] Expected length differs from actual!
+[1724728307.02][TEST][INF] We expected:
+Start Wr[0xe4] Ack 0x01 Ack Stop
+
+[1724728307.04][SERI][TXD] {{write_bytes_to_slave;error}}
+[1724728335.06][HTST][INF] test suite run finished after 30.15 sec...
+[1724728335.07][CONN][INF] received special event '__host_test_finished' value='True', finishing
+[1724728335.08][HTST][INF] CONN exited with code: 0
+[1724728335.08][HTST][INF] No events in queue
+[1724728335.08][HTST][INF] stopped consuming events
+[1724728335.08][HTST][INF] host test result(): None
+[1724728335.08][HTST][WRN] missing __exit event from DUT
+[1724728335.08][HTST][WRN] missing __exit_event_queue event from host test
+[1724728335.08][HTST][ERR] missing __exit_event_queue event from host test and no result from host test, timeout...
+[1724728335.08][HTST][INF] calling blocking teardown()
+[1724728335.08][HTST][INF] teardown() finished
+[1724728335.08][HTST][INF] {{result;timeout}}
+CMake Error at mbed-run-greentea-test-testshield-i2c-slave-comms.cmake:19 (execute_process):
+  execute_process failed command indexes:
+
+    1: "Child return code: 5"
+
+
+
+</system-out>
+	</testcase>
+	<testcase name="test-testshield-i2c-eeprom" classname="test-testshield-i2c-eeprom" time="30.0033" status="fail">
+		<failure message=""/>
+		<system-out>[1/1] Flashing test-testshield-i2c-eeprom with OpenOCD...
+Open On-Chip Debugger 0.12.0+dev-00499-g151b74371 (2024-01-22-10:06)
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+DEPRECATED! use 'adapter driver' not 'interface'
+Info : The selected transport took over low-level target control. The results might differ compared to plain JTAG/SWD
+DEPRECATED! use 'adapter serial' not 'hla_serial'
+Info : clock speed 500 kHz
+Info : STLINK V2J39M27 (API v2) VID:PID 0483:374B
+Info : Target voltage: 3.240553
+Info : [stm32l4x.cpu] Cortex-M4 r0p1 processor detected
+Info : [stm32l4x.cpu] target has 6 breakpoints, 4 watchpoints
+Info : [stm32l4x.cpu] Examination succeed
+Info : gdb port disabled
+Info : Unable to match requested speed 500 kHz, using 480 kHz
+Info : Unable to match requested speed 500 kHz, using 480 kHz
+[stm32l4x.cpu] halted due to debug-request, current mode: Thread 
+xPSR: 0x01000000 pc: 0x08000318 msp: 0x10000698
+** Programming Started **
+Info : device idcode = 0x20016462 (STM32L45/L46xx - Rev Y : 0x2001)
+Info : RDP level 0 (0xAA)
+Info : flash size = 512 KiB
+Info : flash mode : single-bank
+Info : Padding image section 1 at 0x080116bc with 4 bytes (bank write end alignment)
+Warn : Adding extra erase range, 0x080116c0 .. 0x080117ff
+** Programming Finished **
+** Resetting Target **
+Info : Unable to match requested speed 500 kHz, using 480 kHz
+Info : Unable to match requested speed 500 kHz, using 480 kHz
+shutdown command invoked
+Executing: /home/jamie/Mbed/mbed-ce-test-tools/CI-Shield-Tests/mbed-os/venv/bin/python3.10 -m mbed_host_tests.mbedhtrun --skip-flashing -p /dev/ttyNUCLEO_L452RE_P --skip-reset -e /home/jamie/Mbed/mbed-ce-test-tools/CI-Shield-Tests/host_tests -m NUCLEO_L452RE_P --baud-rate=115200
+Will use any connected CI shield for this test.  Export the MBED_CI_SHIELD_SERIAL_NUMBER environment var to select a specific shield.
+e.g. 'export MBED_CI_SHIELD_SERIAL_NUMBER=SN002'
+[1724728393.00][HTST][INF] host test executor ver. 0.0.16
+[1724728393.00][HTST][INF] copy image onto target... SKIPPED!
+[1724728393.02][HTST][INF] starting host test process...
+[1724728393.03][CONN][INF] starting connection process...
+[1724728393.03][CONN][INF] notify event queue about extra 60 sec timeout for serial port pooling
+[1724728393.03][CONN][INF] initializing serial port listener... 
+[1724728393.03][SERI][INF] using specified port '/dev/ttyNUCLEO_L452RE_P'
+[1724728393.03][SERI][INF] serial(port=/dev/ttyNUCLEO_L452RE_P, baudrate=115200, read_timeout=0.01, write_timeout=5)
+[1724728393.03][HTST][INF] setting timeout to: 60 sec
+[1724728393.04][SERI][TXD] mbedmbedmbedmbedmbedmbedmbedmbedmbedmbed
+[1724728393.04][CONN][INF] sending up to 2 __sync packets (specified with --sync=2)
+[1724728393.04][CONN][INF] sending preamble '8b2cf1ea-27b6-4a34-876b-0e3947b7e1a5'
+[1724728393.04][SERI][TXD] {{__sync;8b2cf1ea-27b6-4a34-876b-0e3947b7e1a5}}
+[1724728393.05][CONN][WRN] UnicodeDecodeError encountered!
+[1724728393.05][CONN][RXD] S$[NON-XML-CHAR-0x13][NON-XML-CHAR-0xC][NON-XML-CHAR-0xC][NON-XML-CHAR-0x2]A
+
+[NON-XML-CHAR-0x1][NON-XML-CHAR-0x4]
+
+[NON-XML-CHAR-0x2]l
+b[NON-XML-CHAR-0xC]2R
+[NON-XML-CHAR-0x1]	
+}*[NON-XML-CHAR-0xC]S[NON-XML-CHAR-0x2]
+
+[NON-XML-CHAR-0x2]
+
+O[NON-XML-CHAR-0x1][NON-XML-CHAR-0x2]@
+2
+
+R
+
+j
+[NON-XML-CHAR-0xC]
+
+r
+[NON-XML-CHAR-0x12]
+b[NON-XML-CHAR-0x4]
+ {
+RN[NON-XML-CHAR-0x2]
+
+[NON-XML-CHAR-0x6][NON-XML-CHAR-0x2][NON-XML-CHAR-0x5]
+[NON-XML-CHAR-0x3][NON-XML-CHAR-0x1]
+[NON-XML-CHAR-0x2]
+[NON-XML-CHAR-0x1D]
+
+
+
+
+6[NON-XML-CHAR-0xC]
+[NON-XML-CHAR-0x17]
+@
+mbedmbedmbedmbedmbedmbedmbedmbed
+[1724728393.05][CONN][INF] found SYNC in stream: {{__sync;8b2cf1ea-27b6-4a34-876b-0e3947b7e1a5}} it is #0 sent, queued...
+[1724728393.05][HTST][INF] sync KV found, uuid=8b2cf1ea-27b6-4a34-876b-0e3947b7e1a5, timestamp=1724728393.052095
+[1724728393.06][CONN][RXD] &gt;&gt;&gt; Running 14 test cases...
+[1724728393.06][CONN][INF] found KV pair in stream: {{__version;1.3.0}}, queued...
+[1724728393.06][CONN][INF] found KV pair in stream: {{__timeout;20}}, queued...
+[1724728393.06][HTST][INF] DUT greentea-client version: 1.3.0
+[1724728393.06][CONN][INF] found KV pair in stream: {{__host_test_name;i2c_record_only_test}}, queued...
+[1724728393.07][HTST][INF] setting timeout to: 20 sec
+[1724728393.07][HTST][INF] host test class: '&lt;class 'i2c_record_only_test.I2CRecordOnlyTestHostTest'&gt;'
+[1724728393.07][TEST][INF] I2C Record-Only Test host test setup complete.
+[1724728393.07][HTST][INF] host test setup() call...
+[1724728393.07][HTST][INF] CALLBACKs updated
+[1724728393.07][HTST][INF] host test detected: i2c_record_only_test
+[1724728393.08][CONN][INF] found KV pair in stream: {{__testcase_name;I2C - 100kHz - EEPROM WR Single Byte}}, queued...
+[1724728393.08][CONN][INF] found KV pair in stream: {{__testcase_name;I2C - 100kHz - EEPROM 2nd WR Single Byte}}, queued...
+[1724728393.08][CONN][INF] found KV pair in stream: {{__testcase_name;I2C - 100kHz - EEPROM WR 2 Bytes}}, queued...
+[1724728393.09][CONN][INF] found KV pair in stream: {{__testcase_name;I2C - 100kHz - EEPROM 2nd WR 2 Bytes}}, queued...
+[1724728393.09][CONN][INF] found KV pair in stream: {{__testcase_name;I2C - 100kHz - EEPROM WR 1 Page}}, queued...
+[1724728393.10][CONN][INF] found KV pair in stream: {{__testcase_name;I2C - 100kHz - EEPROM 2nd WR 1 Page}}, queued...
+[1724728393.10][CONN][INF] found KV pair in stream: {{__testcase_name;I2C - 100kHz - EEPROM WR 2kiB}}, queued...
+[1724728393.10][CONN][INF] found KV pair in stream: {{__testcase_name;I2C - 400kHz - EEPROM WR Single Byte}}, queued...
+[1724728393.11][CONN][INF] found KV pair in stream: {{__testcase_name;I2C - 400kHz - EEPROM 2nd WR Single Byte}}, queued...
+[1724728393.11][CONN][INF] found KV pair in stream: {{__testcase_name;I2C - 400kHz - EEPROM WR 2 Bytes}}, queued...
+[1724728393.12][CONN][INF] found KV pair in stream: {{__testcase_name;I2C - 400kHz - EEPROM 2nd WR 2 Bytes}}, queued...
+[1724728393.12][CONN][INF] found KV pair in stream: {{__testcase_name;I2C - 400kHz - EEPROM WR 1 Page}}, queued...
+[1724728393.13][CONN][INF] found KV pair in stream: {{__testcase_name;I2C - 400kHz - EEPROM 2nd WR 1 Page}}, queued...
+[1724728393.13][CONN][INF] found KV pair in stream: {{__testcase_name;I2C - 400kHz - EEPROM WR 2kiB}}, queued...
+[1724728393.13][CONN][INF] found KV pair in stream: {{start_recording_i2c;please}}, queued...
+[1724728394.15][SERI][TXD] {{start_recording_i2c;complete}}
+[1724728394.16][CONN][RXD] 
+[1724728394.16][CONN][RXD] &gt;&gt;&gt; Running case #1: 'I2C - 100kHz - EEPROM WR Single Byte'...
+[1724728394.18][CONN][RXD] &lt;greentea test suite&gt;:103::FAIL: Expression Evaluated To FALSE
+[1724728394.18][CONN][INF] found KV pair in stream: {{__testcase_start;I2C - 100kHz - EEPROM WR Single Byte}}, queued...
+[1724728394.18][CONN][INF] found KV pair in stream: {{display_i2c_data;please}}, queued...
+[1724728399.18][TEST][INF] WARNING: Logic analyzer saw nothing the I2C bus.
+[1724728399.19][SERI][TXD] {{display_i2c_data;complete}}
+[1724728399.20][CONN][INF] found KV pair in stream: {{__testcase_finish;I2C - 100kHz - EEPROM WR Single Byte;0;1}}, queued...
+[1724728399.21][CONN][RXD] &gt;&gt;&gt; 'I2C - 100kHz - EEPROM WR Single Byte': 0 passed, 1 failed with reason 'Test Cases Failed'
+[1724728399.21][CONN][RXD] 
+[1724728399.21][CONN][INF] found KV pair in stream: {{start_recording_i2c;please}}, queued...
+[1724728400.23][SERI][TXD] {{start_recording_i2c;complete}}
+[1724728400.24][CONN][RXD] 
+[1724728400.24][CONN][RXD] &gt;&gt;&gt; Running case #2: 'I2C - 100kHz - EEPROM 2nd WR Single Byte'...
+[1724728400.25][CONN][RXD] &lt;greentea test suite&gt;:103::FAIL: Expression Evaluated To FALSE
+[1724728400.25][CONN][INF] found KV pair in stream: {{__testcase_start;I2C - 100kHz - EEPROM 2nd WR Single Byte}}, queued...
+[1724728400.25][CONN][INF] found KV pair in stream: {{display_i2c_data;please}}, queued...
+[1724728405.25][TEST][INF] WARNING: Logic analyzer saw nothing the I2C bus.
+[1724728405.27][SERI][TXD] {{display_i2c_data;complete}}
+[1724728405.28][CONN][INF] found KV pair in stream: {{__testcase_finish;I2C - 100kHz - EEPROM 2nd WR Single Byte;0;1}}, queued...
+[1724728405.29][CONN][RXD] &gt;&gt;&gt; 'I2C - 100kHz - EEPROM 2nd WR Single Byte': 0 passed, 1 failed with reason 'Test Cases Failed'
+[1724728405.29][CONN][RXD] 
+[1724728405.29][CONN][INF] found KV pair in stream: {{start_recording_i2c;please}}, queued...
+[1724728406.30][SERI][TXD] {{start_recording_i2c;complete}}
+[1724728406.31][CONN][RXD] 
+[1724728406.31][CONN][RXD] &gt;&gt;&gt; Running case #3: 'I2C - 100kHz - EEPROM WR 2 Bytes'...
+[1724728406.33][CONN][RXD] &lt;greentea test suite&gt;:73::FAIL: Expected -4001 Was 0
+[1724728406.33][CONN][INF] found KV pair in stream: {{__testcase_start;I2C - 100kHz - EEPROM WR 2 Bytes}}, queued...
+[1724728406.33][CONN][INF] found KV pair in stream: {{display_i2c_data;please}}, queued...
+[1724728411.33][TEST][INF] WARNING: Logic analyzer saw nothing the I2C bus.
+[1724728411.34][SERI][TXD] {{display_i2c_data;complete}}
+[1724728411.35][CONN][INF] found KV pair in stream: {{__testcase_finish;I2C - 100kHz - EEPROM WR 2 Bytes;0;1}}, queued...
+[1724728411.36][CONN][RXD] &gt;&gt;&gt; 'I2C - 100kHz - EEPROM WR 2 Bytes': 0 passed, 1 failed with reason 'Test Cases Failed'
+[1724728411.36][CONN][RXD] 
+[1724728411.36][CONN][INF] found KV pair in stream: {{start_recording_i2c;please}}, queued...
+[1724728412.38][SERI][TXD] {{start_recording_i2c;complete}}
+[1724728412.39][CONN][RXD] 
+[1724728412.39][CONN][RXD] &gt;&gt;&gt; Running case #4: 'I2C - 100kHz - EEPROM 2nd WR 2 Bytes'...
+[1724728412.40][CONN][RXD] &lt;greentea test suite&gt;:73::FAIL: Expected -4001 Was 0
+[1724728412.40][CONN][INF] found KV pair in stream: {{__testcase_start;I2C - 100kHz - EEPROM 2nd WR 2 Bytes}}, queued...
+[1724728412.40][CONN][INF] found KV pair in stream: {{display_i2c_data;please}}, queued...
+[1724728417.40][TEST][INF] WARNING: Logic analyzer saw nothing the I2C bus.
+[1724728417.40][HTST][INF] test suite run finished after 24.34 sec...
+[1724728417.41][SERI][TXD] {{display_i2c_data;complete}}
+[1724728417.42][CONN][INF] found KV pair in stream: {{__testcase_finish;I2C - 100kHz - EEPROM 2nd WR 2 Bytes;0;1}}, queued...
+[1724728417.42][CONN][INF] received special event '__host_test_finished' value='True', finishing
+[1724728417.43][HTST][INF] CONN exited with code: 0
+[1724728417.43][HTST][INF] Some events in queue
+[1724728417.43][HTST][INF] stopped consuming events
+[1724728417.43][HTST][INF] host test result(): None
+[1724728417.43][HTST][WRN] missing __exit event from DUT
+[1724728417.43][HTST][WRN] missing __exit_event_queue event from host test
+[1724728417.43][HTST][ERR] missing __exit_event_queue event from host test and no result from host test, timeout...
+[1724728417.43][HTST][INF] calling blocking teardown()
+[1724728417.43][HTST][INF] teardown() finished
+[1724728417.43][HTST][INF] {{result;timeout}}
+CMake Error at mbed-run-greentea-test-testshield-i2c-eeprom.cmake:19 (execute_process):
+  execute_process failed command indexes:
+
+    1: "Child return code: 5"
+
+
+
+</system-out>
+	</testcase>
+	<testcase name="test-testshield-spi-basic" classname="test-testshield-spi-basic" time="38.3437" status="fail">
+		<failure message=""/>
+		<system-out>[1/1] Flashing test-testshield-spi-basic with OpenOCD...
+Open On-Chip Debugger 0.12.0+dev-00499-g151b74371 (2024-01-22-10:06)
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+DEPRECATED! use 'adapter driver' not 'interface'
+Info : The selected transport took over low-level target control. The results might differ compared to plain JTAG/SWD
+DEPRECATED! use 'adapter serial' not 'hla_serial'
+Info : clock speed 500 kHz
+Info : STLINK V2J39M27 (API v2) VID:PID 0483:374B
+Info : Target voltage: 3.240553
+Info : [stm32l4x.cpu] Cortex-M4 r0p1 processor detected
+Info : [stm32l4x.cpu] target has 6 breakpoints, 4 watchpoints
+Info : [stm32l4x.cpu] Examination succeed
+Info : gdb port disabled
+Info : Unable to match requested speed 500 kHz, using 480 kHz
+Info : Unable to match requested speed 500 kHz, using 480 kHz
+[stm32l4x.cpu] halted due to debug-request, current mode: Thread 
+xPSR: 0x01000000 pc: 0x08000318 msp: 0x10000698
+** Programming Started **
+Info : device idcode = 0x20016462 (STM32L45/L46xx - Rev Y : 0x2001)
+Info : RDP level 0 (0xAA)
+Info : flash size = 512 KiB
+Info : flash mode : single-bank
+Warn : Adding extra erase range, 0x08014020 .. 0x080147ff
+** Programming Finished **
+** Resetting Target **
+Info : Unable to match requested speed 500 kHz, using 480 kHz
+Info : Unable to match requested speed 500 kHz, using 480 kHz
+shutdown command invoked
+Executing: /home/jamie/Mbed/mbed-ce-test-tools/CI-Shield-Tests/mbed-os/venv/bin/python3.10 -m mbed_host_tests.mbedhtrun --skip-flashing -p /dev/ttyNUCLEO_L452RE_P --skip-reset -e /home/jamie/Mbed/mbed-ce-test-tools/CI-Shield-Tests/host_tests -m NUCLEO_L452RE_P --baud-rate=115200
+Will use any connected CI shield for this test.  Export the MBED_CI_SHIELD_SERIAL_NUMBER environment var to select a specific shield.
+e.g. 'export MBED_CI_SHIELD_SERIAL_NUMBER=SN002'
+[1724728499.95][HTST][INF] host test executor ver. 0.0.16
+[1724728499.95][HTST][INF] copy image onto target... SKIPPED!
+[1724728499.97][HTST][INF] starting host test process...
+[1724728499.98][CONN][INF] starting connection process...
+[1724728499.98][CONN][INF] notify event queue about extra 60 sec timeout for serial port pooling
+[1724728499.98][CONN][INF] initializing serial port listener... 
+[1724728499.98][SERI][INF] using specified port '/dev/ttyNUCLEO_L452RE_P'
+[1724728499.98][HTST][INF] setting timeout to: 60 sec
+[1724728499.98][SERI][INF] serial(port=/dev/ttyNUCLEO_L452RE_P, baudrate=115200, read_timeout=0.01, write_timeout=5)
+[1724728499.99][SERI][TXD] mbedmbedmbedmbedmbedmbedmbedmbedmbedmbed
+[1724728499.99][CONN][INF] sending up to 2 __sync packets (specified with --sync=2)
+[1724728499.99][CONN][INF] sending preamble 'e103e639-a494-44ba-ae6e-ad72293d9be1'
+[1724728499.99][SERI][TXD] {{__sync;e103e639-a494-44ba-ae6e-ad72293d9be1}}
+[1724728500.00][CONN][RXD] mbedmbedmbedmbedmbedmbedmbedmbed
+[1724728500.00][CONN][INF] found SYNC in stream: {{__sync;e103e639-a494-44ba-ae6e-ad72293d9be1}} it is #0 sent, queued...
+[1724728500.00][HTST][INF] sync KV found, uuid=e103e639-a494-44ba-ae6e-ad72293d9be1, timestamp=1724728500.003289
+[1724728500.02][CONN][RXD] &gt;&gt;&gt; Running 30 test cases...
+[1724728500.02][CONN][INF] found KV pair in stream: {{__version;1.3.0}}, queued...
+[1724728500.02][CONN][INF] found KV pair in stream: {{__timeout;60}}, queued...
+[1724728500.02][CONN][INF] found KV pair in stream: {{__host_test_name;spi_basic_test}}, queued...
+[1724728500.02][HTST][INF] DUT greentea-client version: 1.3.0
+[1724728500.02][HTST][INF] setting timeout to: 60 sec
+[1724728500.02][HTST][INF] host test class: '&lt;class 'spi_basic_test.SpiBasicTestHostTest'&gt;'
+[1724728500.02][TEST][INF] SPI Basic Test host test setup complete.
+[1724728500.02][HTST][INF] host test setup() call...
+[1724728500.02][HTST][INF] CALLBACKs updated
+[1724728500.02][HTST][INF] host test detected: spi_basic_test
+[1724728500.03][CONN][INF] found KV pair in stream: {{__testcase_name;Verify spi_get_peripheral_name() Exists}}, queued...
+[1724728500.03][CONN][INF] found KV pair in stream: {{__testcase_name;Send 8 Bit Data via Single Word API}}, queued...
+[1724728500.03][CONN][INF] found KV pair in stream: {{__testcase_name;Send 16 Bit Data via Single Word API}}, queued...
+[1724728500.04][CONN][INF] found KV pair in stream: {{__testcase_name;Send 8 Bit Data via Transactional API (Tx only)}}, queued...
+[1724728500.04][CONN][INF] found KV pair in stream: {{__testcase_name;Send 16 Bit Data via Transactional API (Tx only)}}, queued...
+[1724728500.05][CONN][INF] found KV pair in stream: {{__testcase_name;Free and Reallocate SPI Instance (synchronous API)}}, queued...
+[1724728500.05][CONN][INF] found KV pair in stream: {{__testcase_name;Read 8 Bit Data via Transactional API (Rx only)}}, queued...
+[1724728500.06][CONN][INF] found KV pair in stream: {{__testcase_name;Read 16 Bit Data via Transactional API (Rx only)}}, queued...
+[1724728500.06][CONN][INF] found KV pair in stream: {{__testcase_name;Transfer 8 Bit Data via Transactional API (Tx/Rx)}}, queued...
+[1724728500.07][CONN][INF] found KV pair in stream: {{__testcase_name;Transfer 16 Bit Data via Transactional API (Tx/Rx)}}, queued...
+[1724728500.07][CONN][INF] found KV pair in stream: {{__testcase_name;Use Multiple SPI Instances (synchronous API)}}, queued...
+[1724728500.09][CONN][INF] found KV pair in stream: {{__testcase_name;Send Data via Async Interrupt API (Tx only)}}, queued...
+[1724728500.10][CONN][INF] found KV pair in stream: {{__testcase_name;Send Data via Async Interrupt API (Rx only)}}, queued...
+[1724728500.10][CONN][INF] found KV pair in stream: {{__testcase_name;Free and Reallocate SPI Instance with Interrupts}}, queued...
+[1724728500.11][CONN][INF] found KV pair in stream: {{__testcase_name;Send Data via Async Interrupt API (Tx/Rx)}}, queued...
+[1724728500.11][CONN][INF] found KV pair in stream: {{__testcase_name;Send 16-Bit Data via Interrupt API (Tx/Rx)}}, queued...
+[1724728500.11][CONN][INF] found KV pair in stream: {{__testcase_name;Send 32-Bit Data via Interrupt API (Tx/Rx)}}, queued...
+[1724728500.12][CONN][INF] found KV pair in stream: {{__testcase_name;Benchmark Async SPI via Interrupts}}, queued...
+[1724728500.12][CONN][INF] found KV pair in stream: {{__testcase_name;Queueing and Aborting Async SPI via Interrupts}}, queued...
+[1724728500.13][CONN][INF] found KV pair in stream: {{__testcase_name;Use Multiple SPI Instances with Interrupts}}, queued...
+[1724728500.13][CONN][INF] found KV pair in stream: {{__testcase_name;Send Data via Async DMA API (Tx only)}}, queued...
+[1724728500.14][CONN][INF] found KV pair in stream: {{__testcase_name;Send Data via Async DMA API (Rx only)}}, queued...
+[1724728500.14][CONN][INF] found KV pair in stream: {{__testcase_name;Free and Reallocate SPI Instance with DMA}}, queued...
+[1724728500.15][CONN][INF] found KV pair in stream: {{__testcase_name;Send Data via Async DMA API (Tx/Rx)}}, queued...
+[1724728500.15][CONN][INF] found KV pair in stream: {{__testcase_name;Send 16-Bit Data via Async DMA API (Tx/Rx)}}, queued...
+[1724728500.17][CONN][INF] found KV pair in stream: {{__testcase_name;Send 32-Bit Data via Async DMA API (Tx/Rx)}}, queued...
+[1724728500.17][CONN][INF] found KV pair in stream: {{__testcase_name;Benchmark Async SPI via DMA}}, queued...
+[1724728500.17][CONN][INF] found KV pair in stream: {{__testcase_name;Queueing and Aborting Async SPI via DMA}}, queued...
+[1724728500.18][CONN][RXD] 
+[1724728500.18][CONN][INF] found KV pair in stream: {{__testcase_name;Use Multiple SPI Instances with DMA}}, queued...
+[1724728500.18][CONN][INF] found KV pair in stream: {{__testcase_name;Transfer 8 Bit Data via Transactional API (Tx/Rx)}}, queued...
+[1724728500.19][CONN][RXD] &gt;&gt;&gt; Running case #1: 'Verify spi_get_peripheral_name() Exists'...
+[1724728500.19][CONN][INF] found KV pair in stream: {{__testcase_start;Verify spi_get_peripheral_name() Exists}}, queued...
+[1724728500.20][CONN][RXD] &gt;&gt;&gt; 'Verify spi_get_peripheral_name() Exists': 1 passed, 0 failed
+[1724728500.20][CONN][INF] found KV pair in stream: {{__testcase_finish;Verify spi_get_peripheral_name() Exists;1;0}}, queued...
+[1724728500.21][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1724728500.21][CONN][RXD] 
+[1724728500.21][CONN][RXD] &gt;&gt;&gt; Running case #2: 'Send 8 Bit Data via Single Word API'...
+[1724728500.22][CONN][INF] found KV pair in stream: {{__testcase_start;Send 8 Bit Data via Single Word API}}, queued...
+[1724728500.22][CONN][INF] found KV pair in stream: {{start_recording_spi;please}}, queued...
+[1724728501.24][SERI][TXD] {{start_recording_spi;complete}}
+[1724728501.25][CONN][RXD] &lt;greentea test suite&gt;:151::FAIL: Expected 1 Was 0
+[1724728501.25][CONN][INF] found KV pair in stream: {{verify_sequence;standard_word}}, queued...
+[1724728501.33][TEST][INF] Saw on the SPI bus:
+[mosi: b'01020408', miso: b'00000000']
+[1724728501.33][TEST][ERR] Transaction 0 miso byte 0: expected 0x1 but saw 0x0
+[1724728501.33][TEST][ERR] Transaction 0 miso byte 1: expected 0x2 but saw 0x0
+[1724728501.33][TEST][ERR] Transaction 0 miso byte 2: expected 0x4 but saw 0x0
+[1724728501.33][TEST][ERR] Transaction 0 miso byte 3: expected 0x8 but saw 0x0
+[1724728501.33][TEST][INF] We expected:
+[mosi: b'01020408', miso: b'01020408']
+[1724728501.34][SERI][TXD] {{verify_sequence;failed}}
+[1724728501.35][CONN][INF] found KV pair in stream: {{__testcase_finish;Send 8 Bit Data via Single Word API;0;1}}, queued...
+[1724728501.36][CONN][RXD] &gt;&gt;&gt; 'Send 8 Bit Data via Single Word API': 0 passed, 1 failed with reason 'Test Cases Failed'
+[1724728501.36][CONN][RXD] 
+[1724728501.36][CONN][RXD] 
+[1724728501.36][CONN][RXD] &gt;&gt;&gt; Running case #3: 'Send 16 Bit Data via Single Word API'...
+[1724728501.37][CONN][INF] found KV pair in stream: {{__testcase_start;Send 16 Bit Data via Single Word API}}, queued...
+[1724728501.37][CONN][INF] found KV pair in stream: {{start_recording_spi;please}}, queued...
+[1724728502.39][SERI][TXD] {{start_recording_spi;complete}}
+[1724728502.40][CONN][RXD] &lt;greentea test suite&gt;:169::FAIL: Expected 258 Was 0
+[1724728502.40][CONN][INF] found KV pair in stream: {{verify_sequence;standard_word}}, queued...
+[1724728502.48][TEST][INF] Saw on the SPI bus:
+[mosi: b'01020408', miso: b'00000000']
+[1724728502.48][TEST][ERR] Transaction 0 miso byte 0: expected 0x1 but saw 0x0
+[1724728502.48][TEST][ERR] Transaction 0 miso byte 1: expected 0x2 but saw 0x0
+[1724728502.48][TEST][ERR] Transaction 0 miso byte 2: expected 0x4 but saw 0x0
+[1724728502.48][TEST][ERR] Transaction 0 miso byte 3: expected 0x8 but saw 0x0
+[1724728502.48][TEST][INF] We expected:
+[mosi: b'01020408', miso: b'01020408']
+[1724728502.48][SERI][TXD] {{verify_sequence;failed}}
+[1724728502.49][CONN][INF] found KV pair in stream: {{__testcase_finish;Send 16 Bit Data via Single Word API;0;1}}, queued...
+[1724728502.51][CONN][RXD] &gt;&gt;&gt; 'Send 16 Bit Data via Single Word API': 0 passed, 1 failed with reason 'Test Cases Failed'
+[1724728502.51][CONN][RXD] 
+[1724728502.51][CONN][RXD] 
+[1724728502.52][CONN][RXD] &gt;&gt;&gt; Running case #4: 'Send 8 Bit Data via Transactional API (Tx only)'...
+[1724728502.52][CONN][INF] found KV pair in stream: {{__testcase_start;Send 8 Bit Data via Transactional API (Tx only)}}, queued...
+[1724728502.52][CONN][INF] found KV pair in stream: {{start_recording_spi;please}}, queued...
+[1724728503.53][SERI][TXD] {{start_recording_spi;complete}}
+[1724728503.54][CONN][INF] found KV pair in stream: {{verify_sequence;standard_word}}, queued...
+[1724728503.62][TEST][INF] Saw on the SPI bus:
+[mosi: b'01020408', miso: b'00000000']
+[1724728503.62][TEST][ERR] Transaction 0 miso byte 0: expected 0x1 but saw 0x0
+[1724728503.62][TEST][ERR] Transaction 0 miso byte 1: expected 0x2 but saw 0x0
+[1724728503.62][TEST][ERR] Transaction 0 miso byte 2: expected 0x4 but saw 0x0
+[1724728503.62][TEST][ERR] Transaction 0 miso byte 3: expected 0x8 but saw 0x0
+[1724728503.62][TEST][INF] We expected:
+[mosi: b'01020408', miso: b'01020408']
+[1724728503.63][SERI][TXD] {{verify_sequence;failed}}
+[1724728503.64][CONN][RXD] &lt;greentea test suite&gt;:55::FAIL: Expected 'complete' Was 'failed'
+[1724728503.65][CONN][INF] found KV pair in stream: {{__testcase_finish;Send 8 Bit Data via Transactional API (Tx only);0;1}}, queued...
+[1724728503.66][CONN][RXD] &gt;&gt;&gt; 'Send 8 Bit Data via Transactional API (Tx only)': 0 passed, 1 failed with reason 'Test Cases Failed'
+[1724728503.66][CONN][RXD] 
+[1724728503.66][CONN][RXD] 
+[1724728503.66][CONN][RXD] &gt;&gt;&gt; Running case #5: 'Send 16 Bit Data via Transactional API (Tx only)'...
+[1724728503.67][CONN][INF] found KV pair in stream: {{__testcase_start;Send 16 Bit Data via Transactional API (Tx only)}}, queued...
+[1724728503.67][CONN][INF] found KV pair in stream: {{start_recording_spi;please}}, queued...
+[1724728504.68][SERI][TXD] {{start_recording_spi;complete}}
+[1724728504.69][CONN][INF] found KV pair in stream: {{verify_sequence;standard_word}}, queued...
+[1724728504.77][TEST][INF] Saw on the SPI bus:
+[mosi: b'01020408', miso: b'00000000']
+[1724728504.77][TEST][ERR] Transaction 0 miso byte 0: expected 0x1 but saw 0x0
+[1724728504.77][TEST][ERR] Transaction 0 miso byte 1: expected 0x2 but saw 0x0
+[1724728504.77][TEST][ERR] Transaction 0 miso byte 2: expected 0x4 but saw 0x0
+[1724728504.77][TEST][ERR] Transaction 0 miso byte 3: expected 0x8 but saw 0x0
+[1724728504.77][TEST][INF] We expected:
+[mosi: b'01020408', miso: b'01020408']
+[1724728504.78][SERI][TXD] {{verify_sequence;failed}}
+[1724728504.79][CONN][RXD] &lt;greentea test suite&gt;:55::FAIL: Expected 'complete' Was 'failed'
+[1724728504.80][CONN][INF] found KV pair in stream: {{__testcase_finish;Send 16 Bit Data via Transactional API (Tx only);0;1}}, queued...
+[1724728504.81][CONN][RXD] &gt;&gt;&gt; 'Send 16 Bit Data via Transactional API (Tx only)': 0 passed, 1 failed with reason 'Test Cases Failed'
+[1724728504.81][CONN][RXD] 
+[1724728504.81][CONN][RXD] 
+[1724728504.81][CONN][RXD] &gt;&gt;&gt; Running case #6: 'Free and Reallocate SPI Instance (synchronous API)'...
+[1724728504.82][CONN][INF] found KV pair in stream: {{__testcase_start;Free and Reallocate SPI Instance (synchronous API)}}, queued...
+[1724728504.82][CONN][INF] found KV pair in stream: {{start_recording_spi;please}}, queued...
+[1724728505.84][SERI][TXD] {{start_recording_spi;complete}}
+[1724728505.85][CONN][INF] found KV pair in stream: {{verify_sequence;standard_word}}, queued...
+[1724728505.93][TEST][INF] Saw on the SPI bus:
+[mosi: b'01020408', miso: b'00000000']
+[1724728505.93][TEST][ERR] Transaction 0 miso byte 0: expected 0x1 but saw 0x0
+[1724728505.93][TEST][ERR] Transaction 0 miso byte 1: expected 0x2 but saw 0x0
+[1724728505.93][TEST][ERR] Transaction 0 miso byte 2: expected 0x4 but saw 0x0
+[1724728505.93][TEST][ERR] Transaction 0 miso byte 3: expected 0x8 but saw 0x0
+[1724728505.93][TEST][INF] We expected:
+[mosi: b'01020408', miso: b'01020408']
+[1724728505.94][SERI][TXD] {{verify_sequence;failed}}
+[1724728505.95][CONN][RXD] &lt;greentea test suite&gt;:55::FAIL: Expected 'complete' Was 'failed'
+[1724728505.96][CONN][INF] found KV pair in stream: {{__testcase_finish;Free and Reallocate SPI Instance (synchronous API);0;1}}, queued...
+[1724728505.97][CONN][RXD] &gt;&gt;&gt; 'Free and Reallocate SPI Instance (synchronous API)': 0 passed, 1 failed with reason 'Test Cases Failed'
+[1724728505.97][CONN][RXD] 
+[1724728505.97][CONN][RXD] 
+[1724728505.97][CONN][RXD] &gt;&gt;&gt; Running case #7: 'Read 8 Bit Data via Transactional API (Rx only)'...
+[1724728505.98][CONN][INF] found KV pair in stream: {{__testcase_start;Read 8 Bit Data via Transactional API (Rx only)}}, queued...
+[1724728505.98][CONN][INF] found KV pair in stream: {{start_recording_spi;please}}, queued...
+[1724728507.00][SERI][TXD] {{start_recording_spi;complete}}
+[1724728507.01][CONN][INF] found KV pair in stream: {{print_spi_data;please}}, queued...
+[1724728507.09][TEST][INF] Saw on the SPI bus: [mosi: b'afafafaf', miso: b'00000000']
+[1724728507.10][SERI][TXD] {{print_spi_data;complete}}
+[1724728507.11][CONN][RXD] &lt;greentea test suite&gt;:219::FAIL: Element 0 Expected 0xAF Was 0x00
+[1724728507.12][CONN][RXD] &lt;greentea test suite&gt;:219::FAIL: Element 1 Expected 0xAF Was 0x00
+[1724728507.12][CONN][RXD] &lt;greentea test suite&gt;:219::FAIL: Element 2 Expected 0xAF Was 0x00
+[1724728507.13][CONN][RXD] &lt;greentea test suite&gt;:219::FAIL: Element 3 Expected 0xAF Was 0x00
+[1724728507.13][CONN][INF] found KV pair in stream: {{__testcase_finish;Read 8 Bit Data via Transactional API (Rx only);0;4}}, queued...
+[1724728507.14][CONN][RXD] &gt;&gt;&gt; 'Read 8 Bit Data via Transactional API (Rx only)': 0 passed, 4 failed with reason 'Test Cases Failed'
+[1724728507.14][CONN][RXD] 
+[1724728507.14][CONN][RXD] 
+[1724728507.15][CONN][RXD] &gt;&gt;&gt; Running case #8: 'Read 16 Bit Data via Transactional API (Rx only)'...
+[1724728507.15][CONN][INF] found KV pair in stream: {{__testcase_start;Read 16 Bit Data via Transactional API (Rx only)}}, queued...
+[1724728507.16][CONN][INF] found KV pair in stream: {{start_recording_spi;please}}, queued...
+[1724728508.17][SERI][TXD] {{start_recording_spi;complete}}
+[1724728508.18][CONN][INF] found KV pair in stream: {{print_spi_data;please}}, queued...
+[1724728508.26][TEST][INF] Saw on the SPI bus: [mosi: b'afafafaf', miso: b'00000000']
+[1724728508.27][SERI][TXD] {{print_spi_data;complete}}
+[1724728508.28][CONN][RXD] &lt;greentea test suite&gt;:219::FAIL: Element 0 Expected 0xAF Was 0x00
+[1724728508.29][CONN][RXD] &lt;greentea test suite&gt;:219::FAIL: Element 1 Expected 0xAF Was 0x00
+[1724728508.29][CONN][RXD] &lt;greentea test suite&gt;:219::FAIL: Element 2 Expected 0xAF Was 0x00
+[1724728508.30][CONN][RXD] &lt;greentea test suite&gt;:219::FAIL: Element 3 Expected 0xAF Was 0x00
+[1724728508.30][CONN][INF] found KV pair in stream: {{__testcase_finish;Read 16 Bit Data via Transactional API (Rx only);0;4}}, queued...
+[1724728508.31][CONN][RXD] &gt;&gt;&gt; 'Read 16 Bit Data via Transactional API (Rx only)': 0 passed, 4 failed with reason 'Test Cases Failed'
+[1724728508.31][CONN][RXD] 
+[1724728508.31][CONN][RXD] 
+[1724728508.32][CONN][RXD] &gt;&gt;&gt; Running case #9: 'Transfer 8 Bit Data via Transactional API (Tx/Rx)'...
+[1724728508.32][CONN][INF] found KV pair in stream: {{__testcase_start;Transfer 8 Bit Data via Transactional API (Tx/Rx)}}, queued...
+[1724728508.33][CONN][INF] found KV pair in stream: {{start_recording_spi;please}}, queued...
+[1724728509.35][SERI][TXD] {{start_recording_spi;complete}}
+[1724728509.36][CONN][INF] found KV pair in stream: {{verify_sequence;standard_word}}, queued...
+[1724728509.44][TEST][INF] Saw on the SPI bus:
+[mosi: b'01020408', miso: b'00000000']
+[1724728509.44][TEST][ERR] Transaction 0 miso byte 0: expected 0x1 but saw 0x0
+[1724728509.44][TEST][ERR] Transaction 0 miso byte 1: expected 0x2 but saw 0x0
+[1724728509.44][TEST][ERR] Transaction 0 miso byte 2: expected 0x4 but saw 0x0
+[1724728509.44][TEST][ERR] Transaction 0 miso byte 3: expected 0x8 but saw 0x0
+[1724728509.44][TEST][INF] We expected:
+[mosi: b'01020408', miso: b'01020408']
+[1724728509.45][SERI][TXD] {{verify_sequence;failed}}
+[1724728509.46][CONN][RXD] &lt;greentea test suite&gt;:55::FAIL: Expected 'complete' Was 'failed'
+[1724728509.47][CONN][INF] found KV pair in stream: {{__testcase_finish;Transfer 8 Bit Data via Transactional API (Tx/Rx);0;1}}, queued...
+[1724728509.48][CONN][RXD] &gt;&gt;&gt; 'Transfer 8 Bit Data via Transactional API (Tx/Rx)': 0 passed, 1 failed with reason 'Test Cases Failed'
+[1724728509.48][CONN][RXD] 
+[1724728509.48][CONN][RXD] 
+[1724728509.48][CONN][RXD] &gt;&gt;&gt; Running case #10: 'Transfer 16 Bit Data via Transactional API (Tx/Rx)'...
+[1724728509.49][CONN][INF] found KV pair in stream: {{__testcase_start;Transfer 16 Bit Data via Transactional API (Tx/Rx)}}, queued...
+[1724728509.49][CONN][INF] found KV pair in stream: {{start_recording_spi;please}}, queued...
+[1724728510.51][SERI][TXD] {{start_recording_spi;complete}}
+[1724728510.52][CONN][INF] found KV pair in stream: {{verify_sequence;standard_word}}, queued...
+[1724728510.60][TEST][INF] Saw on the SPI bus:
+[mosi: b'01020408', miso: b'00000000']
+[1724728510.60][TEST][ERR] Transaction 0 miso byte 0: expected 0x1 but saw 0x0
+[1724728510.60][TEST][ERR] Transaction 0 miso byte 1: expected 0x2 but saw 0x0
+[1724728510.60][TEST][ERR] Transaction 0 miso byte 2: expected 0x4 but saw 0x0
+[1724728510.60][TEST][ERR] Transaction 0 miso byte 3: expected 0x8 but saw 0x0
+[1724728510.60][TEST][INF] We expected:
+[mosi: b'01020408', miso: b'01020408']
+[1724728510.61][SERI][TXD] {{verify_sequence;failed}}
+[1724728510.62][CONN][RXD] &lt;greentea test suite&gt;:55::FAIL: Expected 'complete' Was 'failed'
+[1724728510.63][CONN][INF] found KV pair in stream: {{__testcase_finish;Transfer 16 Bit Data via Transactional API (Tx/Rx);0;1}}, queued...
+[1724728510.64][CONN][RXD] &gt;&gt;&gt; 'Transfer 16 Bit Data via Transactional API (Tx/Rx)': 0 passed, 1 failed with reason 'Test Cases Failed'
+[1724728510.64][CONN][RXD] 
+[1724728510.64][CONN][RXD] 
+[1724728510.64][CONN][RXD] &gt;&gt;&gt; Running case #11: 'Use Multiple SPI Instances (synchronous API)'...
+[1724728510.65][CONN][INF] found KV pair in stream: {{__testcase_start;Use Multiple SPI Instances (synchronous API)}}, queued...
+[1724728510.65][CONN][INF] found KV pair in stream: {{start_recording_spi;please}}, queued...
+[1724728511.66][SERI][TXD] {{start_recording_spi;complete}}
+[1724728511.67][CONN][INF] found KV pair in stream: {{verify_sequence;standard_word}}, queued...
+[1724728511.75][TEST][INF] Saw on the SPI bus:
+[mosi: b'01020408', miso: b'00000000']
+[1724728511.75][TEST][ERR] Transaction 0 miso byte 0: expected 0x1 but saw 0x0
+[1724728511.75][TEST][ERR] Transaction 0 miso byte 1: expected 0x2 but saw 0x0
+[1724728511.75][TEST][ERR] Transaction 0 miso byte 2: expected 0x4 but saw 0x0
+[1724728511.75][TEST][ERR] Transaction 0 miso byte 3: expected 0x8 but saw 0x0
+[1724728511.75][TEST][INF] We expected:
+[mosi: b'01020408', miso: b'01020408']
+[1724728511.75][SERI][TXD] {{verify_sequence;failed}}
+[1724728511.77][CONN][RXD] &lt;greentea test suite&gt;:55::FAIL: Expected 'complete' Was 'failed'
+[1724728511.78][CONN][INF] found KV pair in stream: {{__testcase_finish;Use Multiple SPI Instances (synchronous API);0;1}}, queued...
+[1724728511.79][CONN][RXD] &gt;&gt;&gt; 'Use Multiple SPI Instances (synchronous API)': 0 passed, 1 failed with reason 'Test Cases Failed'
+[1724728511.79][CONN][RXD] 
+[1724728511.79][CONN][RXD] 
+[1724728511.79][CONN][RXD] &gt;&gt;&gt; Running case #12: 'Send Data via Async Interrupt API (Tx only)'...
+[1724728511.80][CONN][INF] found KV pair in stream: {{__testcase_start;Send Data via Async Interrupt API (Tx only)}}, queued...
+[1724728511.80][CONN][INF] found KV pair in stream: {{start_recording_spi;please}}, queued...
+[1724728512.82][SERI][TXD] {{start_recording_spi;complete}}
+[1724728512.83][CONN][INF] found KV pair in stream: {{verify_sequence;standard_word}}, queued...
+[1724728512.90][TEST][INF] Saw on the SPI bus:
+[mosi: b'01020408', miso: b'00000000']
+[1724728512.90][TEST][ERR] Transaction 0 miso byte 0: expected 0x1 but saw 0x0
+[1724728512.90][TEST][ERR] Transaction 0 miso byte 1: expected 0x2 but saw 0x0
+[1724728512.91][TEST][ERR] Transaction 0 miso byte 2: expected 0x4 but saw 0x0
+[1724728512.91][TEST][ERR] Transaction 0 miso byte 3: expected 0x8 but saw 0x0
+[1724728512.91][TEST][INF] We expected:
+[mosi: b'01020408', miso: b'01020408']
+[1724728512.91][SERI][TXD] {{verify_sequence;failed}}
+[1724728512.92][CONN][RXD] &lt;greentea test suite&gt;:55::FAIL: Expected 'complete' Was 'failed'
+[1724728512.93][CONN][INF] found KV pair in stream: {{__testcase_finish;Send Data via Async Interrupt API (Tx only);0;1}}, queued...
+[1724728512.94][CONN][RXD] &gt;&gt;&gt; 'Send Data via Async Interrupt API (Tx only)': 0 passed, 1 failed with reason 'Test Cases Failed'
+[1724728512.95][CONN][RXD] 
+[1724728512.95][CONN][RXD] 
+[1724728512.95][CONN][RXD] &gt;&gt;&gt; Running case #13: 'Send Data via Async Interrupt API (Rx only)'...
+[1724728512.96][CONN][INF] found KV pair in stream: {{__testcase_start;Send Data via Async Interrupt API (Rx only)}}, queued...
+[1724728512.96][CONN][INF] found KV pair in stream: {{start_recording_spi;please}}, queued...
+[1724728513.97][SERI][TXD] {{start_recording_spi;complete}}
+[1724728513.98][CONN][RXD] Got: 0 0 0 0
+[1724728513.98][CONN][INF] found KV pair in stream: {{print_spi_data;please}}, queued...
+[1724728514.06][TEST][INF] Saw on the SPI bus: [mosi: b'ffffffff', miso: b'00000000']
+[1724728514.07][SERI][TXD] {{print_spi_data;complete}}
+[1724728514.08][CONN][INF] found KV pair in stream: {{__testcase_finish;Send Data via Async Interrupt API (Rx only);1;0}}, queued...
+[1724728514.09][CONN][RXD] &gt;&gt;&gt; 'Send Data via Async Interrupt API (Rx only)': 1 passed, 0 failed
+[1724728514.09][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1724728514.09][CONN][RXD] 
+[1724728514.10][CONN][RXD] &gt;&gt;&gt; Running case #14: 'Free and Reallocate SPI Instance with Interrupts'...
+[1724728514.10][CONN][INF] found KV pair in stream: {{__testcase_start;Free and Reallocate SPI Instance with Interrupts}}, queued...
+[1724728514.10][CONN][INF] found KV pair in stream: {{start_recording_spi;please}}, queued...
+[1724728515.12][SERI][TXD] {{start_recording_spi;complete}}
+[1724728515.13][CONN][INF] found KV pair in stream: {{verify_sequence;standard_word}}, queued...
+[1724728515.21][TEST][INF] Saw on the SPI bus:
+[mosi: b'01020408', miso: b'00000000']
+[1724728515.21][TEST][ERR] Transaction 0 miso byte 0: expected 0x1 but saw 0x0
+[1724728515.21][TEST][ERR] Transaction 0 miso byte 1: expected 0x2 but saw 0x0
+[1724728515.21][TEST][ERR] Transaction 0 miso byte 2: expected 0x4 but saw 0x0
+[1724728515.21][TEST][ERR] Transaction 0 miso byte 3: expected 0x8 but saw 0x0
+[1724728515.21][TEST][INF] We expected:
+[mosi: b'01020408', miso: b'01020408']
+[1724728515.21][SERI][TXD] {{verify_sequence;failed}}
+[1724728515.22][CONN][RXD] &lt;greentea test suite&gt;:55::FAIL: Expected 'complete' Was 'failed'
+[1724728515.24][CONN][INF] found KV pair in stream: {{__testcase_finish;Free and Reallocate SPI Instance with Interrupts;0;1}}, queued...
+[1724728515.25][CONN][RXD] &gt;&gt;&gt; 'Free and Reallocate SPI Instance with Interrupts': 0 passed, 1 failed with reason 'Test Cases Failed'
+[1724728515.25][CONN][RXD] 
+[1724728515.25][CONN][RXD] 
+[1724728515.25][CONN][RXD] &gt;&gt;&gt; Running case #15: 'Send Data via Async Interrupt API (Tx/Rx)'...
+[1724728515.26][CONN][INF] found KV pair in stream: {{__testcase_start;Send Data via Async Interrupt API (Tx/Rx)}}, queued...
+[1724728515.26][CONN][INF] found KV pair in stream: {{start_recording_spi;please}}, queued...
+[1724728516.27][SERI][TXD] {{start_recording_spi;complete}}
+[1724728516.28][CONN][RXD] &lt;greentea test suite&gt;:323::FAIL: Element 0 Expected 0x01 Was 0x00
+[1724728516.29][CONN][RXD] &lt;greentea test suite&gt;:323::FAIL: Element 1 Expected 0x02 Was 0x00
+[1724728516.30][CONN][RXD] &lt;greentea test suite&gt;:323::FAIL: Element 2 Expected 0x04 Was 0x00
+[1724728516.31][CONN][RXD] &lt;greentea test suite&gt;:323::FAIL: Element 3 Expected 0x08 Was 0x00
+[1724728516.31][CONN][INF] found KV pair in stream: {{verify_sequence;standard_word}}, queued...
+[1724728516.36][TEST][INF] Saw on the SPI bus:
+[mosi: b'01020408', miso: b'00000000']
+[1724728516.36][TEST][ERR] Transaction 0 miso byte 0: expected 0x1 but saw 0x0
+[1724728516.36][TEST][ERR] Transaction 0 miso byte 1: expected 0x2 but saw 0x0
+[1724728516.36][TEST][ERR] Transaction 0 miso byte 2: expected 0x4 but saw 0x0
+[1724728516.36][TEST][ERR] Transaction 0 miso byte 3: expected 0x8 but saw 0x0
+[1724728516.36][TEST][INF] We expected:
+[mosi: b'01020408', miso: b'01020408']
+[1724728516.37][SERI][TXD] {{verify_sequence;failed}}
+[1724728516.38][CONN][INF] found KV pair in stream: {{__testcase_finish;Send Data via Async Interrupt API (Tx/Rx);0;4}}, queued...
+[1724728516.39][CONN][RXD] &gt;&gt;&gt; 'Send Data via Async Interrupt API (Tx/Rx)': 0 passed, 4 failed with reason 'Test Cases Failed'
+[1724728516.39][CONN][RXD] 
+[1724728516.39][CONN][RXD] 
+[1724728516.40][CONN][RXD] &gt;&gt;&gt; Running case #16: 'Send 16-Bit Data via Interrupt API (Tx/Rx)'...
+[1724728516.40][CONN][INF] found KV pair in stream: {{__testcase_start;Send 16-Bit Data via Interrupt API (Tx/Rx)}}, queued...
+[1724728516.40][CONN][INF] found KV pair in stream: {{start_recording_spi;please}}, queued...
+[1724728517.42][SERI][TXD] {{start_recording_spi;complete}}
+[1724728517.43][CONN][RXD] &lt;greentea test suite&gt;:336::FAIL: Element 0 Expected 0x0102 Was 0x0000
+[1724728517.44][CONN][RXD] &lt;greentea test suite&gt;:336::FAIL: Element 1 Expected 0x0408 Was 0x0000
+[1724728517.44][CONN][INF] found KV pair in stream: {{verify_sequence;standard_word}}, queued...
+[1724728517.51][TEST][INF] Saw on the SPI bus:
+[mosi: b'01020408', miso: b'00000000']
+[1724728517.51][TEST][ERR] Transaction 0 miso byte 0: expected 0x1 but saw 0x0
+[1724728517.51][TEST][ERR] Transaction 0 miso byte 1: expected 0x2 but saw 0x0
+[1724728517.51][TEST][ERR] Transaction 0 miso byte 2: expected 0x4 but saw 0x0
+[1724728517.51][TEST][ERR] Transaction 0 miso byte 3: expected 0x8 but saw 0x0
+[1724728517.51][TEST][INF] We expected:
+[mosi: b'01020408', miso: b'01020408']
+[1724728517.51][SERI][TXD] {{verify_sequence;failed}}
+[1724728517.53][CONN][INF] found KV pair in stream: {{__testcase_finish;Send 16-Bit Data via Interrupt API (Tx/Rx);0;2}}, queued...
+[1724728517.54][CONN][RXD] &gt;&gt;&gt; 'Send 16-Bit Data via Interrupt API (Tx/Rx)': 0 passed, 2 failed with reason 'Test Cases Failed'
+[1724728517.54][CONN][RXD] 
+[1724728517.54][CONN][RXD] 
+[1724728517.55][CONN][RXD] &gt;&gt;&gt; Running case #17: 'Send 32-Bit Data via Interrupt API (Tx/Rx)'...
+[1724728517.55][CONN][INF] found KV pair in stream: {{__testcase_start;Send 32-Bit Data via Interrupt API (Tx/Rx)}}, queued...
+[1724728517.55][CONN][INF] found KV pair in stream: {{start_recording_spi;please}}, queued...
+[1724728518.56][SERI][TXD] {{start_recording_spi;complete}}
+[1724728518.57][CONN][RXD] &lt;greentea test suite&gt;:349::FAIL: Expected 0x01020408 Was 0x00000000
+[1724728518.58][CONN][INF] found KV pair in stream: {{verify_sequence;standard_word}}, queued...
+[1724728518.66][TEST][INF] Saw on the SPI bus:
+[mosi: b'08040201', miso: b'00000000']
+[1724728518.66][TEST][ERR] Transaction 0 MOSI byte 0: expected 0x1 but saw 0x8
+[1724728518.66][TEST][ERR] Transaction 0 miso byte 0: expected 0x1 but saw 0x0
+[1724728518.66][TEST][ERR] Transaction 0 MOSI byte 1: expected 0x2 but saw 0x4
+[1724728518.66][TEST][ERR] Transaction 0 miso byte 1: expected 0x2 but saw 0x0
+[1724728518.66][TEST][ERR] Transaction 0 MOSI byte 2: expected 0x4 but saw 0x2
+[1724728518.66][TEST][ERR] Transaction 0 miso byte 2: expected 0x4 but saw 0x0
+[1724728518.66][TEST][ERR] Transaction 0 MOSI byte 3: expected 0x8 but saw 0x1
+[1724728518.66][TEST][ERR] Transaction 0 miso byte 3: expected 0x8 but saw 0x0
+[1724728518.66][TEST][INF] We expected:
+[mosi: b'01020408', miso: b'01020408']
+[1724728518.66][SERI][TXD] {{verify_sequence;failed}}
+[1724728518.67][CONN][INF] found KV pair in stream: {{__testcase_finish;Send 32-Bit Data via Interrupt API (Tx/Rx);0;1}}, queued...
+[1724728518.68][CONN][RXD] &gt;&gt;&gt; 'Send 32-Bit Data via Interrupt API (Tx/Rx)': 0 passed, 1 failed with reason 'Test Cases Failed'
+[1724728518.68][CONN][RXD] 
+[1724728518.68][CONN][RXD] 
+[1724728518.69][CONN][RXD] &gt;&gt;&gt; Running case #18: 'Benchmark Async SPI via Interrupts'...
+[1724728518.69][CONN][INF] found KV pair in stream: {{__testcase_start;Benchmark Async SPI via Interrupts}}, queued...
+[1724728518.70][CONN][RXD] Transferred 32 bytes @ 100kHz in 871us, with 843us occurring in the background.
+[1724728518.71][CONN][RXD] Note: Based on the byte count and frequency, the theoretical best time for this SPI transaction is 2560us
+[1724728518.72][CONN][RXD] Note: the above background time does not include overhead from interrupts, which may be significant.
+[1724728518.73][CONN][RXD] &gt;&gt;&gt; 'Benchmark Async SPI via Interrupts': 1 passed, 0 failed
+[1724728518.73][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1724728518.73][CONN][RXD] 
+[1724728518.73][CONN][INF] found KV pair in stream: {{__testcase_finish;Benchmark Async SPI via Interrupts;1;0}}, queued...
+[1724728518.74][CONN][RXD] &gt;&gt;&gt; Running case #19: 'Queueing and Aborting Async SPI via Interrupts'...
+[1724728518.74][CONN][INF] found KV pair in stream: {{__testcase_start;Queueing and Aborting Async SPI via Interrupts}}, queued...
+[1724728518.75][CONN][INF] found KV pair in stream: {{start_recording_spi;please}}, queued...
+[1724728519.76][SERI][TXD] {{start_recording_spi;complete}}
+[1724728519.91][CONN][RXD] &lt;greentea test suite&gt;:451::FAIL: Expected 0 Was 32
+[1724728519.91][CONN][INF] found KV pair in stream: {{verify_queue_and_abort_test;please}}, queued...
+[1724728519.91][TEST][INF] Saw on the SPI bus: [mosi: b'0102000000000000000000000000000000000000', miso: b'0000000000000000000000000000000000000000']
+[1724728519.91][TEST][ERR] Incorrect MOSI data for queue and abort test
+[1724728519.92][SERI][TXD] {{verify_queue_and_abort_test;fail}}
+[1724728519.93][CONN][INF] found KV pair in stream: {{__testcase_finish;Queueing and Aborting Async SPI via Interrupts;0;1}}, queued...
+[1724728519.94][CONN][RXD] &gt;&gt;&gt; 'Queueing and Aborting Async SPI via Interrupts': 0 passed, 1 failed with reason 'Test Cases Failed'
+[1724728519.94][CONN][RXD] 
+[1724728519.94][CONN][RXD] 
+[1724728519.96][CONN][RXD] &gt;&gt;&gt; Running case #20: 'Use Multiple SPI Instances with Interrupts'...
+[1724728519.96][CONN][INF] found KV pair in stream: {{__testcase_start;Use Multiple SPI Instances with Interrupts}}, queued...
+[1724728519.96][CONN][INF] found KV pair in stream: {{start_recording_spi;please}}, queued...
+[1724728520.97][SERI][TXD] {{start_recording_spi;complete}}
+[1724728520.98][CONN][INF] found KV pair in stream: {{verify_sequence;standard_word}}, queued...
+[1724728521.06][TEST][INF] Saw on the SPI bus:
+[mosi: b'01020408', miso: b'00000000']
+[1724728521.06][TEST][ERR] Transaction 0 miso byte 0: expected 0x1 but saw 0x0
+[1724728521.06][TEST][ERR] Transaction 0 miso byte 1: expected 0x2 but saw 0x0
+[1724728521.06][TEST][ERR] Transaction 0 miso byte 2: expected 0x4 but saw 0x0
+[1724728521.06][TEST][ERR] Transaction 0 miso byte 3: expected 0x8 but saw 0x0
+[1724728521.06][TEST][INF] We expected:
+[mosi: b'01020408', miso: b'01020408']
+[1724728521.07][SERI][TXD] {{verify_sequence;failed}}
+[1724728521.08][CONN][RXD] &lt;greentea test suite&gt;:55::FAIL: Expected 'complete' Was 'failed'
+[1724728521.09][CONN][INF] found KV pair in stream: {{__testcase_finish;Use Multiple SPI Instances with Interrupts;0;1}}, queued...
+[1724728521.10][CONN][RXD] &gt;&gt;&gt; 'Use Multiple SPI Instances with Interrupts': 0 passed, 1 failed with reason 'Test Cases Failed'
+[1724728521.10][CONN][RXD] 
+[1724728521.10][CONN][RXD] 
+[1724728521.10][CONN][RXD] &gt;&gt;&gt; Running case #21: 'Send Data via Async DMA API (Tx only)'...
+[1724728521.11][CONN][INF] found KV pair in stream: {{__testcase_start;Send Data via Async DMA API (Tx only)}}, queued...
+[1724728521.11][CONN][INF] found KV pair in stream: {{start_recording_spi;please}}, queued...
+[1724728522.13][SERI][TXD] {{start_recording_spi;complete}}
+[1724728522.14][CONN][INF] found KV pair in stream: {{verify_sequence;standard_word}}, queued...
+[1724728522.21][TEST][INF] Saw on the SPI bus:
+[mosi: b'01020408', miso: b'00000000']
+[1724728522.21][TEST][ERR] Transaction 0 miso byte 0: expected 0x1 but saw 0x0
+[1724728522.21][TEST][ERR] Transaction 0 miso byte 1: expected 0x2 but saw 0x0
+[1724728522.21][TEST][ERR] Transaction 0 miso byte 2: expected 0x4 but saw 0x0
+[1724728522.21][TEST][ERR] Transaction 0 miso byte 3: expected 0x8 but saw 0x0
+[1724728522.21][TEST][INF] We expected:
+[mosi: b'01020408', miso: b'01020408']
+[1724728522.22][SERI][TXD] {{verify_sequence;failed}}
+[1724728522.23][CONN][RXD] &lt;greentea test suite&gt;:55::FAIL: Expected 'complete' Was 'failed'
+[1724728522.24][CONN][INF] found KV pair in stream: {{__testcase_finish;Send Data via Async DMA API (Tx only);0;1}}, queued...
+[1724728522.26][CONN][RXD] &gt;&gt;&gt; 'Send Data via Async DMA API (Tx only)': 0 passed, 1 failed with reason 'Test Cases Failed'
+[1724728522.26][CONN][RXD] 
+[1724728522.26][CONN][RXD] 
+[1724728522.26][CONN][RXD] &gt;&gt;&gt; Running case #22: 'Send Data via Async DMA API (Rx only)'...
+[1724728522.27][CONN][INF] found KV pair in stream: {{__testcase_start;Send Data via Async DMA API (Rx only)}}, queued...
+[1724728522.27][CONN][INF] found KV pair in stream: {{start_recording_spi;please}}, queued...
+[1724728523.28][SERI][TXD] {{start_recording_spi;complete}}
+[1724728523.29][CONN][RXD] Got: 0 0 0 0
+[1724728523.29][CONN][INF] found KV pair in stream: {{print_spi_data;please}}, queued...
+[1724728523.37][TEST][INF] Saw on the SPI bus: [mosi: b'ffffffff', miso: b'00000000']
+[1724728523.38][SERI][TXD] {{print_spi_data;complete}}
+[1724728523.39][CONN][INF] found KV pair in stream: {{__testcase_finish;Send Data via Async DMA API (Rx only);1;0}}, queued...
+[1724728523.40][CONN][RXD] &gt;&gt;&gt; 'Send Data via Async DMA API (Rx only)': 1 passed, 0 failed
+[1724728523.40][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1724728523.40][CONN][RXD] 
+[1724728523.41][CONN][RXD] &gt;&gt;&gt; Running case #23: 'Free and Reallocate SPI Instance with DMA'...
+[1724728523.41][CONN][INF] found KV pair in stream: {{__testcase_start;Free and Reallocate SPI Instance with DMA}}, queued...
+[1724728523.41][CONN][INF] found KV pair in stream: {{start_recording_spi;please}}, queued...
+[1724728524.43][SERI][TXD] {{start_recording_spi;complete}}
+[1724728524.44][CONN][INF] found KV pair in stream: {{verify_sequence;standard_word}}, queued...
+[1724728524.51][TEST][INF] Saw on the SPI bus:
+[mosi: b'01020408', miso: b'00000000']
+[1724728524.51][TEST][ERR] Transaction 0 miso byte 0: expected 0x1 but saw 0x0
+[1724728524.51][TEST][ERR] Transaction 0 miso byte 1: expected 0x2 but saw 0x0
+[1724728524.51][TEST][ERR] Transaction 0 miso byte 2: expected 0x4 but saw 0x0
+[1724728524.51][TEST][ERR] Transaction 0 miso byte 3: expected 0x8 but saw 0x0
+[1724728524.51][TEST][INF] We expected:
+[mosi: b'01020408', miso: b'01020408']
+[1724728524.52][SERI][TXD] {{verify_sequence;failed}}
+[1724728524.53][CONN][RXD] &lt;greentea test suite&gt;:55::FAIL: Expected 'complete' Was 'failed'
+[1724728524.54][CONN][INF] found KV pair in stream: {{__testcase_finish;Free and Reallocate SPI Instance with DMA;0;1}}, queued...
+[1724728524.56][CONN][RXD] &gt;&gt;&gt; 'Free and Reallocate SPI Instance with DMA': 0 passed, 1 failed with reason 'Test Cases Failed'
+[1724728524.56][CONN][RXD] 
+[1724728524.56][CONN][RXD] 
+[1724728524.56][CONN][RXD] &gt;&gt;&gt; Running case #24: 'Send Data via Async DMA API (Tx/Rx)'...
+[1724728524.57][CONN][INF] found KV pair in stream: {{__testcase_start;Send Data via Async DMA API (Tx/Rx)}}, queued...
+[1724728524.57][CONN][INF] found KV pair in stream: {{start_recording_spi;please}}, queued...
+[1724728525.58][SERI][TXD] {{start_recording_spi;complete}}
+[1724728525.59][CONN][RXD] &lt;greentea test suite&gt;:323::FAIL: Element 0 Expected 0x01 Was 0x00
+[1724728525.60][CONN][RXD] &lt;greentea test suite&gt;:323::FAIL: Element 1 Expected 0x02 Was 0x00
+[1724728525.60][CONN][RXD] &lt;greentea test suite&gt;:323::FAIL: Element 2 Expected 0x04 Was 0x00
+[1724728525.62][CONN][RXD] &lt;greentea test suite&gt;:323::FAIL: Element 3 Expected 0x08 Was 0x00
+[1724728525.62][CONN][INF] found KV pair in stream: {{verify_sequence;standard_word}}, queued...
+[1724728525.67][TEST][INF] Saw on the SPI bus:
+[mosi: b'01020408', miso: b'00000000']
+[1724728525.67][TEST][ERR] Transaction 0 miso byte 0: expected 0x1 but saw 0x0
+[1724728525.67][TEST][ERR] Transaction 0 miso byte 1: expected 0x2 but saw 0x0
+[1724728525.67][TEST][ERR] Transaction 0 miso byte 2: expected 0x4 but saw 0x0
+[1724728525.67][TEST][ERR] Transaction 0 miso byte 3: expected 0x8 but saw 0x0
+[1724728525.67][TEST][INF] We expected:
+[mosi: b'01020408', miso: b'01020408']
+[1724728525.68][SERI][TXD] {{verify_sequence;failed}}
+[1724728525.69][CONN][INF] found KV pair in stream: {{__testcase_finish;Send Data via Async DMA API (Tx/Rx);0;4}}, queued...
+[1724728525.70][CONN][RXD] &gt;&gt;&gt; 'Send Data via Async DMA API (Tx/Rx)': 0 passed, 4 failed with reason 'Test Cases Failed'
+[1724728525.70][CONN][RXD] 
+[1724728525.70][CONN][RXD] 
+[1724728525.71][CONN][RXD] &gt;&gt;&gt; Running case #25: 'Send 16-Bit Data via Async DMA API (Tx/Rx)'...
+[1724728525.71][CONN][INF] found KV pair in stream: {{__testcase_start;Send 16-Bit Data via Async DMA API (Tx/Rx)}}, queued...
+[1724728525.71][CONN][INF] found KV pair in stream: {{start_recording_spi;please}}, queued...
+[1724728526.73][SERI][TXD] {{start_recording_spi;complete}}
+[1724728527.74][CONN][RXD] &lt;greentea test suite&gt;:335::FAIL: Expected 1 Was 0
+[1724728527.75][CONN][INF] found KV pair in stream: {{verify_sequence;standard_word}}, queued...
+[1724728527.75][TEST][INF] Saw on the SPI bus:
+[mosi: b'0102', miso: b'0000']
+[1724728527.75][TEST][ERR] Transaction 0: expected length 4 but saw 2
+[1724728527.75][TEST][INF] We expected:
+[mosi: b'01020408', miso: b'01020408']
+[1724728527.76][SERI][TXD] {{verify_sequence;failed}}
+[1724728527.77][CONN][INF] found KV pair in stream: {{__testcase_finish;Send 16-Bit Data via Async DMA API (Tx/Rx);0;1}}, queued...
+[1724728527.78][CONN][RXD] &gt;&gt;&gt; 'Send 16-Bit Data via Async DMA API (Tx/Rx)': 0 passed, 1 failed with reason 'Test Cases Failed'
+[1724728527.78][CONN][RXD] 
+[1724728527.78][CONN][RXD] 
+[1724728527.79][CONN][RXD] &gt;&gt;&gt; Running case #26: 'Send 32-Bit Data via Async DMA API (Tx/Rx)'...
+[1724728527.79][CONN][INF] found KV pair in stream: {{__testcase_start;Send 32-Bit Data via Async DMA API (Tx/Rx)}}, queued...
+[1724728527.79][CONN][INF] found KV pair in stream: {{start_recording_spi;please}}, queued...
+[1724728528.81][SERI][TXD] {{start_recording_spi;complete}}
+[1724728528.82][CONN][RXD] &lt;greentea test suite&gt;:349::FAIL: Expected 0x01020408 Was 0x00000000
+[1724728528.83][CONN][INF] found KV pair in stream: {{verify_sequence;standard_word}}, queued...
+[1724728528.90][TEST][INF] Saw on the SPI bus:
+[mosi: b'08040201', miso: b'00000000']
+[1724728528.90][TEST][ERR] Transaction 0 MOSI byte 0: expected 0x1 but saw 0x8
+[1724728528.90][TEST][ERR] Transaction 0 miso byte 0: expected 0x1 but saw 0x0
+[1724728528.90][TEST][ERR] Transaction 0 MOSI byte 1: expected 0x2 but saw 0x4
+[1724728528.90][TEST][ERR] Transaction 0 miso byte 1: expected 0x2 but saw 0x0
+[1724728528.90][TEST][ERR] Transaction 0 MOSI byte 2: expected 0x4 but saw 0x2
+[1724728528.90][TEST][ERR] Transaction 0 miso byte 2: expected 0x4 but saw 0x0
+[1724728528.90][TEST][ERR] Transaction 0 MOSI byte 3: expected 0x8 but saw 0x1
+[1724728528.90][TEST][ERR] Transaction 0 miso byte 3: expected 0x8 but saw 0x0
+[1724728528.90][TEST][INF] We expected:
+[mosi: b'01020408', miso: b'01020408']
+[1724728528.90][SERI][TXD] {{verify_sequence;failed}}
+[1724728528.92][CONN][INF] found KV pair in stream: {{__testcase_finish;Send 32-Bit Data via Async DMA API (Tx/Rx);0;1}}, queued...
+[1724728528.93][CONN][RXD] &gt;&gt;&gt; 'Send 32-Bit Data via Async DMA API (Tx/Rx)': 0 passed, 1 failed with reason 'Test Cases Failed'
+[1724728528.93][CONN][RXD] 
+[1724728528.93][CONN][RXD] 
+[1724728528.94][CONN][RXD] &gt;&gt;&gt; Running case #27: 'Benchmark Async SPI via DMA'...
+[1724728528.94][CONN][RXD] Transferred 32 bytes @ 100kHz in 895us, with 854us occurring in the background.
+[1724728528.94][CONN][INF] found KV pair in stream: {{__testcase_start;Benchmark Async SPI via DMA}}, queued...
+[1724728528.95][CONN][RXD] Note: Based on the byte count and frequency, the theoretical best time for this SPI transaction is 2560us
+[1724728528.96][CONN][RXD] Note: the above background time does not include overhead from interrupts, which may be significant.
+[1724728528.97][CONN][RXD] &gt;&gt;&gt; 'Benchmark Async SPI via DMA': 1 passed, 0 failed
+[1724728528.97][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1724728528.97][CONN][RXD] 
+[1724728528.97][CONN][INF] found KV pair in stream: {{__testcase_finish;Benchmark Async SPI via DMA;1;0}}, queued...
+[1724728528.98][CONN][RXD] &gt;&gt;&gt; Running case #28: 'Queueing and Aborting Async SPI via DMA'...
+[1724728528.98][CONN][INF] found KV pair in stream: {{__testcase_start;Queueing and Aborting Async SPI via DMA}}, queued...
+[1724728528.98][CONN][INF] found KV pair in stream: {{start_recording_spi;please}}, queued...
+[1724728530.00][SERI][TXD] {{start_recording_spi;complete}}
+[1724728530.02][CONN][INF] found KV pair in stream: {{verify_queue_and_abort_test;please}}, queued...
+[1724728530.10][TEST][INF] Saw on the SPI bus: [mosi: b'010200000000000000000000000000000000000102000000000000000000000000000000000000000000000000000000000000', miso: b'000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000']
+[1724728530.11][SERI][TXD] {{verify_queue_and_abort_test;pass}}
+[1724728530.12][CONN][INF] found KV pair in stream: {{__testcase_finish;Queueing and Aborting Async SPI via DMA;1;0}}, queued...
+[1724728530.13][CONN][RXD] &gt;&gt;&gt; 'Queueing and Aborting Async SPI via DMA': 1 passed, 0 failed
+[1724728530.13][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1724728530.13][CONN][RXD] 
+[1724728530.13][CONN][RXD] &gt;&gt;&gt; Running case #29: 'Use Multiple SPI Instances with DMA'...
+[1724728530.14][CONN][INF] found KV pair in stream: {{__testcase_start;Use Multiple SPI Instances with DMA}}, queued...
+[1724728530.14][CONN][INF] found KV pair in stream: {{start_recording_spi;please}}, queued...
+[1724728531.16][SERI][TXD] {{start_recording_spi;complete}}
+[1724728531.17][CONN][INF] found KV pair in stream: {{verify_sequence;standard_word}}, queued...
+Correct number of messages
+First message looks OK
+Second message looks OK
+[1724728531.25][TEST][INF] Saw on the SPI bus:
+[mosi: b'01020408', miso: b'00000000']
+[1724728531.25][TEST][ERR] Transaction 0 miso byte 0: expected 0x1 but saw 0x0
+[1724728531.25][TEST][ERR] Transaction 0 miso byte 1: expected 0x2 but saw 0x0
+[1724728531.25][TEST][ERR] Transaction 0 miso byte 2: expected 0x4 but saw 0x0
+[1724728531.25][TEST][ERR] Transaction 0 miso byte 3: expected 0x8 but saw 0x0
+[1724728531.25][TEST][INF] We expected:
+[mosi: b'01020408', miso: b'01020408']
+[1724728531.25][SERI][TXD] {{verify_sequence;failed}}
+[1724728531.26][CONN][RXD] &lt;greentea test suite&gt;:55::FAIL: Expected 'complete' Was 'failed'
+[1724728531.27][CONN][INF] found KV pair in stream: {{__testcase_finish;Use Multiple SPI Instances with DMA;0;1}}, queued...
+[1724728531.28][CONN][RXD] &gt;&gt;&gt; 'Use Multiple SPI Instances with DMA': 0 passed, 1 failed with reason 'Test Cases Failed'
+[1724728531.28][CONN][RXD] 
+[1724728531.29][CONN][RXD] 
+[1724728531.29][CONN][RXD] &gt;&gt;&gt; Running case #30: 'Transfer 8 Bit Data via Transactional API (Tx/Rx)'...
+[1724728531.30][CONN][INF] found KV pair in stream: {{__testcase_start;Transfer 8 Bit Data via Transactional API (Tx/Rx)}}, queued...
+[1724728531.30][CONN][INF] found KV pair in stream: {{start_recording_spi;please}}, queued...
+[1724728532.31][SERI][TXD] {{start_recording_spi;complete}}
+[1724728532.32][CONN][INF] found KV pair in stream: {{verify_sequence;standard_word}}, queued...
+[1724728532.40][TEST][INF] Saw on the SPI bus:
+[mosi: b'01020408', miso: b'00000000']
+[1724728532.40][TEST][ERR] Transaction 0 miso byte 0: expected 0x1 but saw 0x0
+[1724728532.40][TEST][ERR] Transaction 0 miso byte 1: expected 0x2 but saw 0x0
+[1724728532.40][TEST][ERR] Transaction 0 miso byte 2: expected 0x4 but saw 0x0
+[1724728532.40][TEST][ERR] Transaction 0 miso byte 3: expected 0x8 but saw 0x0
+[1724728532.40][TEST][INF] We expected:
+[mosi: b'01020408', miso: b'01020408']
+[1724728532.41][SERI][TXD] {{verify_sequence;failed}}
+[1724728532.42][CONN][RXD] &lt;greentea test suite&gt;:55::FAIL: Expected 'complete' Was 'failed'
+[1724728532.43][CONN][INF] found KV pair in stream: {{__testcase_finish;Transfer 8 Bit Data via Transactional API (Tx/Rx);0;1}}, queued...
+[1724728532.44][CONN][RXD] &gt;&gt;&gt; 'Transfer 8 Bit Data via Transactional API (Tx/Rx)': 0 passed, 1 failed with reason 'Test Cases Failed'
+[1724728532.44][CONN][RXD] 
+[1724728532.44][CONN][RXD] 
+[1724728532.44][CONN][RXD] &gt;&gt;&gt; Test cases: 6 passed, 24 failed with reason 'Test Cases Failed'
+[1724728532.44][CONN][RXD] &gt;&gt;&gt; TESTS FAILED!
+[1724728532.44][CONN][RXD] 
+[1724728532.45][CONN][RXD] -----------------------
+[1724728532.45][CONN][RXD] 0 Tests 24 Failures 0 Ignored 
+[1724728532.45][CONN][RXD] FAIL
+[1724728532.45][CONN][INF] found KV pair in stream: {{__testcase_summary;6;24}}, queued...
+[1724728532.45][CONN][INF] found KV pair in stream: {{end;failure}}, queued...
+[1724728532.45][CONN][INF] found KV pair in stream: {{__exit;0}}, queued...
+[1724728532.46][HTST][INF] __exit(0)
+[1724728532.46][HTST][INF] __notify_complete(False)
+[1724728532.46][HTST][INF] __exit_event_queue received
+[1724728532.46][HTST][INF] test suite run finished after 32.44 sec...
+[1724728532.47][CONN][INF] received special event '__host_test_finished' value='True', finishing
+[1724728532.47][HTST][INF] CONN exited with code: 0
+[1724728532.48][HTST][INF] Some events in queue
+[1724728532.48][HTST][INF] stopped consuming events
+[1724728532.48][HTST][INF] host test result() call skipped, received: False
+[1724728532.48][HTST][INF] calling blocking teardown()
+[1724728532.48][HTST][INF] teardown() finished
+[1724728532.48][HTST][INF] {{result;failure}}
+CMake Error at mbed-run-greentea-test-testshield-spi-basic.cmake:19 (execute_process):
+  execute_process failed command indexes:
+
+    1: "Child return code: 1"
+
+
+
+</system-out>
+	</testcase>
+	<testcase name="test-testshield-spi-microsd" classname="test-testshield-spi-microsd" time="127.403" status="fail">
+		<failure message=""/>
+		<system-out>[1/1] Flashing test-testshield-spi-microsd with OpenOCD...
+Open On-Chip Debugger 0.12.0+dev-00499-g151b74371 (2024-01-22-10:06)
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+DEPRECATED! use 'adapter driver' not 'interface'
+Info : The selected transport took over low-level target control. The results might differ compared to plain JTAG/SWD
+DEPRECATED! use 'adapter serial' not 'hla_serial'
+Info : clock speed 500 kHz
+Info : STLINK V2J39M27 (API v2) VID:PID 0483:374B
+Info : Target voltage: 3.240553
+Info : [stm32l4x.cpu] Cortex-M4 r0p1 processor detected
+Info : [stm32l4x.cpu] target has 6 breakpoints, 4 watchpoints
+Info : [stm32l4x.cpu] Examination succeed
+Info : gdb port disabled
+Info : Unable to match requested speed 500 kHz, using 480 kHz
+Info : Unable to match requested speed 500 kHz, using 480 kHz
+[stm32l4x.cpu] halted due to debug-request, current mode: Thread 
+xPSR: 0x01000000 pc: 0x08000318 msp: 0x10000698
+** Programming Started **
+Info : device idcode = 0x20016462 (STM32L45/L46xx - Rev Y : 0x2001)
+Info : RDP level 0 (0xAA)
+Info : flash size = 512 KiB
+Info : flash mode : single-bank
+Warn : Adding extra erase range, 0x080231f0 .. 0x080237ff
+** Programming Finished **
+** Resetting Target **
+Info : Unable to match requested speed 500 kHz, using 480 kHz
+Info : Unable to match requested speed 500 kHz, using 480 kHz
+shutdown command invoked
+Executing: /home/jamie/Mbed/mbed-ce-test-tools/CI-Shield-Tests/mbed-os/venv/bin/python3.10 -m mbed_host_tests.mbedhtrun --skip-flashing -p /dev/ttyNUCLEO_L452RE_P --skip-reset -e /home/jamie/Mbed/mbed-ce-test-tools/CI-Shield-Tests/host_tests -m NUCLEO_L452RE_P --baud-rate=115200
+Will use any connected CI shield for this test.  Export the MBED_CI_SHIELD_SERIAL_NUMBER environment var to select a specific shield.
+e.g. 'export MBED_CI_SHIELD_SERIAL_NUMBER=SN002'
+[1724728794.54][HTST][INF] host test executor ver. 0.0.16
+[1724728794.54][HTST][INF] copy image onto target... SKIPPED!
+[1724728794.56][HTST][INF] starting host test process...
+[1724728794.57][CONN][INF] starting connection process...
+[1724728794.57][CONN][INF] notify event queue about extra 60 sec timeout for serial port pooling
+[1724728794.57][CONN][INF] initializing serial port listener... 
+[1724728794.57][SERI][INF] using specified port '/dev/ttyNUCLEO_L452RE_P'
+[1724728794.57][SERI][INF] serial(port=/dev/ttyNUCLEO_L452RE_P, baudrate=115200, read_timeout=0.01, write_timeout=5)
+[1724728794.57][HTST][INF] setting timeout to: 60 sec
+[1724728794.58][SERI][TXD] mbedmbedmbedmbedmbedmbedmbedmbedmbedmbed
+[1724728794.58][CONN][INF] sending up to 2 __sync packets (specified with --sync=2)
+[1724728794.58][CONN][INF] sending preamble '5a277d4b-b388-4812-a47f-83f59184c21b'
+[1724728794.58][SERI][TXD] {{__sync;5a277d4b-b388-4812-a47f-83f59184c21b}}
+[1724728794.59][CONN][WRN] UnicodeDecodeError encountered!
+[1724728794.59][CONN][RXD] 
+;
+[NON-XML-CHAR-0x1]
+[NON-XML-CHAR-0x2]r
+
+r
+[NON-XML-CHAR-0x2]
+
+
+
+[NON-XML-CHAR-0x6][NON-XML-CHAR-0x2]
+
+[NON-XML-CHAR-0x12]3	[NON-XML-CHAR-0xE]
+b
+J
+
+[NON-XML-CHAR-0x2]
+
+&lt;[NON-XML-CHAR-0x1]
+[NON-XML-CHAR-0x2]
+
+R^
+
+
+
+y[NON-XML-CHAR-0x3]2
+bp
+[NON-XML-CHAR-0x3]2
+[NON-XML-CHAR-0x2]
+
+[NON-XML-CHAR-0x8]J
+n
+
+
+
+[NON-XML-CHAR-0x6]
+i
+
+[NON-XML-CHAR-0x2]r
+l[NON-XML-CHAR-0x1]
+[1724728794.59][CONN][RXD] 
+[NON-XML-CHAR-0x6]
+L
+C[NON-XML-CHAR-0x2][NON-XML-CHAR-0x8]
+
+
+[NON-XML-CHAR-0x2]
+|
+[NON-XML-CHAR-0x8]R
+r
+
+r
+
+[NON-XML-CHAR-0x2]
+
+[NON-XML-CHAR-0x6][NON-XML-CHAR-0xB][NON-XML-CHAR-0x1][NON-XML-CHAR-0x2][NON-XML-CHAR-0x1]
+
+
+$
+
+[NON-XML-CHAR-0x7]$
+
+
+[NON-XML-CHAR-0x1E]mbedmbedmbedmbedmbedmbedmbedmbed
+[1724728794.59][CONN][INF] found SYNC in stream: {{__sync;5a277d4b-b388-4812-a47f-83f59184c21b}} it is #0 sent, queued...
+[1724728794.59][HTST][INF] sync KV found, uuid=5a277d4b-b388-4812-a47f-83f59184c21b, timestamp=1724728794.593308
+[1724728794.60][CONN][INF] found KV pair in stream: {{__version;1.3.0}}, queued...
+[1724728794.61][CONN][INF] found KV pair in stream: {{__timeout;120}}, queued...
+[1724728794.61][HTST][INF] DUT greentea-client version: 1.3.0
+[1724728794.61][CONN][INF] found KV pair in stream: {{__host_test_name;default_auto}}, queued...
+[1724728794.61][HTST][INF] setting timeout to: 120 sec
+[1724728794.61][HTST][INF] host test class: '&lt;class 'mbed_os_tools.test.host_tests.default_auto.DefaultAuto'&gt;'
+[1724728794.61][HTST][INF] host test setup() call...
+[1724728794.61][HTST][INF] CALLBACKs updated
+[1724728794.61][HTST][INF] host test detected: default_auto
+[1724728794.79][CONN][RXD] &gt;&gt;&gt; Running 10 test cases...
+[1724728794.80][CONN][INF] found KV pair in stream: {{__testcase_name;SPI - Object Definable}}, queued...
+[1724728794.80][CONN][INF] found KV pair in stream: {{__testcase_name;SPI - SD card present (100kHz)}}, queued...
+[1724728794.81][CONN][INF] found KV pair in stream: {{__testcase_name;SPI - Mount FS, Create File (100kHz)}}, queued...
+[1724728794.81][CONN][INF] found KV pair in stream: {{__testcase_name;SPI - Write, Read, and Delete File (100kHz)}}, queued...
+[1724728794.82][CONN][INF] found KV pair in stream: {{__testcase_name;[Async Interrupts] SPI - SD card present (1MHz)}}, queued...
+[1724728794.82][CONN][INF] found KV pair in stream: {{__testcase_name;[Async Interrupts] SPI - Mount FS, Create File (1MHz)}}, queued...
+[1724728794.84][CONN][INF] found KV pair in stream: {{__testcase_name;[Async Interrupts] SPI - Write, Read, and Delete File (1MHz)}}, queued...
+[1724728794.84][CONN][INF] found KV pair in stream: {{__testcase_name;[Async DMA] SPI - SD card present (1MHz)}}, queued...
+[1724728794.85][CONN][RXD] 
+[1724728794.85][CONN][INF] found KV pair in stream: {{__testcase_name;[Async DMA] SPI - Mount FS, Create File (1MHz)}}, queued...
+[1724728794.85][CONN][INF] found KV pair in stream: {{__testcase_name;[Async DMA] SPI - Write, Read, and Delete File (1MHz)}}, queued...
+[1724728794.86][CONN][RXD] &gt;&gt;&gt; Running case #1: 'SPI - Object Definable'...
+[1724728794.86][CONN][INF] found KV pair in stream: {{__testcase_start;SPI - Object Definable}}, queued...
+[1724728794.86][CONN][INF] found KV pair in stream: {{__testcase_finish;SPI - Object Definable;1;0}}, queued...
+[1724728794.87][CONN][RXD] &gt;&gt;&gt; 'SPI - Object Definable': 1 passed, 0 failed
+[1724728794.87][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[1724728794.87][CONN][RXD] 
+[1724728794.87][CONN][RXD] &gt;&gt;&gt; Running case #2: 'SPI - SD card present (100kHz)'...
+[1724728794.88][CONN][INF] found KV pair in stream: {{__testcase_start;SPI - SD card present (100kHz)}}, queued...
+[1724728844.75][CONN][RXD] &lt;greentea test suite&gt;:121::FAIL: Failed to connect to SD card
+[1724728844.76][CONN][RXD] &gt;&gt;&gt; 'SPI - SD card present (100kHz)': 0 passed, 1 failed with reason 'Test Cases Failed'
+[1724728844.76][CONN][RXD] 
+[1724728844.76][CONN][RXD] 
+[1724728844.76][CONN][INF] found KV pair in stream: {{__testcase_finish;SPI - SD card present (100kHz);0;1}}, queued...
+[1724728844.77][CONN][RXD] &gt;&gt;&gt; Running case #3: 'SPI - Mount FS, Create File (100kHz)'...
+[1724728844.77][CONN][INF] found KV pair in stream: {{__testcase_start;SPI - Mount FS, Create File (100kHz)}}, queued...
+[1724728894.65][CONN][RXD] &lt;greentea test suite&gt;:144::FAIL: Failed to connect to SD card
+[1724728914.68][HTST][INF] test suite run finished after 120.07 sec...
+[1724728914.68][CONN][INF] received special event '__host_test_finished' value='True', finishing
+[1724728914.69][HTST][INF] CONN exited with code: 0
+[1724728914.69][HTST][INF] No events in queue
+[1724728914.69][HTST][INF] stopped consuming events
+[1724728914.69][HTST][INF] host test result(): None
+[1724728914.69][HTST][WRN] missing __exit event from DUT
+[1724728914.69][HTST][WRN] missing __exit_event_queue event from host test
+[1724728914.69][HTST][ERR] missing __exit_event_queue event from host test and no result from host test, timeout...
+[1724728914.69][HTST][INF] calling blocking teardown()
+[1724728914.69][HTST][INF] teardown() finished
+[1724728914.69][HTST][INF] {{result;timeout}}
+CMake Error at mbed-run-greentea-test-testshield-spi-microsd.cmake:19 (execute_process):
+  execute_process failed command indexes:
+
+    1: "Child return code: 5"
+
+
+
+</system-out>
+	</testcase>
+	<testcase name="test-testshield-spi-slave-comms" classname="test-testshield-spi-slave-comms" time="11.7876" status="fail">
+		<failure message=""/>
+		<system-out>[1/1] Flashing test-testshield-spi-slave-comms with OpenOCD...
+Open On-Chip Debugger 0.12.0+dev-00499-g151b74371 (2024-01-22-10:06)
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+DEPRECATED! use 'adapter driver' not 'interface'
+Info : The selected transport took over low-level target control. The results might differ compared to plain JTAG/SWD
+DEPRECATED! use 'adapter serial' not 'hla_serial'
+Info : clock speed 500 kHz
+Info : STLINK V2J39M27 (API v2) VID:PID 0483:374B
+Info : Target voltage: 3.240553
+Info : [stm32l4x.cpu] Cortex-M4 r0p1 processor detected
+Info : [stm32l4x.cpu] target has 6 breakpoints, 4 watchpoints
+Info : [stm32l4x.cpu] Examination succeed
+Info : gdb port disabled
+Info : Unable to match requested speed 500 kHz, using 480 kHz
+Info : Unable to match requested speed 500 kHz, using 480 kHz
+[stm32l4x.cpu] halted due to debug-request, current mode: Thread 
+xPSR: 0x01000000 pc: 0x08000318 msp: 0x10000698
+** Programming Started **
+Info : device idcode = 0x20016462 (STM32L45/L46xx - Rev Y : 0x2001)
+Info : RDP level 0 (0xAA)
+Info : flash size = 512 KiB
+Info : flash mode : single-bank
+Info : Padding image section 1 at 0x08011fd4 with 4 bytes (bank write end alignment)
+Warn : Adding extra erase range, 0x08011fd8 .. 0x08011fff
+** Programming Finished **
+** Resetting Target **
+Info : Unable to match requested speed 500 kHz, using 480 kHz
+Info : Unable to match requested speed 500 kHz, using 480 kHz
+shutdown command invoked
+Executing: /home/jamie/Mbed/mbed-ce-test-tools/CI-Shield-Tests/mbed-os/venv/bin/python3.10 -m mbed_host_tests.mbedhtrun --skip-flashing -p /dev/ttyNUCLEO_L452RE_P --skip-reset -e /home/jamie/Mbed/mbed-ce-test-tools/CI-Shield-Tests/host_tests -m NUCLEO_L452RE_P --baud-rate=115200
+Will use any connected CI shield for this test.  Export the MBED_CI_SHIELD_SERIAL_NUMBER environment var to select a specific shield.
+e.g. 'export MBED_CI_SHIELD_SERIAL_NUMBER=SN002'
+[1724728943.97][HTST][INF] host test executor ver. 0.0.16
+[1724728943.97][HTST][INF] copy image onto target... SKIPPED!
+[1724728943.98][HTST][INF] starting host test process...
+[1724728943.99][CONN][INF] starting connection process...
+[1724728944.00][CONN][INF] notify event queue about extra 60 sec timeout for serial port pooling
+[1724728944.00][CONN][INF] initializing serial port listener... 
+[1724728944.00][SERI][INF] using specified port '/dev/ttyNUCLEO_L452RE_P'
+[1724728944.00][HTST][INF] setting timeout to: 60 sec
+[1724728944.00][SERI][INF] serial(port=/dev/ttyNUCLEO_L452RE_P, baudrate=115200, read_timeout=0.01, write_timeout=5)
+[1724728944.01][SERI][TXD] mbedmbedmbedmbedmbedmbedmbedmbedmbedmbed
+[1724728944.01][CONN][INF] sending up to 2 __sync packets (specified with --sync=2)
+[1724728944.01][CONN][INF] sending preamble 'f74fe319-96fc-4917-abe3-30bb4c738f80'
+[1724728944.01][SERI][TXD] {{__sync;f74fe319-96fc-4917-abe3-30bb4c738f80}}
+[1724728944.02][CONN][WRN] UnicodeDecodeError encountered!
+[1724728944.02][CONN][RXD] 
+[NON-XML-CHAR-0x1A]
+b
+m
+
+
+
+[NON-XML-CHAR-0x2][NON-XML-CHAR-0x1]b
+
+[1724728944.02][CONN][RXD] 
+
+
+[NON-XML-CHAR-0x4].
+[NON-XML-CHAR-0xC][NON-XML-CHAR-0xE][NON-XML-CHAR-0x1]
+[1724728944.02][CONN][RXD] 
+[NON-XML-CHAR-0x4]
+[NON-XML-CHAR-0x5]
+
+[NON-XML-CHAR-0x1]
+[NON-XML-CHAR-0x1] 
+
+
+[1724728944.02][CONN][RXD] 
+[1724728944.02][CONN][RXD] ++ MbedOS Error Info ++
+[1724728944.02][CONN][RXD] Error Status: 0x80010130 Code: 304 Module: 1
+[1724728944.02][CONN][RXD] Error Message: pinmap not found for peripheral
+[1724728944.02][CONN][RXD] Location: 0x80044E7
+[1724728944.02][CONN][RXD] Error Value: 0xB
+[1724728944.02][CONN][RXD] Current Thread: main Id: 0x20001948 Entry: 0x8007D15 StackSize: 0x1000 StackMem: 0x20001990 SP: 0x2000281C 
+[1724728944.02][CONN][RXD] For more info, visit: https://mbed.com/s/error?error=0x80010130&amp;tgt=NUCLEO_L452RE_P
+[1724728944.02][CONN][RXD] -- MbedOS Error Info --
+[1724728949.02][CONN][INF] Reset the part and send in new preamble...
+[1724728949.02][SERI][INF] reset device using 'default' plugin...
+[1724728949.12][SERI][INF] waiting 1.00 sec after reset
+[1724728950.12][SERI][INF] wait for it...
+[1724728950.12][CONN][INF] resending new preamble 'c3f28e4b-f904-47b3-a4c1-2ba85773f936' after 5.00 sec
+[1724728950.13][SERI][TXD] {{__sync;c3f28e4b-f904-47b3-a4c1-2ba85773f936}}
+[1724728950.14][CONN][RXD] 
+[1724728950.14][CONN][RXD] 
+[1724728950.14][CONN][RXD] ++ MbedOS Error Info ++
+[1724728950.14][CONN][RXD] Error Status: 0x80010130 Code: 304 Module: 1
+[1724728950.14][CONN][RXD] Error Message: pinmap not found for peripheral
+[1724728950.14][CONN][RXD] Location: 0x80044E7
+[1724728950.14][CONN][RXD] Error Value: 0xB
+[1724728950.14][CONN][RXD] Current Thread: main Id: 0x20001948 Entry: 0x8007D15 StackSize: 0x1000 StackMem: 0x20001990 SP: 0x2000281C 
+[1724728950.14][CONN][RXD] For more info, visit: https://mbed.com/s/error?error=0x80010130&amp;tgt=NUCLEO_L452RE_P
+[1724728950.14][CONN][RXD] -- MbedOS Error Info --
+[1724728950.14][HTST][ERR] None
+[1724728950.14][HTST][WRN] stopped to consume events due to __notify_sync_failed event
+[1724728950.14][HTST][INF] __exit_event_queue received
+[1724728950.14][HTST][INF] test suite run finished after 6.15 sec...
+[1724728950.15][HTST][INF] CONN exited with code: 0
+[1724728950.15][HTST][INF] No events in queue
+[1724728950.15][HTST][INF] host test result() call skipped, received: sync_failed
+[1724728950.15][HTST][WRN] missing __exit event from DUT
+[1724728950.15][HTST][INF] calling blocking teardown()
+[1724728950.15][HTST][INF] teardown() finished
+[1724728950.15][HTST][INF] {{result;sync_failed}}
+CMake Error at mbed-run-greentea-test-testshield-spi-slave-comms.cmake:19 (execute_process):
+  execute_process failed command indexes:
+
+    1: "Child return code: 14"
+
+
+
+</system-out>
+	</testcase>
+	<testcase name="test-testshield-pwm-and-adc" classname="test-testshield-pwm-and-adc" time="12.1028" status="fail">
+		<failure message=""/>
+		<system-out>[1/1] Flashing test-testshield-pwm-and-adc with OpenOCD...
+Open On-Chip Debugger 0.12.0+dev-00499-g151b74371 (2024-01-22-10:06)
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+DEPRECATED! use 'adapter driver' not 'interface'
+Info : The selected transport took over low-level target control. The results might differ compared to plain JTAG/SWD
+DEPRECATED! use 'adapter serial' not 'hla_serial'
+Info : clock speed 500 kHz
+Info : STLINK V2J39M27 (API v2) VID:PID 0483:374B
+Info : Target voltage: 3.240553
+Info : [stm32l4x.cpu] Cortex-M4 r0p1 processor detected
+Info : [stm32l4x.cpu] target has 6 breakpoints, 4 watchpoints
+Info : [stm32l4x.cpu] Examination succeed
+Info : gdb port disabled
+Info : Unable to match requested speed 500 kHz, using 480 kHz
+Info : Unable to match requested speed 500 kHz, using 480 kHz
+[stm32l4x.cpu] halted due to debug-request, current mode: Thread 
+xPSR: 0x01000000 pc: 0x08000318 msp: 0x10000698
+** Programming Started **
+Info : device idcode = 0x20016462 (STM32L45/L46xx - Rev Y : 0x2001)
+Info : RDP level 0 (0xAA)
+Info : flash size = 512 KiB
+Info : flash mode : single-bank
+Info : Padding image section 1 at 0x080149c4 with 4 bytes (bank write end alignment)
+Warn : Adding extra erase range, 0x080149c8 .. 0x08014fff
+** Programming Finished **
+** Resetting Target **
+Info : Unable to match requested speed 500 kHz, using 480 kHz
+Info : Unable to match requested speed 500 kHz, using 480 kHz
+shutdown command invoked
+Executing: /home/jamie/Mbed/mbed-ce-test-tools/CI-Shield-Tests/mbed-os/venv/bin/python3.10 -m mbed_host_tests.mbedhtrun --skip-flashing -p /dev/ttyNUCLEO_L452RE_P --skip-reset -e /home/jamie/Mbed/mbed-ce-test-tools/CI-Shield-Tests/host_tests -m NUCLEO_L452RE_P --baud-rate=115200
+Will use any connected CI shield for this test.  Export the MBED_CI_SHIELD_SERIAL_NUMBER environment var to select a specific shield.
+e.g. 'export MBED_CI_SHIELD_SERIAL_NUMBER=SN002'
+[1724728980.17][HTST][INF] host test executor ver. 0.0.16
+[1724728980.17][HTST][INF] copy image onto target... SKIPPED!
+[1724728980.18][HTST][INF] starting host test process...
+[1724728980.19][CONN][INF] starting connection process...
+[1724728980.20][CONN][INF] notify event queue about extra 60 sec timeout for serial port pooling
+[1724728980.20][CONN][INF] initializing serial port listener... 
+[1724728980.20][SERI][INF] using specified port '/dev/ttyNUCLEO_L452RE_P'
+[1724728980.20][HTST][INF] setting timeout to: 60 sec
+[1724728980.20][SERI][INF] serial(port=/dev/ttyNUCLEO_L452RE_P, baudrate=115200, read_timeout=0.01, write_timeout=5)
+[1724728980.20][SERI][TXD] mbedmbedmbedmbedmbedmbedmbedmbedmbedmbed
+[1724728980.21][CONN][INF] sending up to 2 __sync packets (specified with --sync=2)
+[1724728980.21][CONN][INF] sending preamble '833bbd5f-e0d5-4edf-a8e6-1d01932bc517'
+[1724728980.21][SERI][TXD] {{__sync;833bbd5f-e0d5-4edf-a8e6-1d01932bc517}}
+[1724728980.22][CONN][WRN] UnicodeDecodeError encountered!
+[1724728980.22][CONN][RXD] 
+
+
+
+
+[NON-XML-CHAR-0x2]
+[NON-XML-CHAR-0x16]:[NON-XML-CHAR-0x4][NON-XML-CHAR-0x1F][NON-XML-CHAR-0x13]
+
+
+[NON-XML-CHAR-0x1][NON-XML-CHAR-0x6]
+
+
+
+
+
+
+
+
+
+
+
+
+[NON-XML-CHAR-0x8]
+
+
+
+
+,
+
+[NON-XML-CHAR-0x12]
+[NON-XML-CHAR-0x12]S
+[NON-XML-CHAR-0x12]
+o[NON-XML-CHAR-0x1]rLL[NON-XML-CHAR-0x12]ٛ
+b[NON-XML-CHAR-0x1][NON-XML-CHAR-0x10]
+^3[NON-XML-CHAR-0x1]
+[NON-XML-CHAR-0x4][NON-XML-CHAR-0x1][NON-XML-CHAR-0x6][NON-XML-CHAR-0x2]|o
+R
+K[NON-XML-CHAR-0x1C]0c[NON-XML-CHAR-0x2]
+[NON-XML-CHAR-0x2]"LJ[NON-XML-CHAR-0x12]
+[NON-XML-CHAR-0x4][NON-XML-CHAR-0x12]
+[NON-XML-CHAR-0x12]2[NON-XML-CHAR-0x2]r[NON-XML-CHAR-0x2]
+
+[1724728980.22][CONN][RXD] *
+
+
+L}O
+[NON-XML-CHAR-0x2]
+c
+k
+[NON-XML-CHAR-0x2]+[NON-XML-CHAR-0x5][NON-XML-CHAR-0x12]
+[NON-XML-CHAR-0x10][NON-XML-CHAR-0x6]
+
+
+z
+.
+
+b
+L
+
+B[NON-XML-CHAR-0x6][NON-XML-CHAR-0x2][NON-XML-CHAR-0x5][NON-XML-CHAR-0x2][NON-XML-CHAR-0x8]&gt;[NON-XML-CHAR-0x2][NON-XML-CHAR-0x1]
+[NON-XML-CHAR-0x2][NON-XML-CHAR-0xB][NON-XML-CHAR-0x3][NON-XML-CHAR-0x6]
+[NON-XML-CHAR-0x2]
+[NON-XML-CHAR-0x18][NON-XML-CHAR-0x1][NON-XML-CHAR-0x5]
+[1724728980.22][CONN][RXD] [NON-XML-CHAR-0x2][NON-XML-CHAR-0x6]
+
+
+
+[NON-XML-CHAR-0x8]
+[NON-XML-CHAR-0x7](
+[NON-XML-CHAR-0x3]
+
+[1724728980.22][CONN][RXD] 
+[1724728980.22][CONN][RXD] ++ MbedOS Error Info ++
+[1724728980.22][CONN][RXD] Error Status: 0x80010130 Code: 304 Module: 1
+[1724728980.22][CONN][RXD] Error Message: pinmap not found for peripheral
+[1724728980.22][CONN][RXD] Location: 0x800531B
+[1724728980.22][CONN][RXD] Error Value: 0xF
+[1724728980.22][CONN][RXD] Current Thread: main Id: 0x20001B10 Entry: 0x8008B31 StackSize: 0x1000 StackMem: 0x20001B58 SP: 0x20002A9C 
+[1724728980.22][CONN][RXD] For more info, visit: https://mbed.com/s/error?error=0x80010130&amp;tgt=NUCLEO_L452RE_P
+[1724728980.22][CONN][RXD] -- MbedOS Error Info --
+[1724728985.21][CONN][INF] Reset the part and send in new preamble...
+[1724728985.21][SERI][INF] reset device using 'default' plugin...
+[1724728985.32][SERI][INF] waiting 1.00 sec after reset
+[1724728986.32][SERI][INF] wait for it...
+[1724728986.32][CONN][INF] resending new preamble '503618ae-6919-4ba6-82d8-d65300c0f2da' after 5.00 sec
+[1724728986.33][SERI][TXD] {{__sync;503618ae-6919-4ba6-82d8-d65300c0f2da}}
+[1724728986.34][CONN][RXD] 
+[1724728986.34][CONN][RXD] 
+[1724728986.34][CONN][RXD] ++ MbedOS Error Info ++
+[1724728986.34][CONN][RXD] Error Status: 0x80010130 Code: 304 Module: 1
+[1724728986.34][CONN][RXD] Error Message: pinmap not found for peripheral
+[1724728986.34][CONN][RXD] Location: 0x800531B
+[1724728986.34][CONN][RXD] Error Value: 0xF
+[1724728986.34][CONN][RXD] Current Thread: main Id: 0x20001B10 Entry: 0x8008B31 StackSize: 0x1000 StackMem: 0x20001B58 SP: 0x20002A9C 
+[1724728986.34][CONN][RXD] For more info, visit: https://mbed.com/s/error?error=0x80010130&amp;tgt=NUCLEO_L452RE_P
+[1724728986.34][CONN][RXD] -- MbedOS Error Info --
+[1724728986.34][HTST][ERR] None
+[1724728986.34][HTST][WRN] stopped to consume events due to __notify_sync_failed event
+[1724728986.35][HTST][INF] __exit_event_queue received
+[1724728986.35][HTST][INF] test suite run finished after 6.15 sec...
+[1724728986.35][HTST][INF] CONN exited with code: 0
+[1724728986.35][HTST][INF] No events in queue
+[1724728986.35][HTST][INF] host test result() call skipped, received: sync_failed
+[1724728986.35][HTST][WRN] missing __exit event from DUT
+[1724728986.35][HTST][INF] calling blocking teardown()
+[1724728986.35][HTST][INF] teardown() finished
+[1724728986.35][HTST][INF] {{result;sync_failed}}
+CMake Error at mbed-run-greentea-test-testshield-pwm-and-adc.cmake:19 (execute_process):
+  execute_process failed command indexes:
+
+    1: "Child return code: 14"
+
+
+
+</system-out>
+	</testcase>
+	<testcase name="test-testshield-dac-to-adc" classname="test-testshield-dac-to-adc" time="5.86211" status="fail">
+		<failure message=""/>
+		<system-out>[1/1] Flashing test-testshield-dac-to-adc with OpenOCD...
+Open On-Chip Debugger 0.12.0+dev-00499-g151b74371 (2024-01-22-10:06)
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+DEPRECATED! use 'adapter driver' not 'interface'
+Info : The selected transport took over low-level target control. The results might differ compared to plain JTAG/SWD
+DEPRECATED! use 'adapter serial' not 'hla_serial'
+Info : clock speed 500 kHz
+Info : STLINK V2J39M27 (API v2) VID:PID 0483:374B
+Info : Target voltage: 3.240553
+Info : [stm32l4x.cpu] Cortex-M4 r0p1 processor detected
+Info : [stm32l4x.cpu] target has 6 breakpoints, 4 watchpoints
+Info : [stm32l4x.cpu] Examination succeed
+Info : gdb port disabled
+Info : Unable to match requested speed 500 kHz, using 480 kHz
+Info : Unable to match requested speed 500 kHz, using 480 kHz
+[stm32l4x.cpu] halted due to debug-request, current mode: Thread 
+xPSR: 0x01000000 pc: 0x08000318 msp: 0x10000698
+** Programming Started **
+Info : device idcode = 0x20016462 (STM32L45/L46xx - Rev Y : 0x2001)
+Info : RDP level 0 (0xAA)
+Info : flash size = 512 KiB
+Info : flash mode : single-bank
+Warn : Adding extra erase range, 0x0800ebc8 .. 0x0800efff
+** Programming Finished **
+** Resetting Target **
+Info : Unable to match requested speed 500 kHz, using 480 kHz
+Info : Unable to match requested speed 500 kHz, using 480 kHz
+shutdown command invoked
+Executing: /home/jamie/Mbed/mbed-ce-test-tools/CI-Shield-Tests/mbed-os/venv/bin/python3.10 -m mbed_host_tests.mbedhtrun --skip-flashing -p /dev/ttyNUCLEO_L452RE_P --skip-reset -m NUCLEO_L452RE_P --baud-rate=115200
+[1724729003.20][HTST][INF] host test executor ver. 0.0.16
+[1724729003.20][HTST][INF] copy image onto target... SKIPPED!
+[1724729003.22][HTST][INF] starting host test process...
+[1724729003.23][CONN][INF] starting connection process...
+[1724729003.24][CONN][INF] notify event queue about extra 60 sec timeout for serial port pooling
+[1724729003.24][CONN][INF] initializing serial port listener... 
+[1724729003.24][SERI][INF] using specified port '/dev/ttyNUCLEO_L452RE_P'
+[1724729003.24][HTST][INF] setting timeout to: 60 sec
+[1724729003.24][SERI][INF] serial(port=/dev/ttyNUCLEO_L452RE_P, baudrate=115200, read_timeout=0.01, write_timeout=5)
+[1724729003.25][SERI][TXD] mbedmbedmbedmbedmbedmbedmbedmbedmbedmbed
+[1724729003.25][CONN][INF] sending up to 2 __sync packets (specified with --sync=2)
+[1724729003.25][CONN][INF] sending preamble '7a502af8-d789-48cb-b4da-aa1939f36e09'
+[1724729003.25][SERI][TXD] {{__sync;7a502af8-d789-48cb-b4da-aa1939f36e09}}
+[1724729003.26][CONN][WRN] UnicodeDecodeError encountered!
+[1724729003.26][CONN][RXD] 
+
+
+[NON-XML-CHAR-0x5]
+
+
+
+
+[NON-XML-CHAR-0x1A]
+
+
+
+[NON-XML-CHAR-0x3][NON-XML-CHAR-0x2]
+[NON-XML-CHAR-0xE]
+[NON-XML-CHAR-0x18][NON-XML-CHAR-0x2]
+
+
+
+
+b
+@
+Lk[NON-XML-CHAR-0xC]
+[b
+l[NON-XML-CHAR-0x12][NON-XML-CHAR-0x5][NON-XML-CHAR-0x2]b[NON-XML-CHAR-0x4]
+[NON-XML-CHAR-0x13]
+
+[NON-XML-CHAR-0x2][NON-XML-CHAR-0x12]
+
+[NON-XML-CHAR-0x2]
+z~
+[NON-XML-CHAR-0x2]
+
+bl
+
+
+Bm
+
+
+,[NON-XML-CHAR-0xE]L[NON-XML-CHAR-0x1A]_c
+
+
+[NON-XML-CHAR-0x1][NON-XML-CHAR-0x1]K
+
+[NON-XML-CHAR-0x12]
+
+[NON-XML-CHAR-0x1E][NON-XML-CHAR-0x1]j,k[NON-XML-CHAR-0x12]
+_
+
+
+[NON-XML-CHAR-0x7]
+[NON-XML-CHAR-0xB]
+[NON-XML-CHAR-0x1][NON-XML-CHAR-0xC][NON-XML-CHAR-0x1]
+, [NON-XML-CHAR-0x8]
+[1724729003.26][CONN][RXD] 
+0	
+(
+mbedmbedmbedmbedmbedmbedmbedmbed
+[1724729003.26][CONN][INF] found SYNC in stream: {{__sync;7a502af8-d789-48cb-b4da-aa1939f36e09}} it is #0 sent, queued...
+[1724729003.26][HTST][INF] sync KV found, uuid=7a502af8-d789-48cb-b4da-aa1939f36e09, timestamp=1724729003.261577
+[1724729003.27][CONN][RXD] &gt;&gt;&gt; Running 1 test cases...
+[1724729003.27][CONN][RXD] 
+[1724729003.27][CONN][INF] found KV pair in stream: {{__version;1.3.0}}, queued...
+[1724729003.27][CONN][INF] found KV pair in stream: {{__timeout;30}}, queued...
+[1724729003.27][HTST][INF] DUT greentea-client version: 1.3.0
+[1724729003.27][CONN][INF] found KV pair in stream: {{__host_test_name;default_auto}}, queued...
+[1724729003.28][HTST][INF] setting timeout to: 30 sec
+[1724729003.28][CONN][INF] found KV pair in stream: {{__testcase_name;DAC to ADC}}, queued...
+[1724729003.28][HTST][INF] host test class: '&lt;class 'mbed_os_tools.test.host_tests.default_auto.DefaultAuto'&gt;'
+[1724729003.28][HTST][INF] host test setup() call...
+[1724729003.28][HTST][INF] CALLBACKs updated
+[1724729003.28][HTST][INF] host test detected: default_auto
+[1724729003.29][CONN][RXD] &gt;&gt;&gt; Running case #1: 'DAC to ADC'...
+[1724729003.29][CONN][INF] found KV pair in stream: {{__testcase_start;DAC to ADC}}, queued...
+[1724729003.32][CONN][RXD] DAC output of 0.0% produced an ADC reading of 99.3%
+[1724729003.32][CONN][RXD] &lt;greentea test suite&gt;:59::FAIL: Expected 0.000000 Was 0.993407
+[1724729003.37][CONN][RXD] DAC output of 10.0% produced an ADC reading of 99.4%
+[1724729003.41][CONN][RXD] DAC output of 20.0% produced an ADC reading of 99.4%
+[1724729003.46][CONN][RXD] DAC output of 30.0% produced an ADC reading of 99.3%
+[1724729003.51][CONN][RXD] DAC output of 40.0% produced an ADC reading of 99.3%
+[1724729003.57][CONN][RXD] DAC output of 50.0% produced an ADC reading of 99.3%
+[1724729003.62][CONN][RXD] DAC output of 60.0% produced an ADC reading of 99.3%
+[1724729003.67][CONN][RXD] DAC output of 70.0% produced an ADC reading of 99.3%
+[1724729003.71][CONN][RXD] DAC output of 80.0% produced an ADC reading of 99.3%
+[1724729003.76][CONN][RXD] DAC output of 90.0% produced an ADC reading of 99.3%
+[1724729003.81][CONN][RXD] DAC output of 100.0% produced an ADC reading of 99.2%
+[1724729003.82][CONN][INF] found KV pair in stream: {{__testcase_finish;DAC to ADC;0;1}}, queued...
+[1724729003.83][CONN][RXD] &gt;&gt;&gt; 'DAC to ADC': 0 passed, 1 failed with reason 'Test Cases Failed'
+[1724729003.83][CONN][RXD] 
+[1724729003.83][CONN][RXD] 
+[1724729003.83][CONN][RXD] &gt;&gt;&gt; Test cases: 0 passed, 1 failed with reason 'Test Cases Failed'
+[1724729003.84][CONN][RXD] &gt;&gt;&gt; TESTS FAILED!
+[1724729003.84][CONN][RXD] 
+[1724729003.84][CONN][RXD] -----------------------
+[1724729003.84][CONN][RXD] 0 Tests 1 Failures 0 Ignored 
+[1724729003.84][CONN][RXD] FAIL
+[1724729003.84][CONN][INF] found KV pair in stream: {{__testcase_summary;0;1}}, queued...
+[1724729003.84][CONN][INF] found KV pair in stream: {{end;failure}}, queued...
+[1724729003.84][CONN][INF] found KV pair in stream: {{__exit;0}}, queued...
+[1724729003.84][HTST][INF] __exit(0)
+[1724729003.84][HTST][INF] __notify_complete(False)
+[1724729003.84][HTST][INF] __exit_event_queue received
+[1724729003.84][HTST][INF] test suite run finished after 0.57 sec...
+[1724729003.85][CONN][INF] received special event '__host_test_finished' value='True', finishing
+[1724729003.86][HTST][INF] CONN exited with code: 0
+[1724729003.86][HTST][INF] Some events in queue
+[1724729003.86][HTST][INF] stopped consuming events
+[1724729003.86][HTST][INF] host test result() call skipped, received: False
+[1724729003.86][HTST][INF] calling blocking teardown()
+[1724729003.86][HTST][INF] teardown() finished
+[1724729003.86][HTST][INF] {{result;failure}}
+CMake Error at mbed-run-greentea-test-testshield-dac-to-adc.cmake:19 (execute_process):
+  execute_process failed command indexes:
+
+    1: "Child return code: 1"
+
+
+
+</system-out>
+	</testcase>
+</testsuite>
