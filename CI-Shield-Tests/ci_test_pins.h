@@ -90,6 +90,10 @@
 #if TARGET_NUCLEO_L452RE_P
 // PA4 (CN8 pin A2) must be jumpered to the analog in pin (A0)
 #define PIN_ANALOG_OUT PA_4
+
+// The default Arduino D5 pin cannot use PWM due to the us ticker.  To get around this we
+// jumper PB0 (CN6 pin 10) to PIN_GPOUT1_PWM.
+#define PIN_GPOUT_1_PWM PB_0
 #endif
 
 // Default definitions, if not overridden above.  These use the Arduino Uno form factor.
