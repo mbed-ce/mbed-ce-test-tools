@@ -200,5 +200,13 @@ class I2CSlaveCommsTest(BaseHostTest):
 
     def teardown(self):
         self.recorder.teardown()
+
+        # Noticed that, if the I2C slave implementation is broken and doesn't acknowledge the
+        # CY7C65211, it can get "stuck" and keep the I2C bus low, preventing subsequent tests
+        # from working.  Closing and reopening it one last time seems to reset it, preventing
+        # this from happening.
+        self._destroy_i2c_bridge()
+        self._initialize_i2c_bridge()
+
         self._destroy_i2c_bridge()
         

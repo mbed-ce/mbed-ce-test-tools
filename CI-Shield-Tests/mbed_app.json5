@@ -10,7 +10,7 @@
         "STM32L452xE": {
             // This was added because not using it seemed to cause intermittent
             // glitchy behavior with UART comms on my dev board
-            "target.clock_source": "USE_PLL_HSI"
+            "target.lse_drive_load_level": "RCC_LSEDRIVE_HIGH"
         }
     }
 }

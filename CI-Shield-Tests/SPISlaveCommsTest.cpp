@@ -82,6 +82,9 @@ void test_one_byte_transaction()
     // Preload reply
     spi->reply(0x2);
 
+    Timer transactionTimer;
+    transactionTimer.start();
+
     uint8_t byteRxed = 0;
     while(true)
     {
@@ -89,6 +92,12 @@ void test_one_byte_transaction()
         {
             byteRxed = spi->read();
             break;
+        }
+
+        if(transactionTimer.elapsed_time() > 1s)
+        {
+            TEST_FAIL_MESSAGE("No data seen by slave device!");
+            return;
         }
     }
 
@@ -111,6 +120,9 @@ void test_one_16bit_word_transaction()
     // Preload reply
     spi->reply(0x0304);
 
+    Timer transactionTimer;
+    transactionTimer.start();
+
     uint16_t wordRxed = 0;
     while(true)
     {
@@ -118,6 +130,12 @@ void test_one_16bit_word_transaction()
         {
             wordRxed = spi->read();
             break;
+        }
+
+        if(transactionTimer.elapsed_time() > 1s)
+        {
+            TEST_FAIL_MESSAGE("No data seen by slave device!");
+            return;
         }
     }
 
@@ -147,12 +165,22 @@ void test_one_byte_rx_only()
     greentea_send_kv("do_transaction", "0x25 expected_response 0x25");
 
     uint8_t byteRxed = 0;
+
+    Timer transactionTimer;
+    transactionTimer.start();
+
     while(true)
     {
         if(spi->receive())
         {
             byteRxed = spi->read();
             break;
+        }
+
+        if(transactionTimer.elapsed_time() > 1s)
+        {
+            TEST_FAIL_MESSAGE("No data seen by slave device!");
+            return;
         }
     }
 
@@ -176,6 +204,10 @@ void test_one_byte_tx_only()
     greentea_send_kv("do_transaction", "0x77 expected_response 0x88");
 
     spi->reply(0x88);
+
+    Timer transactionTimer;
+    transactionTimer.start();
+
     while(true)
     {
         if(spi->receive())
@@ -183,6 +215,12 @@ void test_one_byte_tx_only()
             // Note: with MOSI disabled, the API makes no guarantees about the return value here
             spi->read();
             break;
+        }
+
+        if(transactionTimer.elapsed_time() > 1s)
+        {
+            TEST_FAIL_MESSAGE("No data seen by slave device!");
+            return;
         }
     }
 
@@ -214,10 +252,20 @@ void test_four_byte_transaction()
         spi->reply(txData[txIndex++]);
     }
 
+    Timer transactionTimer;
+    transactionTimer.start();
+
     for(size_t dataIndex = 0; dataIndex < sizeof(txData); ++dataIndex)
     {
         // Wait for data
-        while(!spi->receive()){}
+        while(!spi->receive())
+        {
+            if(transactionTimer.elapsed_time() > 1s)
+            {
+                TEST_FAIL_MESSAGE("No data seen by slave device!");
+                return;
+            }
+        }
 
         // Read response
         rxData[rxIndex++] = spi->read();
