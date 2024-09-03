@@ -14,14 +14,6 @@ project(mbed-ce-ci-shield-tests)
 
 enable_testing()
 
-add_executable(TestEEPROM TestEEPROM.cpp)
-target_link_libraries(TestEEPROM mbed-storage-i2cee mbed-os)
-mbed_set_post_build(TestEEPROM)
-
-add_executable(TestSDCard TestSDCard.cpp)
-target_link_libraries(TestSDCard mbed-storage-sd mbed-os)
-mbed_set_post_build(TestSDCard)
-
 # Add tests -------------------------------------------------------
 mbed_greentea_add_test(
     TEST_NAME testshield-businout

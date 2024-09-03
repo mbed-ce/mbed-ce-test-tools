@@ -241,16 +241,17 @@ void test_four_byte_transaction()
     size_t txIndex = 0;
     uint8_t rxData[sizeof(txData)];
     size_t rxIndex = 0;
-    greentea_send_kv("do_transaction", "0x5 0x6 0x7 0x8 expected_response 0x1 0x2 0x3 0x4");
 
     // Pre-fill the FIFO with data.  This is the only way I've found to get even moderately fast
     // clock rates (100kHz) to work for multi-byte transfers.
-    // What sucks is that SPISlave does not provide an API to determine how many bytes can be sent...
+    // What sucks is that SPISlave does not provide an API to determine how big the hardware FIFO is.
     for(size_t dataIndex = 0; dataIndex < sizeof(txData); ++dataIndex)
     {
         // Preload reply
         spi->reply(txData[txIndex++]);
     }
+
+    greentea_send_kv("do_transaction", "0x5 0x6 0x7 0x8 expected_response 0x1 0x2 0x3 0x4");
 
     Timer transactionTimer;
     transactionTimer.start();
@@ -262,6 +263,7 @@ void test_four_byte_transaction()
         {
             if(transactionTimer.elapsed_time() > 1s)
             {
+                printf("Only saw %zu bytes.\n", dataIndex);
                 TEST_FAIL_MESSAGE("No data seen by slave device!");
                 return;
             }
