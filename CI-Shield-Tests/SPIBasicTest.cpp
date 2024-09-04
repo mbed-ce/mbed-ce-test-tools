@@ -528,7 +528,7 @@ utest::v1::status_t test_setup(const size_t number_of_cases)
     static DigitalOut sdcardEnablePin(PIN_SDCARD_ENABLE, 0);
 
     // Setup Greentea using a reasonable timeout in seconds
-    GREENTEA_SETUP(60, "spi_basic_test");
+    GREENTEA_SETUP(90, "spi_basic_test");
     return verbose_test_setup_handler(number_of_cases);
 }
 

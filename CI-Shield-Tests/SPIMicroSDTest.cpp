@@ -229,7 +229,7 @@ void test_sd_file()
 utest::v1::status_t test_setup(const size_t number_of_cases)
 {
     // Setup Greentea using a reasonable timeout in seconds
-    GREENTEA_SETUP(120, "default_auto");
+    GREENTEA_SETUP(30, "default_auto");
 
     // Enable power and SPI to the SD card
     static DigitalOut sdcardEnablePin(PIN_SDCARD_ENABLE, 0);

@@ -264,7 +264,7 @@ void test_four_byte_transaction()
             if(transactionTimer.elapsed_time() > 1s)
             {
                 printf("Only saw %zu bytes.\n", dataIndex);
-                TEST_FAIL_MESSAGE("No data seen by slave device!");
+                TEST_FAIL_MESSAGE("No/incomplete data seen by slave device!");
                 return;
             }
         }
