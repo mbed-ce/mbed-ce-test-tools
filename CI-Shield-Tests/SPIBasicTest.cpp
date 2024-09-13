@@ -479,11 +479,15 @@ void async_use_multiple_spi_objects()
     }
 
     spi->transfer_and_wait(standardMessageBytes, 1, nullptr, 0);
+    printf("Original SPI transfer completed\n");
     spi2->transfer_and_wait(standardMessageBytes + 1, 1, nullptr, 0);
+    printf("SPI #2 transfer completed\n");
     delete spi2;
     spi3->transfer_and_wait(standardMessageBytes + 2, 1, nullptr, 0);
+    printf("SPI #3 transfer completed\n");
     delete spi3;
     spi->transfer_and_wait(standardMessageBytes + 3, 1, nullptr, 0);
+    printf("Original SPI transfer completed again\n");
 
     host_assert_standard_message();
 }
