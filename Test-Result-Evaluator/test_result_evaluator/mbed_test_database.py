@@ -12,8 +12,7 @@ import graphviz
 
 from mbed_tools.targets._internal.target_attributes import get_target_attributes
 
-import json5
-import cmsis_pack_manager
+import pyjson5
 
 
 class TestResult(enum.IntEnum):
@@ -183,13 +182,13 @@ class MbedTestDatabase:
         """
 
         target_json5_file = mbed_os_path / "targets" / "targets.json5"
-        targets_data: Dict[str, Any] = json5.loads(target_json5_file.read_text())
+        targets_data: Dict[str, Any] = pyjson5.decode(target_json5_file.read_text())
 
         drivers_json5_file = mbed_os_path / "targets" / "drivers.json5"
-        drivers_data: Dict[str, Any] = json5.loads(drivers_json5_file.read_text())
+        drivers_data: Dict[str, Any] = pyjson5.decode(drivers_json5_file.read_text())
 
         cmsis_mcu_descriptions_json5_file = mbed_os_path / "targets" / "cmsis_mcu_descriptions.json5"
-        cmsis_mcu_description_data: Dict[str, Any] = json5.loads(cmsis_mcu_descriptions_json5_file.read_text())
+        cmsis_mcu_description_data: Dict[str, Any] = pyjson5.decode(cmsis_mcu_descriptions_json5_file.read_text())
 
         # First assemble a list of all the drivers.
         # For this we want to process the JSON directly rather than dealing with target inheritance, because

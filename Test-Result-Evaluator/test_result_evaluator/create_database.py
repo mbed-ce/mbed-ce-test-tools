@@ -4,12 +4,7 @@ If the output file path already exists it will be deleted and recreated.
 """
 
 import pathlib
-import datetime
 import sys
-
-from junitparser import JUnitXml
-import cmsis_pack_manager
-import json5
 
 from test_result_evaluator import mbed_test_database
 
