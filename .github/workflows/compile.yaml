@@ -27,10 +27,6 @@ jobs:
           apt-get update
           apt-get install -y python3-venv
 
-      - name: Install Python dependencies
-        run: |
-            python3 -m pip install -r CI-Shield-Tests/mbed-os/tools/requirements.txt
-
       - name: Build project for ${{ matrix.mbed_target }}
         run: |
             cd CI-Shield-Tests
