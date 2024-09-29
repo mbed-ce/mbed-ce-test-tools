@@ -233,10 +233,13 @@ class MbedTestDatabase:
 
             # Also add the parents for each target
             for parent in target_data.get("inherits", []):
-                self._database.execute(
-                    "INSERT INTO TargetGraph(parentTarget, childTarget) VALUES(?, ?)",
-                    (parent, target_name)
-                )
+                try:
+                    self._database.execute(
+                        "INSERT INTO TargetGraph(parentTarget, childTarget) VALUES(?, ?)",
+                        (parent, target_name)
+                    )
+                except sqlite3.IntegrityError:
+                    print(f"Warning: Failed to add parent relationship from target {target_name} to parent '{parent}'. Perhaps there is an invalid \"inherits\" attribute in the targets JSON?")
 
         # Now add the drivers to the database
         self._database.execute("BEGIN")

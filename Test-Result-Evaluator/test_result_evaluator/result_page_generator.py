@@ -90,7 +90,7 @@ def generate_drivers_index_page(database: MbedTestDatabase, out_path: pathlib.Pa
     :return:
     """
 
-    with open(out_path, "w") as index_page:
+    with open(out_path, "w", encoding="utf8") as index_page:
         write_html_header(index_page, "Mbed Drivers Index")
 
         for driver_type in DriverType:
@@ -131,7 +131,7 @@ def generate_driver_page(database: MbedTestDatabase, driver_info: MbedTestDataba
     targets have it.
     """
 
-    with open(out_path, "w") as target_page:
+    with open(out_path, "w", encoding="utf8") as target_page:
         write_html_header(target_page, f"Mbed CE Driver Info: {driver_info.friendly_name}")
         target_page.write('<p><a href="index.html">Back to Drivers Index ^</a></p>\n')
         target_page.write(f"""
@@ -173,7 +173,7 @@ def generate_targets_index_page(database: MbedTestDatabase, mcu_family_targets: 
     Generates the index page for the targets folder.
     This includes a link to each MCU target family and other information about it.
     """
-    with open(out_path, "w") as targets_index:
+    with open(out_path, "w", encoding="utf8") as targets_index:
         write_html_header(targets_index, "Mbed CE MCU Target Families")
         targets_index.write("<p>Each row on this page represents one microcontroller family that Mbed supports."
                             " Microcontroller family, here, refers to a group of Mbed targets that use chips from the"
@@ -231,7 +231,7 @@ def generate_target_family_page(database: MbedTestDatabase, mcu_family_target: s
     Generate a webpage for a target family.  This includes info like the target's features and the targets in the family.
     """
 
-    with open(out_path, "w") as target_page:
+    with open(out_path, "w", encoding="utf8") as target_page:
         write_html_header(target_page, mcu_family_target + " Target Family Info")
         target_page.write('<p><a href="index.html">Back to Target Families Index ^</a></p>')
 
@@ -337,7 +337,7 @@ def generate_tests_index_page(database: MbedTestDatabase, out_path: pathlib.Path
     Generate the page with the index of all the tests and their status on each target
     """
 
-    with open(out_path, "w") as targets_index:
+    with open(out_path, "w", encoding="utf8") as targets_index:
         write_html_header(targets_index, "All Test Results by Target")
 
         test_table = prettytable.PrettyTable()
@@ -382,7 +382,7 @@ def generate_test_page(database: MbedTestDatabase, test_name: str, out_path: pat
     Generate the page that shows each test case of a test and its results on each target
     """
 
-    with open(out_path, "w") as test_page:
+    with open(out_path, "w", encoding="utf8") as test_page:
         write_html_header(test_page, f"Results of {test_name}")
 
         test_page.write('<p><a href="index.html">Back to All Test Results ^</a></p>')
@@ -430,7 +430,7 @@ def generate_test_case_run_page(database: MbedTestDatabase, test_name: str, test
     """
     Generate a page that shows the result of running a test case on a target.
     """
-    with open(out_path, "w") as test_page:
+    with open(out_path, "w", encoding="utf8") as test_page:
         write_html_header(test_page, f"Test Case Output", levels_deep=3)
         test_page.write(f'<p><a href="../../{test_name}.html">Back to {test_name} Results ^</a></p>')
 
