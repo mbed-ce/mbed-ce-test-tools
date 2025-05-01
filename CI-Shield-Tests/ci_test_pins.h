@@ -86,6 +86,22 @@
 #define PIN_SPI_HW_CS PG_10
 #endif
 
+// Overrides for Nucleo U083
+#if TARGET_NUCLEO_U083RC
+// STM forgot to use a pin for D10 that had the HW CS alternate function... oops!
+// To fix this, you must attach a jumper from CN7 pin 17 on the bottom of the board to the SPI.HW_CS shield pin
+#define PIN_SPI_HW_CS PA_15
+
+// PA4 (pin A2) must be jumpered to the analog in pin (A0)
+#define PIN_ANALOG_OUT PA_4
+
+// By default D0 and D1 on the Arduino headers are NC, and even if the solder jumper is moved,
+// they are shared with the ST-Link VCP serial port.
+// Instead, we just jumper the UART pins to other free pins.
+#define PIN_UART_MCU_TX PC_4 // CN10 pin 34
+#define PIN_UART_MCU_RX PC_5 // CN10 pin 6
+#endif
+
 // Overrides for Nucleo L452RE_P
 #if TARGET_NUCLEO_L452RE_P
 // PA4 (CN6 pin 30) must be jumpered to the analog in pin (A0)
@@ -175,12 +191,12 @@
 #define PIN_GPIN_0 ARDUINO_UNO_D2
 #endif
 
-#ifndef PIN_UART_MCU_RX
-#define PIN_UART_MCU_RX ARDUINO_UNO_D1
+#ifndef PIN_UART_MCU_TX
+#define PIN_UART_MCU_TX ARDUINO_UNO_D1
 #endif
 
-#ifndef PIN_UART_MCU_TX
-#define PIN_UART_MCU_TX ARDUINO_UNO_D0
+#ifndef PIN_UART_MCU_RX
+#define PIN_UART_MCU_RX ARDUINO_UNO_D0
 #endif
 
 #endif

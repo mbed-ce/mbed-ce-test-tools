@@ -66,6 +66,9 @@ class I2CSlaveCommsTest(BaseHostTest):
         success = True
         try:
             self.i2c_bridge.i2c_write(addr >> 1, bytes_to_write)
+        except usb1.USBErrorTimeout:
+            self.logger.prn_err("Timeout error writing to USB-I2C bridge. This likely means the slave implementation didn't transfer the right amount of bytes.")
+            success = False
         except Exception:
             self.logger.prn_err("Error writing to I2C slave: " + traceback.format_exc())
             success = False

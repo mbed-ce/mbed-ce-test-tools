@@ -78,6 +78,16 @@ const uint8_t spiMode = 0;
 constexpr auto spiPinmap = get_spi_pinmap(PIN_SPI_MOSI, PIN_SPI_MISO, PIN_SPI_SCLK);
 #endif
 
+spi_capabilities_t spiCaps;
+
+// Check whether the SPI capabilities support the given template word size
+template<typename WordT>
+inline bool supportsThisWordSize() 
+{ 
+    const auto wordSizeBits = sizeof(WordT) * 8;
+    return spiCaps.word_length & (1 << (wordSizeBits - 1)); 
+}
+
 void create_spi_object()
 {
     // Use static pinmap if available
@@ -92,6 +102,9 @@ void create_spi_object()
 #if DEVICE_SPI_ASYNCH
     spi->set_dma_usage(DMA_USAGE_NEVER);
 #endif
+
+    // Get capabilities
+    spi_get_capabilities(NC, false, &spiCaps);
 }
 
 /*
@@ -159,6 +172,8 @@ void write_single_word_uint8()
  */
 void write_single_word_uint16()
 {
+    TEST_SKIP_UNLESS(supportsThisWordSize<uint16_t>());
+
     host_start_spi_logging();
 
     spi->format(16, spiMode);
@@ -177,6 +192,8 @@ void write_single_word_uint16()
  */
 void write_single_word_uint32()
 {
+    TEST_SKIP_UNLESS(supportsThisWordSize<uint32_t>());
+
     host_start_spi_logging();
 
     spi->format(32, spiMode);
@@ -192,6 +209,8 @@ void write_single_word_uint32()
 template<typename Word>
 void write_transactional_tx_only()
 {
+    TEST_SKIP_UNLESS(supportsThisWordSize<Word>());
+
     host_start_spi_logging();
     spi->format(sizeof(Word) * 8, spiMode);
     spi->write(reinterpret_cast<Word const *>(getMessage(sizeof(Word))),
@@ -208,6 +227,8 @@ void write_transactional_tx_only()
 template<typename Word>
 void write_transactional_rx_only()
 {
+    TEST_SKIP_UNLESS(supportsThisWordSize<Word>());
+
     host_start_spi_logging();
     spi->format(sizeof(Word) * 8, spiMode);
 
@@ -226,6 +247,8 @@ void write_transactional_rx_only()
 template<typename Word>
 void write_transactional_tx_rx()
 {
+    TEST_SKIP_UNLESS(supportsThisWordSize<Word>());
+
     host_start_spi_logging();
     spi->format(sizeof(Word) * 8, spiMode);
     Word rxBytes[sizeof(standardMessageBytes) / sizeof(Word)] {};
@@ -327,6 +350,8 @@ void write_async_tx_rx()
 template<DMAUsage dmaUsage>
 void write_async_tx_rx_16_bit()
 {
+    TEST_SKIP_UNLESS(supportsThisWordSize<uint16_t>());
+
     host_start_spi_logging();
     spi->set_dma_usage(dmaUsage);
     spi->format(16, spiMode);
@@ -340,6 +365,8 @@ void write_async_tx_rx_16_bit()
 template<DMAUsage dmaUsage>
 void write_async_tx_rx_32_bit()
 {
+    TEST_SKIP_UNLESS(supportsThisWordSize<uint32_t>());
+
     host_start_spi_logging();
     spi->set_dma_usage(dmaUsage);
     spi->format(32, spiMode);
@@ -546,28 +573,19 @@ Case cases[] = {
         Case("Verify spi_get_peripheral_name() Exists", verify_spi_get_peripheral_name_exists),
         Case("Send 8 Bit Data via Single Word API", write_single_word_uint8),
         Case("Send 16 Bit Data via Single Word API", write_single_word_uint16),
-#if DEVICE_SPI_32BIT_WORDS
         Case("Send 32 Bit Data via Single Word API", write_single_word_uint32),
-#endif
         Case("Send 8 Bit Data via Transactional API (Tx only)", write_transactional_tx_only<uint8_t>),
         Case("Send 16 Bit Data via Transactional API (Tx only)", write_transactional_tx_only<uint16_t>),
-#if DEVICE_SPI_32BIT_WORDS
         Case("Send 32 Bit Data via Transactional API (Tx only)", write_transactional_tx_only<uint32_t>),
-#endif
-
         Case("Free and Reallocate SPI Instance (synchronous API)", free_and_reallocate_spi),
 
         Case("Read 8 Bit Data via Transactional API (Rx only)", write_transactional_rx_only<uint8_t>),
         Case("Read 16 Bit Data via Transactional API (Rx only)", write_transactional_rx_only<uint16_t>),
-#if DEVICE_SPI_32BIT_WORDS
         Case("Read 32 Bit Data via Transactional API (Rx only)", write_transactional_rx_only<uint32_t>),
-#endif
 
         Case("Transfer 8 Bit Data via Transactional API (Tx/Rx)", write_transactional_tx_rx<uint8_t>),
         Case("Transfer 16 Bit Data via Transactional API (Tx/Rx)", write_transactional_tx_rx<uint16_t>),
-#if DEVICE_SPI_32BIT_WORDS
         Case("Transfer 32 Bit Data via Transactional API (Tx/Rx)", write_transactional_tx_rx<uint32_t>),
-#endif
         Case("Use Multiple SPI Instances (synchronous API)", use_multiple_spi_objects),
 
 #if DEVICE_SPI_ASYNCH

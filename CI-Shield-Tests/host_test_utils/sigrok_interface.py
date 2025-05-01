@@ -22,7 +22,7 @@ from . import usb_serial_numbers
 
 from mbed_host_tests.host_tests_logger import HtrunLogger
 
-LOGIC_ANALYZER_FREQUENCY = 8 # MHz
+LOGIC_ANALYZER_FREQUENCY = 4 # MHz
 
 #if sys.platform == "win32":
     # Sigrok must be run through WSL on Windows, see

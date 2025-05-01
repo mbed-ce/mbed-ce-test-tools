@@ -3,14 +3,17 @@ cmake_policy(VERSION 3.19)
 
 # Initialize Mbed OS build system
 set(MBED_APP_JSON_PATH mbed_app.json5)
-include(mbed-os/tools/cmake/app.cmake)
+include(mbed-os/tools/cmake/mbed_toolchain_setup.cmake)
+
+project(mbed-ce-ci-shield-tests)
+
+include(mbed_project_setup)
 
 # Make sure testing is enabled for the project
 set(MBED_ENABLE_TESTING TRUE CACHE BOOL "" FORCE)
 
 add_subdirectory(mbed-os)
 
-project(mbed-ce-ci-shield-tests)
 
 enable_testing()
 
@@ -88,4 +91,8 @@ mbed_greentea_add_test(
 	TEST_SKIPPED ${DAC_ADC_TEST_SKIPPED}
 )
 
-mbed_finalize_build()
+mbed_greentea_add_test(
+	TEST_NAME testshield-uart
+	TEST_SOURCES UARTTest.cpp
+	HOST_TESTS_DIR host_tests
+)
