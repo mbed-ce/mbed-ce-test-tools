@@ -1,0 +1,2 @@
+cy_serial_bridge>=0.3
+libusb1

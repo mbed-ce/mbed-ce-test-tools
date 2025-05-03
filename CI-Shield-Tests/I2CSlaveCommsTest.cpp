@@ -190,7 +190,7 @@ void test_write_less_than_expected_bytes_to_slave()
     // Kick off the host test doing an I2C transaction
     greentea_send_kv("write_bytes_to_slave", "addr " MBED_I2C_ADDRESS_STR " data 0x8 0x9");
 
-    uint8_t bytesRxed[4]{};
+    uint8_t bytesRxed[5]{};
 
     while(true)
     {

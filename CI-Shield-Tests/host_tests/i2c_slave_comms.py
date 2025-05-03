@@ -11,6 +11,7 @@ import traceback
 from typing import List, Optional
 
 import cy_serial_bridge
+import usb1
 
 # Unfortunately there's no easy way to make the test runner add a directory to its module path...
 this_script_dir = pathlib.Path(os.path.dirname(__file__))
