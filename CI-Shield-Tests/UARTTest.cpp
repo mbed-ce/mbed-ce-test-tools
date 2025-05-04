@@ -154,7 +154,7 @@ utest::v1::status_t test_setup(const size_t number_of_cases) {
 #if STATIC_PINMAP_READY
     uart = new BufferedSerial(serialPinmap);
 #else	
-    uart = new BufferedSerial(PIN_UART_MCU_TX, PIN_UART_MCU_RX, baudrate);
+    uart = new BufferedSerial(PIN_UART_MCU_TX, PIN_UART_MCU_RX);
 #endif
 
     // Set up mux for UART
