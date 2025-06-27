@@ -5,7 +5,13 @@
             "platform.stdio-buffered-serial": 1,
 			"target.components_add" : ["SD", "I2CEE"],
             "sd.CRC_ENABLED": 1,
-            "drivers.spi_transaction_queue_len": 3
+            "drivers.spi_transaction_queue_len": 3,
+
+            // Don't auto reboot on error, it makes debugging harder
+            "fatal-error-auto-reboot-enabled": false,
+
+            // Emit a KV pair when an assert fail or hardfault occurs
+            "platform.mbed-error-emit-greentea-kv": true,
         },
         "STM32L452xE": {
             // This was added because not using it seemed to cause intermittent

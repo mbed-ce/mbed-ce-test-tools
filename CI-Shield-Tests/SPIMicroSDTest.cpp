@@ -199,7 +199,11 @@ void test_sd_file()
     // sizeof(SD_TEST_STRING) - 1 chars.
 	char read_string[SD_TEST_STRING_MAX] = {0};
     file = fopen("/sd/test_sd_w.txt", "r");
-	TEST_ASSERT_MESSAGE(file != nullptr,"Failed to open file");
+    if(!file)
+    {
+        TEST_FAIL_MESSAGE("Failed to open file");
+        return;
+    }
 
 	ret = fread(read_string, sizeof(char), sizeof(SD_TEST_STRING) - 1, file);
 	TEST_ASSERT_MESSAGE(ret == (sizeof(SD_TEST_STRING) - 1), "Failed to read data");
@@ -252,12 +256,12 @@ Case cases[] = {
     Case("SPI - Write, Read, and Delete File (100kHz)", test_sd_file<100000, false, DMA_USAGE_NEVER>),
 
 #if DEVICE_SPI_ASYNCH
-    Case("[Async Interrupts] SPI - SD card present (1MHz)", test_card_present<1000000, true, DMA_USAGE_NEVER>),
-    Case("[Async Interrupts] SPI - Mount FS, Create File (1MHz)", mount_fs_create_file<1000000, true, DMA_USAGE_NEVER>),
-    Case("[Async Interrupts] SPI - Write, Read, and Delete File (1MHz)", test_sd_file<1000000, true, DMA_USAGE_NEVER>),
     Case("[Async DMA] SPI - SD card present (1MHz)", test_card_present<1000000, true, DMA_USAGE_ALWAYS>),
     Case("[Async DMA] SPI - Mount FS, Create File (1MHz)", mount_fs_create_file<1000000, true, DMA_USAGE_ALWAYS>),
     Case("[Async DMA] SPI - Write, Read, and Delete File (1MHz)", test_sd_file<1000000, true, DMA_USAGE_ALWAYS>),
+    Case("[Async Interrupts] SPI - SD card present (1MHz)", test_card_present<1000000, true, DMA_USAGE_NEVER>),
+    Case("[Async Interrupts] SPI - Mount FS, Create File (1MHz)", mount_fs_create_file<1000000, true, DMA_USAGE_NEVER>),
+    Case("[Async Interrupts] SPI - Write, Read, and Delete File (1MHz)", test_sd_file<1000000, true, DMA_USAGE_NEVER>),
 #endif
 };
 

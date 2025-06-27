@@ -145,7 +145,7 @@ void host_assert_standard_message()
 void verify_spi_get_peripheral_name_exists()
 {
 #ifndef DEVICE_SPI_COUNT
-    TEST_FAIL_MESSAGE("HAL should provide DEVICE_SPI_COUNT and spi_get_peripheral_name()")
+    TEST_FAIL_MESSAGE("HAL should provide DEVICE_SPI_COUNT and spi_get_peripheral_name()");
 #endif
 }
 
@@ -172,7 +172,7 @@ void write_single_word_uint8()
  */
 void write_single_word_uint16()
 {
-    TEST_SKIP_UNLESS(supportsThisWordSize<uint16_t>());
+    TEST_SKIP_UNLESS_MESSAGE(supportsThisWordSize<uint16_t>(), "16-bit SPI words not supported");
 
     host_start_spi_logging();
 
@@ -467,6 +467,11 @@ void async_queue_and_abort()
     // Allow the second transfer to run to completion
     rtos::ThisThread::sleep_for(10ms);
 
+    // The first transfer should have delivered no flags.
+    // The second transfer should have delivered a completion flag.
+    TEST_ASSERT_EQUAL(0, callbackEvent1);
+    TEST_ASSERT_EQUAL(SPI_EVENT_COMPLETE, callbackEvent2);
+
     // The first transfer should have been canceled after writing at least one byte but before filling the entire Rx buffer
     size_t testPatternCountBuf1 = std::count(logMessageRxData1.begin(), logMessageRxData1.end(), TEST_PATTERN);
     // Depending on DMA behavior, some or none of the bytes may have been written back to the buffer.
@@ -477,10 +482,6 @@ void async_queue_and_abort()
     size_t testPatternCountBuf2 = std::count(logMessageRxData2.begin(), logMessageRxData2.end(), TEST_PATTERN);
     TEST_ASSERT_EQUAL(0, testPatternCountBuf2);
 
-    // The first transfer should have delivered no flags.
-    // The second transfer should have delivered a completion flag.
-    TEST_ASSERT_EQUAL(0, callbackEvent1);
-    TEST_ASSERT_EQUAL(SPI_EVENT_COMPLETE, callbackEvent2);
 
     greentea_send_kv("verify_queue_and_abort_test", "please");
     assert_next_message_from_host("verify_queue_and_abort_test", "pass");

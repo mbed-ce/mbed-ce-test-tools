@@ -44,10 +44,14 @@ mbed_greentea_add_test(
 	HOST_TESTS_DIR host_tests
 )
 
+if(NOT "DEVICE_I2CSLAVE=1" IN_LIST MBED_TARGET_DEFINITIONS)
+	set(I2C_SLAVE_TEST_SKIPPED "No I2C slave support")
+endif()
 mbed_greentea_add_test(
     TEST_NAME testshield-i2c-slave-comms
     TEST_SOURCES I2CSlaveCommsTest.cpp
 	HOST_TESTS_DIR host_tests
+    TEST_SKIPPED ${I2C_SLAVE_TEST_SKIPPED}
 )
 
 mbed_greentea_add_test(
@@ -70,10 +74,14 @@ mbed_greentea_add_test(
 	HOST_TESTS_DIR host_tests
 )
 
+if(NOT "DEVICE_SPISLAVE=1" IN_LIST MBED_TARGET_DEFINITIONS)
+	set(SPI_SLAVE_TEST_SKIPPED "No SPI slave support")
+endif()
 mbed_greentea_add_test(
 	TEST_NAME testshield-spi-slave-comms
 	TEST_SOURCES SPISlaveCommsTest.cpp
 	HOST_TESTS_DIR host_tests
+    TEST_SKIPPED ${SPI_SLAVE_TEST_SKIPPED}
 )
 
 mbed_greentea_add_test(

@@ -73,9 +73,7 @@ std::pair<float, float> read_freq_and_duty_cycle_via_host_test()
 }
 
 /*
- * Generate a failure if the HAL does not provide the new DEVICE_SPI_COUNT /
- * spi_get_peripheral_name() functionality.
- * See https://github.com/mbed-ce/mbed-os/issues/255 for details.
+ * Generate a failure if this target's JSON does not set the target.default-adc-vref option
  */
 void verify_target_default_adc_vref_set()
 {
