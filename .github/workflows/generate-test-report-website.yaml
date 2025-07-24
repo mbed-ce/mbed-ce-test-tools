@@ -19,6 +19,7 @@ jobs:
           
       - name: Install Python dependencies
         run: |
+          pip install -e CI-Shield-Tests/mbed-os/tools
           pip install -r Test-Result-Evaluator/requirements.txt
       
       - name: Install Graphviz
@@ -28,7 +29,6 @@ jobs:
       
       - name: Run website generator
         run: |
-          export PYTHONPATH=$(pwd)/CI-Shield-Tests/mbed-os/tools/python
           cd Test-Result-Evaluator
           # Create database
           python -m test_result_evaluator.create_database ../CI-Shield-Tests/mbed-os mbed_tests.db
