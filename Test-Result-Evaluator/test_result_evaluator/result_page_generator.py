@@ -411,10 +411,11 @@ def generate_test_page(database: MbedTestDatabase, test_name: str, out_path: pat
                     elif target_test_results[target] == TestResult.PRIOR_TEST_CASE_CRASHED:
                         row_content.append('<div class="prior-crashed-marker">Prior Case Crashed</div>')
                     else:  # skipped
-                        row_content.append('<div class="skipped-marker">Skipped</div>')
+                        row_content.append(
+                            f'<div class="skipped-marker"><a href="{str(get_test_case_run_path(test_name, test_case_name, target))}">Skipped</a></div>')
                 else:
                     # Test case does not exist for this target, e.g. due to an ifdef
-                    row_content.append('<div class="skipped-marker">Skipped</div>')
+                    row_content.append('<div class="skipped-marker">Not Run</div>')
             test_table.add_row(row_content)
 
         # Write the table to the page.
@@ -493,7 +494,7 @@ def generate_tests_and_targets_website(database: MbedTestDatabase, gen_path: pat
 
         for test_case_name in test_details.keys():
             for target_name, result in test_details[test_case_name].items():
-                if result == TestResult.PASSED or result == TestResult.FAILED:
+                if result != TestResult.PRIOR_TEST_CASE_CRASHED:
                     run_path = tests_dir / get_test_case_run_path(test_name, test_case_name, target_name)
                     run_path.parent.mkdir(exist_ok=True, parents=True)
                     generate_test_case_run_page(database, test_name, test_case_name, target_name, run_path)

@@ -1,6 +1,8 @@
 """
 Module for creating and accessing an SQLite database of Mbed test results
 """
+from __future__ import annotations
+
 import collections
 import pathlib
 import sqlite3
@@ -40,9 +42,13 @@ NO_MCU_TARGET_FAMILY = "NO_FAMILY"
 
 class MbedTestDatabase:
 
-    def __init__(self, database_path: pathlib.Path):
-        """Create an MbedTestDatabase, passing the path to the database file."""
-        self._database = sqlite3.connect(str(database_path))
+    def __init__(self, database_path: pathlib.Path | None = None):
+        """
+        Create an MbedTestDatabase, passing the path to the database file.
+        If the path is None, an in-memory database is created.
+        """
+        db_path = ":memory:" if database_path is None else str(database_path)
+        self._database = sqlite3.connect(db_path)
 
         # Enable accessing rows by their name in cursors
         # https://stackoverflow.com/a/20042292/7083698
@@ -71,20 +77,20 @@ class MbedTestDatabase:
             "CREATE TABLE Targets("
             "name TEXT PRIMARY KEY, "  # Name of the target
             "isPublic INTEGER, "  # 1 if the target is a public target (a board that can be built for).
-                                  # 0 if not (the target is just used as a parent for other targets).
-            "isMCUFamily INTEGER, " # 1 if this is the top-level target for one family of MCUs and boards.
-                                    # (for example, STM32L4 is the family target for all STM32L4 MCUs and boards).
-                                    # Family targets are used to group together documentation and test results.
-                                    # 0 otherwise (target is above or below the family level).
+            # 0 if not (the target is just used as a parent for other targets).
+            "isMCUFamily INTEGER, "  # 1 if this is the top-level target for one family of MCUs and boards.
+            # (for example, STM32L4 is the family target for all STM32L4 MCUs and boards).
+            # Family targets are used to group together documentation and test results.
+            # 0 otherwise (target is above or below the family level).
             "mcuVendorName TEXT, "  # Name of the vendor which the CPU on this target comes from.  From the CMSIS
-                                    # database.  NULL if this target does not have a valid link to the CMSIS database.
+            # database.  NULL if this target does not have a valid link to the CMSIS database.
             "mcuPartNumber TEXT NULL, "  # Part number of the MCU.  This is copied verbatim from the 'device_name' 
-                                         # property in target.json5.  May be NULL if there is no part number.
+            # property in target.json5.  May be NULL if there is no part number.
             "mcuFamilyTarget TEXT NOT NULL, "  # Name of the MCU family target which is a parent of this target.
-                                               # If this target isn't part of an MCU family, this will contain NO_MCU_TARGET_FAMILY.
-                                               # If isMCUFamily = 1, this will contain the target's own name.
+            # If this target isn't part of an MCU family, this will contain NO_MCU_TARGET_FAMILY.
+            # If isMCUFamily = 1, this will contain the target's own name.
             "imageURL TEXT NULL  "  # URL of the image that will be shown in the target table for this board, if set 
-                                    # in JSON.
+            # in JSON.
             ")"
         )
 
@@ -121,7 +127,7 @@ class MbedTestDatabase:
         self._database.execute(
             "CREATE TABLE Drivers("
             "name TEXT PRIMARY KEY, "  # Driver name, matching how it's named in code.  This is a string like
-                                       # DEVICE_SERIAL, FEATURE_BLE, or COMPONENT_SPIF
+            # DEVICE_SERIAL, FEATURE_BLE, or COMPONENT_SPIF
             "friendlyName TEXT, "  # Human readable name, like FEATURE_BLE would have "Bluetooth Low Energy"
             "description TEXT, "  # Description, if available
             "type TEXT, "  # Type, value of DriverType
@@ -157,7 +163,7 @@ class MbedTestDatabase:
             "bankName TEXT NOT NULL, "  # Name of memory.  Directly from the CMSIS json.
             "size INTEGER NOT NULL, "  # Size in bytes
             "isFlash INTEGER NOT NULL, "  # 1 if flash memory, 0 if RAM.  This comes from the "writeable" 
-                                          # attribute from the CMSIS JSON.
+            # attribute from the CMSIS JSON.
             "UNIQUE(targetName, bankName)"  # Combo of target name - bank name must be unique
             ")"
         )
@@ -175,6 +181,22 @@ class MbedTestDatabase:
         # now commit the initial transaction
         self._database.commit()
 
+    def add_target(self, target_name: str, *, is_public: bool = True, is_mcu_family: bool = False,
+                   mcu_family_target: str = NO_MCU_TARGET_FAMILY):
+        """
+        Manually add a target to the database.
+
+        This is useful for tests that want to create a database with just one target.
+        """
+        self._database.execute(
+            "INSERT INTO Targets(name, isPublic, isMCUFamily, mcuFamilyTarget) VALUES(?, ?, ?, ?)",
+            (target_name,
+             1 if is_public else 0,
+             1 if is_mcu_family else 0,
+             mcu_family_target,
+             )
+        )
+
     def populate_targets_and_drivers(self, mbed_os_path: pathlib.Path):
         """
         Populate Targets, Drivers, and related tables from a given Mbed OS path.
@@ -188,7 +210,8 @@ class MbedTestDatabase:
         drivers_data: Dict[str, Any] = pyjson5.decode(drivers_json5_file.read_text(encoding="utf-8"))
 
         cmsis_mcu_descriptions_json5_file = mbed_os_path / "targets" / "cmsis_mcu_descriptions.json5"
-        cmsis_mcu_description_data: Dict[str, Any] = pyjson5.decode(cmsis_mcu_descriptions_json5_file.read_text(encoding="utf-8"))
+        cmsis_mcu_description_data: Dict[str, Any] = pyjson5.decode(
+            cmsis_mcu_descriptions_json5_file.read_text(encoding="utf-8"))
 
         # First assemble a list of all the drivers.
         # For this we want to process the JSON directly rather than dealing with target inheritance, because
@@ -219,17 +242,11 @@ class MbedTestDatabase:
         # Note that we don't need to use get_target_attributes() here because none of the attributes we need
         # are inherited
         for target_name, target_data in targets_data.items():
-
-            is_public = 1 if target_data.get("public", True) else 0  # targets are public by default
-            is_mcu_family = 1 if target_data.get("is_mcu_family_target", False) else 0
-
-            self._database.execute(
-                "INSERT INTO Targets(name, isPublic, isMCUFamily, mcuFamilyTarget) VALUES(?, ?, ?, ?)",
-                (target_name,
-                 is_public,
-                 is_mcu_family,
-                 NO_MCU_TARGET_FAMILY,  # Default to no family unless it's set to one later
-                ))
+            self.add_target(target_name,
+                            is_public=target_data.get("public", True),  # targets are public by default
+                            is_mcu_family=target_data.get("is_mcu_family_target", False),
+                            mcu_family_target=NO_MCU_TARGET_FAMILY  # Default to no family unless it's set to one later
+                            )
 
             # Also add the parents for each target
             for parent in target_data.get("inherits", []):
@@ -239,7 +256,8 @@ class MbedTestDatabase:
                         (parent, target_name)
                     )
                 except sqlite3.IntegrityError:
-                    print(f"Warning: Failed to add parent relationship from target {target_name} to parent '{parent}'. Perhaps there is an invalid \"inherits\" attribute in the targets JSON?")
+                    print(
+                        f"Warning: Failed to add parent relationship from target {target_name} to parent '{parent}'. Perhaps there is an invalid \"inherits\" attribute in the targets JSON?")
 
         # Now add the drivers to the database
         self._database.execute("BEGIN")
@@ -264,12 +282,13 @@ class MbedTestDatabase:
                 if "hidden_from_docs" in drivers_data[type.value][driver_name]:
                     hidden = 1 if drivers_data[type.value][driver_name]["hidden_from_docs"] else 0
 
-                self._database.execute("INSERT INTO Drivers(name, friendlyName, description, type, hidden) VALUES(?, ?, ?, ?, ?)",
-                                       (driver_name,
-                                        drivers_data[type.value][driver_name]["friendly_name"],
-                                        drivers_data[type.value][driver_name]["description"],
-                                        type.value,
-                                        hidden))
+                self._database.execute(
+                    "INSERT INTO Drivers(name, friendlyName, description, type, hidden) VALUES(?, ?, ?, ?, ?)",
+                    (driver_name,
+                     drivers_data[type.value][driver_name]["friendly_name"],
+                     drivers_data[type.value][driver_name]["description"],
+                     type.value,
+                     hidden))
 
         for target_name in targets_data.keys():
             # Next, add the drivers for each target
@@ -327,7 +346,6 @@ class MbedTestDatabase:
 
                 # Add target memories based on the CMSIS json data
                 for bank_name, bank_data in cmsis_cpu_data["memories"].items():
-
                     self._database.execute(
                         "INSERT INTO TargetMemories(targetName, bankName, size, isFlash) VALUES(?, ?, ?, ?)",
                         (target_name,
@@ -341,7 +359,8 @@ class MbedTestDatabase:
             mcu_family_targets = self.get_all_target_children(mcu_family_target)
             mcu_family_targets.add(mcu_family_target)
             for target in mcu_family_targets:
-                self._database.execute("UPDATE Targets SET mcuFamilyTarget = ? WHERE name = ?", (mcu_family_target, target))
+                self._database.execute("UPDATE Targets SET mcuFamilyTarget = ? WHERE name = ?",
+                                       (mcu_family_target, target))
 
         self._database.commit()
 
@@ -398,11 +417,12 @@ FROM
 WHERE
     Drivers.hidden == 0
     AND TargetDrivers.targetName == ?
-""", (target_name, ))
+""", (target_name,))
 
         result = set()
         for row in cursor:
-            result.add(MbedTestDatabase.TargetDriverInfo(row["name"], row["friendlyName"], row["description"], DriverType(row["type"])))
+            result.add(MbedTestDatabase.TargetDriverInfo(row["name"], row["friendlyName"], row["description"],
+                                                         DriverType(row["type"])))
         cursor.close()
 
         return result
@@ -447,7 +467,7 @@ SELECT parentTarget
 FROM TargetGraph
 WHERE childTarget == ?
 ORDER BY parentTarget ASC
-""", (target_name, ))
+""", (target_name,))
 
         for row in cursor:
             parents.append(row["parentTarget"])
@@ -550,9 +570,9 @@ ORDER BY childTarget ASC
         return self._database.execute("SELECT name, imageURL, mcuVendorName, mcuPartNumber "
                                       "FROM Targets "
                                       "WHERE "
-                                          "isPublic == 1 AND "
-                                          "mcuFamilyTarget == ?",
-                                      (mcu_family_name, ))
+                                      "isPublic == 1 AND "
+                                      "mcuFamilyTarget == ?",
+                                      (mcu_family_name,))
 
     def get_target_memories(self, target_name: str) -> sqlite3.Cursor:
         """
@@ -563,9 +583,9 @@ ORDER BY childTarget ASC
         return self._database.execute("SELECT bankName, size, isFlash "
                                       "FROM TargetMemories "
                                       "WHERE "
-                                          "targetName == ?"
+                                      "targetName == ?"
                                       "ORDER BY bankName ASC",
-                                      (target_name, ))
+                                      (target_name,))
 
     def get_targets_with_driver_by_family(self, driver_name: str) -> sqlite3.Cursor:
         """
@@ -603,14 +623,16 @@ ORDER BY childTarget ASC
                                "VALUES(?, ?, ?, ?, ?)",
                                (test_name, target_name, execution_time, result.value, output))
 
-    def add_test_case_record(self, test_name: str, test_case_name: str, test_case_index: int, target_name: str, result: TestResult, output: str):
+    def add_test_case_record(self, test_name: str, test_case_name: str, test_case_index: int, target_name: str,
+                             result: TestResult, output: str):
         """
         Add or update a record of a test to the TestCases table.
         Replaces the record if it already exists
         """
-        self._database.execute("INSERT OR REPLACE INTO TestCases(testName, testCaseName, testCaseIndex, targetName, result, output) "
-                               "VALUES(?, ?, ?, ?, ?, ?)",
-                               (test_name, test_case_name, test_case_index, target_name, result.value, output))
+        self._database.execute(
+            "INSERT OR REPLACE INTO TestCases(testName, testCaseName, testCaseIndex, targetName, result, output) "
+            "VALUES(?, ?, ?, ?, ?, ?)",
+            (test_name, test_case_name, test_case_index, target_name, result.value, output))
 
     def get_targets_with_tests(self) -> List[Tuple[str, str]]:
         """
@@ -657,12 +679,12 @@ FROM
 WHERE
     testName = ?
 ORDER BY targetName ASC
-""", (test_name, ))
+""", (test_name,))
 
     def get_test_results(self) -> Dict[str, Dict[str, TestResult]]:
         """
         Get the results of all tests for all targets.
-        Returns {test name: {target name: TestResult}}
+        Returns {test name: {target name: TestResult}}.
         """
 
         cursor = self._database.execute("""
@@ -697,11 +719,12 @@ ORDER BY testName ASC
         """
         Get the results of all cases for the given test for all targets.
         Returns {test case name: {target name: TestResult}}.
+        Test cases will be ordered by increasing index.
         """
 
         # Note: Ordering the test cases is slightly complicated because not every target might run every test case.
-        # e.g. if an #ifdef blocks a target from executing a test case, test cases after that one will be at a
-        # lower index for Y than other targets.  We fix this by ordering by the maximum test case index that any
+        # e.g. if an #ifdef blocks a target from executing a test case on target Y, test cases after that one will
+        # be at a lower index for Y than other targets.  We fix this by ordering by the maximum test case index that any
         # target saw from running the test.
         cursor = self._database.execute("""
 SELECT
@@ -712,7 +735,7 @@ FROM TestCases
 WHERE testName = ?
 GROUP BY testCaseName
 ORDER BY max(testCaseIndex) ASC
-""", (test_name, ))
+""", (test_name,))
 
         all_test_case_results: Dict[str, Dict[str, TestResult]] = {}
 

@@ -1,0 +1,1731 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="(empty)"
+	tests="13"
+	failures="5"
+	disabled="0"
+	skipped="3"
+	hostname=""
+	time="371"
+	timestamp="2025-07-23T23:54:24"
+	>
+	<testcase name="test-testshield-businout" classname="test-testshield-businout" time="43.5911" status="run">
+		<properties/>
+		<system-out>0008028 I Target type is ama3b1kk_kbr [board]
+0008323 I DP IDR = 0x2ba01477 (v1 rev2) [dap]
+0008413 I AHB-AP#0 IDR = 0x24770011 (AHB-AP var1 rev2) [discovery]
+0008451 I AHB-AP#0 Class 0x1 ROM table #0 @ 0xe00ff000 (designer=43b:Arm part=4c4) [rom_table]
+0008479 I [0]&lt;e000e000:SCS v7-M class=14 designer=43b:Arm part=00c&gt; [rom_table]
+0008584 I [1]&lt;e0001000:DWT v7-M class=14 designer=43b:Arm part=002&gt; [rom_table]
+0008601 I [2]&lt;e0002000:FPB v7-M class=14 designer=43b:Arm part=003&gt; [rom_table]
+0008615 I [3]&lt;e0000000:ITM v7-M class=14 designer=43b:Arm part=001&gt; [rom_table]
+0008710 I [4]&lt;e0040000:TPIU M4 class=9 designer=43b:Arm part=9a1 devtype=11 archid=0000 devid=ca0:0:0&gt; [rom_table]
+0008880 I CPU core #0: Cortex-M4 r0p1, v7.0-M architecture [cortex_m]
+0008881 I   Extensions: [DSP, FPU, FPU_V4, MPU] [cortex_m]
+0008881 I   FPU present: FPv4-SP-D16-M [cortex_m]
+0008884 I 4 hardware watchpoints [dwt]
+0008889 I 6 hardware breakpoints, 4 literal comparators [fpb]
+0008901 I Loading C:\Users\jamie\Documents\RPL\mbed-ce-test-tools\CI-Shield-Tests\cmake-build-develop-sfe_artemis\test-testshield-businout.bin at 0x00010000 [load_cmd]
+[---|---|---|---|---|---|---|---|---|----]
+[========================================]
+0011869 I Erased 65536 bytes (8 sectors), programmed 65536 bytes (8 pages), skipped 0 bytes (0 pages) at 21.57 kB/s [loader]
+[1/3] Building CXX object CMakeFiles/test-testshield-businout.dir/BusInOutTest.cpp.obj
+[2/3] Linking CXX executable test-testshield-businout.elf
+-- built: C:/Users/jamie/Documents/RPL/mbed-ce-test-tools/CI-Shield-Tests/cmake-build-develop-sfe_artemis/test-testshield-businout.bin
+-- built: C:/Users/jamie/Documents/RPL/mbed-ce-test-tools/CI-Shield-Tests/cmake-build-develop-sfe_artemis/test-testshield-businout.hex
+[2/3] Flashing test-testshield-businout with pyOCD...
+Executing: C:/Users/jamie/Documents/RPL/mbed-ce-test-tools/CI-Shield-Tests/mbed-os/venv/Scripts/mbedhtrun.exe --skip-flashing -p COM10 --skip-reset --sync-predelay 0.3 -m SFE_ARTEMIS --baud-rate=115200
+[+7390ms][HTST][INF] host test executor ver. 0.0.16
+[+7390ms][HTST][INF] copy image onto target... SKIPPED!
+[+7404ms][HTST][INF] starting host test process...
+[+2253ms][CONN][INF] starting connection process...
+[+2254ms][CONN][INF] notify event queue about extra 60 sec timeout for serial port pooling
+[+2255ms][CONN][INF] initializing serial port listener... 
+[+2255ms][SERI][INF] using specified port 'COM10'
+[+9918ms][HTST][INF] setting timeout to: 60 sec
+[+2255ms][SERI][INF] serial(port=COM10, baudrate=115200, read_timeout=0.01, write_timeout=5)
+[+2257ms][CONN][INF] Pre-sync delay for 0.30 sec...
+[+2558ms][SERI][TXD] mbedmbedmbedmbedmbedmbedmbedmbedmbedmbed
+[+2559ms][CONN][INF] sending up to 2 __sync packets (specified with --sync=2)
+[+2559ms][CONN][INF] sending preamble 'a412b03b-a16c-429c-8026-b1fe39d4cb49'
+[+2562ms][SERI][TXD] {{__sync;a412b03b-a16c-429c-8026-b1fe39d4cb49}}
+[+2573ms][CONN][WRN] UnicodeDecodeError encountered! Raw bytes were b'\xfembedmbedmbedmbedmbedmbedmbedmbed\r\n{{__sync;a412b03b-a16c-429c-80' and they decoded to "mbedmbedmbedmbedmbedmbedmbedmbed
+{{__sync;a412b03b-a16c-429c-80"
+[+2573ms][CONN][RXD] mbedmbedmbedmbedmbedmbedmbedmbed
+[+2584ms][CONN][INF] found KV pair in stream: {{__sync;a412b03b-a16c-429c-8026-b1fe39d4cb49}}, queued...
+[+2584ms][CONN][INF] found KV pair in stream: {{__version;1.3.0}}, queued...
+[+2584ms][CONN][INF] found KV pair in stream: {{__timeout;40}}, queued...
+[+2584ms][CONN][INF] found KV pair in stream: {{__host_test_name;default_auto}}, queued...
+[+2584ms][CONN][INF] found SYNC in stream: {{__sync;a412b03b-a16c-429c-8026-b1fe39d4cb49}} it is #0 sent, queued...
+[+10249ms][HTST][INF] sync KV found, uuid=a412b03b-a16c-429c-8026-b1fe39d4cb49, timestamp=1753340107.150100
+[+10249ms][HTST][INF] DUT greentea-client version: 1.3.0
+[+10249ms][HTST][INF] setting timeout to: 40 sec
+[+10249ms][HTST][INF] host test class: '&lt;class 'mbed_os_tools.test.host_tests.default_auto.DefaultAuto'&gt;'
+[+10249ms][HTST][INF] host test setup() call...
+[+10249ms][HTST][INF] CALLBACKs updated
+[+10249ms][HTST][INF] host test detected: default_auto
+[+2596ms][CONN][RXD] &gt;&gt;&gt; Running 4 test cases...
+[+2598ms][CONN][INF] found KV pair in stream: {{__testcase_name;BusIn definable}}, queued...
+[+2598ms][CONN][INF] found KV pair in stream: {{__testcase_name;BusOut definable}}, queued...
+[+2610ms][CONN][INF] found KV pair in stream: {{__testcase_name;BusInOut to BusInOut}}, queued...
+[+2610ms][CONN][INF] found KV pair in stream: {{__testcase_name;BusIn to BusOut}}, queued...
+[+2610ms][CONN][RXD] 
+[+2611ms][CONN][RXD] &gt;&gt;&gt; Running case #1: 'BusIn definable'...
+[+2611ms][CONN][INF] found KV pair in stream: {{__testcase_start;BusIn definable}}, queued...
+[+2622ms][CONN][INF] found KV pair in stream: {{__testcase_finish;BusIn definable;1;0}}, queued...
+[+2622ms][CONN][RXD] &gt;&gt;&gt; 'BusIn definable': 1 passed, 0 failed
+[+2622ms][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[+2622ms][CONN][RXD] 
+[+2634ms][CONN][RXD] &gt;&gt;&gt; Running case #2: 'BusOut definable'...
+[+2634ms][CONN][INF] found KV pair in stream: {{__testcase_start;BusOut definable}}, queued...
+[+2634ms][CONN][INF] found KV pair in stream: {{__testcase_finish;BusOut definable;1;0}}, queued...
+[+2646ms][CONN][RXD] &gt;&gt;&gt; 'BusOut definable': 1 passed, 0 failed
+[+2646ms][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[+2646ms][CONN][RXD] 
+[+2646ms][CONN][RXD] &gt;&gt;&gt; Running case #3: 'BusInOut to BusInOut'...
+[+2646ms][CONN][INF] found KV pair in stream: {{__testcase_start;BusInOut to BusInOut}}, queued...
+[+2646ms][CONN][RXD] 
+[+2658ms][CONN][RXD] *********
+[+2658ms][CONN][RXD] value of x,bio2 is: 0x0, 0x0
+[+2658ms][CONN][RXD] ********
+[+2658ms][CONN][RXD] 
+[+2658ms][CONN][RXD] *********
+[+2658ms][CONN][RXD] value of x,bio2 is: 0x1, 0x1
+[+2658ms][CONN][RXD] ********
+[+2658ms][CONN][RXD] 
+[+2658ms][CONN][RXD] *********
+[+2669ms][CONN][RXD] value of x,bio2 is: 0x2, 0x2
+[+2669ms][CONN][RXD] ********
+[+2669ms][CONN][RXD] 
+[+2669ms][CONN][RXD] *********
+[+2669ms][CONN][RXD] value of x,bio2 is: 0x3, 0x3
+[+2669ms][CONN][RXD] ********
+[+2669ms][CONN][RXD] 
+[+2669ms][CONN][RXD] *********
+[+2669ms][CONN][RXD] value of x,bio2 is: 0x4, 0x4
+[+2681ms][CONN][RXD] ********
+[+2681ms][CONN][RXD] 
+[+2681ms][CONN][RXD] *********
+[+2681ms][CONN][RXD] value of x,bio2 is: 0x5, 0x5
+[+2681ms][CONN][RXD] ********
+[+2681ms][CONN][RXD] 
+[+2681ms][CONN][RXD] *********
+[+2692ms][CONN][RXD] value of x,bio2 is: 0x6, 0x6
+[+2692ms][CONN][RXD] ********
+[+2692ms][CONN][RXD] 
+[+2692ms][CONN][RXD] *********
+[+2692ms][CONN][RXD] value of x,bio2 is: 0x7, 0x7
+[+2692ms][CONN][RXD] ********
+[+2692ms][CONN][RXD] 
+[+2692ms][CONN][RXD] *********
+[+2692ms][CONN][RXD] value of x,bio1 is: 0x0, 0x0
+[+2692ms][CONN][RXD] ********
+[+2692ms][CONN][RXD] 
+[+2704ms][CONN][RXD] *********
+[+2706ms][CONN][RXD] value of x,bio1 is: 0x1, 0x1
+[+2706ms][CONN][RXD] ********
+[+2706ms][CONN][RXD] 
+[+2706ms][CONN][RXD] *********
+[+2707ms][CONN][RXD] value of x,bio1 is: 0x2, 0x2
+[+2707ms][CONN][RXD] ********
+[+2707ms][CONN][RXD] 
+[+2707ms][CONN][RXD] *********
+[+2718ms][CONN][RXD] value of x,bio1 is: 0x3, 0x3
+[+2718ms][CONN][RXD] ********
+[+2718ms][CONN][RXD] 
+[+2718ms][CONN][RXD] *********
+[+2718ms][CONN][RXD] value of x,bio1 is: 0x4, 0x4
+[+2718ms][CONN][RXD] ********
+[+2718ms][CONN][RXD] 
+[+2719ms][CONN][RXD] *********
+[+2719ms][CONN][RXD] value of x,bio1 is: 0x5, 0x5
+[+2719ms][CONN][RXD] ********
+[+2719ms][CONN][RXD] 
+[+2719ms][CONN][RXD] *********
+[+2731ms][CONN][RXD] value of x,bio1 is: 0x6, 0x6
+[+2731ms][CONN][RXD] ********
+[+2731ms][CONN][RXD] 
+[+2731ms][CONN][RXD] *********
+[+2731ms][CONN][RXD] value of x,bio1 is: 0x7, 0x7
+[+2732ms][CONN][RXD] ********
+[+2732ms][CONN][INF] found KV pair in stream: {{__testcase_finish;BusInOut to BusInOut;1;0}}, queued...
+[+2744ms][CONN][RXD] &gt;&gt;&gt; 'BusInOut to BusInOut': 1 passed, 0 failed
+[+2744ms][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[+2744ms][CONN][RXD] 
+[+2744ms][CONN][RXD] &gt;&gt;&gt; Running case #4: 'BusIn to BusOut'...
+[+2756ms][CONN][INF] found KV pair in stream: {{__testcase_start;BusIn to BusOut}}, queued...
+[+2756ms][CONN][RXD] 
+[+2756ms][CONN][RXD] *********
+[+2756ms][CONN][RXD] value of bin,bout,x is: 0x1, 0x1, 0x1
+[+2756ms][CONN][RXD] ********
+[+2756ms][CONN][RXD] 
+[+2756ms][CONN][RXD] *********
+[+2767ms][CONN][RXD] value of bin,bout,x is: 0x2, 0x2, 0x2
+[+2767ms][CONN][RXD] ********
+[+2767ms][CONN][RXD] 
+[+2767ms][CONN][RXD] *********
+[+2767ms][CONN][RXD] value of bin,bout,x is: 0x3, 0x3, 0x3
+[+2767ms][CONN][RXD] ********
+[+2767ms][CONN][RXD] 
+[+2767ms][CONN][RXD] *********
+[+2778ms][CONN][RXD] value of bin,bout,x is: 0x4, 0x4, 0x4
+[+2779ms][CONN][RXD] ********
+[+2779ms][CONN][RXD] 
+[+2779ms][CONN][RXD] *********
+[+2779ms][CONN][RXD] value of bin,bout,x is: 0x5, 0x5, 0x5
+[+2779ms][CONN][RXD] ********
+[+2779ms][CONN][RXD] 
+[+2779ms][CONN][RXD] *********
+[+2791ms][CONN][RXD] value of bin,bout,x is: 0x6, 0x6, 0x6
+[+2791ms][CONN][RXD] ********
+[+2791ms][CONN][RXD] 
+[+2791ms][CONN][RXD] *********
+[+2791ms][CONN][RXD] value of bin,bout,x is: 0x7, 0x7, 0x7
+[+2791ms][CONN][RXD] ********
+[+2791ms][CONN][INF] found KV pair in stream: {{__testcase_finish;BusIn to BusOut;1;0}}, queued...
+[+2802ms][CONN][RXD] &gt;&gt;&gt; 'BusIn to BusOut': 1 passed, 0 failed
+[+2802ms][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[+2802ms][CONN][RXD] 
+[+2813ms][CONN][RXD] &gt;&gt;&gt; Test cases: 4 passed, 0 failed
+[+2814ms][CONN][RXD] 
+[+2814ms][CONN][RXD] -----------------------
+[+2814ms][CONN][RXD] 0 Tests 0 Failures 0 Ignored 
+[+2814ms][CONN][RXD] OK
+[+2814ms][CONN][INF] found KV pair in stream: {{__testcase_summary;4;0}}, queued...
+[+2814ms][CONN][INF] found KV pair in stream: {{end;success}}, queued...
+[+2814ms][CONN][INF] found KV pair in stream: {{__exit;0}}, queued...
+[+10479ms][HTST][INF] __exit(0)
+[+10480ms][HTST][INF] __notify_complete(True)
+[+10480ms][HTST][INF] __exit_event_queue received
+[+10480ms][HTST][INF] test suite run finished after 0.23 sec...
+[+2825ms][CONN][INF] received special event '__host_test_finished' value='True', finishing
+[+10689ms][HTST][INF] CONN exited with code: 0
+[+10689ms][HTST][INF] Some events in queue
+[+10690ms][HTST][INF] stopped consuming events
+[+10690ms][HTST][INF] host test result() call skipped, received: True
+[+10690ms][HTST][INF] calling blocking teardown()
+[+10690ms][HTST][INF] teardown() finished
+[+10690ms][HTST][INF] {{result;success}}
+</system-out>
+	</testcase>
+	<testcase name="test-testshield-interruptin" classname="test-testshield-interruptin" time="23.4884" status="fail">
+		<failure message="Failed"/>
+		<properties/>
+		<system-out>0002970 I Target type is ama3b1kk_kbr [board]
+0003137 I DP IDR = 0x2ba01477 (v1 rev2) [dap]
+0003179 I AHB-AP#0 IDR = 0x24770011 (AHB-AP var1 rev2) [discovery]
+0003196 I AHB-AP#0 Class 0x1 ROM table #0 @ 0xe00ff000 (designer=43b:Arm part=4c4) [rom_table]
+0003272 I [0]&lt;e000e000:SCS v7-M class=14 designer=43b:Arm part=00c&gt; [rom_table]
+0003351 I [1]&lt;e0001000:DWT v7-M class=14 designer=43b:Arm part=002&gt; [rom_table]
+0003353 I [2]&lt;e0002000:FPB v7-M class=14 designer=43b:Arm part=003&gt; [rom_table]
+0003356 I [3]&lt;e0000000:ITM v7-M class=14 designer=43b:Arm part=001&gt; [rom_table]
+0003360 I [4]&lt;e0040000:TPIU M4 class=9 designer=43b:Arm part=9a1 devtype=11 archid=0000 devid=ca0:0:0&gt; [rom_table]
+0003363 I CPU core #0: Cortex-M4 r0p1, v7.0-M architecture [cortex_m]
+0003363 I   Extensions: [DSP, FPU, FPU_V4, MPU] [cortex_m]
+0003363 I   FPU present: FPv4-SP-D16-M [cortex_m]
+0003367 I 4 hardware watchpoints [dwt]
+0003368 I 6 hardware breakpoints, 4 literal comparators [fpb]
+0003374 I Loading C:\Users\jamie\Documents\RPL\mbed-ce-test-tools\CI-Shield-Tests\cmake-build-develop-sfe_artemis\test-testshield-interruptin.bin at 0x00010000 [load_cmd]
+[---|---|---|---|---|---|---|---|---|----]
+[========================================]
+0005037 I Erased 65536 bytes (8 sectors), programmed 65536 bytes (8 pages), skipped 0 bytes (0 pages) at 38.56 kB/s [loader]
+[1/3] Building CXX object CMakeFiles/test-testshield-interruptin.dir/InterruptInTest.cpp.obj
+[2/3] Linking CXX executable test-testshield-interruptin.elf
+-- built: C:/Users/jamie/Documents/RPL/mbed-ce-test-tools/CI-Shield-Tests/cmake-build-develop-sfe_artemis/test-testshield-interruptin.bin
+-- built: C:/Users/jamie/Documents/RPL/mbed-ce-test-tools/CI-Shield-Tests/cmake-build-develop-sfe_artemis/test-testshield-interruptin.hex
+[2/3] Flashing test-testshield-interruptin with pyOCD...
+Executing: C:/Users/jamie/Documents/RPL/mbed-ce-test-tools/CI-Shield-Tests/mbed-os/venv/Scripts/mbedhtrun.exe --skip-flashing -p COM10 --skip-reset --sync-predelay 0.3 -m SFE_ARTEMIS --baud-rate=115200
+[+2186ms][HTST][INF] host test executor ver. 0.0.16
+[+2186ms][HTST][INF] copy image onto target... SKIPPED!
+[+2199ms][HTST][INF] starting host test process...
+[+2473ms][CONN][INF] starting connection process...
+[+2490ms][CONN][INF] notify event queue about extra 60 sec timeout for serial port pooling
+[+2490ms][CONN][INF] initializing serial port listener... 
+[+2490ms][SERI][INF] using specified port 'COM10'
+[+2490ms][SERI][INF] serial(port=COM10, baudrate=115200, read_timeout=0.01, write_timeout=5)
+[+4911ms][HTST][INF] setting timeout to: 60 sec
+[+2492ms][CONN][INF] Pre-sync delay for 0.30 sec...
+[+2798ms][SERI][TXD] mbedmbedmbedmbedmbedmbedmbedmbedmbedmbed
+[+2798ms][CONN][INF] sending up to 2 __sync packets (specified with --sync=2)
+[+2798ms][CONN][INF] sending preamble '14465190-0683-46bf-8f32-eee26adfcb06'
+[+2801ms][SERI][TXD] {{__sync;14465190-0683-46bf-8f32-eee26adfcb06}}
+[+2812ms][CONN][WRN] UnicodeDecodeError encountered! Raw bytes were b'\xfembedmbedmbedmbedmbedmbedmbedmbed\r\n{{__sync;14465190-0683-46bf-8f' and they decoded to "mbedmbedmbedmbedmbedmbedmbedmbed
+{{__sync;14465190-0683-46bf-8f"
+[+2813ms][CONN][RXD] mbedmbedmbedmbedmbedmbedmbedmbed
+[+2824ms][CONN][INF] found KV pair in stream: {{__sync;14465190-0683-46bf-8f32-eee26adfcb06}}, queued...
+[+2824ms][CONN][INF] found KV pair in stream: {{__version;1.3.0}}, queued...
+[+2824ms][CONN][INF] found KV pair in stream: {{__timeout;40}}, queued...
+[+2824ms][CONN][INF] found KV pair in stream: {{__host_test_name;default_auto}}, queued...
+[+2824ms][CONN][INF] found SYNC in stream: {{__sync;14465190-0683-46bf-8f32-eee26adfcb06}} it is #0 sent, queued...
+[+5249ms][HTST][INF] sync KV found, uuid=14465190-0683-46bf-8f32-eee26adfcb06, timestamp=1753340130.360092
+[+5249ms][HTST][INF] DUT greentea-client version: 1.3.0
+[+5249ms][HTST][INF] setting timeout to: 40 sec
+[+5249ms][HTST][INF] host test class: '&lt;class 'mbed_os_tools.test.host_tests.default_auto.DefaultAuto'&gt;'
+[+5249ms][HTST][INF] host test setup() call...
+[+5249ms][HTST][INF] CALLBACKs updated
+[+5249ms][HTST][INF] host test detected: default_auto
+[+2835ms][CONN][RXD] &gt;&gt;&gt; Running 3 test cases...
+[+2835ms][CONN][INF] found KV pair in stream: {{__testcase_name;Interrupt from GPIN_1 -&gt; GPOUT_1}}, queued...
+[+2835ms][CONN][INF] found KV pair in stream: {{__testcase_name;InterruptIn Both Edges}}, queued...
+[+2847ms][CONN][INF] found KV pair in stream: {{__testcase_name;InterruptIn Read Value}}, queued...
+[+2848ms][CONN][RXD] 
+[+2848ms][CONN][RXD] &gt;&gt;&gt; Running case #1: 'Interrupt from GPIN_1 -&gt; GPOUT_1'...
+[+2858ms][CONN][INF] found KV pair in stream: {{__testcase_start;Interrupt from GPIN_1 -&gt; GPOUT_1}}, queued...
+[+2858ms][CONN][RXD] &lt;greentea test suite&gt;:54::FAIL: cbfn was not triggered on rising edge of pin
+[+2869ms][CONN][INF] found KV pair in stream: {{__testcase_finish;Interrupt from GPIN_1 -&gt; GPOUT_1;0;1}}, queued...
+[+2869ms][CONN][RXD] &gt;&gt;&gt; 'Interrupt from GPIN_1 -&gt; GPOUT_1': 0 passed, 1 failed with reason 'Test Cases Failed'
+[+2869ms][CONN][RXD] 
+[+2869ms][CONN][RXD] 
+[+2881ms][CONN][RXD] &gt;&gt;&gt; Running case #2: 'InterruptIn Both Edges'...
+[+2882ms][CONN][INF] found KV pair in stream: {{__testcase_start;InterruptIn Both Edges}}, queued...
+[+2893ms][CONN][INF] found KV pair in stream: {{__testcase_finish;InterruptIn Both Edges;1;0}}, queued...
+[+2893ms][CONN][RXD] &gt;&gt;&gt; 'InterruptIn Both Edges': 1 passed, 0 failed
+[+2893ms][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[+2893ms][CONN][RXD] 
+[+2904ms][CONN][RXD] &gt;&gt;&gt; Running case #3: 'InterruptIn Read Value'...
+[+2904ms][CONN][INF] found KV pair in stream: {{__testcase_start;InterruptIn Read Value}}, queued...
+[+2915ms][CONN][INF] found KV pair in stream: {{__testcase_finish;InterruptIn Read Value;1;0}}, queued...
+[+2917ms][CONN][RXD] &gt;&gt;&gt; 'InterruptIn Read Value': 1 passed, 0 failed
+[+2917ms][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[+2918ms][CONN][RXD] 
+[+2929ms][CONN][RXD] &gt;&gt;&gt; Test cases: 2 passed, 1 failed with reason 'Test Cases Failed'
+[+2929ms][CONN][RXD] &gt;&gt;&gt; TESTS FAILED!
+[+2929ms][CONN][RXD] 
+[+2929ms][CONN][RXD] -----------------------
+[+2929ms][CONN][RXD] 0 Tests 1 Failures 0 Ignored 
+[+2929ms][CONN][RXD] FAIL
+[+2941ms][CONN][INF] found KV pair in stream: {{__testcase_summary;2;1}}, queued...
+[+2942ms][CONN][INF] found KV pair in stream: {{end;failure}}, queued...
+[+2942ms][CONN][INF] found KV pair in stream: {{__exit;0}}, queued...
+[+5369ms][HTST][INF] __exit(0)
+[+5369ms][HTST][INF] __notify_complete(False)
+[+5371ms][HTST][INF] __exit_event_queue received
+[+5371ms][HTST][INF] test suite run finished after 0.12 sec...
+[+2954ms][CONN][INF] received special event '__host_test_finished' value='True', finishing
+[+5716ms][HTST][INF] CONN exited with code: 0
+[+5717ms][HTST][INF] Some events in queue
+[+5717ms][HTST][INF] stopped consuming events
+[+5717ms][HTST][INF] host test result() call skipped, received: False
+[+5718ms][HTST][INF] calling blocking teardown()
+[+5718ms][HTST][INF] teardown() finished
+[+5718ms][HTST][INF] {{result;failure}}
+CMake Error at mbed-run-greentea-test-testshield-interruptin.cmake:19 (execute_process):
+  execute_process failed command indexes:
+
+    1: "Child return code: 1"
+
+
+
+</system-out>
+	</testcase>
+	<testcase name="test-testshield-digitalio" classname="test-testshield-digitalio" time="24.2163" status="run">
+		<properties/>
+		<system-out>0003867 I Target type is ama3b1kk_kbr [board]
+0004150 I DP IDR = 0x2ba01477 (v1 rev2) [dap]
+0004208 I AHB-AP#0 IDR = 0x24770011 (AHB-AP var1 rev2) [discovery]
+0004236 I AHB-AP#0 Class 0x1 ROM table #0 @ 0xe00ff000 (designer=43b:Arm part=4c4) [rom_table]
+0004419 I [0]&lt;e000e000:SCS v7-M class=14 designer=43b:Arm part=00c&gt; [rom_table]
+0004481 I [1]&lt;e0001000:DWT v7-M class=14 designer=43b:Arm part=002&gt; [rom_table]
+0004503 I [2]&lt;e0002000:FPB v7-M class=14 designer=43b:Arm part=003&gt; [rom_table]
+0004504 I [3]&lt;e0000000:ITM v7-M class=14 designer=43b:Arm part=001&gt; [rom_table]
+0004506 I [4]&lt;e0040000:TPIU M4 class=9 designer=43b:Arm part=9a1 devtype=11 archid=0000 devid=ca0:0:0&gt; [rom_table]
+0004509 I CPU core #0: Cortex-M4 r0p1, v7.0-M architecture [cortex_m]
+0004509 I   Extensions: [DSP, FPU, FPU_V4, MPU] [cortex_m]
+0004509 I   FPU present: FPv4-SP-D16-M [cortex_m]
+0004512 I 4 hardware watchpoints [dwt]
+0004517 I 6 hardware breakpoints, 4 literal comparators [fpb]
+0004529 I Loading C:\Users\jamie\Documents\RPL\mbed-ce-test-tools\CI-Shield-Tests\cmake-build-develop-sfe_artemis\test-testshield-digitalio.bin at 0x00010000 [load_cmd]
+[---|---|---|---|---|---|---|---|---|----]
+[========================================]
+0006342 I Erased 65536 bytes (8 sectors), programmed 65536 bytes (8 pages), skipped 0 bytes (0 pages) at 35.32 kB/s [loader]
+[1/3] Building CXX object CMakeFiles/test-testshield-digitalio.dir/DigitalIOTest.cpp.obj
+[2/3] Linking CXX executable test-testshield-digitalio.elf
+-- built: C:/Users/jamie/Documents/RPL/mbed-ce-test-tools/CI-Shield-Tests/cmake-build-develop-sfe_artemis/test-testshield-digitalio.bin
+-- built: C:/Users/jamie/Documents/RPL/mbed-ce-test-tools/CI-Shield-Tests/cmake-build-develop-sfe_artemis/test-testshield-digitalio.hex
+[2/3] Flashing test-testshield-digitalio with pyOCD...
+Executing: C:/Users/jamie/Documents/RPL/mbed-ce-test-tools/CI-Shield-Tests/mbed-os/venv/Scripts/mbedhtrun.exe --skip-flashing -p COM10 --skip-reset --sync-predelay 0.3 -m SFE_ARTEMIS --baud-rate=115200
+[+2306ms][HTST][INF] host test executor ver. 0.0.16
+[+2308ms][HTST][INF] copy image onto target... SKIPPED!
+[+2323ms][HTST][INF] starting host test process...
+[+2185ms][CONN][INF] starting connection process...
+[+2186ms][CONN][INF] notify event queue about extra 60 sec timeout for serial port pooling
+[+2186ms][CONN][INF] initializing serial port listener... 
+[+2186ms][SERI][INF] using specified port 'COM10'
+[+2186ms][SERI][INF] serial(port=COM10, baudrate=115200, read_timeout=0.01, write_timeout=5)
+[+4734ms][HTST][INF] setting timeout to: 60 sec
+[+2188ms][CONN][INF] Pre-sync delay for 0.30 sec...
+[+2490ms][SERI][TXD] mbedmbedmbedmbedmbedmbedmbedmbedmbedmbed
+[+2490ms][CONN][INF] sending up to 2 __sync packets (specified with --sync=2)
+[+2490ms][CONN][INF] sending preamble '092df2a4-ef4a-406a-8714-82d1ebc9ff5a'
+[+2494ms][SERI][TXD] {{__sync;092df2a4-ef4a-406a-8714-82d1ebc9ff5a}}
+[+2504ms][CONN][WRN] UnicodeDecodeError encountered! Raw bytes were b'\xfembedmbedmbedmbedmbedmbedmbedmbed\r\n{{__sync;092df2a4-ef4a-406a-87' and they decoded to "mbedmbedmbedmbedmbedmbedmbedmbed
+{{__sync;092df2a4-ef4a-406a-87"
+[+2504ms][CONN][RXD] mbedmbedmbedmbedmbedmbedmbedmbed
+[+2516ms][CONN][INF] found KV pair in stream: {{__sync;092df2a4-ef4a-406a-8714-82d1ebc9ff5a}}, queued...
+[+2516ms][CONN][INF] found KV pair in stream: {{__version;1.3.0}}, queued...
+[+2516ms][CONN][INF] found KV pair in stream: {{__timeout;30}}, queued...
+[+2516ms][CONN][INF] found KV pair in stream: {{__host_test_name;default_auto}}, queued...
+[+2516ms][CONN][RXD] &gt;&gt;&gt; Running 4 test cases...
+[+2516ms][CONN][INF] found SYNC in stream: {{__sync;092df2a4-ef4a-406a-8714-82d1ebc9ff5a}} it is #0 sent, queued...
+[+5064ms][HTST][INF] sync KV found, uuid=092df2a4-ef4a-406a-8714-82d1ebc9ff5a, timestamp=1753340155.025072
+[+5064ms][HTST][INF] DUT greentea-client version: 1.3.0
+[+5064ms][HTST][INF] setting timeout to: 30 sec
+[+5064ms][HTST][INF] host test class: '&lt;class 'mbed_os_tools.test.host_tests.default_auto.DefaultAuto'&gt;'
+[+5064ms][HTST][INF] host test setup() call...
+[+5064ms][HTST][INF] CALLBACKs updated
+[+5064ms][HTST][INF] host test detected: default_auto
+[+2528ms][CONN][INF] found KV pair in stream: {{__testcase_name;Digital I/O GPOUT_0 -&gt; GPIN_0}}, queued...
+[+2528ms][CONN][INF] found KV pair in stream: {{__testcase_name;Digital I/O GPOUT_1 -&gt; GPIN_1}}, queued...
+[+2539ms][CONN][INF] found KV pair in stream: {{__testcase_name;Digital I/O GPIN_2 -&gt; GPOUT_2}}, queued...
+[+2539ms][CONN][INF] found KV pair in stream: {{__testcase_name;Digital I/O GPOUT_2 -&gt; GPIN_2}}, queued...
+[+2539ms][CONN][RXD] 
+[+2550ms][CONN][RXD] &gt;&gt;&gt; Running case #1: 'Digital I/O GPOUT_0 -&gt; GPIN_0'...
+[+2550ms][CONN][INF] found KV pair in stream: {{__testcase_start;Digital I/O GPOUT_0 -&gt; GPIN_0}}, queued...
+[+2561ms][CONN][INF] found KV pair in stream: {{__testcase_finish;Digital I/O GPOUT_0 -&gt; GPIN_0;1;0}}, queued...
+[+2561ms][CONN][RXD] &gt;&gt;&gt; 'Digital I/O GPOUT_0 -&gt; GPIN_0': 1 passed, 0 failed
+[+2571ms][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[+2571ms][CONN][RXD] 
+[+2571ms][CONN][RXD] &gt;&gt;&gt; Running case #2: 'Digital I/O GPOUT_1 -&gt; GPIN_1'...
+[+2572ms][CONN][INF] found KV pair in stream: {{__testcase_start;Digital I/O GPOUT_1 -&gt; GPIN_1}}, queued...
+[+2584ms][CONN][INF] found KV pair in stream: {{__testcase_finish;Digital I/O GPOUT_1 -&gt; GPIN_1;1;0}}, queued...
+[+2584ms][CONN][RXD] &gt;&gt;&gt; 'Digital I/O GPOUT_1 -&gt; GPIN_1': 1 passed, 0 failed
+[+2584ms][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[+2584ms][CONN][RXD] 
+[+2595ms][CONN][RXD] &gt;&gt;&gt; Running case #3: 'Digital I/O GPIN_2 -&gt; GPOUT_2'...
+[+2595ms][CONN][INF] found KV pair in stream: {{__testcase_start;Digital I/O GPIN_2 -&gt; GPOUT_2}}, queued...
+[+2606ms][CONN][INF] found KV pair in stream: {{__testcase_finish;Digital I/O GPIN_2 -&gt; GPOUT_2;1;0}}, queued...
+[+2606ms][CONN][RXD] &gt;&gt;&gt; 'Digital I/O GPIN_2 -&gt; GPOUT_2': 1 passed, 0 failed
+[+2617ms][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[+2617ms][CONN][RXD] 
+[+2617ms][CONN][RXD] &gt;&gt;&gt; Running case #4: 'Digital I/O GPOUT_2 -&gt; GPIN_2'...
+[+2628ms][CONN][INF] found KV pair in stream: {{__testcase_start;Digital I/O GPOUT_2 -&gt; GPIN_2}}, queued...
+[+2628ms][CONN][INF] found KV pair in stream: {{__testcase_finish;Digital I/O GPOUT_2 -&gt; GPIN_2;1;0}}, queued...
+[+2628ms][CONN][RXD] &gt;&gt;&gt; 'Digital I/O GPOUT_2 -&gt; GPIN_2': 1 passed, 0 failed
+[+2640ms][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[+2640ms][CONN][RXD] 
+[+2640ms][CONN][RXD] &gt;&gt;&gt; Test cases: 4 passed, 0 failed
+[+2640ms][CONN][RXD] 
+[+2640ms][CONN][RXD] -----------------------
+[+2641ms][CONN][RXD] 0 Tests 0 Failures 0 Ignored 
+[+2641ms][CONN][RXD] OK
+[+2653ms][CONN][INF] found KV pair in stream: {{__testcase_summary;4;0}}, queued...
+[+2653ms][CONN][INF] found KV pair in stream: {{end;success}}, queued...
+[+2653ms][CONN][INF] found KV pair in stream: {{__exit;0}}, queued...
+[+5201ms][HTST][INF] __exit(0)
+[+5202ms][HTST][INF] __notify_complete(True)
+[+5202ms][HTST][INF] __exit_event_queue received
+[+5202ms][HTST][INF] test suite run finished after 0.14 sec...
+[+2664ms][CONN][INF] received special event '__host_test_finished' value='True', finishing
+[+5396ms][HTST][INF] CONN exited with code: 0
+[+5396ms][HTST][INF] Some events in queue
+[+5396ms][HTST][INF] stopped consuming events
+[+5396ms][HTST][INF] host test result() call skipped, received: True
+[+5396ms][HTST][INF] calling blocking teardown()
+[+5396ms][HTST][INF] teardown() finished
+[+5396ms][HTST][INF] {{result;success}}
+</system-out>
+	</testcase>
+	<testcase name="test-testshield-digitalio-prop-time" classname="test-testshield-digitalio-prop-time" time="22.6029" status="run">
+		<properties/>
+		<system-out>[1/3] Building CXX object CMakeFiles/test-testshield-digitalio-prop-time.dir/DigitalIOPropagationTimeTest.cpp.obj
+[2/3] Linking CXX executable test-testshield-digitalio-prop-time.elf
+-- built: C:/Users/jamie/Documents/RPL/mbed-ce-test-tools/CI-Shield-Tests/cmake-build-develop-sfe_artemis/test-testshield-digitalio-prop-time.bin
+-- built: C:/Users/jamie/Documents/RPL/mbed-ce-test-tools/CI-Shield-Tests/cmake-build-develop-sfe_artemis/test-testshield-digitalio-prop-time.hex
+[2/3] Flashing test-testshield-digita0002780 I Target type is ama3b1kk_kbr [board]
+0002960 I DP IDR = 0x2ba01477 (v1 rev2) [dap]
+0003005 I AHB-AP#0 IDR = 0x24770011 (AHB-AP var1 rev2) [discovery]
+0003015 I AHB-AP#0 Class 0x1 ROM table #0 @ 0xe00ff000 (designer=43b:Arm part=4c4) [rom_table]
+0003026 I [0]&lt;e000e000:SCS v7-M class=14 designer=43b:Arm part=00c&gt; [rom_table]
+0003080 I [1]&lt;e0001000:DWT v7-M class=14 designer=43b:Arm part=002&gt; [rom_table]
+0003144 I [2]&lt;e0002000:FPB v7-M class=14 designer=43b:Arm part=003&gt; [rom_table]
+0003181 I [3]&lt;e0000000:ITM v7-M class=14 designer=43b:Arm part=001&gt; [rom_table]
+0003184 I [4]&lt;e0040000:TPIU M4 class=9 designer=43b:Arm part=9a1 devtype=11 archid=0000 devid=ca0:0:0&gt; [rom_table]
+0003191 I CPU core #0: Cortex-M4 r0p1, v7.0-M architecture [cortex_m]
+0003191 I   Extensions: [DSP, FPU, FPU_V4, MPU] [cortex_m]
+0003191 I   FPU present: FPv4-SP-D16-M [cortex_m]
+0003194 I 4 hardware watchpoints [dwt]
+0003195 I 6 hardware breakpoints, 4 literal comparators [fpb]
+0003202 I Loading C:\Users\jamie\Documents\RPL\mbed-ce-test-tools\CI-Shield-Tests\cmake-build-develop-sfe_artemis\test-testshield-digitalio-prop-time.bin at 0x00010000 [load_cmd]
+[---|---|---|---|---|---|---|---|---|----]
+[========================================]
+0004928 I Erased 65536 bytes (8 sectors), programmed 65536 bytes (8 pages), skipped 0 bytes (0 pages) at 37.13 kB/s [loader]
+lio-prop-time with pyOCD...
+Executing: C:/Users/jamie/Documents/RPL/mbed-ce-test-tools/CI-Shield-Tests/mbed-os/venv/Scripts/mbedhtrun.exe --skip-flashing -p COM10 --skip-reset --sync-predelay 0.3 -m SFE_ARTEMIS --baud-rate=115200
+[+2287ms][HTST][INF] host test executor ver. 0.0.16
+[+2288ms][HTST][INF] copy image onto target... SKIPPED!
+[+2301ms][HTST][INF] starting host test process...
+[+3285ms][CONN][INF] starting connection process...
+[+3287ms][CONN][INF] notify event queue about extra 60 sec timeout for serial port pooling
+[+3288ms][CONN][INF] initializing serial port listener... 
+[+3289ms][SERI][INF] using specified port 'COM10'
+[+5802ms][HTST][INF] setting timeout to: 60 sec
+[+3290ms][SERI][INF] serial(port=COM10, baudrate=115200, read_timeout=0.01, write_timeout=5)
+[+3293ms][CONN][INF] Pre-sync delay for 0.30 sec...
+[+3594ms][SERI][TXD] mbedmbedmbedmbedmbedmbedmbedmbedmbedmbed
+[+3594ms][CONN][INF] sending up to 2 __sync packets (specified with --sync=2)
+[+3594ms][CONN][INF] sending preamble '0da87afd-cdd1-459e-82cf-b990d1cd187b'
+[+3598ms][SERI][TXD] {{__sync;0da87afd-cdd1-459e-82cf-b990d1cd187b}}
+[+3609ms][CONN][WRN] UnicodeDecodeError encountered! Raw bytes were b'\xfembedmbedmbedmbedmbedmbedmbedmbed' and they decoded to "mbedmbedmbedmbedmbedmbedmbedmbed"
+[+3620ms][CONN][RXD] mbedmbedmbedmbedmbedmbedmbedmbed
+[+3621ms][CONN][INF] found KV pair in stream: {{__sync;0da87afd-cdd1-459e-82cf-b990d1cd187b}}, queued...
+[+3621ms][CONN][INF] found KV pair in stream: {{__version;1.3.0}}, queued...
+[+3621ms][CONN][INF] found KV pair in stream: {{__timeout;30}}, queued...
+[+3621ms][CONN][INF] found KV pair in stream: {{__host_test_name;default_auto}}, queued...
+[+3621ms][CONN][INF] found SYNC in stream: {{__sync;0da87afd-cdd1-459e-82cf-b990d1cd187b}} it is #0 sent, queued...
+[+6135ms][HTST][INF] sync KV found, uuid=0da87afd-cdd1-459e-82cf-b990d1cd187b, timestamp=1753340177.354457
+[+6135ms][HTST][INF] DUT greentea-client version: 1.3.0
+[+6135ms][HTST][INF] setting timeout to: 30 sec
+[+6135ms][HTST][INF] host test class: '&lt;class 'mbed_os_tools.test.host_tests.default_auto.DefaultAuto'&gt;'
+[+6135ms][HTST][INF] host test setup() call...
+[+6135ms][HTST][INF] CALLBACKs updated
+[+6135ms][HTST][INF] host test detected: default_auto
+[+3632ms][CONN][RXD] &gt;&gt;&gt; Running 6 test cases...
+[+3633ms][CONN][INF] found KV pair in stream: {{__testcase_name;Digital I/O GPOUT_0 -&gt; GPIN_0}}, queued...
+[+3633ms][CONN][INF] found KV pair in stream: {{__testcase_name;Digital I/O GPIN_0 -&gt; GPOUT_0}}, queued...
+[+3644ms][CONN][INF] found KV pair in stream: {{__testcase_name;Digital I/O GPOUT_1 -&gt; GPIN_1}}, queued...
+[+3644ms][CONN][INF] found KV pair in stream: {{__testcase_name;Digital I/O GPIN_1 -&gt; GPOUT_1}}, queued...
+[+3655ms][CONN][INF] found KV pair in stream: {{__testcase_name;Digital I/O GPOUT_2 -&gt; GPIN_2}}, queued...
+[+3655ms][CONN][INF] found KV pair in stream: {{__testcase_name;Digital I/O GPIN_2 -&gt; GPOUT_2}}, queued...
+[+3656ms][CONN][RXD] 
+[+3666ms][CONN][RXD] &gt;&gt;&gt; Running case #1: 'Digital I/O GPOUT_0 -&gt; GPIN_0'...
+[+3667ms][CONN][INF] found KV pair in stream: {{__testcase_start;Digital I/O GPOUT_0 -&gt; GPIN_0}}, queued...
+[+3667ms][CONN][RXD] 0 -&gt; 1 propagation took 15us.
+[+3677ms][CONN][RXD] 1 -&gt; 0 propagation took 14us.
+[+3677ms][CONN][INF] found KV pair in stream: {{__testcase_finish;Digital I/O GPOUT_0 -&gt; GPIN_0;1;0}}, queued...
+[+3688ms][CONN][RXD] &gt;&gt;&gt; 'Digital I/O GPOUT_0 -&gt; GPIN_0': 1 passed, 0 failed
+[+3688ms][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[+3688ms][CONN][RXD] 
+[+3689ms][CONN][RXD] &gt;&gt;&gt; Running case #2: 'Digital I/O GPIN_0 -&gt; GPOUT_0'...
+[+3700ms][CONN][INF] found KV pair in stream: {{__testcase_start;Digital I/O GPIN_0 -&gt; GPOUT_0}}, queued...
+[+3700ms][CONN][RXD] 0 -&gt; 1 propagation took 14us.
+[+3700ms][CONN][RXD] 1 -&gt; 0 propagation took 15us.
+[+3711ms][CONN][INF] found KV pair in stream: {{__testcase_finish;Digital I/O GPIN_0 -&gt; GPOUT_0;1;0}}, queued...
+[+3711ms][CONN][RXD] &gt;&gt;&gt; 'Digital I/O GPIN_0 -&gt; GPOUT_0': 1 passed, 0 failed
+[+3711ms][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[+3711ms][CONN][RXD] 
+[+3723ms][CONN][RXD] &gt;&gt;&gt; Running case #3: 'Digital I/O GPOUT_1 -&gt; GPIN_1'...
+[+3723ms][CONN][INF] found KV pair in stream: {{__testcase_start;Digital I/O GPOUT_1 -&gt; GPIN_1}}, queued...
+[+3734ms][CONN][RXD] 0 -&gt; 1 propagation took 14us.
+[+3734ms][CONN][RXD] 1 -&gt; 0 propagation took 15us.
+[+3734ms][CONN][INF] found KV pair in stream: {{__testcase_finish;Digital I/O GPOUT_1 -&gt; GPIN_1;1;0}}, queued...
+[+3745ms][CONN][RXD] &gt;&gt;&gt; 'Digital I/O GPOUT_1 -&gt; GPIN_1': 1 passed, 0 failed
+[+3745ms][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[+3745ms][CONN][RXD] 
+[+3756ms][CONN][RXD] &gt;&gt;&gt; Running case #4: 'Digital I/O GPIN_1 -&gt; GPOUT_1'...
+[+3756ms][CONN][INF] found KV pair in stream: {{__testcase_start;Digital I/O GPIN_1 -&gt; GPOUT_1}}, queued...
+[+3756ms][CONN][RXD] 0 -&gt; 1 propagation took 14us.
+[+3768ms][CONN][RXD] 1 -&gt; 0 propagation took 15us.
+[+3769ms][CONN][INF] found KV pair in stream: {{__testcase_finish;Digital I/O GPIN_1 -&gt; GPOUT_1;1;0}}, queued...
+[+3769ms][CONN][RXD] &gt;&gt;&gt; 'Digital I/O GPIN_1 -&gt; GPOUT_1': 1 passed, 0 failed
+[+3780ms][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[+3780ms][CONN][RXD] 
+[+3780ms][CONN][RXD] &gt;&gt;&gt; Running case #5: 'Digital I/O GPOUT_2 -&gt; GPIN_2'...
+[+3780ms][CONN][INF] found KV pair in stream: {{__testcase_start;Digital I/O GPOUT_2 -&gt; GPIN_2}}, queued...
+[+3792ms][CONN][RXD] 0 -&gt; 1 propagation took 42us.
+[+3792ms][CONN][RXD] 1 -&gt; 0 propagation took 14us.
+[+3792ms][CONN][INF] found KV pair in stream: {{__testcase_finish;Digital I/O GPOUT_2 -&gt; GPIN_2;1;0}}, queued...
+[+3803ms][CONN][RXD] &gt;&gt;&gt; 'Digital I/O GPOUT_2 -&gt; GPIN_2': 1 passed, 0 failed
+[+3803ms][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[+3803ms][CONN][RXD] 
+[+3815ms][CONN][RXD] &gt;&gt;&gt; Running case #6: 'Digital I/O GPIN_2 -&gt; GPOUT_2'...
+[+3815ms][CONN][INF] found KV pair in stream: {{__testcase_start;Digital I/O GPIN_2 -&gt; GPOUT_2}}, queued...
+[+3815ms][CONN][RXD] 0 -&gt; 1 propagation took 14us.
+[+3815ms][CONN][RXD] 1 -&gt; 0 propagation took 14us.
+[+3826ms][CONN][INF] found KV pair in stream: {{__testcase_finish;Digital I/O GPIN_2 -&gt; GPOUT_2;1;0}}, queued...
+[+3839ms][CONN][RXD] &gt;&gt;&gt; 'Digital I/O GPIN_2 -&gt; GPOUT_2': 1 passed, 0 failed
+[+3839ms][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[+3840ms][CONN][RXD] 
+[+3840ms][CONN][RXD] &gt;&gt;&gt; Test cases: 6 passed, 0 failed
+[+3840ms][CONN][RXD] 
+[+3841ms][CONN][RXD] -----------------------
+[+3852ms][CONN][RXD] 0 Tests 0 Failures 0 Ignored 
+[+3852ms][CONN][RXD] OK
+[+3852ms][CONN][INF] found KV pair in stream: {{__testcase_summary;6;0}}, queued...
+[+3852ms][CONN][INF] found KV pair in stream: {{end;success}}, queued...
+[+3852ms][CONN][INF] found KV pair in stream: {{__exit;0}}, queued...
+[+6367ms][HTST][INF] __exit(0)
+[+6367ms][HTST][INF] __notify_complete(True)
+[+6367ms][HTST][INF] __exit_event_queue received
+[+6368ms][HTST][INF] test suite run finished after 0.23 sec...
+[+3864ms][CONN][INF] received special event '__host_test_finished' value='True', finishing
+[+6657ms][HTST][INF] CONN exited with code: 0
+[+6658ms][HTST][INF] Some events in queue
+[+6658ms][HTST][INF] stopped consuming events
+[+6658ms][HTST][INF] host test result() call skipped, received: True
+[+6658ms][HTST][INF] calling blocking teardown()
+[+6658ms][HTST][INF] teardown() finished
+[+6658ms][HTST][INF] {{result;success}}
+</system-out>
+	</testcase>
+	<testcase name="test-testshield-i2c-basic" classname="test-testshield-i2c-basic" time="26.8408" status="fail">
+		<failure message="Failed"/>
+		<properties/>
+		<system-out>0002951 I Target type is ama3b1kk_kbr [board]
+0003136 I DP IDR = 0x2ba01477 (v1 rev2) [dap]
+0003176 I AHB-AP#0 IDR = 0x24770011 (AHB-AP var1 rev2) [discovery]
+0003191 I AHB-AP#0 Class 0x1 ROM table #0 @ 0xe00ff000 (designer=43b:Arm part=4c4) [rom_table]
+0003202 I [0]&lt;e000e000:SCS v7-M class=14 designer=43b:Arm part=00c&gt; [rom_table]
+0003204 I [1]&lt;e0001000:DWT v7-M class=14 designer=43b:Arm part=002&gt; [rom_table]
+0003209 I [2]&lt;e0002000:FPB v7-M class=14 designer=43b:Arm part=003&gt; [rom_table]
+0003256 I [3]&lt;e0000000:ITM v7-M class=14 designer=43b:Arm part=001&gt; [rom_table]
+0003389 I [4]&lt;e0040000:TPIU M4 class=9 designer=43b:Arm part=9a1 devtype=11 archid=0000 devid=ca0:0:0&gt; [rom_table]
+0003394 I CPU core #0: Cortex-M4 r0p1, v7.0-M architecture [cortex_m]
+0003395 I   Extensions: [DSP, FPU, FPU_V4, MPU] [cortex_m]
+0003395 I   FPU present: FPv4-SP-D16-M [cortex_m]
+0003400 I 4 hardware watchpoints [dwt]
+0003402 I 6 hardware breakpoints, 4 literal comparators [fpb]
+0003406 I Loading C:\Users\jamie\Documents\RPL\mbed-ce-test-tools\CI-Shield-Tests\cmake-build-develop-sfe_artemis\test-testshield-i2c-basic.bin at 0x00010000 [load_cmd]
+[---|---|---|---|---|---|---|---|---|----]
+[========================================]
+0005174 I Erased 73728 bytes (9 sectors), programmed 73728 bytes (9 pages), skipped 0 bytes (0 pages) at 40.76 kB/s [loader]
+[1/3] Building CXX object CMakeFiles/test-testshield-i2c-basic.dir/I2CBasicTest.cpp.obj
+[2/3] Linking CXX executable test-testshield-i2c-basic.elf
+-- built: C:/Users/jamie/Documents/RPL/mbed-ce-test-tools/CI-Shield-Tests/cmake-build-develop-sfe_artemis/test-testshield-i2c-basic.bin
+-- built: C:/Users/jamie/Documents/RPL/mbed-ce-test-tools/CI-Shield-Tests/cmake-build-develop-sfe_artemis/test-testshield-i2c-basic.hex
+[2/3] Flashing test-testshield-i2c-basic with pyOCD...
+Executing: C:/Users/jamie/Documents/RPL/mbed-ce-test-tools/CI-Shield-Tests/mbed-os/venv/Scripts/mbedhtrun.exe --skip-flashing -p COM10 --skip-reset --sync-predelay 0.3 -e C:/Users/jamie/Documents/RPL/mbed-ce-test-tools/CI-Shield-Tests/host_tests -m SFE_ARTEMIS --baud-rate=115200
+Will use any connected CI shield for this test.  Export the MBED_CI_SHIELD_SERIAL_NUMBER environment var to select a specific shield.
+e.g. 'export MBED_CI_SHIELD_SERIAL_NUMBER=SN002'
+[+2724ms][HTST][INF] host test executor ver. 0.0.16
+[+2725ms][HTST][INF] copy image onto target... SKIPPED!
+[+2735ms][HTST][INF] starting host test process...
+[+2872ms][CONN][INF] starting connection process...
+[+2874ms][CONN][INF] notify event queue about extra 60 sec timeout for serial port pooling
+[+2874ms][CONN][INF] initializing serial port listener... 
+[+2875ms][SERI][INF] using specified port 'COM10'
+[+2875ms][SERI][INF] serial(port=COM10, baudrate=115200, read_timeout=0.01, write_timeout=5)
+[+5842ms][HTST][INF] setting timeout to: 60 sec
+[+2877ms][CONN][INF] Pre-sync delay for 0.30 sec...
+[+3178ms][SERI][TXD] mbedmbedmbedmbedmbedmbedmbedmbedmbedmbed
+[+3178ms][CONN][INF] sending up to 2 __sync packets (specified with --sync=2)
+[+3178ms][CONN][INF] sending preamble 'af1f2a37-c291-4772-b59b-f39ac9545b92'
+[+3181ms][SERI][TXD] {{__sync;af1f2a37-c291-4772-b59b-f39ac9545b92}}
+[+3193ms][CONN][WRN] UnicodeDecodeError encountered! Raw bytes were b'\xfembedmbedmbedmbedmbedmbedmbedmbed\r\n{{__sync;af1f2a37-c291-4772-b5' and they decoded to "mbedmbedmbedmbedmbedmbedmbedmbed
+{{__sync;af1f2a37-c291-4772-b5"
+[+3193ms][CONN][RXD] mbedmbedmbedmbedmbedmbedmbedmbed
+[+3206ms][CONN][INF] found KV pair in stream: {{__sync;af1f2a37-c291-4772-b59b-f39ac9545b92}}, queued...
+[+3207ms][CONN][INF] found KV pair in stream: {{__version;1.3.0}}, queued...
+[+3207ms][CONN][INF] found KV pair in stream: {{__timeout;30}}, queued...
+[+3207ms][CONN][INF] found KV pair in stream: {{__host_test_name;i2c_basic_test}}, queued...
+[+3207ms][CONN][RXD] &gt;&gt;&gt; Running 13 test cases...
+[+3207ms][CONN][INF] found SYNC in stream: {{__sync;af1f2a37-c291-4772-b59b-f39ac9545b92}} it is #0 sent, queued...
+[+6174ms][HTST][INF] sync KV found, uuid=af1f2a37-c291-4772-b59b-f39ac9545b92, timestamp=1753340202.255855
+[+6174ms][HTST][INF] DUT greentea-client version: 1.3.0
+[+6175ms][HTST][INF] setting timeout to: 30 sec
+[+6175ms][HTST][INF] host test class: '&lt;class 'i2c_basic_test.I2CBasicTestHostTest'&gt;'
+[+6175ms][TEST][INF] I2C Basic Test host test setup complete.
+[+6175ms][HTST][INF] host test setup() call...
+[+6175ms][HTST][INF] CALLBACKs updated
+[+6175ms][HTST][INF] host test detected: i2c_basic_test
+[+3218ms][CONN][INF] found KV pair in stream: {{__testcase_name;Correct Address - Single Byte}}, queued...
+[+3219ms][CONN][INF] found KV pair in stream: {{__testcase_name;Correct Address - Transaction}}, queued...
+[+3230ms][CONN][INF] found KV pair in stream: {{__testcase_name;Incorrect Address - Single Byte}}, queued...
+[+3230ms][CONN][INF] found KV pair in stream: {{__testcase_name;Incorrect Address - Zero Length Transaction}}, queued...
+[+3241ms][CONN][INF] found KV pair in stream: {{__testcase_name;Incorrect Address - Write Transaction}}, queued...
+[+3241ms][CONN][INF] found KV pair in stream: {{__testcase_name;Incorrect Address - Read Transaction}}, queued...
+[+3242ms][CONN][INF] found KV pair in stream: {{__testcase_name;Simple Write - Single Byte}}, queued...
+[+3254ms][CONN][INF] found KV pair in stream: {{__testcase_name;Destroy and Recreate Object}}, queued...
+[+3255ms][CONN][INF] found KV pair in stream: {{__testcase_name;Simple Read - Single Byte}}, queued...
+[+3265ms][CONN][INF] found KV pair in stream: {{__testcase_name;Simple Write - Transaction}}, queued...
+[+3265ms][CONN][INF] found KV pair in stream: {{__testcase_name;Simple Read - Transaction}}, queued...
+[+3276ms][CONN][INF] found KV pair in stream: {{__testcase_name;Mixed Usage - Single Byte -&gt; repeated -&gt; Transaction}}, queued...
+[+3276ms][CONN][INF] found KV pair in stream: {{__testcase_name;Mixed Usage - Transaction -&gt; repeated -&gt; Single Byte}}, queued...
+[+3276ms][CONN][RXD] 
+[+3288ms][CONN][RXD] &gt;&gt;&gt; Running case #1: 'Correct Address - Single Byte'...
+[+3288ms][CONN][INF] found KV pair in stream: {{__testcase_start;Correct Address - Single Byte}}, queued...
+[+3288ms][CONN][INF] found KV pair in stream: {{start_recording_i2c;please}}, queued...
+[+4317ms][SERI][TXD] {{start_recording_i2c;complete}}
+[+4328ms][CONN][RXD] 
+[+4328ms][CONN][RXD] 
+[+4328ms][CONN][RXD] ++ MbedOS Error Info ++
+[+4339ms][CONN][RXD] Error Status: 0x80FF0144 Code: 324 Module: 255
+[+4340ms][CONN][RXD] Error Message: Assertion failed: 0
+[+4340ms][CONN][RXD] Location: 0x15EB5
+[+4340ms][CONN][RXD] File: i2c_api.c+103
+[+4340ms][CONN][RXD] Error Value: 0x0
+[+4351ms][CONN][RXD] Current Thread: main Id: 0x10004FE8 Entry: 0x18471 StackSize: 0x1000 StackMem: 0x10005030 SP: 0x10005F0C 
+[+4363ms][CONN][RXD] For more info, visit: https://mbed.com/s/error?error=0x80FF0144&amp;tgt=SFE_ARTEMIS
+[+4363ms][CONN][RXD] -- MbedOS Error Info --
+[+4363ms][CONN][INF] found KV pair in stream: {{mbed_error;1}}, queued...
+[+4363ms][CONN][INF] found KV pair in stream: {{mbed_error_module;255}}, queued...
+[+4375ms][CONN][INF] found KV pair in stream: {{mbed_error_code;324}}, queued...
+[+4375ms][CONN][INF] found KV pair in stream: {{mbed_error_message;0}}, queued...
+[+4375ms][CONN][INF] found KV pair in stream: {{mbed_error_location;0x15eb5}}, queued...
+[+7409ms][HTST][INF] Detected target fatal error. Failing test...
+[+7409ms][HTST][INF] __notify_complete(False)
+[+7410ms][HTST][INF] __exit_event_queue received
+[+7410ms][HTST][INF] test suite run finished after 1.23 sec...
+[+4451ms][CONN][INF] received special event '__host_test_finished' value='True', finishing
+[+8066ms][HTST][INF] CONN exited with code: 0
+[+8066ms][HTST][INF] No events in queue
+[+8066ms][HTST][INF] stopped consuming events
+[+8066ms][HTST][INF] host test result() call skipped, received: False
+[+8066ms][HTST][WRN] missing __exit event from DUT
+[+8066ms][HTST][INF] calling blocking teardown()
+[+8076ms][HTST][INF] teardown() finished
+[+8082ms][HTST][INF] {{result;failure}}
+CMake Error at mbed-run-greentea-test-testshield-i2c-basic.cmake:19 (execute_process):
+  execute_process failed command indexes:
+
+    1: "Child return code: 1"
+
+
+
+</system-out>
+	</testcase>
+	<testcase name="test-testshield-i2c-slave-comms" classname="test-testshield-i2c-slave-comms" time="0.0932243" status="notrun">
+		<skipped message="SKIP_REGULAR_EXPRESSION_MATCHED"/>
+		<properties/>
+		<system-out>Skipping test-testshield-i2c-slave-comms: No I2C slave support
+</system-out>
+	</testcase>
+	<testcase name="test-testshield-i2c-eeprom" classname="test-testshield-i2c-eeprom" time="44.7228" status="fail">
+		<failure message="Failed"/>
+		<properties/>
+		<system-out>[1/17] Building CXX object mbed-os/storage/blockdevice/CMakeFiles/mbed-storage-blockdevice.dir/source/ProfilingBlockDevice.cpp.obj
+[2/17] Building CXX object mbed-os/storage/blockdevice/CMakeFiles/mbed-storage-blockdevice.dir/source/ReadOnlyBlockDevice.cpp.obj
+[3/17] Building CXX object mbed-os/storage/blockdevice/CMakeFiles/mbed-storage-blockdevice.dir/source/SlicingBlockDevice.cpp.obj
+[4/17] Building CXX object mbed-os/storage/blockdevice/CMakeFiles/mbed-storage-blockdevice.dir/source/BufferedBlockDevice.cpp.obj
+[5/17] Building CXX object mbed-os/storage/blockdevice/CMakeFiles/mbed-storage-blockdevice.dir/source/ExhaustibleBlockDevice.cpp.obj
+[6/17] Building CXX object mbed-os/storage/blockdevice/CMakeFiles/mbed-storage-blockdevice.dir/source/HeapBlockDevice.cpp.obj
+[7/17] Building CXX object mbed-os/storage/blockdevice/CMakeFiles/mbed-storage-blockdevice.dir/source/FlashSimBlockDevice.cpp.obj
+[8/17] Building CXX object mbed-os/storage/blockdevice/CMakeFiles/mbed-storage-blockdevice.dir/source/ChainingBlockDevice.cpp.obj
+[9/17] Building CXX object mbed-os/storage/blockdevice/CMakeFiles/mbed-storage-blockdevice.dir/source/MBRBlockDevice.cpp.obj
+[10/17] Building CXX object mbed-os/storage/blockdevice/CMakeFiles/mbed-storage-blockdevice.dir/source/ObservingBlockDevice.cpp.obj
+[11/17] Building CXX object mbed-os/storage/blockdevice/CMakeFiles/mbed-storage-blockdevice.dir/source/SFDP.cpp.obj
+[12/17] Linking CXX static library mbed-os\storage\blockdevice\libmbed-storage-blockdevice.a
+[13/17] Building CXX object mbed-os/storage/blockdevice/COMPONENT_I2CEE/CMakeFiles/mbed-storage-i2cee.dir/source/I2CEEBlockDevice.cpp.obj
+[14/17] Linking CXX static library mbed-os\storage\blockdevice\COMPONENT_I2CEE\libmbed-storage-i2cee.a
+[15/17] Building CXX object CMakeFiles/test-testshield-i2c-eeprom.dir/I2CEEPROMTest.cpp.obj
+[16/17] Linking CXX executable test-testshield-i2c-eeprom.elf
+-- built: C:/Users/jamie/Documents/RPL/mbed-ce-test-tools/CI-Shield-Tests/cmake-build-develop-sfe_artemis/test-testshield-i2c-eeprom.bin
+-- built: C0002866 I Target type is ama3b1kk_kbr [board]
+0003053 I DP IDR = 0x2ba01477 (v1 rev2) [dap]
+0003114 I AHB-AP#0 IDR = 0x24770011 (AHB-AP var1 rev2) [discovery]
+0003264 I AHB-AP#0 Class 0x1 ROM table #0 @ 0xe00ff000 (designer=43b:Arm part=4c4) [rom_table]
+0003279 I [0]&lt;e000e000:SCS v7-M class=14 designer=43b:Arm part=00c&gt; [rom_table]
+0003280 I [1]&lt;e0001000:DWT v7-M class=14 designer=43b:Arm part=002&gt; [rom_table]
+0003281 I [2]&lt;e0002000:FPB v7-M class=14 designer=43b:Arm part=003&gt; [rom_table]
+0003282 I [3]&lt;e0000000:ITM v7-M class=14 designer=43b:Arm part=001&gt; [rom_table]
+0003285 I [4]&lt;e0040000:TPIU M4 class=9 designer=43b:Arm part=9a1 devtype=11 archid=0000 devid=ca0:0:0&gt; [rom_table]
+0003287 I CPU core #0: Cortex-M4 r0p1, v7.0-M architecture [cortex_m]
+0003287 I   Extensions: [DSP, FPU, FPU_V4, MPU] [cortex_m]
+0003287 I   FPU present: FPv4-SP-D16-M [cortex_m]
+0003291 I 4 hardware watchpoints [dwt]
+0003295 I 6 hardware breakpoints, 4 literal comparators [fpb]
+0003301 I Loading C:\Users\jamie\Documents\RPL\mbed-ce-test-tools\CI-Shield-Tests\cmake-build-develop-sfe_artemis\test-testshield-i2c-eeprom.bin at 0x00010000 [load_cmd]
+[---|---|---|---|---|---|---|---|---|----]
+[========================================]
+0005215 I Erased 73728 bytes (9 sectors), programmed 73728 bytes (9 pages), skipped 0 bytes (0 pages) at 37.65 kB/s [loader]
+:/Users/jamie/Documents/RPL/mbed-ce-test-tools/CI-Shield-Tests/cmake-build-develop-sfe_artemis/test-testshield-i2c-eeprom.hex
+[16/17] Flashing test-testshield-i2c-eeprom with pyOCD...
+Executing: C:/Users/jamie/Documents/RPL/mbed-ce-test-tools/CI-Shield-Tests/mbed-os/venv/Scripts/mbedhtrun.exe --skip-flashing -p COM10 --skip-reset --sync-predelay 0.3 -e C:/Users/jamie/Documents/RPL/mbed-ce-test-tools/CI-Shield-Tests/host_tests -m SFE_ARTEMIS --baud-rate=115200
+Will use any connected CI shield for this test.  Export the MBED_CI_SHIELD_SERIAL_NUMBER environment var to select a specific shield.
+e.g. 'export MBED_CI_SHIELD_SERIAL_NUMBER=SN002'
+[+3112ms][HTST][INF] host test executor ver. 0.0.16
+[+3112ms][HTST][INF] copy image onto target... SKIPPED!
+[+3119ms][HTST][INF] starting host test process...
+[+2707ms][CONN][INF] starting connection process...
+[+2708ms][CONN][INF] notify event queue about extra 60 sec timeout for serial port pooling
+[+2708ms][CONN][INF] initializing serial port listener... 
+[+2709ms][SERI][INF] using specified port 'COM10'
+[+2709ms][SERI][INF] serial(port=COM10, baudrate=115200, read_timeout=0.01, write_timeout=5)
+[+6088ms][HTST][INF] setting timeout to: 60 sec
+[+2711ms][CONN][INF] Pre-sync delay for 0.30 sec...
+[+3014ms][SERI][TXD] mbedmbedmbedmbedmbedmbedmbedmbedmbedmbed
+[+3015ms][CONN][INF] sending up to 2 __sync packets (specified with --sync=2)
+[+3015ms][CONN][INF] sending preamble 'e1cfcd46-6692-46bc-bc77-9b18d120c0e9'
+[+3018ms][SERI][TXD] {{__sync;e1cfcd46-6692-46bc-bc77-9b18d120c0e9}}
+[+3029ms][CONN][WRN] UnicodeDecodeError encountered! Raw bytes were b'\xfembedmbedmbedmbedmbedmbedmbedmbed' and they decoded to "mbedmbedmbedmbedmbedmbedmbedmbed"
+[+3041ms][CONN][RXD] mbedmbedmbedmbedmbedmbedmbedmbed
+[+3041ms][CONN][INF] found KV pair in stream: {{__sync;e1cfcd46-6692-46bc-bc77-9b18d120c0e9}}, queued...
+[+3041ms][CONN][INF] found KV pair in stream: {{__version;1.3.0}}, queued...
+[+3041ms][CONN][INF] found KV pair in stream: {{__timeout;20}}, queued...
+[+3041ms][CONN][INF] found KV pair in stream: {{__host_test_name;i2c_record_only_test}}, queued...
+[+3041ms][CONN][INF] found SYNC in stream: {{__sync;e1cfcd46-6692-46bc-bc77-9b18d120c0e9}} it is #0 sent, queued...
+[+6422ms][HTST][INF] sync KV found, uuid=e1cfcd46-6692-46bc-bc77-9b18d120c0e9, timestamp=1753340248.319704
+[+6422ms][HTST][INF] DUT greentea-client version: 1.3.0
+[+6423ms][HTST][INF] setting timeout to: 20 sec
+[+6423ms][HTST][INF] host test class: '&lt;class 'i2c_record_only_test.I2CRecordOnlyTestHostTest'&gt;'
+[+6423ms][TEST][INF] I2C Record-Only Test host test setup complete.
+[+6423ms][HTST][INF] host test setup() call...
+[+6423ms][HTST][INF] CALLBACKs updated
+[+6423ms][HTST][INF] host test detected: i2c_record_only_test
+[+3053ms][CONN][RXD] &gt;&gt;&gt; Running 14 test cases...
+[+3053ms][CONN][INF] found KV pair in stream: {{__testcase_name;I2C - 100kHz - EEPROM WR Single Byte}}, queued...
+[+3064ms][CONN][INF] found KV pair in stream: {{__testcase_name;I2C - 100kHz - EEPROM 2nd WR Single Byte}}, queued...
+[+3064ms][CONN][INF] found KV pair in stream: {{__testcase_name;I2C - 100kHz - EEPROM WR 2 Bytes}}, queued...
+[+3077ms][CONN][INF] found KV pair in stream: {{__testcase_name;I2C - 100kHz - EEPROM 2nd WR 2 Bytes}}, queued...
+[+3077ms][CONN][INF] found KV pair in stream: {{__testcase_name;I2C - 100kHz - EEPROM WR 1 Page}}, queued...
+[+3077ms][CONN][INF] found KV pair in stream: {{__testcase_name;I2C - 100kHz - EEPROM 2nd WR 1 Page}}, queued...
+[+3089ms][CONN][INF] found KV pair in stream: {{__testcase_name;I2C - 100kHz - EEPROM WR 2kiB}}, queued...
+[+3090ms][CONN][INF] found KV pair in stream: {{__testcase_name;I2C - 400kHz - EEPROM WR Single Byte}}, queued...
+[+3100ms][CONN][INF] found KV pair in stream: {{__testcase_name;I2C - 400kHz - EEPROM 2nd WR Single Byte}}, queued...
+[+3101ms][CONN][INF] found KV pair in stream: {{__testcase_name;I2C - 400kHz - EEPROM WR 2 Bytes}}, queued...
+[+3112ms][CONN][INF] found KV pair in stream: {{__testcase_name;I2C - 400kHz - EEPROM 2nd WR 2 Bytes}}, queued...
+[+3113ms][CONN][INF] found KV pair in stream: {{__testcase_name;I2C - 400kHz - EEPROM WR 1 Page}}, queued...
+[+3124ms][CONN][INF] found KV pair in stream: {{__testcase_name;I2C - 400kHz - EEPROM 2nd WR 1 Page}}, queued...
+[+3124ms][CONN][INF] found KV pair in stream: {{__testcase_name;I2C - 400kHz - EEPROM WR 2kiB}}, queued...
+[+3124ms][CONN][INF] found KV pair in stream: {{start_recording_i2c;please}}, queued...
+[+4142ms][SERI][TXD] {{start_recording_i2c;complete}}
+[+4154ms][CONN][RXD] 
+[+4154ms][CONN][RXD] &gt;&gt;&gt; Running case #1: 'I2C - 100kHz - EEPROM WR Single Byte'...
+[+4165ms][CONN][INF] found KV pair in stream: {{__testcase_start;I2C - 100kHz - EEPROM WR Single Byte}}, queued...
+[+4165ms][CONN][RXD] 
+[+4165ms][CONN][RXD] 
+[+4166ms][CONN][RXD] ++ MbedOS Error Info ++
+[+4177ms][CONN][RXD] Error Status: 0x80FF0144 Code: 324 Module: 255
+[+4177ms][CONN][RXD] Error Message: Assertion failed: 0
+[+4177ms][CONN][RXD] Location: 0x15E65
+[+4177ms][CONN][RXD] File: i2c_api.c+103
+[+4177ms][CONN][RXD] Error Value: 0x0
+[+4189ms][CONN][RXD] Current Thread: main Id: 0x10004FE8 Entry: 0x18421 StackSize: 0x1000 StackMem: 0x10005030 SP: 0x10005E64 
+[+4200ms][CONN][RXD] For more info, visit: https://mbed.com/s/error?error=0x80FF0144&amp;tgt=SFE_ARTEMIS
+[+4200ms][CONN][RXD] -- MbedOS Error Info --
+[+4200ms][CONN][INF] found KV pair in stream: {{mbed_error;1}}, queued...
+[+4200ms][CONN][INF] found KV pair in stream: {{mbed_error_module;255}}, queued...
+[+4200ms][CONN][INF] found KV pair in stream: {{mbed_error_code;324}}, queued...
+[+4200ms][CONN][INF] found KV pair in stream: {{mbed_error_message;0}}, queued...
+[+7582ms][HTST][INF] Detected target fatal error. Failing test...
+[+7582ms][HTST][INF] __notify_complete(False)
+[+7582ms][HTST][INF] __exit_event_queue received
+[+7582ms][HTST][INF] test suite run finished after 1.16 sec...
+[+4211ms][CONN][INF] found KV pair in stream: {{mbed_error_location;0x15e65}}, queued...
+[+4213ms][CONN][INF] received special event '__host_test_finished' value='True', finishing
+[+7787ms][HTST][INF] CONN exited with code: 0
+[+7787ms][HTST][INF] Some events in queue
+[+7787ms][HTST][INF] stopped consuming events
+[+7787ms][HTST][INF] host test result() call skipped, received: False
+[+7787ms][HTST][WRN] missing __exit event from DUT
+[+7787ms][HTST][INF] calling blocking teardown()
+[+7788ms][HTST][INF] teardown() finished
+[+7788ms][HTST][INF] {{result;failure}}
+CMake Error at mbed-run-greentea-test-testshield-i2c-eeprom.cmake:19 (execute_process):
+  execute_process failed command indexes:
+
+    1: "Child return code: 1"
+
+
+
+</system-out>
+	</testcase>
+	<testcase name="test-testshield-spi-basic" classname="test-testshield-spi-basic" time="38.454" status="run">
+		<properties/>
+		<system-out>0003672 I Target type is ama3b1kk_kbr [board]
+0003878 I DP IDR = 0x2ba01477 (v1 rev2) [dap]
+0003912 I AHB-AP#0 IDR = 0x24770011 (AHB-AP var1 rev2) [discovery]
+0003940 I AHB-AP#0 Class 0x1 ROM table #0 @ 0xe00ff000 (designer=43b:Arm part=4c4) [rom_table]
+0003957 I [0]&lt;e000e000:SCS v7-M class=14 designer=43b:Arm part=00c&gt; [rom_table]
+0003964 I [1]&lt;e0001000:DWT v7-M class=14 designer=43b:Arm part=002&gt; [rom_table]
+0004085 I [2]&lt;e0002000:FPB v7-M class=14 designer=43b:Arm part=003&gt; [rom_table]
+0004161 I [3]&lt;e0000000:ITM v7-M class=14 designer=43b:Arm part=001&gt; [rom_table]
+0004245 I [4]&lt;e0040000:TPIU M4 class=9 designer=43b:Arm part=9a1 devtype=11 archid=0000 devid=ca0:0:0&gt; [rom_table]
+0004252 I CPU core #0: Cortex-M4 r0p1, v7.0-M architecture [cortex_m]
+0004252 I   Extensions: [DSP, FPU, FPU_V4, MPU] [cortex_m]
+0004255 I   FPU present: FPv4-SP-D16-M [cortex_m]
+0004258 I 4 hardware watchpoints [dwt]
+0004260 I 6 hardware breakpoints, 4 literal comparators [fpb]
+0004264 I Loading C:\Users\jamie\Documents\RPL\mbed-ce-test-tools\CI-Shield-Tests\cmake-build-develop-sfe_artemis\test-testshield-spi-basic.bin at 0x00010000 [load_cmd]
+[---|---|---|---|---|---|---|---|---|----]
+[========================================]
+0006327 I Erased 73728 bytes (9 sectors), programmed 73728 bytes (9 pages), skipped 0 bytes (0 pages) at 34.94 kB/s [loader]
+[1/3] Building CXX object CMakeFiles/test-testshield-spi-basic.dir/SPIBasicTest.cpp.obj
+[2/3] Linking CXX executable test-testshield-spi-basic.elf
+-- built: C:/Users/jamie/Documents/RPL/mbed-ce-test-tools/CI-Shield-Tests/cmake-build-develop-sfe_artemis/test-testshield-spi-basic.bin
+-- built: C:/Users/jamie/Documents/RPL/mbed-ce-test-tools/CI-Shield-Tests/cmake-build-develop-sfe_artemis/test-testshield-spi-basic.hex
+[2/3] Flashing test-testshield-spi-basic with pyOCD...
+Executing: C:/Users/jamie/Documents/RPL/mbed-ce-test-tools/CI-Shield-Tests/mbed-os/venv/Scripts/mbedhtrun.exe --skip-flashing -p COM10 --skip-reset --sync-predelay 0.3 -e C:/Users/jamie/Documents/RPL/mbed-ce-test-tools/CI-Shield-Tests/host_tests -m SFE_ARTEMIS --baud-rate=115200
+Will use any connected CI shield for this test.  Export the MBED_CI_SHIELD_SERIAL_NUMBER environment var to select a specific shield.
+e.g. 'export MBED_CI_SHIELD_SERIAL_NUMBER=SN002'
+[+4614ms][HTST][INF] host test executor ver. 0.0.16
+[+4614ms][HTST][INF] copy image onto target... SKIPPED!
+[+4647ms][HTST][INF] starting host test process...
+[+2696ms][CONN][INF] starting connection process...
+[+2697ms][CONN][INF] notify event queue about extra 60 sec timeout for serial port pooling
+[+2697ms][CONN][INF] initializing serial port listener... 
+[+2697ms][SERI][INF] using specified port 'COM10'
+[+7761ms][HTST][INF] setting timeout to: 60 sec
+[+2697ms][SERI][INF] serial(port=COM10, baudrate=115200, read_timeout=0.01, write_timeout=5)
+[+2699ms][CONN][INF] Pre-sync delay for 0.30 sec...
+[+3000ms][SERI][TXD] mbedmbedmbedmbedmbedmbedmbedmbedmbedmbed
+[+3000ms][CONN][INF] sending up to 2 __sync packets (specified with --sync=2)
+[+3000ms][CONN][INF] sending preamble '5daddb24-b9db-49bc-a484-e46a2068c1a2'
+[+3004ms][SERI][TXD] {{__sync;5daddb24-b9db-49bc-a484-e46a2068c1a2}}
+[+3015ms][CONN][WRN] UnicodeDecodeError encountered! Raw bytes were b'\xfembedmbedmbedmbedmbedmbedmbedmbed\r\n{{__sync;5daddb24-b9db-49bc-a4' and they decoded to "mbedmbedmbedmbedmbedmbedmbedmbed
+{{__sync;5daddb24-b9db-49bc-a4"
+[+3015ms][CONN][RXD] mbedmbedmbedmbedmbedmbedmbedmbed
+[+3026ms][CONN][INF] found KV pair in stream: {{__sync;5daddb24-b9db-49bc-a484-e46a2068c1a2}}, queued...
+[+3026ms][CONN][INF] found KV pair in stream: {{__version;1.3.0}}, queued...
+[+3027ms][CONN][INF] found KV pair in stream: {{__timeout;90}}, queued...
+[+3027ms][CONN][INF] found KV pair in stream: {{__host_test_name;spi_basic_test}}, queued...
+[+3027ms][CONN][INF] found SYNC in stream: {{__sync;5daddb24-b9db-49bc-a484-e46a2068c1a2}} it is #0 sent, queued...
+[+8092ms][HTST][INF] sync KV found, uuid=5daddb24-b9db-49bc-a484-e46a2068c1a2, timestamp=1753340280.578294
+[+8092ms][HTST][INF] DUT greentea-client version: 1.3.0
+[+8092ms][HTST][INF] setting timeout to: 90 sec
+[+8093ms][HTST][INF] host test class: '&lt;class 'spi_basic_test.SpiBasicTestHostTest'&gt;'
+[+8093ms][TEST][INF] SPI Basic Test host test setup complete.
+[+8093ms][HTST][INF] host test setup() call...
+[+8093ms][HTST][INF] CALLBACKs updated
+[+8093ms][HTST][INF] host test detected: spi_basic_test
+[+3038ms][CONN][RXD] &gt;&gt;&gt; Running 15 test cases...
+[+3038ms][CONN][INF] found KV pair in stream: {{__testcase_name;Verify spi_get_peripheral_name() Exists}}, queued...
+[+3049ms][CONN][INF] found KV pair in stream: {{__testcase_name;Send 8 Bit Data via Single Word API}}, queued...
+[+3049ms][CONN][INF] found KV pair in stream: {{__testcase_name;Send 16 Bit Data via Single Word API}}, queued...
+[+3060ms][CONN][INF] found KV pair in stream: {{__testcase_name;Send 32 Bit Data via Single Word API}}, queued...
+[+3060ms][CONN][INF] found KV pair in stream: {{__testcase_name;Send 8 Bit Data via Transactional API (Tx only)}}, queued...
+[+3071ms][CONN][INF] found KV pair in stream: {{__testcase_name;Send 16 Bit Data via Transactional API (Tx only)}}, queued...
+[+3071ms][CONN][INF] found KV pair in stream: {{__testcase_name;Send 32 Bit Data via Transactional API (Tx only)}}, queued...
+[+3082ms][CONN][INF] found KV pair in stream: {{__testcase_name;Free and Reallocate SPI Instance (synchronous API)}}, queued...
+[+3093ms][CONN][INF] found KV pair in stream: {{__testcase_name;Read 8 Bit Data via Transactional API (Rx only)}}, queued...
+[+3093ms][CONN][INF] found KV pair in stream: {{__testcase_name;Read 16 Bit Data via Transactional API (Rx only)}}, queued...
+[+3105ms][CONN][INF] found KV pair in stream: {{__testcase_name;Read 32 Bit Data via Transactional API (Rx only)}}, queued...
+[+3105ms][CONN][INF] found KV pair in stream: {{__testcase_name;Transfer 8 Bit Data via Transactional API (Tx/Rx)}}, queued...
+[+3116ms][CONN][INF] found KV pair in stream: {{__testcase_name;Transfer 16 Bit Data via Transactional API (Tx/Rx)}}, queued...
+[+3127ms][CONN][INF] found KV pair in stream: {{__testcase_name;Transfer 32 Bit Data via Transactional API (Tx/Rx)}}, queued...
+[+3127ms][CONN][INF] found KV pair in stream: {{__testcase_name;Use Multiple SPI Instances (synchronous API)}}, queued...
+[+3127ms][CONN][RXD] 
+[+3138ms][CONN][RXD] &gt;&gt;&gt; Running case #1: 'Verify spi_get_peripheral_name() Exists'...
+[+3138ms][CONN][INF] found KV pair in stream: {{__testcase_start;Verify spi_get_peripheral_name() Exists}}, queued...
+[+3161ms][CONN][INF] found KV pair in stream: {{__testcase_finish;Verify spi_get_peripheral_name() Exists;1;0}}, queued...
+[+3161ms][CONN][RXD] &gt;&gt;&gt; 'Verify spi_get_peripheral_name() Exists': 1 passed, 0 failed
+[+3176ms][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[+3176ms][CONN][RXD] 
+[+3176ms][CONN][RXD] &gt;&gt;&gt; Running case #2: 'Send 8 Bit Data via Single Word API'...
+[+3177ms][CONN][INF] found KV pair in stream: {{__testcase_start;Send 8 Bit Data via Single Word API}}, queued...
+[+3177ms][CONN][INF] found KV pair in stream: {{start_recording_spi;please}}, queued...
+[+4192ms][SERI][TXD] {{start_recording_spi;complete}}
+[+4203ms][CONN][INF] found KV pair in stream: {{verify_sequence;standard_word}}, queued...
+[+9341ms][TEST][INF] Saw on the SPI bus:
+[mosi: b'01020408', miso: b'01020408']
+[+4278ms][SERI][TXD] {{verify_sequence;complete}}
+[+4290ms][CONN][INF] found KV pair in stream: {{__testcase_finish;Send 8 Bit Data via Single Word API;1;0}}, queued...
+[+4302ms][CONN][RXD] &gt;&gt;&gt; 'Send 8 Bit Data via Single Word API': 1 passed, 0 failed
+[+4302ms][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[+4302ms][CONN][RXD] 
+[+4313ms][CONN][RXD] &gt;&gt;&gt; Running case #3: 'Send 16 Bit Data via Single Word API'...
+[+4313ms][CONN][INF] found KV pair in stream: {{__testcase_start;Send 16 Bit Data via Single Word API}}, queued...
+[+4325ms][CONN][RXD] &lt;greentea test suite&gt;:175::SKIP: 16-bit SPI words not supported
+[+4325ms][CONN][INF] found KV pair in stream: {{__testcase_finish;Send 16 Bit Data via Single Word API;1;0}}, queued...
+[+4336ms][CONN][RXD] &gt;&gt;&gt; 'Send 16 Bit Data via Single Word API': 1 passed, 0 failed
+[+4336ms][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[+4336ms][CONN][RXD] 
+[+4336ms][CONN][RXD] &gt;&gt;&gt; Running case #4: 'Send 32 Bit Data via Single Word API'...
+[+4347ms][CONN][INF] found KV pair in stream: {{__testcase_start;Send 32 Bit Data via Single Word API}}, queued...
+[+4347ms][CONN][RXD] &lt;greentea test suite&gt;:195::SKIP
+[+4359ms][CONN][INF] found KV pair in stream: {{__testcase_finish;Send 32 Bit Data via Single Word API;1;0}}, queued...
+[+4359ms][CONN][RXD] &gt;&gt;&gt; 'Send 32 Bit Data via Single Word API': 1 passed, 0 failed
+[+4370ms][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[+4370ms][CONN][RXD] 
+[+4370ms][CONN][RXD] &gt;&gt;&gt; Running case #5: 'Send 8 Bit Data via Transactional API (Tx only)'...
+[+4381ms][CONN][INF] found KV pair in stream: {{__testcase_start;Send 8 Bit Data via Transactional API (Tx only)}}, queued...
+[+4381ms][CONN][INF] found KV pair in stream: {{start_recording_spi;please}}, queued...
+[+5391ms][SERI][TXD] {{start_recording_spi;complete}}
+[+5403ms][CONN][INF] found KV pair in stream: {{verify_sequence;standard_word}}, queued...
+[+10693ms][TEST][INF] Saw on the SPI bus:
+[mosi: b'01020408', miso: b'01020408']
+[+5633ms][SERI][TXD] {{verify_sequence;complete}}
+[+5655ms][CONN][INF] found KV pair in stream: {{__testcase_finish;Send 8 Bit Data via Transactional API (Tx only);1;0}}, queued...
+[+5655ms][CONN][RXD] &gt;&gt;&gt; 'Send 8 Bit Data via Transactional API (Tx only)': 1 passed, 0 failed
+[+5655ms][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[+5655ms][CONN][RXD] 
+[+5666ms][CONN][RXD] &gt;&gt;&gt; Running case #6: 'Send 16 Bit Data via Transactional API (Tx only)'...
+[+5677ms][CONN][INF] found KV pair in stream: {{__testcase_start;Send 16 Bit Data via Transactional API (Tx only)}}, queued...
+[+5677ms][CONN][RXD] &lt;greentea test suite&gt;:212::SKIP
+[+5688ms][CONN][INF] found KV pair in stream: {{__testcase_finish;Send 16 Bit Data via Transactional API (Tx only);1;0}}, queued...
+[+5688ms][CONN][RXD] &gt;&gt;&gt; 'Send 16 Bit Data via Transactional API (Tx only)': 1 passed, 0 failed
+[+5688ms][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[+5688ms][CONN][RXD] 
+[+5699ms][CONN][RXD] &gt;&gt;&gt; Running case #7: 'Send 32 Bit Data via Transactional API (Tx only)'...
+[+5711ms][CONN][INF] found KV pair in stream: {{__testcase_start;Send 32 Bit Data via Transactional API (Tx only)}}, queued...
+[+5711ms][CONN][RXD] &lt;greentea test suite&gt;:212::SKIP
+[+5722ms][CONN][INF] found KV pair in stream: {{__testcase_finish;Send 32 Bit Data via Transactional API (Tx only);1;0}}, queued...
+[+5722ms][CONN][RXD] &gt;&gt;&gt; 'Send 32 Bit Data via Transactional API (Tx only)': 1 passed, 0 failed
+[+5734ms][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[+5734ms][CONN][RXD] 
+[+5734ms][CONN][RXD] &gt;&gt;&gt; Running case #8: 'Free and Reallocate SPI Instance (synchronous API)'...
+[+5746ms][CONN][INF] found KV pair in stream: {{__testcase_start;Free and Reallocate SPI Instance (synchronous API)}}, queued...
+[+5746ms][CONN][INF] found KV pair in stream: {{start_recording_spi;please}}, queued...
+[+6755ms][SERI][TXD] {{start_recording_spi;complete}}
+[+6766ms][CONN][INF] found KV pair in stream: {{verify_sequence;standard_word}}, queued...
+[+11893ms][TEST][INF] Saw on the SPI bus:
+[mosi: b'01020408', miso: b'01020408']
+[+6832ms][SERI][TXD] {{verify_sequence;complete}}
+[+6854ms][CONN][INF] found KV pair in stream: {{__testcase_finish;Free and Reallocate SPI Instance (synchronous API);1;0}}, queued...
+[+6854ms][CONN][RXD] &gt;&gt;&gt; 'Free and Reallocate SPI Instance (synchronous API)': 1 passed, 0 failed
+[+6854ms][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[+6854ms][CONN][RXD] 
+[+6866ms][CONN][RXD] &gt;&gt;&gt; Running case #9: 'Read 8 Bit Data via Transactional API (Rx only)'...
+[+6878ms][CONN][INF] found KV pair in stream: {{__testcase_start;Read 8 Bit Data via Transactional API (Rx only)}}, queued...
+[+6878ms][CONN][INF] found KV pair in stream: {{start_recording_spi;please}}, queued...
+[+7894ms][SERI][TXD] {{start_recording_spi;complete}}
+[+7905ms][CONN][INF] found KV pair in stream: {{print_spi_data;please}}, queued...
+[+13022ms][TEST][INF] Saw on the SPI bus: [mosi: b'afafafaf', miso: b'afafafaf']
+[+7959ms][SERI][TXD] {{print_spi_data;complete}}
+[+7981ms][CONN][INF] found KV pair in stream: {{__testcase_finish;Read 8 Bit Data via Transactional API (Rx only);1;0}}, queued...
+[+7981ms][CONN][RXD] &gt;&gt;&gt; 'Read 8 Bit Data via Transactional API (Rx only)': 1 passed, 0 failed
+[+7981ms][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[+7981ms][CONN][RXD] 
+[+7992ms][CONN][RXD] &gt;&gt;&gt; Running case #10: 'Read 16 Bit Data via Transactional API (Rx only)'...
+[+8003ms][CONN][INF] found KV pair in stream: {{__testcase_start;Read 16 Bit Data via Transactional API (Rx only)}}, queued...
+[+8003ms][CONN][RXD] &lt;greentea test suite&gt;:230::SKIP
+[+8014ms][CONN][INF] found KV pair in stream: {{__testcase_finish;Read 16 Bit Data via Transactional API (Rx only);1;0}}, queued...
+[+8014ms][CONN][RXD] &gt;&gt;&gt; 'Read 16 Bit Data via Transactional API (Rx only)': 1 passed, 0 failed
+[+8014ms][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[+8014ms][CONN][RXD] 
+[+8025ms][CONN][RXD] &gt;&gt;&gt; Running case #11: 'Read 32 Bit Data via Transactional API (Rx only)'...
+[+8037ms][CONN][INF] found KV pair in stream: {{__testcase_start;Read 32 Bit Data via Transactional API (Rx only)}}, queued...
+[+8037ms][CONN][RXD] &lt;greentea test suite&gt;:230::SKIP
+[+8048ms][CONN][INF] found KV pair in stream: {{__testcase_finish;Read 32 Bit Data via Transactional API (Rx only);1;0}}, queued...
+[+8048ms][CONN][RXD] &gt;&gt;&gt; 'Read 32 Bit Data via Transactional API (Rx only)': 1 passed, 0 failed
+[+8059ms][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[+8059ms][CONN][RXD] 
+[+8059ms][CONN][RXD] &gt;&gt;&gt; Running case #12: 'Transfer 8 Bit Data via Transactional API (Tx/Rx)'...
+[+8070ms][CONN][INF] found KV pair in stream: {{__testcase_start;Transfer 8 Bit Data via Transactional API (Tx/Rx)}}, queued...
+[+8070ms][CONN][INF] found KV pair in stream: {{start_recording_spi;please}}, queued...
+[+9084ms][SERI][TXD] {{start_recording_spi;complete}}
+[+9096ms][CONN][INF] found KV pair in stream: {{verify_sequence;standard_word}}, queued...
+[+14220ms][TEST][INF] Saw on the SPI bus:
+[mosi: b'01020408', miso: b'01020408']
+[+9160ms][SERI][TXD] {{verify_sequence;complete}}
+[+9182ms][CONN][INF] found KV pair in stream: {{__testcase_finish;Transfer 8 Bit Data via Transactional API (Tx/Rx);1;0}}, queued...
+[+9182ms][CONN][RXD] &gt;&gt;&gt; 'Transfer 8 Bit Data via Transactional API (Tx/Rx)': 1 passed, 0 failed
+[+9182ms][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[+9182ms][CONN][RXD] 
+[+9194ms][CONN][RXD] &gt;&gt;&gt; Running case #13: 'Transfer 16 Bit Data via Transactional API (Tx/Rx)'...
+[+9205ms][CONN][INF] found KV pair in stream: {{__testcase_start;Transfer 16 Bit Data via Transactional API (Tx/Rx)}}, queued...
+[+9205ms][CONN][RXD] &lt;greentea test suite&gt;:250::SKIP
+[+9216ms][CONN][INF] found KV pair in stream: {{__testcase_finish;Transfer 16 Bit Data via Transactional API (Tx/Rx);1;0}}, queued...
+[+9216ms][CONN][RXD] &gt;&gt;&gt; 'Transfer 16 Bit Data via Transactional API (Tx/Rx)': 1 passed, 0 failed
+[+9227ms][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[+9227ms][CONN][RXD] 
+[+9227ms][CONN][RXD] &gt;&gt;&gt; Running case #14: 'Transfer 32 Bit Data via Transactional API (Tx/Rx)'...
+[+9238ms][CONN][INF] found KV pair in stream: {{__testcase_start;Transfer 32 Bit Data via Transactional API (Tx/Rx)}}, queued...
+[+9238ms][CONN][RXD] &lt;greentea test suite&gt;:250::SKIP
+[+9249ms][CONN][INF] found KV pair in stream: {{__testcase_finish;Transfer 32 Bit Data via Transactional API (Tx/Rx);1;0}}, queued...
+[+9249ms][CONN][RXD] &gt;&gt;&gt; 'Transfer 32 Bit Data via Transactional API (Tx/Rx)': 1 passed, 0 failed
+[+9259ms][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[+9259ms][CONN][RXD] 
+[+9271ms][CONN][RXD] &gt;&gt;&gt; Running case #15: 'Use Multiple SPI Instances (synchronous API)'...
+[+9271ms][CONN][INF] found KV pair in stream: {{__testcase_start;Use Multiple SPI Instances (synchronous API)}}, queued...
+[+9271ms][CONN][INF] found KV pair in stream: {{start_recording_spi;please}}, queued...
+[+10289ms][SERI][TXD] {{start_recording_spi;complete}}
+[+10300ms][CONN][INF] found KV pair in stream: {{verify_sequence;standard_word}}, queued...
+[+15419ms][TEST][INF] Saw on the SPI bus:
+[mosi: b'01020408', miso: b'01020408']
+[+10365ms][SERI][TXD] {{verify_sequence;complete}}
+[+10388ms][CONN][INF] found KV pair in stream: {{__testcase_finish;Use Multiple SPI Instances (synchronous API);1;0}}, queued...
+[+10388ms][CONN][RXD] &gt;&gt;&gt; 'Use Multiple SPI Instances (synchronous API)': 1 passed, 0 failed
+[+10388ms][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[+10388ms][CONN][RXD] 
+[+10399ms][CONN][RXD] &gt;&gt;&gt; Test cases: 15 passed, 0 failed
+[+10399ms][CONN][RXD] 
+[+10400ms][CONN][RXD] -----------------------
+[+10400ms][CONN][RXD] 0 Tests 0 Failures 0 Ignored 
+[+10400ms][CONN][RXD] OK
+[+10412ms][CONN][INF] found KV pair in stream: {{__testcase_summary;15;0}}, queued...
+[+10412ms][CONN][INF] found KV pair in stream: {{end;success}}, queued...
+[+10412ms][CONN][INF] found KV pair in stream: {{__exit;0}}, queued...
+[+15478ms][HTST][INF] __exit(0)
+[+15478ms][HTST][INF] __notify_complete(True)
+[+15479ms][HTST][INF] __exit_event_queue received
+[+15479ms][HTST][INF] test suite run finished after 7.39 sec...
+[+10423ms][CONN][INF] received special event '__host_test_finished' value='True', finishing
+[+15660ms][HTST][INF] CONN exited with code: 0
+[+15660ms][HTST][INF] Some events in queue
+[+15660ms][HTST][INF] stopped consuming events
+[+15660ms][HTST][INF] host test result() call skipped, received: True
+[+15660ms][HTST][INF] calling blocking teardown()
+[+15660ms][HTST][INF] teardown() finished
+[+15661ms][HTST][INF] {{result;success}}
+</system-out>
+	</testcase>
+	<testcase name="test-testshield-spi-microsd" classname="test-testshield-spi-microsd" time="28.544" status="run">
+		<properties/>
+		<system-out>[1/13] Building CXX object mbed-os/storage/filesystem/fat/CMakeFiles/mbed-storage-fat.dir/ChaN/ffunicode.cpp.obj
+[2/13] Building CXX object mbed-os/storage/filesystem/fat/CMakeFiles/mbed-storage-fat.dir/ChaN/ff.cpp.obj
+[3/13] Building CXX object mbed-os/storage/blockdevice/COMPONENT_SD/CMakeFiles/mbed-storage-sd.dir/source/SDBlockDevice.cpp.obj
+[4/13] Linking CXX static library mbed-os\storage\blockdevice\COMPONENT_SD\libmbed-storage-sd.a
+[5/13] Building CXX object mbed-os/storage/filesystem/CMakeFiles/mbed-storage-filesystem.dir/source/Dir.cpp.obj
+[6/13] Building CXX object mbed-os/storage/filesystem/CMakeFiles/mbed-storage-filesystem.dir/source/FileSystem.cpp.obj
+[7/13] Building CXX object mbed-os/storage/filesystem/CMakeFiles/mbed-storage-filesystem.dir/source/File.cpp.obj
+[8/13] Linking CXX static library mbed-os\storage\filesystem\libmbed-storage-filesystem.a
+[9/13] Building CXX object mbed-os/storage/filesystem/fat/CMakeFiles/mbed-storage-fat.dir/source/FATFileSystem.cpp.obj
+[10/13] Linking CXX static library mbed-os\storage\filesystem\fat\libmbed-storage-fat.a
+[11/13] Building CXX object CMakeFiles/test-testshield-spi-microsd.dir/SPIMicroSDTest.cpp.obj
+[12/13] Linking CXX executable test-testshield-spi-microsd.elf
+-- built: C:/Users/jamie/Documents/RPL/mbed-ce-test-tools/CI-Shield-Tests/cmake-build-develop-sfe_artemis/test-testshield-spi-microsd.bin
+-- built: C:/Users/jamie/Documents/RPL/mbed-ce-test-tools/CI-Shield-Tests/cmake-build-develop-sfe_artemis/test-testshield-spi-microsd.hex
+[12/13] Flashing te0002995 I Target type is ama3b1kk_kbr [board]
+0003160 I DP IDR = 0x2ba01477 (v1 rev2) [dap]
+0003198 I AHB-AP#0 IDR = 0x24770011 (AHB-AP var1 rev2) [discovery]
+0003269 I AHB-AP#0 Class 0x1 ROM table #0 @ 0xe00ff000 (designer=43b:Arm part=4c4) [rom_table]
+0003387 I [0]&lt;e000e000:SCS v7-M class=14 designer=43b:Arm part=00c&gt; [rom_table]
+0003388 I [1]&lt;e0001000:DWT v7-M class=14 designer=43b:Arm part=002&gt; [rom_table]
+0003391 I [2]&lt;e0002000:FPB v7-M class=14 designer=43b:Arm part=003&gt; [rom_table]
+0003392 I [3]&lt;e0000000:ITM v7-M class=14 designer=43b:Arm part=001&gt; [rom_table]
+0003396 I [4]&lt;e0040000:TPIU M4 class=9 designer=43b:Arm part=9a1 devtype=11 archid=0000 devid=ca0:0:0&gt; [rom_table]
+0003400 I CPU core #0: Cortex-M4 r0p1, v7.0-M architecture [cortex_m]
+0003400 I   Extensions: [DSP, FPU, FPU_V4, MPU] [cortex_m]
+0003400 I   FPU present: FPv4-SP-D16-M [cortex_m]
+0003403 I 4 hardware watchpoints [dwt]
+0003404 I 6 hardware breakpoints, 4 literal comparators [fpb]
+0003410 I Loading C:\Users\jamie\Documents\RPL\mbed-ce-test-tools\CI-Shield-Tests\cmake-build-develop-sfe_artemis\test-testshield-spi-microsd.bin at 0x00010000 [load_cmd]
+[---|---|---|---|---|---|---|---|---|----]
+[========================================]
+0006075 I Erased 106496 bytes (13 sectors), programmed 106496 bytes (13 pages), skipped 0 bytes (0 pages) at 39.06 kB/s [loader]
+st-testshield-spi-microsd with pyOCD...
+Executing: C:/Users/jamie/Documents/RPL/mbed-ce-test-tools/CI-Shield-Tests/mbed-os/venv/Scripts/mbedhtrun.exe --skip-flashing -p COM10 --skip-reset --sync-predelay 0.3 -e C:/Users/jamie/Documents/RPL/mbed-ce-test-tools/CI-Shield-Tests/host_tests -m SFE_ARTEMIS --baud-rate=115200
+Will use any connected CI shield for this test.  Export the MBED_CI_SHIELD_SERIAL_NUMBER environment var to select a specific shield.
+e.g. 'export MBED_CI_SHIELD_SERIAL_NUMBER=SN002'
+[+2450ms][HTST][INF] host test executor ver. 0.0.16
+[+2452ms][HTST][INF] copy image onto target... SKIPPED!
+[+2464ms][HTST][INF] starting host test process...
+[+2212ms][CONN][INF] starting connection process...
+[+2213ms][CONN][INF] notify event queue about extra 60 sec timeout for serial port pooling
+[+2213ms][CONN][INF] initializing serial port listener... 
+[+2214ms][SERI][INF] using specified port 'COM10'
+[+2214ms][SERI][INF] serial(port=COM10, baudrate=115200, read_timeout=0.01, write_timeout=5)
+[+4902ms][HTST][INF] setting timeout to: 60 sec
+[+2216ms][CONN][INF] Pre-sync delay for 0.30 sec...
+[+2517ms][SERI][TXD] mbedmbedmbedmbedmbedmbedmbedmbedmbedmbed
+[+2517ms][CONN][INF] sending up to 2 __sync packets (specified with --sync=2)
+[+2518ms][CONN][INF] sending preamble '50bd8edf-a950-43f7-b67a-126f95e852bb'
+[+2520ms][SERI][TXD] {{__sync;50bd8edf-a950-43f7-b67a-126f95e852bb}}
+[+2532ms][CONN][WRN] UnicodeDecodeError encountered! Raw bytes were b'\xfembedmbedmbedmbedmbedmbedmbedmbed\r\n{{__sync;50bd8edf-a950-43f7-b6' and they decoded to "mbedmbedmbedmbedmbedmbedmbedmbed
+{{__sync;50bd8edf-a950-43f7-b6"
+[+2532ms][CONN][RXD] mbedmbedmbedmbedmbedmbedmbedmbed
+[+2544ms][CONN][INF] found KV pair in stream: {{__sync;50bd8edf-a950-43f7-b67a-126f95e852bb}}, queued...
+[+2544ms][CONN][INF] found KV pair in stream: {{__version;1.3.0}}, queued...
+[+2544ms][CONN][INF] found KV pair in stream: {{__timeout;30}}, queued...
+[+2544ms][CONN][INF] found KV pair in stream: {{__host_test_name;default_auto}}, queued...
+[+2544ms][CONN][INF] found SYNC in stream: {{__sync;50bd8edf-a950-43f7-b67a-126f95e852bb}} it is #0 sent, queued...
+[+5233ms][HTST][INF] sync KV found, uuid=50bd8edf-a950-43f7-b67a-126f95e852bb, timestamp=1753340314.799733
+[+5233ms][HTST][INF] DUT greentea-client version: 1.3.0
+[+5233ms][HTST][INF] setting timeout to: 30 sec
+[+5233ms][HTST][INF] host test class: '&lt;class 'mbed_os_tools.test.host_tests.default_auto.DefaultAuto'&gt;'
+[+5233ms][HTST][INF] host test setup() call...
+[+5233ms][HTST][INF] CALLBACKs updated
+[+5233ms][HTST][INF] host test detected: default_auto
+[+2739ms][CONN][RXD] &gt;&gt;&gt; Running 4 test cases...
+[+2739ms][CONN][INF] found KV pair in stream: {{__testcase_name;SPI - Object Definable}}, queued...
+[+2740ms][CONN][INF] found KV pair in stream: {{__testcase_name;SPI - SD card present (100kHz)}}, queued...
+[+2752ms][CONN][INF] found KV pair in stream: {{__testcase_name;SPI - Mount FS, Create File (100kHz)}}, queued...
+[+2752ms][CONN][INF] found KV pair in stream: {{__testcase_name;SPI - Write, Read, and Delete File (100kHz)}}, queued...
+[+2753ms][CONN][RXD] 
+[+2763ms][CONN][RXD] &gt;&gt;&gt; Running case #1: 'SPI - Object Definable'...
+[+2763ms][CONN][INF] found KV pair in stream: {{__testcase_start;SPI - Object Definable}}, queued...
+[+2774ms][CONN][INF] found KV pair in stream: {{__testcase_finish;SPI - Object Definable;1;0}}, queued...
+[+2774ms][CONN][RXD] &gt;&gt;&gt; 'SPI - Object Definable': 1 passed, 0 failed
+[+2775ms][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[+2775ms][CONN][RXD] 
+[+2786ms][CONN][RXD] &gt;&gt;&gt; Running case #2: 'SPI - SD card present (100kHz)'...
+[+2786ms][CONN][INF] found KV pair in stream: {{__testcase_start;SPI - SD card present (100kHz)}}, queued...
+[+3017ms][CONN][INF] found KV pair in stream: {{__testcase_finish;SPI - SD card present (100kHz);1;0}}, queued...
+[+3017ms][CONN][RXD] &gt;&gt;&gt; 'SPI - SD card present (100kHz)': 1 passed, 0 failed
+[+3029ms][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[+3029ms][CONN][RXD] 
+[+3029ms][CONN][RXD] &gt;&gt;&gt; Running case #3: 'SPI - Mount FS, Create File (100kHz)'...
+[+3041ms][CONN][INF] found KV pair in stream: {{__testcase_start;SPI - Mount FS, Create File (100kHz)}}, queued...
+[+3277ms][CONN][INF] found KV pair in stream: {{__testcase_finish;SPI - Mount FS, Create File (100kHz);1;0}}, queued...
+[+3288ms][CONN][RXD] &gt;&gt;&gt; 'SPI - Mount FS, Create File (100kHz)': 1 passed, 0 failed
+[+3288ms][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[+3288ms][CONN][RXD] 
+[+3300ms][CONN][RXD] &gt;&gt;&gt; Running case #4: 'SPI - Write, Read, and Delete File (100kHz)'...
+[+3300ms][CONN][INF] found KV pair in stream: {{__testcase_start;SPI - Write, Read, and Delete File (100kHz)}}, queued...
+[+4244ms][CONN][INF] found KV pair in stream: {{__testcase_finish;SPI - Write, Read, and Delete File (100kHz);1;0}}, queued...
+[+4244ms][CONN][RXD] &gt;&gt;&gt; 'SPI - Write, Read, and Delete File (100kHz)': 1 passed, 0 failed
+[+4255ms][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[+4255ms][CONN][RXD] 
+[+4255ms][CONN][RXD] &gt;&gt;&gt; Test cases: 4 passed, 0 failed
+[+4255ms][CONN][RXD] 
+[+4255ms][CONN][RXD] -----------------------
+[+4255ms][CONN][RXD] 0 Tests 0 Failures 0 Ignored 
+[+4255ms][CONN][RXD] OK
+[+4267ms][CONN][INF] found KV pair in stream: {{__testcase_summary;4;0}}, queued...
+[+4267ms][CONN][INF] found KV pair in stream: {{end;success}}, queued...
+[+4267ms][CONN][INF] found KV pair in stream: {{__exit;0}}, queued...
+[+6956ms][HTST][INF] __exit(0)
+[+6956ms][HTST][INF] __notify_complete(True)
+[+6957ms][HTST][INF] __exit_event_queue received
+[+6957ms][HTST][INF] test suite run finished after 1.72 sec...
+[+4278ms][CONN][INF] received special event '__host_test_finished' value='True', finishing
+[+7163ms][HTST][INF] CONN exited with code: 0
+[+7163ms][HTST][INF] Some events in queue
+[+7163ms][HTST][INF] stopped consuming events
+[+7163ms][HTST][INF] host test result() call skipped, received: True
+[+7163ms][HTST][INF] calling blocking teardown()
+[+7163ms][HTST][INF] teardown() finished
+[+7164ms][HTST][INF] {{result;success}}
+</system-out>
+	</testcase>
+	<testcase name="test-testshield-spi-slave-comms" classname="test-testshield-spi-slave-comms" time="0.0470896" status="notrun">
+		<skipped message="SKIP_REGULAR_EXPRESSION_MATCHED"/>
+		<properties/>
+		<system-out>Skipping test-testshield-spi-slave-comms: No SPI slave support
+</system-out>
+	</testcase>
+	<testcase name="test-testshield-pwm-and-adc" classname="test-testshield-pwm-and-adc" time="77.3369" status="fail">
+		<failure message="Failed"/>
+		<properties/>
+		<system-out>0002854 I Target type is ama3b1kk_kbr [board]
+0003016 I DP IDR = 0x2ba01477 (v1 rev2) [dap]
+0003050 I AHB-AP#0 IDR = 0x24770011 (AHB-AP var1 rev2) [discovery]
+0003060 I AHB-AP#0 Class 0x1 ROM table #0 @ 0xe00ff000 (designer=43b:Arm part=4c4) [rom_table]
+0003069 I [0]&lt;e000e000:SCS v7-M class=14 designer=43b:Arm part=00c&gt; [rom_table]
+0003117 I [1]&lt;e0001000:DWT v7-M class=14 designer=43b:Arm part=002&gt; [rom_table]
+0003173 I [2]&lt;e0002000:FPB v7-M class=14 designer=43b:Arm part=003&gt; [rom_table]
+0003205 I [3]&lt;e0000000:ITM v7-M class=14 designer=43b:Arm part=001&gt; [rom_table]
+0003232 I [4]&lt;e0040000:TPIU M4 class=9 designer=43b:Arm part=9a1 devtype=11 archid=0000 devid=ca0:0:0&gt; [rom_table]
+0003237 I CPU core #0: Cortex-M4 r0p1, v7.0-M architecture [cortex_m]
+0003237 I   Extensions: [DSP, FPU, FPU_V4, MPU] [cortex_m]
+0003237 I   FPU present: FPv4-SP-D16-M [cortex_m]
+0003240 I 4 hardware watchpoints [dwt]
+0003242 I 6 hardware breakpoints, 4 literal comparators [fpb]
+0003248 I Loading C:\Users\jamie\Documents\RPL\mbed-ce-test-tools\CI-Shield-Tests\cmake-build-develop-sfe_artemis\test-testshield-pwm-and-adc.bin at 0x00010000 [load_cmd]
+[---|---|---|---|---|---|---|---|---|----]
+[========================================]
+0005115 I Erased 73728 bytes (9 sectors), programmed 73728 bytes (9 pages), skipped 0 bytes (0 pages) at 38.61 kB/s [loader]
+[1/3] Building CXX object CMakeFiles/test-testshield-pwm-and-adc.dir/PWMAndADCTest.cpp.obj
+[2/3] Linking CXX executable test-testshield-pwm-and-adc.elf
+-- built: C:/Users/jamie/Documents/RPL/mbed-ce-test-tools/CI-Shield-Tests/cmake-build-develop-sfe_artemis/test-testshield-pwm-and-adc.bin
+-- built: C:/Users/jamie/Documents/RPL/mbed-ce-test-tools/CI-Shield-Tests/cmake-build-develop-sfe_artemis/test-testshield-pwm-and-adc.hex
+[2/3] Flashing test-testshield-pwm-and-adc with pyOCD...
+Executing: C:/Users/jamie/Documents/RPL/mbed-ce-test-tools/CI-Shield-Tests/mbed-os/venv/Scripts/mbedhtrun.exe --skip-flashing -p COM10 --skip-reset --sync-predelay 0.3 -e C:/Users/jamie/Documents/RPL/mbed-ce-test-tools/CI-Shield-Tests/host_tests -m SFE_ARTEMIS --baud-rate=115200
+Will use any connected CI shield for this test.  Export the MBED_CI_SHIELD_SERIAL_NUMBER environment var to select a specific shield.
+e.g. 'export MBED_CI_SHIELD_SERIAL_NUMBER=SN002'
+[+2333ms][HTST][INF] host test executor ver. 0.0.16
+[+2333ms][HTST][INF] copy image onto target... SKIPPED!
+[+2347ms][HTST][INF] starting host test process...
+[+2755ms][CONN][INF] starting connection process...
+[+2756ms][CONN][INF] notify event queue about extra 60 sec timeout for serial port pooling
+[+2756ms][CONN][INF] initializing serial port listener... 
+[+2756ms][SERI][INF] using specified port 'COM10'
+[+2756ms][SERI][INF] serial(port=COM10, baudrate=115200, read_timeout=0.01, write_timeout=5)
+[+5373ms][HTST][INF] setting timeout to: 60 sec
+[+2759ms][CONN][INF] Pre-sync delay for 0.30 sec...
+[+3063ms][SERI][TXD] mbedmbedmbedmbedmbedmbedmbedmbedmbedmbed
+[+3063ms][CONN][INF] sending up to 2 __sync packets (specified with --sync=2)
+[+3064ms][CONN][INF] sending preamble '8d4b2812-8dc0-4554-8198-16afbc145013'
+[+3065ms][SERI][TXD] {{__sync;8d4b2812-8dc0-4554-8198-16afbc145013}}
+[+3077ms][CONN][WRN] UnicodeDecodeError encountered! Raw bytes were b'\xfembedmbedmbedmbedmbedmbedmbedmbed\r\n{{__sync;8d4b2812-8dc0-4554-81' and they decoded to "mbedmbedmbedmbedmbedmbedmbedmbed
+{{__sync;8d4b2812-8dc0-4554-81"
+[+3077ms][CONN][RXD] mbedmbedmbedmbedmbedmbedmbedmbed
+[+3089ms][CONN][INF] found KV pair in stream: {{__sync;8d4b2812-8dc0-4554-8198-16afbc145013}}, queued...
+[+3089ms][CONN][INF] found KV pair in stream: {{__version;1.3.0}}, queued...
+[+3089ms][CONN][INF] found KV pair in stream: {{__timeout;75}}, queued...
+[+3089ms][CONN][INF] found KV pair in stream: {{__host_test_name;signal_analyzer_test}}, queued...
+[+3089ms][CONN][INF] found SYNC in stream: {{__sync;8d4b2812-8dc0-4554-8198-16afbc145013}} it is #0 sent, queued...
+[+5705ms][HTST][INF] sync KV found, uuid=8d4b2812-8dc0-4554-8198-16afbc145013, timestamp=1753340338.410603
+[+5705ms][HTST][INF] DUT greentea-client version: 1.3.0
+[+5705ms][HTST][INF] setting timeout to: 75 sec
+[+5705ms][HTST][INF] host test class: '&lt;class 'signal_analyzer_test.SignalAnalyzerHostTest'&gt;'
+[+5705ms][TEST][INF] Signal Analyzer Test host test setup complete.
+[+5705ms][HTST][INF] host test setup() call...
+[+5705ms][HTST][INF] CALLBACKs updated
+[+5705ms][HTST][INF] host test detected: signal_analyzer_test
+[+3101ms][CONN][RXD] &gt;&gt;&gt; Running 10 test cases...
+[+3101ms][CONN][INF] found KV pair in stream: {{__testcase_name;Test that target.default-adc-vref is set}}, queued...
+[+3101ms][CONN][INF] found KV pair in stream: {{__testcase_name;Test reading digital values with the ADC}}, queued...
+[+3113ms][CONN][INF] found KV pair in stream: {{__testcase_name;Test reading analog values with the ADC}}, queued...
+[+3124ms][CONN][INF] found KV pair in stream: {{__testcase_name;Test PWM frequency and duty cycle (freq = 50 Hz)}}, queued...
+[+3124ms][CONN][INF] found KV pair in stream: {{__testcase_name;Test PWM frequency and duty cycle (freq = 1 kHz)}}, queued...
+[+3136ms][CONN][INF] found KV pair in stream: {{__testcase_name;Test PWM frequency and duty cycle (freq = 10 kHz)}}, queued...
+[+3136ms][CONN][INF] found KV pair in stream: {{__testcase_name;Test PWM frequency and duty cycle (freq = 100 kHz)}}, queued...
+[+3147ms][CONN][INF] found KV pair in stream: {{__testcase_name;Test PWM frequency and duty cycle (freq = 1 MHz)}}, queued...
+[+3147ms][CONN][INF] found KV pair in stream: {{__testcase_name;Test PWM Suspend/Resume (freq = 1kHz)}}, queued...
+[+3159ms][CONN][INF] found KV pair in stream: {{__testcase_name;Test PWM Maintains Duty Cycle (freq = 1kHz)}}, queued...
+[+3160ms][CONN][RXD] 
+[+3160ms][CONN][RXD] &gt;&gt;&gt; Running case #1: 'Test that target.default-adc-vref is set'...
+[+3173ms][CONN][INF] found KV pair in stream: {{__testcase_start;Test that target.default-adc-vref is set}}, queued...
+[+3173ms][CONN][INF] found KV pair in stream: {{__testcase_finish;Test that target.default-adc-vref is set;1;0}}, queued...
+[+3184ms][CONN][RXD] &gt;&gt;&gt; 'Test that target.default-adc-vref is set': 1 passed, 0 failed
+[+3184ms][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[+3184ms][CONN][RXD] 
+[+3196ms][CONN][RXD] &gt;&gt;&gt; Running case #2: 'Test reading digital values with the ADC'...
+[+3196ms][CONN][INF] found KV pair in stream: {{__testcase_start;Test reading digital values with the ADC}}, queued...
+[+3234ms][CONN][RXD] With the PWM at full off, the ADC reads 0.0% of reference voltage.
+[+3279ms][CONN][RXD] With the PWM at full on, the ADC reads 100.0% of reference voltage.
+[+3290ms][CONN][INF] found KV pair in stream: {{__testcase_finish;Test reading digital values with the ADC;1;0}}, queued...
+[+3291ms][CONN][RXD] &gt;&gt;&gt; 'Test reading digital values with the ADC': 1 passed, 0 failed
+[+3301ms][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[+3302ms][CONN][RXD] 
+[+3302ms][CONN][RXD] &gt;&gt;&gt; Running case #3: 'Test reading analog values with the ADC'...
+[+3314ms][CONN][INF] found KV pair in stream: {{__testcase_start;Test reading analog values with the ADC}}, queued...
+[+3347ms][CONN][RXD] PWM duty cycle of 0.0% produced an ADC reading of 0.0% (expected 0.0%)
+[+3391ms][CONN][RXD] PWM duty cycle of 10.0% produced an ADC reading of 16.4% (expected 16.5%)
+[+3445ms][CONN][RXD] PWM duty cycle of 20.0% produced an ADC reading of 32.1% (expected 33.0%)
+[+3498ms][CONN][RXD] PWM duty cycle of 30.0% produced an ADC reading of 50.3% (expected 49.5%)
+[+3543ms][CONN][RXD] PWM duty cycle of 40.0% produced an ADC reading of 65.7% (expected 66.0%)
+[+3597ms][CONN][RXD] PWM duty cycle of 50.0% produced an ADC reading of 82.9% (expected 82.5%)
+[+3739ms][CONN][RXD] PWM duty cycle of 60.0% produced an ADC reading of 98.7% (expected 99.0%)
+[+3739ms][CONN][RXD] PWM duty cycle of 70.0% produced an ADC reading of 100.0% (expected 100.0%)
+[+3739ms][CONN][RXD] PWM duty cycle of 80.0% produced an ADC reading of 100.0% (expected 100.0%)
+[+3799ms][CONN][RXD] PWM duty cycle of 90.0% produced an ADC reading of 100.0% (expected 100.0%)
+[+3842ms][CONN][RXD] PWM duty cycle of 100.0% produced an ADC reading of 100.0% (expected 100.0%)
+[+3853ms][CONN][INF] found KV pair in stream: {{__testcase_finish;Test reading analog values with the ADC;1;0}}, queued...
+[+3853ms][CONN][RXD] &gt;&gt;&gt; 'Test reading analog values with the ADC': 1 passed, 0 failed
+[+3864ms][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[+3864ms][CONN][RXD] 
+[+3864ms][CONN][RXD] &gt;&gt;&gt; Running case #4: 'Test PWM frequency and duty cycle (freq = 50 Hz)'...
+[+3877ms][CONN][INF] found KV pair in stream: {{__testcase_start;Test PWM frequency and duty cycle (freq = 50 Hz)}}, queued...
+[+3877ms][CONN][INF] found KV pair in stream: {{analyze_signal;please}}, queued...
+[+5373ms][SERI][TXD] {{frequency;50.0}}
+[+5384ms][SERI][TXD] {{duty_cycle;0.4589765576758174}}
+[+5407ms][CONN][RXD] Expected PWM frequency was 50 Hz (+- 20 Hz) and duty cycle was 45.85% (+-0.10%), host measured frequency 50 Hz and duty cycle 45.90%
+[+5407ms][CONN][INF] found KV pair in stream: {{analyze_signal;please}}, queued...
+[+6840ms][SERI][TXD] {{frequency;50.0}}
+[+6851ms][SERI][TXD] {{duty_cycle;0.11860661045042162}}
+[+6873ms][CONN][RXD] Expected PWM frequency was 50 Hz (+- 20 Hz) and duty cycle was 11.85% (+-0.10%), host measured frequency 50 Hz and duty cycle 11.86%
+[+6873ms][CONN][INF] found KV pair in stream: {{analyze_signal;please}}, queued...
+[+8331ms][SERI][TXD] {{frequency;50.0}}
+[+8342ms][SERI][TXD] {{duty_cycle;0.8398712009659928}}
+[+8364ms][CONN][RXD] Expected PWM frequency was 50 Hz (+- 20 Hz) and duty cycle was 84.00% (+-0.10%), host measured frequency 50 Hz and duty cycle 83.99%
+[+8364ms][CONN][INF] found KV pair in stream: {{analyze_signal;please}}, queued...
+[+9803ms][SERI][TXD] {{frequency;50.0}}
+[+9813ms][SERI][TXD] {{duty_cycle;0.9933700497246271}}
+[+9836ms][CONN][RXD] Expected PWM frequency was 50 Hz (+- 20 Hz) and duty cycle was 99.34% (+-0.10%), host measured frequency 50 Hz and duty cycle 99.34%
+[+9836ms][CONN][INF] found KV pair in stream: {{analyze_signal;please}}, queued...
+[+11288ms][SERI][TXD] {{frequency;50.0}}
+[+11299ms][SERI][TXD] {{duty_cycle;0.8077664417516869}}
+[+11321ms][CONN][RXD] Expected PWM frequency was 50 Hz (+- 20 Hz) and duty cycle was 80.80% (+-0.10%), host measured frequency 50 Hz and duty cycle 80.78%
+[+11333ms][CONN][INF] found KV pair in stream: {{__testcase_finish;Test PWM frequency and duty cycle (freq = 50 Hz);1;0}}, queued...
+[+11333ms][CONN][RXD] &gt;&gt;&gt; 'Test PWM frequency and duty cycle (freq = 50 Hz)': 1 passed, 0 failed
+[+11344ms][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[+11344ms][CONN][RXD] 
+[+11344ms][CONN][RXD] &gt;&gt;&gt; Running case #5: 'Test PWM frequency and duty cycle (freq = 1 kHz)'...
+[+11356ms][CONN][INF] found KV pair in stream: {{__testcase_start;Test PWM frequency and duty cycle (freq = 1 kHz)}}, queued...
+[+11356ms][CONN][INF] found KV pair in stream: {{analyze_signal;please}}, queued...
+[+13435ms][SERI][TXD] {{frequency;1000.0}}
+[+13446ms][SERI][TXD] {{duty_cycle;0.9927275545433409}}
+[+13471ms][CONN][RXD] Expected PWM frequency was 1000 Hz (+- 21 Hz) and duty cycle was 99.28% (+-0.10%), host measured frequency 1000 Hz and duty cycle 99.27%
+[+13471ms][CONN][INF] found KV pair in stream: {{analyze_signal;please}}, queued...
+[+15637ms][SERI][TXD] {{frequency;1000.0}}
+[+15649ms][SERI][TXD] {{duty_cycle;0.45803656472576454}}
+[+15670ms][CONN][RXD] Expected PWM frequency was 1000 Hz (+- 21 Hz) and duty cycle was 45.87% (+-0.10%), host measured frequency 1000 Hz and duty cycle 45.80%
+[+15681ms][CONN][INF] found KV pair in stream: {{analyze_signal;please}}, queued...
+[+20174ms][SERI][TXD] {{frequency;1000.0}}
+[+20185ms][SERI][TXD] {{duty_cycle;0.5555658332562505}}
+[+20207ms][CONN][RXD] Expected PWM frequency was 1000 Hz (+- 21 Hz) and duty cycle was 55.61% (+-0.10%), host measured frequency 1000 Hz and duty cycle 55.56%
+[+20207ms][CONN][INF] found KV pair in stream: {{analyze_signal;please}}, queued...
+[+22795ms][SERI][TXD] {{frequency;1000.0}}
+[+22807ms][SERI][TXD] {{duty_cycle;0.039954700339747455}}
+[+22830ms][CONN][RXD] Expected PWM frequency was 1000 Hz (+- 21 Hz) and duty cycle was 4.00% (+-0.10%), host measured frequency 1000 Hz and duty cycle 4.00%
+[+22830ms][CONN][INF] found KV pair in stream: {{analyze_signal;please}}, queued...
+[+24877ms][SERI][TXD] {{frequency;1000.0}}
+[+24888ms][SERI][TXD] {{duty_cycle;0.20244848163638773}}
+[+24910ms][CONN][RXD] Expected PWM frequency was 1000 Hz (+- 21 Hz) and duty cycle was 20.23% (+-0.10%), host measured frequency 1000 Hz and duty cycle 20.24%
+[+24922ms][CONN][INF] found KV pair in stream: {{__testcase_finish;Test PWM frequency and duty cycle (freq = 1 kHz);1;0}}, queued...
+[+24933ms][CONN][RXD] &gt;&gt;&gt; 'Test PWM frequency and duty cycle (freq = 1 kHz)': 1 passed, 0 failed
+[+24933ms][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[+24933ms][CONN][RXD] 
+[+24945ms][CONN][RXD] &gt;&gt;&gt; Running case #6: 'Test PWM frequency and duty cycle (freq = 10 kHz)'...
+[+24945ms][CONN][INF] found KV pair in stream: {{__testcase_start;Test PWM frequency and duty cycle (freq = 10 kHz)}}, queued...
+[+24945ms][CONN][INF] found KV pair in stream: {{analyze_signal;please}}, queued...
+[+26953ms][SERI][TXD] {{frequency;9990.0}}
+[+26964ms][SERI][TXD] {{duty_cycle;0.4907813191401065}}
+[+26986ms][CONN][RXD] Expected PWM frequency was 10000 Hz (+- 35 Hz) and duty cycle was 49.21% (+-0.10%), host measured frequency 9990 Hz and duty cycle 49.08%
+[+26999ms][CONN][RXD] &lt;greentea test suite&gt;:124::FAIL: Expected 0.492057 Was 0.490781
+[+26999ms][CONN][INF] found KV pair in stream: {{analyze_signal;please}}, queued...
+[+28851ms][SERI][TXD] {{frequency;9990.0}}
+[+28862ms][SERI][TXD] {{duty_cycle;0.15739631952760355}}
+[+28884ms][CONN][RXD] Expected PWM frequency was 10000 Hz (+- 35 Hz) and duty cycle was 15.86% (+-0.10%), host measured frequency 9990 Hz and duty cycle 15.74%
+[+28885ms][CONN][INF] found KV pair in stream: {{analyze_signal;please}}, queued...
+[+30759ms][SERI][TXD] {{frequency;9990.0}}
+[+30769ms][SERI][TXD] {{duty_cycle;0.31156766324252566}}
+[+30793ms][CONN][RXD] Expected PWM frequency was 10000 Hz (+- 35 Hz) and duty cycle was 31.23% (+-0.10%), host measured frequency 9990 Hz and duty cycle 31.16%
+[+30793ms][CONN][INF] found KV pair in stream: {{analyze_signal;please}}, queued...
+[+32616ms][SERI][TXD] {{frequency;9990.0}}
+[+32627ms][SERI][TXD] {{duty_cycle;0.3575148186388602}}
+[+32649ms][CONN][RXD] Expected PWM frequency was 10000 Hz (+- 35 Hz) and duty cycle was 35.85% (+-0.10%), host measured frequency 9990 Hz and duty cycle 35.75%
+[+32649ms][CONN][INF] found KV pair in stream: {{analyze_signal;please}}, queued...
+[+34158ms][SERI][TXD] {{frequency;9990.0}}
+[+34169ms][SERI][TXD] {{duty_cycle;0.24923313075151937}}
+[+34191ms][CONN][RXD] Expected PWM frequency was 10000 Hz (+- 35 Hz) and duty cycle was 25.02% (+-0.10%), host measured frequency 9990 Hz and duty cycle 24.92%
+[+34202ms][CONN][INF] found KV pair in stream: {{__testcase_finish;Test PWM frequency and duty cycle (freq = 10 kHz);0;1}}, queued...
+[+34214ms][CONN][RXD] &gt;&gt;&gt; 'Test PWM frequency and duty cycle (freq = 10 kHz)': 0 passed, 1 failed with reason 'Test Cases Failed'
+[+34215ms][CONN][RXD] 
+[+34215ms][CONN][RXD] 
+[+34215ms][CONN][RXD] &gt;&gt;&gt; Running case #7: 'Test PWM frequency and duty cycle (freq = 100 kHz)'...
+[+34227ms][CONN][INF] found KV pair in stream: {{__testcase_start;Test PWM frequency and duty cycle (freq = 100 kHz)}}, queued...
+[+34227ms][CONN][INF] found KV pair in stream: {{analyze_signal;please}}, queued...
+[+35895ms][SERI][TXD] {{frequency;99900.0}}
+[+35906ms][SERI][TXD] {{duty_cycle;0.8077789416579375}}
+[+35928ms][CONN][RXD] Expected PWM frequency was 100000 Hz (+- 170 Hz) and duty cycle was 81.60% (+-1.00%), host measured frequency 99900 Hz and duty cycle 80.78%
+[+35941ms][CONN][INF] found KV pair in stream: {{analyze_signal;please}}, queued...
+[+37640ms][SERI][TXD] {{frequency;99900.0}}
+[+37652ms][SERI][TXD] {{duty_cycle;0.5743356924823064}}
+[+37674ms][CONN][RXD] Expected PWM frequency was 100000 Hz (+- 170 Hz) and duty cycle was 58.47% (+-1.00%), host measured frequency 99900 Hz and duty cycle 57.43%
+[+37685ms][CONN][RXD] &lt;greentea test suite&gt;:124::FAIL: Expected 0.584708 Was 0.574336
+[+37685ms][CONN][INF] found KV pair in stream: {{analyze_signal;please}}, queued...
+[+39186ms][SERI][TXD] {{frequency;99900.0}}
+[+39197ms][SERI][TXD] {{duty_cycle;0.6426301802736479}}
+[+39219ms][CONN][RXD] Expected PWM frequency was 100000 Hz (+- 170 Hz) and duty cycle was 65.00% (+-1.00%), host measured frequency 99900 Hz and duty cycle 64.26%
+[+39230ms][CONN][INF] found KV pair in stream: {{analyze_signal;please}}, queued...
+[+40681ms][SERI][TXD] {{frequency;99905.0}}
+[+40691ms][SERI][TXD] {{duty_cycle;0.2419106856698575}}
+[+40715ms][CONN][RXD] Expected PWM frequency was 100000 Hz (+- 170 Hz) and duty cycle was 25.19% (+-1.00%), host measured frequency 99905 Hz and duty cycle 24.19%
+[+40715ms][CONN][INF] found KV pair in stream: {{analyze_signal;please}}, queued...
+[+42104ms][SERI][TXD] {{frequency;99905.0}}
+[+42115ms][SERI][TXD] {{duty_cycle;0.5344559915800632}}
+[+42137ms][CONN][RXD] Expected PWM frequency was 100000 Hz (+- 170 Hz) and duty cycle was 54.09% (+-1.00%), host measured frequency 99905 Hz and duty cycle 53.45%
+[+42148ms][CONN][INF] found KV pair in stream: {{__testcase_finish;Test PWM frequency and duty cycle (freq = 100 kHz);0;1}}, queued...
+[+42159ms][CONN][RXD] &gt;&gt;&gt; 'Test PWM frequency and duty cycle (freq = 100 kHz)': 0 passed, 1 failed with reason 'Test Cases Failed'
+[+42159ms][CONN][RXD] 
+[+42159ms][CONN][RXD] 
+[+42170ms][CONN][RXD] &gt;&gt;&gt; Running case #8: 'Test PWM frequency and duty cycle (freq = 1 MHz)'...
+[+42170ms][CONN][INF] found KV pair in stream: {{__testcase_start;Test PWM frequency and duty cycle (freq = 1 MHz)}}, queued...
+[+42170ms][CONN][INF] found KV pair in stream: {{analyze_signal;please}}, queued...
+[+43598ms][SERI][TXD] {{frequency;796280.0}}
+[+43609ms][SERI][TXD] {{duty_cycle;0.39813951395364533}}
+[+43631ms][CONN][RXD] Expected PWM frequency was 1000000 Hz (+- 1520 Hz) and duty cycle was 50.90% (+-10.00%), host measured frequency 796280 Hz and duty cycle 39.81%
+[+43643ms][CONN][RXD] &lt;greentea test suite&gt;:123::FAIL: Expected 1000000.000000 Was 796280.000000
+[+43643ms][CONN][INF] found KV pair in stream: {{analyze_signal;please}}, queued...
+[+45031ms][SERI][TXD] {{frequency;825115.0}}
+[+45042ms][SERI][TXD] {{duty_cycle;0.5874380942142934}}
+[+45064ms][CONN][RXD] Expected PWM frequency was 1000000 Hz (+- 1520 Hz) and duty cycle was 70.31% (+-10.00%), host measured frequency 825115 Hz and duty cycle 58.74%
+[+45075ms][CONN][INF] found KV pair in stream: {{analyze_signal;please}}, queued...
+[+46574ms][SERI][TXD] {{frequency;665775.0}}
+[+46586ms][SERI][TXD] {{duty_cycle;0.6671074966937748}}
+[+46607ms][CONN][RXD] Expected PWM frequency was 1000000 Hz (+- 1520 Hz) and duty cycle was 73.64% (+-10.00%), host measured frequency 665775 Hz and duty cycle 66.71%
+[+46619ms][CONN][INF] found KV pair in stream: {{analyze_signal;please}}, queued...
+[+48046ms][SERI][TXD] {{frequency;490280.0}}
+[+48058ms][SERI][TXD] {{duty_cycle;0.24514066144503915}}
+[+48079ms][CONN][RXD] Expected PWM frequency was 1000000 Hz (+- 1520 Hz) and duty cycle was 33.26% (+-10.00%), host measured frequency 490280 Hz and duty cycle 24.51%
+[+48090ms][CONN][INF] found KV pair in stream: {{analyze_signal;please}}, queued...
+[+49568ms][SERI][TXD] {{frequency;505625.0}}
+[+49579ms][SERI][TXD] {{duty_cycle;0.25281310390172074}}
+[+49600ms][CONN][RXD] Expected PWM frequency was 1000000 Hz (+- 1520 Hz) and duty cycle was 32.09% (+-10.00%), host measured frequency 505625 Hz and duty cycle 25.28%
+[+49611ms][CONN][INF] found KV pair in stream: {{__testcase_finish;Test PWM frequency and duty cycle (freq = 1 MHz);0;1}}, queued...
+[+49622ms][CONN][RXD] &gt;&gt;&gt; 'Test PWM frequency and duty cycle (freq = 1 MHz)': 0 passed, 1 failed with reason 'Test Cases Failed'
+[+49622ms][CONN][RXD] 
+[+49622ms][CONN][RXD] 
+[+49633ms][CONN][RXD] &gt;&gt;&gt; Running case #9: 'Test PWM Suspend/Resume (freq = 1kHz)'...
+[+49633ms][CONN][INF] found KV pair in stream: {{__testcase_start;Test PWM Suspend/Resume (freq = 1kHz)}}, queued...
+[+49633ms][CONN][INF] found KV pair in stream: {{analyze_signal;please}}, queued...
+[+51052ms][SERI][TXD] {{frequency;1000.0}}
+[+51063ms][SERI][TXD] {{duty_cycle;0.749654377592168}}
+[+51085ms][CONN][RXD] Expected PWM frequency was 1000 Hz (+- 21 Hz) and duty cycle was 75.00% (+-0.10%), host measured frequency 1000 Hz and duty cycle 74.97%
+[+51085ms][CONN][INF] found KV pair in stream: {{analyze_signal;please}}, queued...
+[+52502ms][SERI][TXD] {{frequency;0.0}}
+[+52513ms][SERI][TXD] {{duty_cycle;0.0}}
+[+52524ms][CONN][INF] found KV pair in stream: {{analyze_signal;please}}, queued...
+[+53960ms][SERI][TXD] {{frequency;995.0}}
+[+53971ms][SERI][TXD] {{duty_cycle;0.7497468768984232}}
+[+53993ms][CONN][RXD] Expected PWM frequency was 1000 Hz (+- 21 Hz) and duty cycle was 75.00% (+-0.10%), host measured frequency 995 Hz and duty cycle 74.97%
+[+54004ms][CONN][INF] found KV pair in stream: {{__testcase_finish;Test PWM Suspend/Resume (freq = 1kHz);1;0}}, queued...
+[+54004ms][CONN][RXD] &gt;&gt;&gt; 'Test PWM Suspend/Resume (freq = 1kHz)': 1 passed, 0 failed
+[+54016ms][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[+54016ms][CONN][RXD] 
+[+54016ms][CONN][RXD] &gt;&gt;&gt; Running case #10: 'Test PWM Maintains Duty Cycle (freq = 1kHz)'...
+[+54027ms][CONN][INF] found KV pair in stream: {{__testcase_start;Test PWM Maintains Duty Cycle (freq = 1kHz)}}, queued...
+[+54028ms][CONN][INF] found KV pair in stream: {{analyze_signal;please}}, queued...
+[+55459ms][SERI][TXD] {{frequency;1000.0}}
+[+55469ms][SERI][TXD] {{duty_cycle;0.7496593775546684}}
+[+55491ms][CONN][RXD] Expected PWM frequency was 1000 Hz (+- 21 Hz) and duty cycle was 75.00% (+-0.10%), host measured frequency 1000 Hz and duty cycle 74.97%
+[+55491ms][CONN][INF] found KV pair in stream: {{analyze_signal;please}}, queued...
+[+56859ms][SERI][TXD] {{frequency;39960.0}}
+[+56870ms][SERI][TXD] {{duty_cycle;0.7470443971670212}}
+[+56893ms][CONN][RXD] Expected PWM frequency was 40000 Hz (+- 80 Hz) and duty cycle was 75.00% (+-0.40%), host measured frequency 39960 Hz and duty cycle 74.70%
+[+56893ms][CONN][INF] found KV pair in stream: {{analyze_signal;please}}, queued...
+[+58374ms][SERI][TXD] {{frequency;200.0}}
+[+58386ms][SERI][TXD] {{duty_cycle;0.7507443694172293}}
+[+58409ms][CONN][RXD] Expected PWM frequency was 200 Hz (+- 20 Hz) and duty cycle was 75.00% (+-0.10%), host measured frequency 200 Hz and duty cycle 75.07%
+[+58420ms][CONN][INF] found KV pair in stream: {{__testcase_finish;Test PWM Maintains Duty Cycle (freq = 1kHz);1;0}}, queued...
+[+58420ms][CONN][RXD] &gt;&gt;&gt; 'Test PWM Maintains Duty Cycle (freq = 1kHz)': 1 passed, 0 failed
+[+58431ms][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[+58431ms][CONN][RXD] 
+[+58431ms][CONN][RXD] &gt;&gt;&gt; Test cases: 7 passed, 3 failed with reason 'Test Cases Failed'
+[+58431ms][CONN][RXD] &gt;&gt;&gt; TESTS FAILED!
+[+58431ms][CONN][RXD] 
+[+58442ms][CONN][RXD] -----------------------
+[+58442ms][CONN][RXD] 0 Tests 3 Failures 0 Ignored 
+[+58442ms][CONN][RXD] FAIL
+[+58443ms][CONN][INF] found KV pair in stream: {{__testcase_summary;7;3}}, queued...
+[+58443ms][CONN][INF] found KV pair in stream: {{end;failure}}, queued...
+[+58443ms][CONN][INF] found KV pair in stream: {{__exit;0}}, queued...
+[+61059ms][HTST][INF] __exit(0)
+[+61059ms][HTST][INF] __notify_complete(False)
+[+61060ms][HTST][INF] __exit_event_queue received
+[+61060ms][HTST][INF] test suite run finished after 55.36 sec...
+[+58454ms][CONN][INF] received special event '__host_test_finished' value='True', finishing
+[+61260ms][HTST][INF] CONN exited with code: 0
+[+61260ms][HTST][INF] Some events in queue
+[+61261ms][HTST][INF] stopped consuming events
+[+61261ms][HTST][INF] host test result() call skipped, received: False
+[+61261ms][HTST][INF] calling blocking teardown()
+[+61261ms][HTST][INF] teardown() finished
+[+61261ms][HTST][INF] {{result;failure}}
+CMake Error at mbed-run-greentea-test-testshield-pwm-and-adc.cmake:19 (execute_process):
+  execute_process failed command indexes:
+
+    1: "Child return code: 1"
+
+
+
+</system-out>
+	</testcase>
+	<testcase name="test-testshield-dac-to-adc" classname="test-testshield-dac-to-adc" time="0.0769465" status="notrun">
+		<skipped message="SKIP_REGULAR_EXPRESSION_MATCHED"/>
+		<properties/>
+		<system-out>Skipping test-testshield-dac-to-adc: No DAC support
+</system-out>
+	</testcase>
+	<testcase name="test-testshield-uart" classname="test-testshield-uart" time="38.0027" status="fail">
+		<failure message="Failed"/>
+		<properties/>
+		<system-out>0006820 I Target type is ama3b1kk_kbr [board]
+0007050 I DP IDR = 0x2ba01477 (v1 rev2) [dap]
+0007107 I AHB-AP#0 IDR = 0x24770011 (AHB-AP var1 rev2) [discovery]
+0007135 I AHB-AP#0 Class 0x1 ROM table #0 @ 0xe00ff000 (designer=43b:Arm part=4c4) [rom_table]
+0007152 I [0]&lt;e000e000:SCS v7-M class=14 designer=43b:Arm part=00c&gt; [rom_table]
+0007156 I [1]&lt;e0001000:DWT v7-M class=14 designer=43b:Arm part=002&gt; [rom_table]
+0007247 I [2]&lt;e0002000:FPB v7-M class=14 designer=43b:Arm part=003&gt; [rom_table]
+0007310 I [3]&lt;e0000000:ITM v7-M class=14 designer=43b:Arm part=001&gt; [rom_table]
+0007404 I [4]&lt;e0040000:TPIU M4 class=9 designer=43b:Arm part=9a1 devtype=11 archid=0000 devid=ca0:0:0&gt; [rom_table]
+0007411 I CPU core #0: Cortex-M4 r0p1, v7.0-M architecture [cortex_m]
+0007412 I   Extensions: [DSP, FPU, FPU_V4, MPU] [cortex_m]
+0007412 I   FPU present: FPv4-SP-D16-M [cortex_m]
+0007415 I 4 hardware watchpoints [dwt]
+0007417 I 6 hardware breakpoints, 4 literal comparators [fpb]
+0007423 I Loading C:\Users\jamie\Documents\RPL\mbed-ce-test-tools\CI-Shield-Tests\cmake-build-develop-sfe_artemis\test-testshield-uart.bin at 0x00010000 [load_cmd]
+[---|---|---|---|---|---|---|---|---|----]
+[========================================]
+0009416 I Erased 65536 bytes (8 sectors), programmed 65536 bytes (8 pages), skipped 0 bytes (0 pages) at 32.13 kB/s [loader]
+[1/3] Building CXX object CMakeFiles/test-testshield-uart.dir/UARTTest.cpp.obj
+[2/3] Linking CXX executable test-testshield-uart.elf
+-- built: C:/Users/jamie/Documents/RPL/mbed-ce-test-tools/CI-Shield-Tests/cmake-build-develop-sfe_artemis/test-testshield-uart.bin
+-- built: C:/Users/jamie/Documents/RPL/mbed-ce-test-tools/CI-Shield-Tests/cmake-build-develop-sfe_artemis/test-testshield-uart.hex
+[2/3] Flashing test-testshield-uart with pyOCD...
+Executing: C:/Users/jamie/Documents/RPL/mbed-ce-test-tools/CI-Shield-Tests/mbed-os/venv/Scripts/mbedhtrun.exe --skip-flashing -p COM10 --skip-reset --sync-predelay 0.3 -e C:/Users/jamie/Documents/RPL/mbed-ce-test-tools/CI-Shield-Tests/host_tests -m SFE_ARTEMIS --baud-rate=115200
+Will use any connected CI shield for this test.  Export the MBED_CI_SHIELD_SERIAL_NUMBER environment var to select a specific shield.
+e.g. 'export MBED_CI_SHIELD_SERIAL_NUMBER=SN002'
+[+4524ms][HTST][INF] host test executor ver. 0.0.16
+[+4525ms][HTST][INF] copy image onto target... SKIPPED!
+[+4571ms][HTST][INF] starting host test process...
+[+5955ms][CONN][INF] starting connection process...
+[+5957ms][CONN][INF] notify event queue about extra 60 sec timeout for serial port pooling
+[+5958ms][CONN][INF] initializing serial port listener... 
+[+5958ms][SERI][INF] using specified port 'COM10'
+[+11371ms][HTST][INF] setting timeout to: 60 sec
+[+5959ms][SERI][INF] serial(port=COM10, baudrate=115200, read_timeout=0.01, write_timeout=5)
+[+5962ms][CONN][INF] Pre-sync delay for 0.30 sec...
+[+6263ms][SERI][TXD] mbedmbedmbedmbedmbedmbedmbedmbedmbedmbed
+[+6264ms][CONN][INF] sending up to 2 __sync packets (specified with --sync=2)
+[+6264ms][CONN][INF] sending preamble '857e1453-049d-4708-97bf-0bbdc0b8391e'
+[+6267ms][SERI][TXD] {{__sync;857e1453-049d-4708-97bf-0bbdc0b8391e}}
+[+6280ms][CONN][WRN] UnicodeDecodeError encountered! Raw bytes were b'\xfembedmbedmbedmbedmbedmbedmbedmbed\r\n{{__sync;857e1453-049d-4708-97' and they decoded to "mbedmbedmbedmbedmbedmbedmbedmbed
+{{__sync;857e1453-049d-4708-97"
+[+6280ms][CONN][RXD] mbedmbedmbedmbedmbedmbedmbedmbed
+[+6292ms][CONN][INF] found KV pair in stream: {{__sync;857e1453-049d-4708-97bf-0bbdc0b8391e}}, queued...
+[+6292ms][CONN][INF] found KV pair in stream: {{__version;1.3.0}}, queued...
+[+6292ms][CONN][INF] found KV pair in stream: {{__timeout;30}}, queued...
+[+6292ms][CONN][INF] found KV pair in stream: {{__host_test_name;uart_test}}, queued...
+[+6294ms][CONN][RXD] &gt;&gt;&gt; Running 10 test cases...
+[+6294ms][CONN][INF] found SYNC in stream: {{__sync;857e1453-049d-4708-97bf-0bbdc0b8391e}} it is #0 sent, queued...
+[+11708ms][HTST][INF] sync KV found, uuid=857e1453-049d-4708-97bf-0bbdc0b8391e, timestamp=1753340428.772870
+[+11708ms][HTST][INF] DUT greentea-client version: 1.3.0
+[+11708ms][HTST][INF] setting timeout to: 30 sec
+[+11708ms][HTST][INF] host test class: '&lt;class 'uart_test.UARTHostTest'&gt;'
+[+6305ms][CONN][INF] found KV pair in stream: {{__testcase_name;Send test string from MCU once (1200 baud)}}, queued...
+[+6306ms][CONN][INF] found KV pair in stream: {{__testcase_name;Receive test string from PC once (1200 baud)}}, queued...
+[+6316ms][CONN][INF] found KV pair in stream: {{__testcase_name;Send test string from MCU once (9600 baud)}}, queued...
+[+6316ms][CONN][INF] found KV pair in stream: {{__testcase_name;Receive test string from PC once (9600 baud)}}, queued...
+[+6328ms][CONN][INF] found KV pair in stream: {{__testcase_name;Send test string from MCU once (115200 baud)}}, queued...
+[+6339ms][CONN][INF] found KV pair in stream: {{__testcase_name;Receive test string from PC once (115200 baud)}}, queued...
+[+6339ms][CONN][INF] found KV pair in stream: {{__testcase_name;Send test string from MCU once (921600 baud)}}, queued...
+[+6350ms][CONN][INF] found KV pair in stream: {{__testcase_name;Receive test string from PC once (921600 baud)}}, queued...
+[+6351ms][CONN][INF] found KV pair in stream: {{__testcase_name;Send test string from MCU once (3000000 baud)}}, queued...
+[+6362ms][CONN][INF] found KV pair in stream: {{__testcase_name;Receive test string from PC once (3000000 baud)}}, queued...
+[+6362ms][CONN][RXD] 
+[+6362ms][CONN][RXD] &gt;&gt;&gt; Running case #1: 'Send test string from MCU once (1200 baud)'...
+[+6373ms][CONN][INF] found KV pair in stream: {{__testcase_start;Send test string from MCU once (1200 baud)}}, queued...
+[+6373ms][CONN][INF] found KV pair in stream: {{setup_port_at_baud;1200}}, queued...
+[+11842ms][cy_serial_bridge]The CyType of this device must be changed to UART_CDC in order to open it as UART_CDC
+[+11842ms][cy_serial_bridge]Discovered USB endpoints successfully
+[+11843ms][cy_serial_bridge]Device signature: b'CYUS'
+Connected to MFG interface of CY7C652xx device, firmware version 2.0.3 build 112
+[+11847ms][cy_serial_bridge]Read the following configuration from the device: ConfigurationBlock(
+    config_format_version=2.0.3
+    device_type=CY_TYPE.I2C,
+    vid=0x04b4,
+    pid=0xe010,
+    mfgr_string="Cypress Semiconductor",
+    product_string="Mbed CE CI Shield Serial Adapter",
+    serial_number="ShieldSN001",
+    capsense_on=False,
+    default_frequency=115200
+)
+[+11847ms][cy_serial_bridge]Changing to UART_CDC and device has even PID.  Changing PID to 0xe011
+[+11849ms][cy_serial_bridge]Writing the following configuration to the device: ConfigurationBlock(
+    config_format_version=2.0.3
+    device_type=CY_TYPE.UART_CDC,
+    vid=0x04b4,
+    pid=0xe011,
+    mfgr_string="Cypress Semiconductor",
+    product_string="Mbed CE CI Shield Serial Adapter",
+    serial_number="ShieldSN001",
+    capsense_on=False,
+    default_frequency=115200
+)
+[+11886ms][cy_serial_bridge]Type has been changed.
+[+12453ms][cy_serial_bridge]Changed type of device in 0.6106 sec
+[+12460ms][TEST][INF] UART Test host test setup complete.
+[+12460ms][HTST][INF] host test setup() call...
+[+12460ms][HTST][INF] CALLBACKs updated
+[+12460ms][HTST][INF] host test detected: uart_test
+[+7057ms][SERI][TXD] {{setup_port_at_baud;complete}}
+[+7810ms][CONN][INF] found KV pair in stream: {{verify_repeated_test_string;1}}, queued...
+[+7823ms][SERI][TXD] {{verify_repeated_test_string;complete}}
+[+7845ms][CONN][INF] found KV pair in stream: {{__testcase_finish;Send test string from MCU once (1200 baud);1;0}}, queued...
+[+7845ms][CONN][RXD] &gt;&gt;&gt; 'Send test string from MCU once (1200 baud)': 1 passed, 0 failed
+[+7845ms][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[+7845ms][CONN][RXD] 
+[+7857ms][CONN][RXD] &gt;&gt;&gt; Running case #2: 'Receive test string from PC once (1200 baud)'...
+[+7857ms][CONN][INF] found KV pair in stream: {{__testcase_start;Receive test string from PC once (1200 baud)}}, queued...
+[+7870ms][CONN][INF] found KV pair in stream: {{setup_port_at_baud;1200}}, queued...
+[+7886ms][SERI][TXD] {{setup_port_at_baud;complete}}
+[+7898ms][CONN][INF] found KV pair in stream: {{send_test_string;1}}, queued...
+[+7910ms][SERI][TXD] {{send_test_string;started}}
+[+8344ms][CONN][RXD] &lt;greentea test suite&gt;:156::FAIL: Expected 'The quick brown fox jumps over the lazy dog.\n' Was 'xThe quick brown fox jumps over the lazy dog.'
+[+8345ms][CONN][INF] found KV pair in stream: {{__testcase_finish;Receive test string from PC once (1200 baud);0;1}}, queued...
+[+8377ms][CONN][RXD] &gt;&gt;&gt; 'Receive test string from PC once (1200 baud)': 0 passed, 1 failed with reason 'Test Cases Failed'
+[+8377ms][CONN][RXD] 
+[+8377ms][CONN][RXD] 
+[+8377ms][CONN][RXD] &gt;&gt;&gt; Running case #3: 'Send test string from MCU once (9600 baud)'...
+[+8377ms][CONN][INF] found KV pair in stream: {{__testcase_start;Send test string from MCU once (9600 baud)}}, queued...
+[+8377ms][CONN][INF] found KV pair in stream: {{setup_port_at_baud;9600}}, queued...
+[+8390ms][SERI][TXD] {{setup_port_at_baud;complete}}
+[+8503ms][CONN][INF] found KV pair in stream: {{verify_repeated_test_string;1}}, queued...
+[+8520ms][SERI][TXD] {{verify_repeated_test_string;complete}}
+[+8543ms][CONN][INF] found KV pair in stream: {{__testcase_finish;Send test string from MCU once (9600 baud);1;0}}, queued...
+[+8544ms][CONN][RXD] &gt;&gt;&gt; 'Send test string from MCU once (9600 baud)': 1 passed, 0 failed
+[+8544ms][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[+8544ms][CONN][RXD] 
+[+8565ms][CONN][RXD] &gt;&gt;&gt; Running case #4: 'Receive test string from PC once (9600 baud)'...
+[+8566ms][CONN][INF] found KV pair in stream: {{__testcase_start;Receive test string from PC once (9600 baud)}}, queued...
+[+8567ms][CONN][INF] found KV pair in stream: {{setup_port_at_baud;9600}}, queued...
+[+8582ms][SERI][TXD] {{setup_port_at_baud;complete}}
+[+8593ms][CONN][INF] found KV pair in stream: {{send_test_string;1}}, queued...
+[+8606ms][SERI][TXD] {{send_test_string;started}}
+[+8722ms][CONN][INF] found KV pair in stream: {{__testcase_finish;Receive test string from PC once (9600 baud);1;0}}, queued...
+[+8755ms][CONN][RXD] &gt;&gt;&gt; 'Receive test string from PC once (9600 baud)': 1 passed, 0 failed
+[+8756ms][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[+8758ms][CONN][RXD] 
+[+8758ms][CONN][RXD] &gt;&gt;&gt; Running case #5: 'Send test string from MCU once (115200 baud)'...
+[+8760ms][CONN][INF] found KV pair in stream: {{__testcase_start;Send test string from MCU once (115200 baud)}}, queued...
+[+8761ms][CONN][INF] found KV pair in stream: {{setup_port_at_baud;115200}}, queued...
+[+8775ms][SERI][TXD] {{setup_port_at_baud;complete}}
+[+8798ms][CONN][INF] found KV pair in stream: {{verify_repeated_test_string;1}}, queued...
+[+8809ms][SERI][TXD] {{verify_repeated_test_string;complete}}
+[+8832ms][CONN][INF] found KV pair in stream: {{__testcase_finish;Send test string from MCU once (115200 baud);1;0}}, queued...
+[+8832ms][CONN][RXD] &gt;&gt;&gt; 'Send test string from MCU once (115200 baud)': 1 passed, 0 failed
+[+8832ms][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[+8832ms][CONN][RXD] 
+[+8844ms][CONN][RXD] &gt;&gt;&gt; Running case #6: 'Receive test string from PC once (115200 baud)'...
+[+8844ms][CONN][INF] found KV pair in stream: {{__testcase_start;Receive test string from PC once (115200 baud)}}, queued...
+[+8856ms][CONN][INF] found KV pair in stream: {{setup_port_at_baud;115200}}, queued...
+[+8880ms][SERI][TXD] {{setup_port_at_baud;complete}}
+[+8893ms][CONN][INF] found KV pair in stream: {{send_test_string;1}}, queued...
+[+8906ms][SERI][TXD] {{send_test_string;started}}
+[+8919ms][CONN][INF] found KV pair in stream: {{__testcase_finish;Receive test string from PC once (115200 baud);1;0}}, queued...
+[+8931ms][CONN][RXD] &gt;&gt;&gt; 'Receive test string from PC once (115200 baud)': 1 passed, 0 failed
+[+8931ms][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[+8932ms][CONN][RXD] 
+[+8944ms][CONN][RXD] &gt;&gt;&gt; Running case #7: 'Send test string from MCU once (921600 baud)'...
+[+8945ms][CONN][INF] found KV pair in stream: {{__testcase_start;Send test string from MCU once (921600 baud)}}, queued...
+[+8946ms][CONN][INF] found KV pair in stream: {{setup_port_at_baud;921600}}, queued...
+[+8959ms][SERI][TXD] {{setup_port_at_baud;complete}}
+[+8972ms][CONN][INF] found KV pair in stream: {{verify_repeated_test_string;1}}, queued...
+[+8984ms][SERI][TXD] {{verify_repeated_test_string;complete}}
+[+9008ms][CONN][INF] found KV pair in stream: {{__testcase_finish;Send test string from MCU once (921600 baud);1;0}}, queued...
+[+9008ms][CONN][RXD] &gt;&gt;&gt; 'Send test string from MCU once (921600 baud)': 1 passed, 0 failed
+[+9008ms][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[+9009ms][CONN][RXD] 
+[+9021ms][CONN][RXD] &gt;&gt;&gt; Running case #8: 'Receive test string from PC once (921600 baud)'...
+[+9021ms][CONN][INF] found KV pair in stream: {{__testcase_start;Receive test string from PC once (921600 baud)}}, queued...
+[+9033ms][CONN][INF] found KV pair in stream: {{setup_port_at_baud;921600}}, queued...
+[+9045ms][SERI][TXD] {{setup_port_at_baud;complete}}
+[+9057ms][CONN][INF] found KV pair in stream: {{send_test_string;1}}, queued...
+[+9071ms][SERI][TXD] {{send_test_string;started}}
+[+9083ms][CONN][RXD] Receive timed out after 1860ms, only received 15 chars.
+[+9096ms][CONN][RXD] &lt;greentea test suite&gt;:144::FAIL: Receive timed out
+[+9097ms][CONN][INF] found KV pair in stream: {{__testcase_finish;Receive test string from PC once (921600 baud);0;1}}, queued...
+[+9111ms][CONN][RXD] &gt;&gt;&gt; 'Receive test string from PC once (921600 baud)': 0 passed, 1 failed with reason 'Test Cases Failed'
+[+9111ms][CONN][RXD] 
+[+9112ms][CONN][RXD] 
+[+9125ms][CONN][RXD] &gt;&gt;&gt; Running case #9: 'Send test string from MCU once (3000000 baud)'...
+[+9126ms][CONN][INF] found KV pair in stream: {{__testcase_start;Send test string from MCU once (3000000 baud)}}, queued...
+[+9139ms][CONN][RXD] &lt;greentea test suite&gt;:83::SKIP: Baudrate unsupported
+[+9141ms][CONN][INF] found KV pair in stream: {{__testcase_finish;Send test string from MCU once (3000000 baud);1;0}}, queued...
+[+9141ms][CONN][RXD] &gt;&gt;&gt; 'Send test string from MCU once (3000000 baud)': 1 passed, 0 failed
+[+9153ms][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[+9154ms][CONN][RXD] 
+[+9154ms][CONN][RXD] &gt;&gt;&gt; Running case #10: 'Receive test string from PC once (3000000 baud)'...
+[+9167ms][CONN][INF] found KV pair in stream: {{__testcase_start;Receive test string from PC once (3000000 baud)}}, queued...
+[+9167ms][CONN][RXD] &lt;greentea test suite&gt;:103::SKIP: Baudrate unsupported
+[+9181ms][CONN][INF] found KV pair in stream: {{__testcase_finish;Receive test string from PC once (3000000 baud);1;0}}, queued...
+[+9182ms][CONN][RXD] &gt;&gt;&gt; 'Receive test string from PC once (3000000 baud)': 1 passed, 0 failed
+[+9182ms][CONN][RXD] &lt;greentea test suite&gt;:0::PASS
+[+9182ms][CONN][RXD] 
+[+9196ms][CONN][RXD] &gt;&gt;&gt; Test cases: 8 passed, 2 failed with reason 'Test Cases Failed'
+[+9196ms][CONN][RXD] &gt;&gt;&gt; TESTS FAILED!
+[+9197ms][CONN][RXD] 
+[+9197ms][CONN][RXD] -----------------------
+[+9197ms][CONN][RXD] 0 Tests 2 Failures 0 Ignored 
+[+9199ms][CONN][RXD] FAIL
+[+9199ms][CONN][INF] found KV pair in stream: {{__testcase_summary;8;2}}, queued...
+[+9199ms][CONN][INF] found KV pair in stream: {{end;failure}}, queued...
+[+9201ms][CONN][INF] found KV pair in stream: {{__exit;0}}, queued...
+[+14616ms][HTST][INF] __exit(0)
+[+14616ms][HTST][INF] __notify_complete(False)
+[+14616ms][HTST][INF] __exit_event_queue received
+[+14617ms][HTST][INF] test suite run finished after 2.91 sec...
+[+9214ms][CONN][INF] received special event '__host_test_finished' value='True', finishing
+[+15507ms][HTST][INF] CONN exited with code: 0
+[+15507ms][HTST][INF] Some events in queue
+[+15508ms][HTST][INF] stopped consuming events
+[+15511ms][HTST][INF] host test result() call skipped, received: False
+[+15511ms][HTST][INF] calling blocking teardown()
+[+15748ms][cy_serial_bridge]The CyType of this device must be changed to I2C in order to open it as I2C_CONTROLLER
+[+15748ms][cy_serial_bridge]Discovered USB endpoints successfully
+[+15751ms][cy_serial_bridge]Device signature: b'CYUS'
+Connected to MFG interface of CY7C652xx device, firmware version 2.0.3 build 112
+[+15754ms][cy_serial_bridge]Read the following configuration from the device: ConfigurationBlock(
+    config_format_version=2.0.3
+    device_type=CY_TYPE.UART_CDC,
+    vid=0x04b4,
+    pid=0xe011,
+    mfgr_string="Cypress Semiconductor",
+    product_string="Mbed CE CI Shield Serial Adapter",
+    serial_number="ShieldSN001",
+    capsense_on=False,
+    default_frequency=115200
+)
+[+15754ms][cy_serial_bridge]Changing to non-UART_CDC and device has odd PID.  Changing PID to 0xe010
+[+15754ms][cy_serial_bridge]Writing the following configuration to the device: ConfigurationBlock(
+    config_format_version=2.0.3
+    device_type=CY_TYPE.I2C,
+    vid=0x04b4,
+    pid=0xe010,
+    mfgr_string="Cypress Semiconductor",
+    product_string="Mbed CE CI Shield Serial Adapter",
+    serial_number="ShieldSN001",
+    capsense_on=False,
+    default_frequency=115200
+)
+[+15792ms][cy_serial_bridge]Type has been changed.
+[+16235ms][cy_serial_bridge]Changed type of device in 0.4868 sec
+[+16235ms][cy_serial_bridge]Discovered USB endpoints successfully
+[+16236ms][cy_serial_bridge]Device signature: b'CYUS'
+Connected to I2C interface of CY7C652xx device, firmware version 2.0.3 build 112
+[+16241ms][HTST][INF] teardown() finished
+[+16241ms][HTST][INF] {{result;failure}}
+CMake Error at mbed-run-greentea-test-testshield-uart.cmake:19 (execute_process):
+  execute_process failed command indexes:
+
+    1: "Child return code: 1"
+
+
+
+</system-out>
+	</testcase>
+</testsuite>
