@@ -157,9 +157,61 @@ void mcu_rx_test_string()
     TEST_ASSERT_EQUAL_UINT32(totalBytesRead, TEST_STRING_LEN);
 }
 
+// Test the UART's ability to handle junk on the line without losing its ability to receive characters.
+// We do this by configuring the UART for 115200 baud, then having the host send the test string at 9600 baud
+// and 921600 baud
+void handle_junk_on_line() {
+
+    // Set our Rx baudrate
+    uart->set_baud(115200);
+    uart->set_blocking(false);
+
+    // Have the host send a test string at 9600 baud
+    greentea_send_kv("setup_port_at_baud", 9600);
+    assert_next_message_from_host("setup_port_at_baud", "complete");
+    greentea_send_kv("send_test_string", 1);
+    assert_next_message_from_host("send_test_string", "started");
+    wait_us(get_time_to_transmit(9600, TEST_STRING_LEN));
+
+    // Have the host send a test string at 921600 baud
+    greentea_send_kv("setup_port_at_baud", 921600);
+    assert_next_message_from_host("setup_port_at_baud", "complete");
+    greentea_send_kv("send_test_string", 1);
+    assert_next_message_from_host("send_test_string", "started");
+    wait_us(get_time_to_transmit(921600, TEST_STRING_LEN));
+
+    // It's OK if we did get some chars, just remove them.
+    size_t totalCharsRemoved = 0;
+    while(true) {
+        ssize_t readResult = uart->read(rxBuffer, sizeof(rxBuffer));
+        if(readResult == -EAGAIN)
+        {
+            // Nothing to read
+            break;
+        }
+        else if(readResult > 0)
+        {
+            totalCharsRemoved += readResult;
+        }
+        else
+        {
+            TEST_FAIL_MESSAGE("Unexpected read result.");
+            return;
+        }
+    }
+    printf("UART received %zu junk chars\n", totalCharsRemoved);
+
+    // Now see if we can properly receive data still
+    mcu_rx_test_string<115200>();
+}
+
 utest::v1::status_t test_setup(const size_t number_of_cases) {
     // Setup Greentea using a reasonable timeout in seconds
     GREENTEA_SETUP(30, "uart_test");
+
+    // Set up mux for UART
+    static BusOut funcSelPins(PIN_FUNC_SEL0, PIN_FUNC_SEL1, PIN_FUNC_SEL2);
+    funcSelPins = 0b000;
 
     // Use static pinmap if supported for this device
 #if STATIC_PINMAP_READY
@@ -167,10 +219,6 @@ utest::v1::status_t test_setup(const size_t number_of_cases) {
 #else	
     uart = new BufferedSerial(PIN_UART_MCU_TX, PIN_UART_MCU_RX);
 #endif
-
-    // Set up mux for UART
-    static BusOut funcSelPins(PIN_FUNC_SEL0, PIN_FUNC_SEL1, PIN_FUNC_SEL2);
-    funcSelPins = 0b000;
 
     return utest::v1::verbose_test_setup_handler(number_of_cases);
 }
@@ -189,6 +237,8 @@ utest::v1::Case cases[] = {
     utest::v1::Case("Receive test string from PC once (921600 baud)", mcu_rx_test_string<921600>),
     utest::v1::Case("Send test string from MCU once (3000000 baud)", mcu_tx_test_string<3000000>),
     utest::v1::Case("Receive test string from PC once (3000000 baud)", mcu_rx_test_string<3000000>),
+
+    utest::v1::Case("Handle Junk on Serial Rx Line", handle_junk_on_line)
 };
 
 utest::v1::Specification specification(test_setup, cases, utest::v1::greentea_continue_handlers);
