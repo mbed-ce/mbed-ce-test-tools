@@ -22,13 +22,12 @@ from . import usb_serial_numbers
 
 from mbed_host_tests.host_tests_logger import HtrunLogger
 
-LOGIC_ANALYZER_FREQUENCY = 4 # MHz
+if sys.platform == "win32":
+    # For some reason fx2lafw cannot make 4MHz work on Windows.
+    LOGIC_ANALYZER_FREQUENCY = 2 # MHz
+else:
+    LOGIC_ANALYZER_FREQUENCY = 4 # MHz
 
-#if sys.platform == "win32":
-    # Sigrok must be run through WSL on Windows, see
-    # https://github.com/mbed-ce/mbed-ce-ci-shield-v2?tab=readme-ov-file#side-note-sigrok-windows-issues
-#    SIGROK_COMMAND = ["wsl", "sigrok-cli"]
-#else:
 SIGROK_COMMAND = ["sigrok-cli"]
 
 
@@ -604,8 +603,8 @@ class SigrokSignalAnalyzer(SigrokRecorderBase):
     def __init__(self):
         super().__init__()
 
-    # Recording for 100ms should allow accurate frequency estimates
-    RECORD_TIME = 0.1 # s
+    # Recording for 200ms should allow accurate frequency estimates
+    RECORD_TIME = 0.2 # s
 
     def measure_signal(self, pin_num: int) -> Tuple[float, float]:
         """

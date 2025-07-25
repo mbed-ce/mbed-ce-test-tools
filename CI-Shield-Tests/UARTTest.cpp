@@ -78,6 +78,12 @@ char rxBuffer[128];
 template<int baudrate>
 void mcu_tx_test_string()
 {
+#ifdef TARGET_AMA3B1KK
+    if (baudrate > 1500000) {
+        TEST_SKIP_MESSAGE("Baudrate unsupported");
+    }
+#endif
+
     init_uart(baudrate);
     uart->write(TEST_STRING, TEST_STRING_LEN);
     uart->sync();
@@ -92,6 +98,11 @@ void mcu_tx_test_string()
 template<int baudrate>
 void mcu_rx_test_string()
 {
+#ifdef TARGET_AMA3B1KK
+    if (baudrate > 1500000) {
+        TEST_SKIP_MESSAGE("Baudrate unsupported");
+    }
+#endif
     init_uart(baudrate);
     host_send_test_string(1);
     uart->set_blocking(false);

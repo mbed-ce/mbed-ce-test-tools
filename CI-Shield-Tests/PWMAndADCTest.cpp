@@ -40,7 +40,7 @@ PwmOut pwmOut(PIN_GPOUT_1_PWM);
 // GPIO output voltage expressed as a percent of the ADC reference voltage.  Experimentally determined by the first test case.
 float ioVoltageADCPercent;
 
-std::mt19937 randomGen(287327); // Fixed random seed for repeatability
+std::minstd_rand randomGen(287327); // Fixed random seed for repeatability
 
 /*
  * Get and return the frequency and duty cycle of the current signal via the host test.
@@ -96,16 +96,20 @@ void verify_pwm_freq_and_duty_cycle(float expectedFrequencyHz, float expectedDut
     // For frequency, the host test measures for 100 ms, meaning that it should be able to
     // detect frequency within +-10Hz.  We'll double to 20Hz that to be a bit generous.
     // Note that we only run at even power-of-10 frequencies, so most MCUs *should* be able to hit them
-    // precisely with a clock divider.  We shall see if any do not meet this assumption though..
-    const float frequencyTolerance = 20;
+    // precisely with a clock divider. There's also oscillator tolerance to consider. The CI shield clock
+    // is fairly decent (+-100ppm), but board oscillators can be worse.
+    // Current best accuracy is around +-0.15%, on Ambiq Apollo3
+    const float frequencyTolerance = 20 + .0015 * expectedFrequencyHz;
 
-    // For duty cycle, implementations should hopefully be at least 0.1% accurate.
+    // For duty cycle, implementations should hopefully be at least 0.1% accurate (top count >=1000).
     // However, at high clock frequencies, the resolution often gets worse, because the timer concerned might
     // only be counting to a few hundred before resetting.
     // Example: on RP2040, at 1MHz, the PWM counts to 125 before resetting, so we have an accuracy of 0.01 us
     // on a period of 1 us (giving a resolution a bit better than 1%)
-    // We'll add another factor of 10 and say that we must only be as accurate as 0.1us if 0.1us is more
-    // than 0.1% of the period, so for the RP2040 at 1MHz, the requirement would only be 10% duty cycle accuracy.
+    // Ambiq Apollo3 is even worse -- the source clock is 12MHz, so at 1MHz we only have about
+    // +-0.084us (resolution of 8.4%)
+    // So, we'll approximate and say that we must only be as accurate as 0.1us if 0.1us is more
+    // than 0.1% of the period, so at 1MHz the requirement would only be 10% duty cycle accuracy.
     const float dutyCycleTolerance = std::max(.001f, expectedFrequencyHz / 1e7f);
 
     printf("Expected PWM frequency was %.00f Hz (+- %.00f Hz) and duty cycle was %.02f%% (+-%.02f%%), host measured frequency %.00f Hz and duty cycle %.02f%%\n",
@@ -147,24 +151,6 @@ void test_adc_digital_value()
     // We don't actually know what the IO voltage is relative to the ADC reference voltage, but it's a fair bet
     // that it should be at least 10%, so make sure we got at least some kind of reading
     TEST_ASSERT(ioVoltageADCPercent > 0.1f);
-
-    // If the target provides an ADC Vref value, check that as well.
-    if(isnan(MBED_CONF_TARGET_DEFAULT_ADC_VREF))
-    {
-        printf("Cannot convert to volts, target.default-adc-vref is not set for this target");
-    }
-    else
-    {
-        float ioVoltageVolts = adc.read_voltage();
-        printf("Based on target.default-adc-vref of %.02fV, the digital IO voltage of this target is %.02fV.",
-               MBED_CONF_TARGET_DEFAULT_ADC_VREF, ioVoltageVolts);
-
-        // In a sane world we expect the IO voltage to be between 1.8 and 5 volts so we can at least check that
-        // to help spot bad target.default-adc-vref values
-        TEST_ASSERT(ioVoltageVolts >= 1.7f);
-        TEST_ASSERT(ioVoltageVolts <= 5.1f);
-    }
-
 }
 
 /*
@@ -185,12 +171,19 @@ void test_adc_analog_value()
         pwmOut.write(dutyCyclePercent);
         ThisThread::sleep_for(PWM_FILTER_DELAY);
 
-        // Get and check the result
-        float adcPercent = adc.read();
-        float expectedADCPercent = dutyCyclePercent * ioVoltageADCPercent;
+        // We expect an I/O voltage of 3.3V (for compatibility with the test shield).
+        // If that went over the ADC voltage reference, then we expect to see the ADC vref value.
+        const float expectedVoltage = dutyCyclePercent * 3.3;
+        const float expectedVoltageReading = std::min<float>(expectedVoltage, MBED_CONF_TARGET_DEFAULT_ADC_VREF);
+        const float expectedFloatReading = expectedVoltageReading / MBED_CONF_TARGET_DEFAULT_ADC_VREF;
+
+        // Get and check the result. If the
+        const float adcPercent = adc.read();
+
+
         printf("PWM duty cycle of %.01f%% produced an ADC reading of %.01f%% (expected %.01f%%)\n",
-               dutyCyclePercent * 100.0f, adcPercent * 100.0f, expectedADCPercent * 100.0f);
-        TEST_ASSERT_FLOAT_WITHIN(ADC_TOLERANCE_PERCENT, expectedADCPercent, adcPercent);
+               dutyCyclePercent * 100.0f, adcPercent * 100.0f, expectedFloatReading * 100.0f);
+        TEST_ASSERT_FLOAT_WITHIN(ADC_TOLERANCE_PERCENT, expectedFloatReading, adcPercent);
     }
 }
 
