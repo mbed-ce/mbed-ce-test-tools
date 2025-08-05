@@ -295,8 +295,8 @@ Case cases[] = {
     Case("Test PWM frequency and duty cycle (freq = 10 kHz)", test_pwm<100>),
     Case("Test PWM frequency and duty cycle (freq = 100 kHz)", test_pwm<10>),
 
-    // Note: Many targets currently cannot do 1MHz PWM.  This test will help figure out which ones those are.
-    Case("Test PWM frequency and duty cycle (freq = 1 MHz)", test_pwm<1>),
+    // As the logic analyzer maxes out at 2MHz, this is the fastest we can measure
+    Case("Test PWM frequency and duty cycle (freq = 500 kHz)", test_pwm<5>),
 
     Case("Test PWM Suspend/Resume (freq = 1kHz)", test_pwm_suspend_resume),
     Case("Test PWM Maintains Duty Cycle (freq = 1kHz)", test_pwm_maintains_duty_cycle)

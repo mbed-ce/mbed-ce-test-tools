@@ -22,11 +22,9 @@ from . import usb_serial_numbers
 
 from mbed_host_tests.host_tests_logger import HtrunLogger
 
-if sys.platform == "win32":
-    # For some reason fx2lafw cannot make 4MHz work on Windows.
-    LOGIC_ANALYZER_FREQUENCY = 2 # MHz
-else:
-    LOGIC_ANALYZER_FREQUENCY = 4 # MHz
+# This is the fastest that I can *consistently* make work
+LOGIC_ANALYZER_FREQUENCY = 2 # MHz
+
 
 SIGROK_COMMAND = ["sigrok-cli"]
 
