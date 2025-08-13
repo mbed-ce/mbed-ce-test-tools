@@ -59,7 +59,7 @@ class UARTHostTest(BaseHostTest):
         if rx_data == expected_rx_data:
             self.send_kv('verify_repeated_test_string', 'complete')
         else:
-            self.logger.prn_err(f"Expected '{expected_rx_data}', got '{rx_data}'!")
+            self.logger.prn_err(f"Expected {expected_rx_data!r}, got {rx_data!r}!")
             self.send_kv('verify_repeated_test_string', 'failed')
 
     def _callback_send_test_string(self, key: str, value: str, timestamp):

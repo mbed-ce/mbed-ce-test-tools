@@ -44,6 +44,7 @@ void InterruptInTest()
 	callbackCounts = 0;
 	InterruptIn intin(int_pin);
 	DigitalOut dout(dout_pin, 0);
+	wait_us(GPIO_PROPAGATION_TIME);
 
 	// Test Rising Edge InterruptIn
 	DEBUG_PRINTF("***** Rising Edge Test \n");
@@ -174,7 +175,10 @@ Case cases[] = {
 		Case("Interrupt from GPOUT_2 -> GPIN_2", InterruptInTest<PIN_GPIN_2,PIN_GPOUT_2>,greentea_failure_handler),
 		Case("Interrupt from GPIN_2 -> GPOUT_2", InterruptInTest<PIN_GPOUT_2,PIN_GPIN_2>,greentea_failure_handler),
 		Case("Interrupt from GPOUT_1 -> GPIN_1", InterruptInTest<PIN_GPIN_1,PIN_GPOUT_1_PWM>,greentea_failure_handler),
-		Case("Interrupt from GPIN_1 -> GPOUT_1", InterruptInTest<PIN_GPOUT_1_PWM,PIN_GPIN_1>,greentea_failure_handler),
+
+		// Note: Don't do GPIN_1 -> GPOUT_1 because the R-C filter attached to GPOUT_1 plus the resistor between GPOUT_1 and GPIN_1
+		// can cause the logic level on GPOUT_1 to be between 1 and 0 for a millisecond or more after GPOUT_1 changes state.
+
 		Case("Interrupt from GPOUT_0 -> GPIN_0", InterruptInTest<PIN_GPIN_0,PIN_GPOUT_0>,greentea_failure_handler),
 		Case("Interrupt from GPIN_0 -> GPOUT_0", InterruptInTest<PIN_GPOUT_0,PIN_GPIN_0>,greentea_failure_handler),
 
