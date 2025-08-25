@@ -1,3 +1,5 @@
+pyjson5
 junitparser~=3.0.0
 graphviz~=0.20
 pytest
+pydantic>=2.10
