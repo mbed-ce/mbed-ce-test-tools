@@ -44,7 +44,7 @@ class I2CSlaveCommsTest(BaseHostTest):
         Called at the start of every test case.  Should start a recording of I2C data.
         """
 
-        self.recorder.record(0.1) # Everything we do in this test should complete in under 0.1s
+        self.recorder.record(0.1, self.config.test_name, self.current_test_case_name) # Everything we do in this test should complete in under 0.1s
 
         self.send_kv('start_recording_i2c', 'complete')
 

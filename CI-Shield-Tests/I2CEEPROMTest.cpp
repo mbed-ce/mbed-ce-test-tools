@@ -122,12 +122,16 @@ utest::v1::status_t test_setup(const size_t number_of_cases)
  */
 utest::v1::status_t start_logging_case_setup(const Case *const source, const size_t index_of_case)
 {
-    // Note: Value is not important but cannot be empty
-    greentea_send_kv("start_recording_i2c", "please");
-    assert_next_message_from_host("start_recording_i2c", "complete");
+	// First call original Greentea handler which communicates with the host test
+	auto setupStatus = greentea_case_setup_handler(source, index_of_case);
 
-	// Call original Greentea handler which communicates with the host test
-	return greentea_case_setup_handler(source, index_of_case);
+	if(setupStatus != utest::v1::STATUS_ABORT) {
+		// Note: Value is not important but cannot be empty
+		greentea_send_kv("start_recording_i2c", "please");
+		assert_next_message_from_host("start_recording_i2c", "complete");
+	}
+
+	return setupStatus;
 }
 
 /*
@@ -136,8 +140,8 @@ utest::v1::status_t start_logging_case_setup(const Case *const source, const siz
 utest::v1::status_t display_data_case_teardown(const Case *const source, const size_t passed, const size_t failed, const failure_t reason)
 {
     // Note: Value is not important but cannot be empty
-    greentea_send_kv("display_i2c_data", "please");
-    assert_next_message_from_host("display_i2c_data", "complete");
+    greentea_send_kv("record_i2c_data", "please");
+    assert_next_message_from_host("record_i2c_data", "complete");
 
 	// Call original Greentea handler which communicates with the host test
 	return greentea_case_teardown_handler(source, passed, failed, reason);

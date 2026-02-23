@@ -298,22 +298,24 @@ utest::v1::Case cases[] = {
 
 utest::v1::status_t test_setup(const size_t number_of_cases)
 {
-    // Create SPI.
-    create_spi_object(false, false);
-
-    // Start with word size of 8, mode 0
-    spi->format(8, 0);
-
     // Initialize logic analyzer for SPI pinouts
     static BusOut funcSelPins(PIN_FUNC_SEL0, PIN_FUNC_SEL1, PIN_FUNC_SEL2);
     funcSelPins = 0b010;
 
     // make sure SD card is disabled and disconnected
     static DigitalOut sdcardEnablePin(PIN_SDCARD_ENABLE, 0);
-
+    
     // Setup Greentea using a reasonable timeout in seconds
     GREENTEA_SETUP(60, "spi_slave_comms");
-    return utest::v1::verbose_test_setup_handler(number_of_cases);
+    auto ret = utest::v1::verbose_test_setup_handler(number_of_cases);
+
+    // Create SPI.
+    create_spi_object(false, false);
+
+    // Start with word size of 8, mode 0
+    spi->format(8, 0);
+
+    return ret;
 }
 
 void test_teardown(const size_t passed, const size_t failed, const utest::v1::failure_t failure)

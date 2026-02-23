@@ -35,12 +35,14 @@ DigitalOut GPOUT_1(PIN_GPOUT_1_PWM, 1);
 template <DigitalOut & dout, DigitalIn & din, int pin_initial_state>
 void DigitalIO_Global_Test()
 {
+    printf("Initial state: dout = %d, din = %d\n", dout.read(), din.read());
     TEST_ASSERT_MESSAGE(din.read() == pin_initial_state, "Initial state of input pin doesn't match bootup value of output pin.");
     TEST_ASSERT_MESSAGE(dout.read() == pin_initial_state, "Initial state of output pin doesn't match bootup value of output pin.");
 
     dout = !pin_initial_state;
     wait_us(GPIO_PROPAGATION_TIME);
 
+    printf("Toggled state: dout = %d, din = %d\n", dout.read(), din.read());
     TEST_ASSERT_MESSAGE(dout.read() == !pin_initial_state, "Toggled state of output pin doesn't match toggled value of output pin.");
     TEST_ASSERT_MESSAGE(din.read() == !pin_initial_state, "Toggled state of input pin doesn't match toggled value of output pin.");
 }

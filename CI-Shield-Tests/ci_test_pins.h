@@ -92,14 +92,27 @@
 // To fix this, you must attach a jumper from CN7 pin 17 on the bottom of the board to the SPI.HW_CS shield pin
 #define PIN_SPI_HW_CS PA_15
 
-// PA4 (pin A2) must be jumpered to the analog in pin (A0)
+// Annoyingly, PA4 (pin A2) is the only one with DAC functionality. Normally A2 is the analog input pin
+// from the shield, but we can't have it be both an analog in and an analog out!
+// To work around this, we use A2 as the DAC output and jumper it manually to A0, which we use as the
+// analog input
 #define PIN_ANALOG_OUT PA_4
+#define PIN_ANALOG_IN PA_0
 
 // By default D0 and D1 on the Arduino headers are NC, and even if the solder jumper is moved,
 // they are shared with the ST-Link VCP serial port.
 // Instead, we just jumper the UART pins to other free pins.
 #define PIN_UART_MCU_TX PC_4 // CN10 pin 34
 #define PIN_UART_MCU_RX PC_5 // CN10 pin 6
+#endif
+
+#if TARGET_NUCLEO_WL55JC
+// Annoyingly, PA10 (pin A2) is the only one with DAC functionality. Normally A2 is the analog input pin
+// from the shield, but we can't have it be both an analog in and an analog out!
+// To work around this, we use A2 as the DAC output and jumper it manually to A0, which we use as the
+// analog input
+#define PIN_ANALOG_OUT PA_10
+#define PIN_ANALOG_IN PB_1
 #endif
 
 // Overrides for Nucleo L452RE_P
@@ -164,7 +177,7 @@
 #endif
 
 #ifndef PIN_ANALOG_IN
-#define PIN_ANALOG_IN ARDUINO_UNO_A0
+#define PIN_ANALOG_IN ARDUINO_UNO_A2
 #endif
 
 #ifndef PIN_GPOUT_2

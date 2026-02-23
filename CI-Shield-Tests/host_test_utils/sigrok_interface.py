@@ -15,6 +15,7 @@ import sys
 import time
 from typing import List, cast, Optional, Tuple
 from dataclasses import dataclass
+import pathlib
 
 import usb1
 
@@ -43,6 +44,10 @@ class SigrokRecorderBase(abc.ABC):
     def __init__(self):
         self._sigrok_process: Optional[subprocess.Popen] = None
         self.logger = HtrunLogger('SigrokRecorderBase')
+        self._output_file: pathlib.Path | None = None
+        self._next_test_case_number = 1
+        self._last_test_case_name = None
+        self._recording_index_this_test_case = 0
 
     def _search_for_fx2lafw_usb_device(self, serno: str) -> Tuple[int, int]:
         """
@@ -67,11 +72,16 @@ class SigrokRecorderBase(abc.ABC):
             raise RuntimeError("Could not find logic analyzer USB device for shield with serial number " + usb_serial_numbers.CI_SHIELD_SERNO)
 
 
-    def _start_sigrok(self, sigrok_args: List[str], record_time: float):
+    def _start_sigrok(self, sigrok_args: List[str], record_time: float, test_name: str, test_case_name: str):
         """
         Starts recording data using the given Sigrok command.
+
+        Data is logged to <test_case_name>.sr in the current folder.
+
         :param record_time: Time to run sigrok for in seconds.  If the command includes a trigger clause,
             this is the time after the trigger occurs.
+        :param test_name: Name of the test, for data logging
+        :param test_case_name: Name of the test case, for data logging
         """
 
         if usb_serial_numbers.FX2LAFW_SERIAL_NUMBER is None:
@@ -81,6 +91,28 @@ class SigrokRecorderBase(abc.ABC):
             # https://manpages.ubuntu.com/manpages/jammy/man1/sigrok-cli.1.html#:~:text=To%20select%20a%20specific%20USB,%2Dut61e%3Aconn%3D1a86.
             fx2lafw_bus, fx2lafw_address = self._search_for_fx2lafw_usb_device(usb_serial_numbers.FX2LAFW_SERIAL_NUMBER)
             driver_conn_string = f":conn={fx2lafw_bus}.{fx2lafw_address}"
+
+        # Create a unique filename for this test case
+        if self._last_test_case_name != test_case_name:
+            self._recording_index_this_test_case = 0
+            filename_suffix = ""
+        else:
+            self._recording_index_this_test_case += 1
+            filename_suffix = "_rec_" + str(self._recording_index_this_test_case)
+        
+        test_case_filename = f"case_{self._next_test_case_number}_{test_case_name.replace("/", "_")}{filename_suffix}.sr"
+        
+        # Update test case number
+        # TODO this will break if there is a test case that doesn't call sigrok at all
+        # Really need to be tracking the test case number within Mbed and passing it in
+        if self._last_test_case_name != test_case_name:
+            self._next_test_case_number += 1
+
+        self._last_test_case_name = test_case_name
+
+        # Set up output file
+        self._output_file = pathlib.Path("sigrok_recordings") / test_name / test_case_filename
+        self._output_file.parent.mkdir(parents=True, exist_ok=True)
 
         # Run sigrok for the specified amount of milliseconds
         command = [*SIGROK_COMMAND,
@@ -96,15 +128,21 @@ class SigrokRecorderBase(abc.ABC):
 
                     "--time", str(round(record_time * 1000)),
 
+                    "--output-format", "srzip",
+                    "--output-file", str(self._output_file), 
+
                     *sigrok_args]
         
-        # print("Executing: " + " ".join(command))
-        self._sigrok_process = subprocess.Popen(command, text=True, stdout = subprocess.PIPE)
+        #self.logger.prn_dbg("Executing: " + " ".join(command))
+        self._sigrok_process = subprocess.Popen(command)
+        self.logger.prn_inf("Sigrok started, recording to " + str(self._output_file))
+
         time.sleep(SIGROK_START_DELAY)
 
-    def _get_sigrok_output(self) -> List[str]:
+    def _decode_sigrok_data(self, analysis_args: List[str]) -> List[str]:
         """
-        Get the output from sigrok as a list of text lines.
+        Wait for the recording to finish. Then, get the output from the most recent 
+        sigrok run as a list of text lines of decoded data.
         It would sure be nice if Sigrok CLI had some way to output decoded data as a machine readable
         file format, but
         "Data processed by decoders can't be saved into output file by argument, only by redirection of STDOUT."
@@ -112,10 +150,11 @@ class SigrokRecorderBase(abc.ABC):
         Sadness.
         """
 
+        # Wait for sigrok to finish
         try:
             # Timeout is a guess for how long the sigrok process will take to record data and exit.
             # If the trigger condition is not reached, this timeout will trigger.
-            output, errs = self._sigrok_process.communicate(timeout=5)
+            self._sigrok_process.wait(timeout=5)
         except subprocess.TimeoutExpired:
 
             # Recommended by the subprocess docs to kill manually if the timeout has expired
@@ -125,7 +164,18 @@ class SigrokRecorderBase(abc.ABC):
         if self._sigrok_process.returncode != 0:
             raise RuntimeError("Sigrok failed!")
 
-        return output.split("\n")
+        # Now, analyze the data
+        decode_command = [*SIGROK_COMMAND, 
+                          "-i", str(self._output_file),
+                          *analysis_args
+        ]
+        #self.logger.prn_dbg("Executing: " + " ".join(decode_command))
+        decode_process = subprocess.run(decode_command, check=True, stdout=subprocess.PIPE, text=True)
+
+        if decode_process.returncode != 0:
+            raise RuntimeError("Sigrok decode failed!")
+        
+        return decode_process.stdout.split("\n")
 
     def teardown(self):
         """
@@ -312,42 +362,48 @@ def pretty_diff_i2c_data(logger: HtrunLogger, expected: List[I2CBusData], actual
 class SigrokI2CRecorder(SigrokRecorderBase):
 
     # i2c sigrok command
-    SIGROK_I2C_COMMAND = ["--protocol-decoders",
-                          "i2c:scl=D1:sda=D2:address_format=unshifted",  # Set up I2C decoder
+    SIGROK_I2C_COMMAND = [# Trigger on falling edge of SCL
+                          "--channels",
+                          "D1=SCL,D2=SDA",
+                          "--triggers",
+                          "SCL=f",
+                          ]
+    
+    SIGROK_I2C_ANALYSIS_COMMAND = ["--protocol-decoders",
+                          "i2c:scl=SCL:sda=SDA:address_format=unshifted",  # Set up I2C decoder
                           "--protocol-decoder-annotations",
                           "i2c=address-read:address-write:data-read:data-write:start:repeat-start:ack:nack:stop",  # Request output of all detectable conditions
-
-                          # Trigger on falling edge of SCL
-                          "--triggers",
-                          "D1=f",
                           ]
+    
     def __init__(self):
         super().__init__()
         self.logger = HtrunLogger('SigrokI2CRecorder')
 
-    def record(self, record_time: float):
+    def record(self, record_time: float, test_name: str, test_case_name: str):
         """
         Starts recording I2C data from the logic analyzer.
         :param record_time: Time after the first clock edge to record data for
+        :param test_name: Name of the test, for data logging
+        :param test_case_name: Name of the test case, for data logging
         """
-        self._start_sigrok(self.SIGROK_I2C_COMMAND, record_time)
+        self._start_sigrok(self.SIGROK_I2C_COMMAND, record_time, test_name, test_case_name)
 
     def get_result(self) -> List[I2CBusData]:
         """
-        Get the data that was recorded.
+        Process the sigrok output and get the data that was recorded.
         
         :return: Data recorded (list of I2CBusData subclasses).  If nothing was seen before the timeout (logic analyzer never triggered), returns [].
         """
 
         try:
-            sigrok_output = self._get_sigrok_output()
+            sigrok_output = self._decode_sigrok_data(self.SIGROK_I2C_ANALYSIS_COMMAND)
         except subprocess.TimeoutExpired:
             return []
 
         i2c_transaction: List[I2CBusData] = []
 
         # Parse output
-        for line in self._sigrok_process.communicate()[0].split("\n"):
+        for line in sigrok_output:
             # Note: Must check repeated start first because repeated start is a substring of start,
             # so the start regex will match it as well.
             if SR_I2C_REPEATED_START.match(line):
@@ -427,46 +483,31 @@ class SigrokSPIRecorder(SigrokRecorderBase):
         super().__init__()
         self.logger = HtrunLogger('SigrokSPIRecorder')
 
-    def record(self, cs_pin: Optional[str], record_time: float, spi_mode:int = 0):
+    def record(self, cs_pin: Optional[str], record_time: float, test_name: str, test_case_name: str, spi_mode:int = 0):
         """
         Starts recording SPI data from the logic analyzer.
         :param cs_pin: Logic analyzer pin to use for chip select.  e.g. "D3" or "D4".  May be set to None
            to not use the CS line and record all traffic.
         :param record_time: Time after the first clock edge to record data for
         :param spi_mode: SPI mode from 0-3
+        :param test_name: Name of the test, for data logging
+        :param test_case_name: Name of the test case, for data logging
         """
 
-        self._has_cs_pin = cs_pin is not None
+        # Save SPI info for analysis later
+        self._cs_pin = cs_pin
+        self._cpol = spi_mode // 2
+        self._cpha = spi_mode % 2
 
         # spi sigrok command
-        cpol = spi_mode // 2
-        cpha = spi_mode % 2
-        sigrok_spi_command = [
-              # Set up SPI decoder.
-              # Note that for now we always use a word size of 8, but that can be changed later.
-              "--protocol-decoders",
-              f"spi:clk=D3:mosi=D2:miso=D1{':cs=' + cs_pin if self._has_cs_pin else ''}:cpol={cpol}:cpha={cpha}:wordsize=8",
-              ]
-
-        if self._has_cs_pin:
+        if cs_pin is not None:
             # Trigger on falling edge of CS
-            sigrok_spi_command.append("--triggers")
-            sigrok_spi_command.append(f"{cs_pin}=f")
-
-            # Output complete transactions
-            sigrok_spi_command.append("--protocol-decoder-annotations")
-            sigrok_spi_command.append("spi=mosi-transfer:miso-transfer")
+            sigrok_spi_command = ["--channels", f"D3=SCLK,D2=MOSI,D1=MISO,{cs_pin}=CS", "--triggers", "CS=f"]
         else:
             # Trigger on any edge of clock
-            sigrok_spi_command.append("--triggers")
-            sigrok_spi_command.append("D3=e")
+            sigrok_spi_command = ["--channels", f"D3=SCLK,D2=MOSI,D1=MISO", "--triggers", "SCLK=e"]
 
-            # The decoder has no transaction information without CS.
-            # So, we have to just get the raw bytes
-            sigrok_spi_command.append("--protocol-decoder-annotations")
-            sigrok_spi_command.append("spi=mosi-data:miso-data")
-
-        self._start_sigrok(sigrok_spi_command, record_time)
+        self._start_sigrok(sigrok_spi_command, record_time, test_name, test_case_name)
 
     def get_result(self) -> List[SPITransaction]:
         """
@@ -475,9 +516,26 @@ class SigrokSPIRecorder(SigrokRecorderBase):
             be considered as part of a single transaction.
         """
 
-        sigrok_output = self._get_sigrok_output()
+        sigrok_analyze_args = [
+              # Set up SPI decoder.
+              # Note that for now we always use a word size of 8, but that can be changed later.
+              "--protocol-decoders",
+              f"spi:clk=SCLK:mosi=MOSI:miso=MISO{':cs=CS' if self._cs_pin is not None else ''}:cpol={self._cpol}:cpha={self._cpha}:wordsize=8",
+              ]
 
-        if self._has_cs_pin:
+        if self._cs_pin is not None:
+            # Output complete transactions
+            sigrok_analyze_args.append("--protocol-decoder-annotations")
+            sigrok_analyze_args.append("spi=mosi-transfer:miso-transfer")
+        else:
+            # The decoder has no transaction information without CS.
+            # So, we have to just get the raw bytes
+            sigrok_analyze_args.append("--protocol-decoder-annotations")
+            sigrok_analyze_args.append("spi=mosi-data:miso-data")
+
+        sigrok_output = self._decode_sigrok_data(sigrok_analyze_args)
+
+        if self._cs_pin is not None:
 
             # If we have a CS pin then we will have multiple transactions to handle
             spi_data : List[SPITransaction] = []
@@ -604,22 +662,27 @@ class SigrokSignalAnalyzer(SigrokRecorderBase):
     # Recording for 200ms should allow accurate frequency estimates
     RECORD_TIME = 0.2 # s
 
-    def measure_signal(self, pin_num: int) -> Tuple[float, float]:
+    def measure_signal(self, pin_num: int, test_name: str, test_case_name: str) -> Tuple[float, float]:
         """
         Measures a signal.  The signal should have already been started by the embedded
         test case before calling this function, and must remain stable until it returns.
         :param pin_num: Pin number from 0-7 on the logic analyzer that the signal exists on
+        :param test_name: Name of the test, for data logging
+        :param test_case_name: Name of the test case, for data logging
         :returns: Tuple of [frequency in Hz, duty cycle in percent]
         """
 
         # Start recording raw samples (not using any decoders for this)
         sigrok_args = [
-            "--channels", f"D{pin_num}", "--output-format", "csv"
+            "--channels", f"D{pin_num}"
         ]
-        self._start_sigrok(sigrok_args, self.RECORD_TIME)
+        self._start_sigrok(sigrok_args, self.RECORD_TIME, test_name, test_case_name)
 
         # Get the output as soon as it finishes (no trigger clause so it should run quickly)
-        sigrok_output = self._get_sigrok_output()
+        sigrok_analysis_args = [
+            "--output-format", "csv"
+        ]
+        sigrok_output = self._decode_sigrok_data(sigrok_analysis_args)
 
         # For CSV format, the actual data starts on line index 5, and contains one sample per line.
         sigrok_output = sigrok_output[5:]

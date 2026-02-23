@@ -41,7 +41,7 @@ class SpiBasicTestHostTest(BaseHostTest):
         Called at the start of every test case.  Should start a recording of SPI data.
         """
 
-        self.recorder.record(None, .05) # .05 seconds should be enough for every test in this suite
+        self.recorder.record(None, .05, self.config.test_name, self.current_test_case_name) # .05 seconds should be enough for every test in this suite
 
         self.send_kv('start_recording_spi', 'complete')
 

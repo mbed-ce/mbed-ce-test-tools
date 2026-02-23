@@ -1,0 +1,115 @@
+{
+    "version": 2,
+    "configurePresets": [
+        {
+            "name": "NUCLEO_U083RC-Develop",
+            "displayName": "NUCLEO_U083RC Develop",
+            "description": "Build using Develop configuration for NUCLEO_U083RC",
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/build/NUCLEO_U083RC-Develop",
+            "cacheVariables": {
+                "MBED_TARGET": "NUCLEO_U083RC",
+                "UPLOAD_METHOD": "STM32CUBE",
+                "CMAKE_BUILD_TYPE": "Develop",
+                "MBED_GREENTEA_SERIAL_PORT": "/dev/ttyNUCLEO_U083RC",
+                "MBED_UPLOAD_SERIAL_NUMBER": "066EFF363445503043092930",
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "TRUE"
+            }
+        },
+        {
+            "name": "NUCLEO_WL55JC-Develop",
+            "displayName": "NUCLEO_WL55JC Develop",
+            "description": "Build using Develop configuration for NUCLEO_WL55JC",
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/build/NUCLEO_WL55JC-Develop",
+            "cacheVariables": {
+                "MBED_TARGET": "NUCLEO_WL55JC",
+                "UPLOAD_METHOD": "STM32CUBE",
+                "CMAKE_BUILD_TYPE": "Develop",
+                "MBED_GREENTEA_SERIAL_PORT": "/dev/ttyNUCLEO_WL55JC",
+                "MBED_UPLOAD_SERIAL_NUMBER": "004A00203234510A33353533",
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "TRUE"
+            }
+        },
+        {
+            "name": "NUCLEO_H563ZI-Develop",
+            "displayName": "NUCLEO_H563ZI Develop",
+            "description": "Build using Develop configuration for NUCLEO_H563ZI",
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/build/NUCLEO_H563ZI-Develop",
+            "cacheVariables": {
+                "MBED_TARGET": "NUCLEO_H563ZI",
+                "UPLOAD_METHOD": "STM32CUBE",
+                "CMAKE_BUILD_TYPE": "Develop",
+                "MBED_GREENTEA_SERIAL_PORT": "/dev/ttyNUCLEO_H563ZI",
+                "MBED_UPLOAD_SERIAL_NUMBER": "003300413133511437363734",
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "TRUE"
+            }
+        },
+        {
+            "name": "LPC1768-Develop",
+            "displayName": "LPC1768 Develop",
+            "description": "Build using Develop configuration for LPC1768",
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/build/LPC1768-Develop",
+            "cacheVariables": {
+                "MBED_TARGET": "LPC1768",
+                "UPLOAD_METHOD": "OPENOCD",
+                "OpenOCD": "/usr/local/openocd-0.12/bin/openocd",
+                "MBED_UPLOAD_SERIAL_NUMBER": "10102fa5c13a566eac31a28051fd06540eb7",
+                "CMAKE_BUILD_TYPE": "Develop",
+                "MBED_GREENTEA_SERIAL_PORT": "/dev/ttyLPC1768",
+                "MBED_GREENTEA_TEST_BAREMETAL": "FALSE",
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "TRUE"
+            }
+        },
+        {
+            "name": "NUMAKER_PFM_M487-Develop",
+            "displayName": "NUMAKER_PFM_M487 Develop",
+            "description": "Build using Develop configuration for NUMAKER_PFM_M487",
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/build/NUMAKER_PFM_M487-Develop",
+            "cacheVariables": {
+                "MBED_TARGET": "NUMAKER_PFM_M487",
+                "UPLOAD_METHOD": "OPENOCD",
+                "OpenOCD": "/usr/local/openocd-nuvoton/bin/openocd",
+                "CMAKE_BUILD_TYPE": "Develop",
+                "MBED_BUILD_GREENTEA_TESTS": "ON",
+                "MBED_GREENTEA_SERIAL_PORT": "/dev/ttyNUMAKER_PFM_M487",
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "TRUE"
+            }
+        },
+        {
+            "name": "NUMAKER_PFM_M487-Debug",
+            "displayName": "NUMAKER_PFM_M487 Debug",
+            "description": "Build using Debug configuration for NUMAKER_PFM_M487",
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/build/NUMAKER_PFM_M487-Debug",
+            "cacheVariables": {
+                "MBED_TARGET": "NUMAKER_PFM_M487",
+                "UPLOAD_METHOD": "OPENOCD",
+                "OpenOCD": "/usr/local/openocd-nuvoton/bin/openocd",
+                "CMAKE_BUILD_TYPE": "Debug",
+                "MBED_BUILD_GREENTEA_TESTS": "ON",
+                "MBED_GREENTEA_SERIAL_PORT": "/dev/ttyNUMAKER_PFM_M487",
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "TRUE"
+            }
+        },
+        {
+            "name": "SFE_ARTMIS-Develop",
+            "displayName": "SFE_ARTEMIS Develop",
+            "description": "Build using Develop configuration for SFE_ARTEMIS",
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/build/SFE_ARTEMIS-Develop",
+            "cacheVariables": {
+                "MBED_TARGET": "SFE_ARTEMIS",
+                "UPLOAD_METHOD": "PYOCD",
+                "MBED_UPLOAD_SERIAL_NUMBER": "E663AC91D36E6437",
+                "CMAKE_BUILD_TYPE": "Develop",
+                "MBED_BUILD_GREENTEA_TESTS": "ON",
+                "MBED_GREENTEA_SERIAL_PORT": "/dev/ttySFE_ARTEMIS",
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "TRUE"
+            }
+        }
+    ]
+}

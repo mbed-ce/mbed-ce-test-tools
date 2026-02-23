@@ -29,7 +29,7 @@ class SignalAnalyzerHostTest(BaseHostTest):
         return the frequency and duty cycle.
         """
 
-        frequency, duty_cycle = self.analyzer.measure_signal(6)
+        frequency, duty_cycle = self.analyzer.measure_signal(6, self.config.test_name, self.current_test_case_name)
 
         self.send_kv('frequency', str(frequency))
         self.send_kv('duty_cycle', str(duty_cycle))

@@ -78,7 +78,11 @@ class SPISlaveCommsTest(BaseHostTest):
         """
 
         # Everything we do in this test should complete in under 0.1s
-        self.recorder.record(cs_pin="D0", record_time=0.1, spi_mode=self.spi_mode)
+        self.recorder.record(cs_pin="D0", 
+                             record_time=0.1, 
+                             test_name=self.config.test_name, 
+                             test_case_name=self.current_test_case_name, 
+                             spi_mode=self.spi_mode)
 
         self.send_kv('start_recording_spi', 'complete')
 

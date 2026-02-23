@@ -29,12 +29,12 @@
 
 using namespace utest::v1;
 
-std::atomic<uint32_t> callbackCounts;
+volatile uint32_t callbackCounts;
 
 // Callback for all InterruptInput functions
 void cbfn(void)
 {
-	++callbackCounts;
+	core_util_atomic_incr_u32(&callbackCounts, 1);
 }
 
 // Template to check Falling edge and Rising edge interrupts.
