@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 ## Module to interface with the test shield's internal
 ## Sigrok-based logic analyzer.
 ## Handles running the Sigrok command and parsing the results.
@@ -24,7 +26,7 @@ from . import usb_serial_numbers
 from mbed_host_tests.host_tests_logger import HtrunLogger
 
 # This is the fastest that I can *consistently* make work
-LOGIC_ANALYZER_FREQUENCY = 2 # MHz
+LOGIC_ANALYZER_FREQUENCY = 4 # MHz
 
 
 SIGROK_COMMAND = ["sigrok-cli"]
@@ -133,7 +135,7 @@ class SigrokRecorderBase(abc.ABC):
 
                     *sigrok_args]
         
-        #self.logger.prn_dbg("Executing: " + " ".join(command))
+        self.logger.prn_dbg("Executing: " + " ".join(command))
         self._sigrok_process = subprocess.Popen(command)
         self.logger.prn_inf("Sigrok started, recording to " + str(self._output_file))
 
@@ -609,7 +611,6 @@ class SigrokSPIRecorder(SigrokRecorderBase):
             if self._sigrok_process.poll() is None:
                 self._sigrok_process.terminate()
 
-
 def pretty_diff_spi_data(logger: HtrunLogger, expected: List[SPITransaction], actual: List[SPITransaction]) -> bool:
     """
     Diff expected SPI data against actual.  Always prints the actual data to the console, and prints the expected
@@ -643,6 +644,62 @@ def pretty_diff_spi_data(logger: HtrunLogger, expected: List[SPITransaction], ac
         logger.prn_inf("We expected:\n" + "\n".join(str(transaction) for transaction in expected))
 
     return match
+
+
+class SigrokUARTRecorder(SigrokRecorderBase):
+
+    def __init__(self):
+        super().__init__()
+        self.logger = HtrunLogger('SigrokUARTRecorder')
+
+    def record(self, record_time: float, baudrate:int, test_name: str, test_case_name: str, mcu_rx_first: bool):
+        """
+        Starts recording SPI data from the logic analyzer.
+        :param record_time: Time after the first clock edge to record data for
+        :param baudrate: UART baudrate to record at
+        :param test_name: Name of the test, for data logging
+        :param test_case_name: Name of the test case, for data logging
+        :param mcu_rx_first: Whether data will be sent on the MCU Rx line first (true) or the MCU Tx line
+           first (false). This is needed to configure logic analyzer triggering.
+        """
+
+        # Save UART info for analysis later
+        self._baudrate = baudrate
+
+        # Record all four UART lines. Trigger on an edge on Tx or Rx.
+        # Note that setting a trigger on BOTH Tx and Rx does not seem to work (I think it is looking
+        # for them to both trigger at the exact same time?) so we have to pick one or the other.
+        sigrok_command = ["--channels", f"D3=MCU_RX,D2=CTS,D1=RTS,D0=MCU_TX", 
+                          "--triggers", f"MCU_{'RX' if mcu_rx_first else 'TX'}=f"]
+
+        self._start_sigrok(sigrok_command, record_time, test_name, test_case_name)
+
+    def get_result(self) -> tuple[bytes, bytes]:
+        """
+        Get the UART data recorded by the logic analyzer.
+        :return: tuple of (MCU Rx bytes, MCU Tx bytes)
+        """
+
+        sigrok_analyze_args = [
+              # Set up SPI decoder.
+              # Note that for now we always use a word size of 8, but that can be changed later.
+              "--protocol-decoders",
+              f"uart:rx=MCU_RX:tx=MCU_TX:baudrate={self._baudrate}",
+              "--protocol-decoder-annotations",
+              "uart=rx-data:tx-data"
+              ]
+
+        sigrok_output = self._decode_sigrok_data(sigrok_analyze_args)
+        #print("sigrok output = " + "\n".join(sigrok_output))
+
+    def teardown(self):
+        """
+        Call from test case teardown function.  Ensures that sigrok is stopped
+        e.g. in the event of a device hang.
+        """
+        if self._sigrok_process is not None:
+            if self._sigrok_process.poll() is None:
+                self._sigrok_process.terminate()
 
 
 class SigrokSignalAnalyzer(SigrokRecorderBase):

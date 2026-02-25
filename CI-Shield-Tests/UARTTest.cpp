@@ -39,12 +39,22 @@ BufferedSerial * uart = nullptr;
 
 
 // Set up the serial port at a specific baudrate. Also configures the host test to start logging at this baudrate
-void init_uart(int baudrate)
+// Also, because Sigrok can only trigger on Rx OR Tx, not both, we need to know whether data will
+// be sent to the MCU first, or from the MCU first
+void init_uart(int baudrate, bool data_to_mcu_first)
 {
     uart->set_baud(baudrate);
 
-    greentea_send_kv("setup_port_at_baud", baudrate);
+    std::string value = std::to_string(baudrate) + " " + (data_to_mcu_first ? "true" : "false");
+    greentea_send_kv("setup_port_at_baud", value.c_str());
     assert_next_message_from_host("setup_port_at_baud", "complete");
+}
+
+// Display and save the logic analyzer recording on the host.
+void show_logic_analyzer_recording()
+{
+    greentea_send_kv("show_logic_analyzer_recording", "please");
+    assert_next_message_from_host("show_logic_analyzer_recording", "complete");
 }
 
 void assert_host_received_test_string(unsigned int repetitions)
@@ -84,13 +94,14 @@ void mcu_tx_test_string()
     }
 #endif
 
-    init_uart(baudrate);
+    init_uart(baudrate, false);
     uart->write(TEST_STRING, TEST_STRING_LEN);
     uart->sync();
 
     // Give it time to transmit
     rtos::ThisThread::sleep_for(std::chrono::ceil<std::chrono::milliseconds>(get_time_to_transmit(baudrate, TEST_STRING_LEN)));
 
+    show_logic_analyzer_recording();
     assert_host_received_test_string(1);
 }
 
@@ -103,7 +114,7 @@ void mcu_rx_test_string()
         TEST_SKIP_MESSAGE("Baudrate unsupported");
     }
 #endif
-    init_uart(baudrate);
+    init_uart(baudrate, true);
     host_send_test_string(1);
     uart->set_blocking(false);
 
@@ -141,6 +152,7 @@ void mcu_rx_test_string()
             printf("Receive timed out after %" PRIi64 "ms, only received %zu chars.\n",
                 std::chrono::duration_cast<std::chrono::microseconds>(timeoutTimer.elapsed_time()).count(),
                 totalBytesRead);
+            show_logic_analyzer_recording();
             TEST_FAIL_MESSAGE("Receive timed out");
             return;
         }
@@ -153,6 +165,7 @@ void mcu_rx_test_string()
         rtos::ThisThread::sleep_for(sleepTime);
     };
 
+    show_logic_analyzer_recording();
     TEST_ASSERT_EQUAL_STRING_LEN(TEST_STRING, rxBuffer, TEST_STRING_LEN);
     TEST_ASSERT_EQUAL_UINT32(totalBytesRead, TEST_STRING_LEN);
 }
@@ -167,18 +180,20 @@ void handle_junk_on_line() {
     uart->set_blocking(false);
 
     // Have the host send a test string at 9600 baud
-    greentea_send_kv("setup_port_at_baud", 9600);
+    greentea_send_kv("setup_port_at_baud", "9600 true");
     assert_next_message_from_host("setup_port_at_baud", "complete");
     greentea_send_kv("send_test_string", 1);
     assert_next_message_from_host("send_test_string", "started");
     wait_us(get_time_to_transmit(9600, TEST_STRING_LEN));
+    show_logic_analyzer_recording();
 
     // Have the host send a test string at 921600 baud
-    greentea_send_kv("setup_port_at_baud", 921600);
+    greentea_send_kv("setup_port_at_baud", "921600 true");
     assert_next_message_from_host("setup_port_at_baud", "complete");
     greentea_send_kv("send_test_string", 1);
     assert_next_message_from_host("send_test_string", "started");
     wait_us(get_time_to_transmit(921600, TEST_STRING_LEN));
+    show_logic_analyzer_recording();
 
     // It's OK if we did get some chars, just remove them.
     size_t totalCharsRemoved = 0;
