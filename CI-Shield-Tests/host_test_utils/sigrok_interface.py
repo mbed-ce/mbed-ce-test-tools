@@ -150,6 +150,8 @@ class SigrokRecorderBase(abc.ABC):
         "Data processed by decoders can't be saved into output file by argument, only by redirection of STDOUT."
         (per https://sigrok.org/wiki/Input_output_formats)
         Sadness.
+
+        :raises subprocess.TimeoutExpired: If Sigrok never triggered
         """
 
         # Wait for sigrok to finish

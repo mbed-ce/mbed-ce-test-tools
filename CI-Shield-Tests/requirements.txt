@@ -1,2 +1,2 @@
-cy_serial_bridge>=0.3
+cy_serial_bridge>=0.4.1
 libusb1

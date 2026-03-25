@@ -4,7 +4,7 @@ from mbed_host_tests.host_tests_logger import HtrunLogger
 import sys
 import os
 import pathlib
-import contextlib
+import subprocess
 
 from typing import Optional
 
@@ -54,7 +54,7 @@ class UARTHostTest(BaseHostTest):
         self.uart.baudrate = baudrate
         self.uart.reset_input_buffer()
 
-        # Record for enough time to send 1024 bytes at the selected baudrate or 2 seconds, whichver is less
+        # Record for enough time to send 1024 bytes at the selected baudrate or 2 seconds, whichever is less
         record_time = min(2, 1024*10/self.uart.baudrate)
 
         self.recorder.record(record_time=record_time, 
@@ -62,7 +62,7 @@ class UARTHostTest(BaseHostTest):
                              test_name=self.config.test_name, 
                              test_case_name=self.current_test_case_name,
                              mcu_rx_first=data_to_mcu_first)
-
+        
         self.send_kv('setup_port_at_baud', 'complete')
 
     def _callback_verify_repeated_test_string(self, key: str, value: str, timestamp):
@@ -93,8 +93,11 @@ class UARTHostTest(BaseHostTest):
         self.send_kv('send_test_string', 'started')
 
     def _callback_show_logic_analyzer_recording(self, key: str, value: str, timestamp):
-        self.recorder.get_result()
-        self.send_kv('show_logic_analyzer_recording', 'complete')
+        try:
+            self.recorder.get_result()
+            self.send_kv('show_logic_analyzer_recording', 'complete')
+        except subprocess.TimeoutExpired:
+            self.send_kv('show_logic_analyzer_recording', 'never_triggered')
 
     def setup(self):
 
