@@ -75,7 +75,7 @@ void businout_bidirectional_test(){
 	do
 	{
 		bio2 = x;
-        wait_us(GPIO_PROPAGATION_TIME);
+        wait_us((x == 0 || x == 2 || x == 4 || x == 6) ? GPIO_PROPAGATION_TIME_GPIN1_TO_GPOUT1 : GPIO_PROPAGATION_TIME);
 		volatile int y = bio1.read();
 		printf("\r\n*********\r\nvalue of x,bio1 is: 0x%x, 0x%x\r\n********\r\n",x,y);
 		TEST_ASSERT_MESSAGE(y == x,"Value read on bus does not equal value written. ");
@@ -108,6 +108,11 @@ void busin_to_out_test(){
 utest::v1::status_t test_setup(const size_t number_of_cases) {
 	// Setup Greentea using a reasonable timeout in seconds
 	GREENTEA_SETUP(40, "default_auto");
+
+#ifdef PIN_ANALOG_IN
+    // Analog in pin is connected to GPOUT1 so make sure to tristate it for this test
+    static DigitalIn analogInPin(PIN_ANALOG_IN, PullNone);
+#endif
 
 #ifdef PIN_ANALOG_OUT
     // DAC pin is connected to GPOUT1 so make sure to tristate it for this test

@@ -76,9 +76,12 @@ void DigitalIO_PullUpPullDown_Test()
     DigitalIn din(din_pin, PullNone); // Make sure no pullup/pulldown is active on this pin as some targets have this by default.
 
     // test 0
+    // Apollo3 does not support pull downs on most pins
+#ifndef TARGET_Apollo3
     dout.mode(PullDown);
     wait_us(GPIO_PROPAGATION_TIME);
     TEST_ASSERT_MESSAGE(0 == din.read(),"Expected value to be 0, read value was not zero");
+#endif
 
     // test 1
     dout.mode(PullUp);
@@ -91,12 +94,12 @@ template <PinName dout_pin, PinName din_pin>
 void DigitalIO_OpenDrain_Test()
 {
     DigitalInOut openDrain(dout_pin, PIN_OUTPUT, OpenDrain, 1);
-    DigitalInOut connectedPin(din_pin, PIN_INPUT, PullUp, 0);
+    DigitalInOut connectedPin(din_pin, PIN_INPUT, PullUp, 0); // note: due to how this constructor is set up, we have to provide a level here
 
     // With the open drain pin not outputting anything, we should see both pins reading high
     wait_us(GPIO_PROPAGATION_TIME);
-    TEST_ASSERT_MESSAGE(1 == openDrain.read(), "openDrain was low!");
     TEST_ASSERT_MESSAGE(1 == connectedPin.read(), "connectedPin was low!");
+    TEST_ASSERT_MESSAGE(1 == openDrain.read(), "openDrain was low!");
 
     // Outputting a low on the open drain pin should bring both pins low
     openDrain = 0;
@@ -121,6 +124,11 @@ void DigitalIO_OpenDrain_Test()
 utest::v1::status_t test_setup(const size_t number_of_cases) {
     // Setup Greentea using a reasonable timeout in seconds
     GREENTEA_SETUP(30, "default_auto");
+
+#ifdef PIN_ANALOG_IN
+    // Analog in pin is connected to GPOUT1 so make sure to tristate it for this test
+    static DigitalIn analogInPin(PIN_ANALOG_IN, PullNone);
+#endif
 
 #ifdef PIN_ANALOG_OUT
     // DAC pin is connected to GPOUT1 so make sure to tristate it for this test

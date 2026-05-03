@@ -43,11 +43,16 @@ void DigitalIO_PropagationTime_Test()
     dout = 1;
 
     while(!din) {}
-
     propTimer.stop();
 
-    printf("0 -> 1 propagation took %" PRIi64 "us.\n", propTimer.elapsed_time().count());
-    TEST_ASSERT(propTimer.elapsed_time() <= std::chrono::microseconds(GPIO_PROPAGATION_TIME));
+    // Make sure it stays high continuously after going high
+    Timer keepValueTimer;
+    keepValueTimer.start();
+    while(keepValueTimer.elapsed_time() < 10ms) {
+        TEST_ASSERT(din.read() == 1);
+    }
+
+    const auto zeroToOneTime = propTimer.elapsed_time();
 
     propTimer.reset();
 
@@ -56,16 +61,34 @@ void DigitalIO_PropagationTime_Test()
     dout = 0;
 
     while(din) {}
-
     propTimer.stop();
 
+    // Make sure it stays low after going low
+    keepValueTimer.reset();
+    keepValueTimer.start();
+    while(keepValueTimer.elapsed_time() < 10ms) {
+        TEST_ASSERT(din.read() == 0);
+    }
+
+    const auto threshold = (dout_pin == PIN_GPIN_1) ? GPIO_PROPAGATION_TIME_GPIN1_TO_GPOUT1 : GPIO_PROPAGATION_TIME;
+    printf("0 -> 1 propagation took %" PRIi64 "us.\n", zeroToOneTime.count());
+    TEST_ASSERT(zeroToOneTime <= threshold);
     printf("1 -> 0 propagation took %" PRIi64 "us.\n", propTimer.elapsed_time().count());
-    TEST_ASSERT(propTimer.elapsed_time() <= std::chrono::microseconds(GPIO_PROPAGATION_TIME));
+    TEST_ASSERT(propTimer.elapsed_time() <= threshold);
 }
 
 utest::v1::status_t test_setup(const size_t number_of_cases) {
     // Setup Greentea using a reasonable timeout in seconds
     GREENTEA_SETUP(30, "default_auto");
+
+    // Disconnect serial bridge
+    static BusOut funcSelPins(PIN_FUNC_SEL0, PIN_FUNC_SEL1, PIN_FUNC_SEL2);
+    funcSelPins = 0b111;
+
+#ifdef PIN_ANALOG_IN
+    // Analog in pin is connected to GPOUT1 so make sure to tristate it for this test
+    static DigitalIn analogInPin(PIN_ANALOG_IN, PullNone);
+#endif
 
 #ifdef PIN_ANALOG_OUT
     // DAC pin is connected to GPOUT1 so make sure to tristate it for this test

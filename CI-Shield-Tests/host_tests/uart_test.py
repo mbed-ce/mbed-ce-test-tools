@@ -96,7 +96,7 @@ class UARTHostTest(BaseHostTest):
         try:
             self.recorder.get_result()
             self.send_kv('show_logic_analyzer_recording', 'complete')
-        except subprocess.TimeoutExpired:
+        except subprocess.CalledProcessError:
             self.send_kv('show_logic_analyzer_recording', 'never_triggered')
 
     def setup(self):

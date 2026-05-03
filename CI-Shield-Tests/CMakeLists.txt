@@ -38,10 +38,15 @@ mbed_greentea_add_test(
 	TEST_SOURCES DigitalIOPropagationTimeTest.cpp
 )
 
+if(NOT "DEVICE_I2C=1" IN_LIST MBED_TARGET_DEFINITIONS)
+	set(I2C_TEST_SKIPPED "No I2C support")
+endif()
+
 mbed_greentea_add_test(
     TEST_NAME testshield-i2c-basic
     TEST_SOURCES I2CBasicTest.cpp
 	HOST_TESTS_DIR host_tests
+	TEST_SKIPPED ${I2C_TEST_SKIPPED}
 )
 
 if(NOT "DEVICE_I2CSLAVE=1" IN_LIST MBED_TARGET_DEFINITIONS)
@@ -59,12 +64,17 @@ mbed_greentea_add_test(
     TEST_SOURCES I2CEEPROMTest.cpp
     TEST_REQUIRED_LIBS mbed-storage-i2cee
     HOST_TESTS_DIR host_tests
+	TEST_SKIPPED ${I2C_TEST_SKIPPED}
 )
 
+if(NOT "DEVICE_SPI=1" IN_LIST MBED_TARGET_DEFINITIONS)
+	set(SPI_TEST_SKIPPED "No SPI support")
+endif()
 mbed_greentea_add_test(
     TEST_NAME testshield-spi-basic
     TEST_SOURCES SPIBasicTest.cpp
 	HOST_TESTS_DIR host_tests
+	TEST_SKIPPED ${SPI_TEST_SKIPPED}
 )
 
 mbed_greentea_add_test(
@@ -72,6 +82,7 @@ mbed_greentea_add_test(
     TEST_SOURCES SPIMicroSDTest.cpp
     TEST_REQUIRED_LIBS mbed-storage-sd mbed-storage-fat
 	HOST_TESTS_DIR host_tests
+	TEST_SKIPPED ${SPI_TEST_SKIPPED}
 )
 
 if(NOT "DEVICE_SPISLAVE=1" IN_LIST MBED_TARGET_DEFINITIONS)

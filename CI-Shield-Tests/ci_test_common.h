@@ -30,7 +30,11 @@
 #endif
 
 // How long to wait after changing a GPIO output pin for the signal to propagate to the input pin.
-constexpr int GPIO_PROPAGATION_TIME = 100; // us
+constexpr std::chrono::microseconds GPIO_PROPAGATION_TIME(100);
+
+// Longer propagation time used for GPIN1 to GPOUT1.
+// Because of the PWM 
+constexpr std::chrono::milliseconds GPIO_PROPAGATION_TIME_GPIN1_TO_GPOUT1(1);
 
 // Allow a 1.5% tolerance on the read ADC values.  That should be about right because most Mbed targets
 // have between an 8 bit and a 12 bit ADC.

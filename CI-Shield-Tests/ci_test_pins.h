@@ -45,10 +45,28 @@
 // PIN_UART_MCU_RX   - Pin connected to UART_MCU_RX on the test shield.  Must be mappable as UART Rx. Default D1.
 // PIN_ANALOG_OUT    - Pin connected to the DAC on the MCU.  Should be looped back to PIN_GPOUT_1_PWM.  Don't define if not available.
 
-// Overrides for RP2040
-#if TARGET_RASPBERRY_PI_PICO
-#define PIN_ANALOG_IN A0
-#define PIN_GPOUT_1_PWM p27
+// Overrides for RP2350. Manually set up with jumper wires.
+#if TARGET_RASPBERRY_PI_PICO_2
+#define PIN_I2C_SCL PICO_P5
+#define PIN_I2C_SDA PICO_P4
+#define PIN_SDCARD_ENABLE PICO_P12
+#define PIN_FUNC_SEL0 PICO_P11
+#define PIN_FUNC_SEL1 PICO_P10
+#define PIN_FUNC_SEL2 PICO_P9
+#define PIN_GPOUT_2 PICO_P20
+#define PIN_GPIN_2 PICO_P19
+#define PIN_GPOUT_1_PWM PICO_P17
+#define PIN_GPIN_1 PICO_P16
+#define PIN_GPOUT_0 PICO_P15
+#define PIN_GPIN_0 PICO_P14
+#define PIN_UART_MCU_RX PICO_P7
+#define PIN_UART_MCU_TX PICO_P6
+#define PIN_ANALOG_IN PICO_P31
+#define PIN_SPI_MOSI PICO_P25
+#define PIN_SPI_MISO PICO_P21
+#define PIN_SPI_SCLK PICO_P24
+#define PIN_SPI_HW_CS PICO_P22
+#define PIN_SPI_SD_CS PICO_P29
 #endif
 
 // Overrides for LPC1768.  Manually set up with jumper wires.
