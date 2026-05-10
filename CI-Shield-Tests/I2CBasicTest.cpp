@@ -74,6 +74,10 @@ void create_i2c_object()
 // Test that we can address the EEPROM with its correct address
 void test_correct_addr_single_byte()
 {
+    TEST_SKIP_UNLESS_MESSAGE(i2c_get_capabilities()->supports_single_byte, "Single-byte not supported");
+    TEST_SKIP_UNLESS_MESSAGE(i2c_get_capabilities()->supports_zero_length_transfer_single_byte, 
+        "Zero length single-byte transfers not supported");
+
     host_start_i2c_logging();
 
 	i2c->start();
@@ -84,30 +88,68 @@ void test_correct_addr_single_byte()
 }
 void test_correct_addr_transaction()
 {
+    TEST_SKIP_UNLESS_MESSAGE(i2c_get_capabilities()->supports_zero_length_transfer_transaction, 
+        "Zero length transactions not supported");
+    
     host_start_i2c_logging();
 	TEST_ASSERT_EQUAL(I2C::Result::ACK, i2c->write(EEPROM_I2C_ADDRESS, nullptr, 0, false));
     host_verify_sequence("correct_addr_only");
 }
 void test_correct_addr_read_transaction()
 {
+    TEST_SKIP_UNLESS_MESSAGE(i2c_get_capabilities()->supports_zero_length_transfer_transaction, 
+        "Zero length transactions not supported");
+
 	TEST_ASSERT_EQUAL(I2C::Result::ACK, i2c->read(EEPROM_I2C_ADDRESS | 1, nullptr, 0));
 }
 
 // Test that we receive a NACK when trying to use an address that doesn't exist
 void test_incorrect_addr_single_byte()
 {
+    TEST_SKIP_UNLESS_MESSAGE(i2c_get_capabilities()->supports_single_byte, "Single-byte not supported");
+
+    host_start_i2c_logging();
+
+	i2c->start();
+	const auto addr_write_result = i2c->write_byte(0x20); // I2C address
+    const auto data_write_result = i2c->write_byte(0x0); // write address high
+	i2c->stop();
+
+    if(i2c_get_capabilities()->single_byte_address_delayed) {
+        TEST_ASSERT_EQUAL(I2C::Result::ACK, addr_write_result);
+        TEST_ASSERT_EQUAL(I2C::Result::NACK, data_write_result);
+    }
+    else {
+        TEST_ASSERT_EQUAL(I2C::Result::NACK, addr_write_result);
+
+        // Return code of subsequent bytes is not defined (e.g. RP2 returns NACK, STM32 returns TIMEOUT)
+        // but its should not be ACK ack at least
+        TEST_ASSERT_NOT_EQUAL(I2C::Result::ACK, data_write_result);
+    }
+
+    host_verify_sequence("incorrect_addr_only_write");
+}
+void test_incorrect_addr_zero_len_transaction() // Special test for 0-length transactions because some HALs special case this
+{
+    TEST_SKIP_UNLESS_MESSAGE(i2c_get_capabilities()->supports_zero_length_transfer_transaction, 
+        "Zero length transactions not supported");
+
+    host_start_i2c_logging();
+	TEST_ASSERT_EQUAL(I2C::Result::NACK, i2c->write(0x20, nullptr, 0, false));
+    host_verify_sequence("incorrect_addr_only_write");
+}
+void test_incorrect_addr_zero_len_single_byte()
+{
+    TEST_SKIP_UNLESS_MESSAGE(i2c_get_capabilities()->supports_single_byte, "Single-byte not supported");
+    TEST_SKIP_UNLESS_MESSAGE(i2c_get_capabilities()->supports_zero_length_transfer_single_byte, 
+        "Zero length single-byte transfers not supported");
+
     host_start_i2c_logging();
 
 	i2c->start();
 	TEST_ASSERT_EQUAL(I2C::Result::NACK, i2c->write_byte(0x20));
 	i2c->stop();
 
-    host_verify_sequence("incorrect_addr_only_write");
-}
-void test_incorrect_addr_zero_len_transaction() // Special test for 0-length transactions because some HALs special case this
-{
-    host_start_i2c_logging();
-	TEST_ASSERT_EQUAL(I2C::Result::NACK, i2c->write(0x20, nullptr, 0, false));
     host_verify_sequence("incorrect_addr_only_write");
 }
 void test_incorrect_addr_write_transaction()
@@ -142,6 +184,8 @@ void test_incorrect_addr_async()
 // but using a different API.
 void test_simple_write_single_byte()
 {
+    TEST_SKIP_UNLESS_MESSAGE(i2c_get_capabilities()->supports_single_byte, "Single-byte not supported");
+
     host_start_i2c_logging();
 
     // Write 0x2 to address 1
@@ -166,6 +210,8 @@ void test_destroy_recreate_object()
 
 void test_simple_read_single_byte()
 {
+    TEST_SKIP_UNLESS_MESSAGE(i2c_get_capabilities()->supports_single_byte, "Single-byte not supported");
+
     host_start_i2c_logging();
 
     // Set read address to 1
@@ -220,6 +266,8 @@ void test_simple_read_transaction()
 // Test that we can do a single byte, then a repeated start, then a transaction
 void test_repeated_single_byte_to_transaction()
 {
+    TEST_SKIP_UNLESS_MESSAGE(i2c_get_capabilities()->supports_single_byte, "Single-byte not supported");
+
     host_start_i2c_logging();
 
     // Set read address to 1
@@ -242,6 +290,8 @@ void test_repeated_single_byte_to_transaction()
 // Test that we can do a transaction, then a repeated start, then a single byte
 void test_repeated_transaction_to_single_byte()
 {
+    TEST_SKIP_UNLESS_MESSAGE(i2c_get_capabilities()->supports_single_byte, "Single-byte not supported");
+
     host_start_i2c_logging();
 
     // Set read address to 1
@@ -256,6 +306,61 @@ void test_repeated_transaction_to_single_byte()
     TEST_ASSERT_EQUAL(0x3, readByte);
 
     host_verify_sequence("read_3_from_0x1");
+}
+
+void test_double_read_transaction()
+{
+    // Writes 0x4 and 0x5 to address 1
+    uint8_t const writeCmd[4] = {0x0, 0x01, 0x04, 0x05};
+    TEST_ASSERT_EQUAL(I2C::Result::ACK, i2c->write(EEPROM_I2C_ADDRESS, reinterpret_cast<const char *>(writeCmd), sizeof(writeCmd)));
+
+    host_start_i2c_logging(); // this is also needed as a delay for the write to go through
+
+    // Set read address to 1
+    uint8_t const readAddrCmd[2] = {0x0, 0x01};
+    TEST_ASSERT_EQUAL(I2C::Result::ACK, i2c->write(EEPROM_I2C_ADDRESS, reinterpret_cast<const char *>(readAddrCmd), sizeof(readAddrCmd), true));
+
+    // Read the bytes back using two back to back read transactions
+    uint8_t firstByte = 0, secondByte = 0;
+    TEST_ASSERT_EQUAL(I2C::Result::ACK, i2c->read(EEPROM_I2C_ADDRESS | 1, reinterpret_cast<char *>(&firstByte), 1, true));
+    TEST_ASSERT_EQUAL(I2C::Result::ACK, i2c->read(EEPROM_I2C_ADDRESS | 1, reinterpret_cast<char *>(&secondByte), 1));
+    TEST_ASSERT_EQUAL_UINT8(0x4, firstByte);
+    TEST_ASSERT_EQUAL_UINT8(0x5, secondByte);
+
+    host_verify_sequence("double_read");
+}
+
+void test_double_read_single_byte()
+{
+    TEST_SKIP_UNLESS_MESSAGE(i2c_get_capabilities()->supports_single_byte, "Single-byte not supported");
+
+    // Writes 0x4 and 0x5 to address 1
+    uint8_t const writeCmd[4] = {0x0, 0x01, 0x04, 0x05};
+    TEST_ASSERT_EQUAL(I2C::Result::ACK, i2c->write(EEPROM_I2C_ADDRESS, reinterpret_cast<const char *>(writeCmd), sizeof(writeCmd)));
+
+    host_start_i2c_logging(); // this is also needed as a delay for the write to go through
+
+    // Set read address to 1
+    i2c->start();
+    TEST_ASSERT_EQUAL(I2C::Result::ACK, i2c->write_byte(EEPROM_I2C_ADDRESS));
+    TEST_ASSERT_EQUAL(I2C::Result::ACK, i2c->write_byte(0x0)); // address high
+    TEST_ASSERT_EQUAL(I2C::Result::ACK, i2c->write_byte(0x1)); // address low
+
+    // Read the bytes back using two back to back read transactions
+    uint8_t firstByte = 0, secondByte = 0;
+    i2c->start();
+    TEST_ASSERT_EQUAL(I2C::Result::ACK, i2c->write_byte(EEPROM_I2C_ADDRESS | 1));
+    firstByte = i2c->read_byte(false);
+
+    i2c->start();
+    TEST_ASSERT_EQUAL(I2C::Result::ACK, i2c->write_byte(EEPROM_I2C_ADDRESS | 1));
+    secondByte = i2c->read_byte(false);
+    i2c->stop();
+
+    TEST_ASSERT_EQUAL_UINT8(0x4, firstByte);
+    TEST_ASSERT_EQUAL_UINT8(0x5, secondByte);
+
+    host_verify_sequence("double_read");
 }
 
 #if DEVICE_I2C_ASYNCH
@@ -315,6 +420,8 @@ void test_repeated_async_to_transaction()
 // Test that we can do an async transaction, then a repeated start, then a single byte
 void test_repeated_async_to_single_byte()
 {
+    TEST_SKIP_UNLESS_MESSAGE(i2c_get_capabilities()->supports_single_byte, "Single-byte not supported");
+
     host_start_i2c_logging();
 
     // Set read address to 1
@@ -358,6 +465,8 @@ void test_repeated_transaction_to_async()
 // Test that we can do a transaction, then a repeated start, then an async transaction
 void test_repeated_single_byte_to_async()
 {
+    TEST_SKIP_UNLESS_MESSAGE(i2c_get_capabilities()->supports_single_byte, "Single-byte not supported");
+    
     host_start_i2c_logging();
 
     // Set read address to 1
@@ -418,7 +527,7 @@ utest::v1::status_t test_setup(const size_t number_of_cases)
     funcSelPins = 0b001;
 
 	// Setup Greentea using a reasonable timeout in seconds
-	GREENTEA_SETUP(30, "i2c_basic_test");
+	GREENTEA_SETUP(40, "i2c_basic_test");
 	return verbose_test_setup_handler(number_of_cases);
 }
 
@@ -441,6 +550,7 @@ Case cases[] = {
 		Case("Correct Address - Transaction", test_correct_addr_transaction),
         Case("Incorrect Address - Single Byte", test_incorrect_addr_single_byte),
 		Case("Incorrect Address - Zero Length Transaction", test_incorrect_addr_zero_len_transaction),
+        Case("Incorrect Address - Zero Length Single Byte", test_incorrect_addr_zero_len_single_byte),
         Case("Incorrect Address - Write Transaction", test_incorrect_addr_write_transaction),
         Case("Incorrect Address - Read Transaction", test_incorrect_addr_read_transaction),
         ADD_ASYNC_TEST(Case("Incorrect Address - Async", test_incorrect_addr_async))
@@ -451,6 +561,8 @@ Case cases[] = {
         Case("Simple Read - Transaction", test_simple_read_transaction),
         Case("Mixed Usage - Single Byte -> repeated -> Transaction", test_repeated_single_byte_to_transaction),
         Case("Mixed Usage - Transaction -> repeated -> Single Byte", test_repeated_transaction_to_single_byte),
+        Case("Double Read - Transaction", test_double_read_transaction),
+        Case("Double Read - Single Byte", test_double_read_single_byte),
         ADD_ASYNC_TEST(Case("Simple Write - Async", test_simple_write_async))
         ADD_ASYNC_TEST(Case("Destroy and Recreate Object (between async calls)", test_destroy_recreate_object))
         ADD_ASYNC_TEST(Case("Simple Read - Async", test_simple_read_async))

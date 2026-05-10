@@ -208,6 +208,40 @@ void test_write_less_than_expected_bytes_to_slave()
     assert_next_message_from_host("write_bytes_to_slave", "complete");
 }
 
+/*
+* Tests that if the master writes more bytes than we expect, the actual number of bytes is returned
+*/
+void test_write_more_than_expected_bytes_to_slave()
+{
+    host_start_i2c_logging();
+
+    // Kick off the host test doing an I2C transaction
+    greentea_send_kv("write_bytes_to_slave", "addr " MBED_I2C_ADDRESS_STR " data 0x10 0x11 0x12 0x13 0x14");
+
+    uint8_t bytesRxed[5]{};
+
+    while(true)
+    {
+        auto event = i2cSlave->receive();
+        if(event == I2CSlave::WriteAddressed)
+        {
+            // Only tell it to receive 2 bytes
+            TEST_ASSERT_EQUAL_INT(2, i2cSlave->read(reinterpret_cast<char*>(bytesRxed), 2));
+            break;
+        }
+    }
+
+    TEST_ASSERT_EQUAL_UINT8(bytesRxed[0], 0x10);
+    TEST_ASSERT_EQUAL_UINT8(bytesRxed[1], 0x11);
+
+    // Remaining indices in the array should NOT have been written to.
+    TEST_ASSERT_EQUAL_UINT8(bytesRxed[2], 0x0);
+    TEST_ASSERT_EQUAL_UINT8(bytesRxed[3], 0x0);
+    TEST_ASSERT_EQUAL_UINT8(bytesRxed[4], 0x0);
+
+    assert_next_message_from_host("write_bytes_to_slave", "complete");
+}
+
 void test_read_one_byte_from_slave()
 {
     host_start_i2c_logging();
@@ -297,10 +331,6 @@ void test_teardown(const size_t passed, const size_t failed, const failure_t fai
     return greentea_test_teardown_handler(passed, failed, failure);
 }
 
-// TODO test what happens if the master writes more bytes to a slave than the length of the buffer passed to read().
-// The current I2CSlave API does not specify what is supposed to happen in this case -- does the slave NACK, or does it
-// accept bytes and then discard them?
-
 // TODO test what happens if the master reads more bytes from a slave than the length of the buffer passed to write().
 // The slave cannot NACK the master in this situation.
 // Does the slave write junk to the bus?  What error code is returned from write()?
@@ -315,6 +345,7 @@ Case cases[] = {
     Case("Destroy & recreate I2C object", test_destroy_recreate_object),
     Case("Write multiple bytes to slave", test_write_multiple_bytes_to_slave),
     Case("Write less bytes than expected to slave", test_write_less_than_expected_bytes_to_slave),
+    Case("Write more bytes than expected to slave", test_write_more_than_expected_bytes_to_slave),
     Case("Read one byte from slave", test_read_one_byte_from_slave),
     Case("Destroy & recreate I2C object", test_destroy_recreate_object),
     Case("Read multiple bytes from slave", test_read_multiple_bytes_from_slave),

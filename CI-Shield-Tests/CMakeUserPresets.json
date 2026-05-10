@@ -57,7 +57,7 @@
                 "UPLOAD_METHOD": "OPENOCD",
                 "OpenOCD": "/usr/local/openocd-0.12/bin/openocd",
                 "MBED_UPLOAD_SERIAL_NUMBER": "10102fa5c13a566eac31a28051fd06540eb7",
-                "CMAKE_BUILD_TYPE": "Develop",
+                "CMAKE_BUILD_TYPE": "Debug",
                 "MBED_GREENTEA_SERIAL_PORT": "/dev/ttyLPC1768",
                 "MBED_GREENTEA_TEST_BAREMETAL": "FALSE",
                 "CMAKE_EXPORT_COMPILE_COMMANDS": "TRUE"
@@ -108,6 +108,23 @@
                 "CMAKE_BUILD_TYPE": "Develop",
                 "MBED_BUILD_GREENTEA_TESTS": "ON",
                 "MBED_GREENTEA_SERIAL_PORT": "/dev/ttySFE_ARTEMIS",
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "TRUE"
+            }
+        },
+        {
+            "name": "RASPBERRY_PI_PICO_2-Develop",
+            "displayName": "RASPBERRY_PI_PICO_2 Develop",
+            "description": "Build using Develop configuration for RASPBERRY_PI_PICO_2",
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/build/RASPBERRY_PI_PICO_2-Develop",
+            "cacheVariables": {
+                "MBED_TARGET": "RASPBERRY_PI_PICO_2",
+                "UPLOAD_METHOD": "OPENOCD",
+                "OpenOCD": "/usr/local/openocd-git/bin/openocd",
+                "MBED_UPLOAD_SERIAL_NUMBER": "E663AC91D36B4430",
+                "CMAKE_BUILD_TYPE": "Debug",
+                "MBED_BUILD_GREENTEA_TESTS": "ON",
+                "MBED_GREENTEA_SERIAL_PORT": "/dev/ttyRASPBERRY_PI_PICO_2",
                 "CMAKE_EXPORT_COMPILE_COMMANDS": "TRUE"
             }
         }

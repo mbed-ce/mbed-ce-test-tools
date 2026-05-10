@@ -49,6 +49,10 @@ class I2CBasicTestHostTest(BaseHostTest):
         # Read the byte 3 from address 0x1
         "read_3_from_0x1": [I2CStart(), I2CWriteToAddr(0xA0), I2CAck(), I2CDataByte(0x0), I2CAck(), I2CDataByte(0x1), I2CAck(),
                             I2CRepeatedStart(), I2CReadFromAddr(0xA1), I2CAck(), I2CDataByte(0x3), I2CNack(), I2CStop()],
+
+        "double_read": [I2CStart(), I2CWriteToAddr(0xA0), I2CAck(), I2CDataByte(0x0), I2CAck(), I2CDataByte(0x1), I2CAck(),
+                        I2CRepeatedStart(), I2CReadFromAddr(0xA1), I2CAck(), I2CDataByte(0x4), I2CNack(),
+                        I2CRepeatedStart(), I2CReadFromAddr(0xA1), I2CAck(), I2CDataByte(0x5), I2CNack(), I2CStop()],
     }
 
     def __init__(self):
@@ -70,7 +74,11 @@ class I2CBasicTestHostTest(BaseHostTest):
         """
         Verify that the current recorded I2C data matches the given sequence
         """
-        recorded_data = self.recorder.get_result()
+        try:
+            recorded_data = self.recorder.get_result()
+        except subprocess.CalledProcessError:
+            self.send_kv('verify_sequence', 'no data recorded')
+            return
 
         self.send_kv('verify_sequence', 'complete' if pretty_diff_i2c_data(self.logger, self.SEQUENCES[value], recorded_data) else 'failed')
 
