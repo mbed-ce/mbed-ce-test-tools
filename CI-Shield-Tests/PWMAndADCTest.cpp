@@ -202,9 +202,9 @@ void test_pwm()
     for(size_t trial = 0; trial < numTrials; ++trial)
     {
         // Randomly choose a duty cycle for the trial.
-        // With the logic analyzer running at 4 MHz, each pulse needs to last at least 250 ns for it to be detectable.
-        // Example: if period_us is 1us, then the minimum duty cycle is (250ns / 1000ns) = 0.25
-        float minPeriodPercent = 250 / (period_us * 1e3);
+        // With the logic analyzer running at 2 MHz, each pulse needs to last at least 500 ns for it to be detectable.
+        // Example: if period_us is 1us, then the minimum duty cycle is (500ns / 1000ns) = 0.5
+        float minPeriodPercent = 500 / (period_us * 1e3);
 
         float maxPeriodPercent = 1 - minPeriodPercent;
 
