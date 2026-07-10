@@ -32,5 +32,5 @@ jobs:
         run: |
             cd CI-Shield-Tests
             mkdir build && cd build
-            cmake .. -GNinja -DMBED_TARGET=${{ matrix.mbed_target }} -DMBED_GREENTEA_SERIAL_PORT=/dev/ttyDUMMY
+            cmake .. -GNinja -DMBED_TARGET=${{ matrix.mbed_target }} -DMBED_GREENTEA_SERIAL_PORT=/dev/ttyDUMMY -DUPLOAD_METHOD=NONE
             ninja
