@@ -7,9 +7,10 @@ jobs:
     
       # Check out this repo and the Mbed submodule
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
-          submodules: recursive
+          # Don't recursively check out submodules, Mbed will check those out itself.
+          submodules: true
           
       - name: Set up Python environment
         uses: actions/setup-python@v5
