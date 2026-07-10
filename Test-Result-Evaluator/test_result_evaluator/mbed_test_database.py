@@ -11,8 +11,12 @@ from typing import Set, List, Optional, Dict, Any, Tuple
 import dataclasses
 
 import graphviz
+from mbed_tools.lib.json_helpers import decode_json_file
+from mbed_tools.project import MbedProgram
+from mbed_tools.project._internal.project_data import MbedOS, MbedProgramFiles
 
 from mbed_tools.targets._internal.target_attributes import get_target_attributes
+from mbed_tools.build.config import _load_raw_targets_data
 
 import pyjson5
 
@@ -203,15 +207,20 @@ class MbedTestDatabase:
         CMSIS cache is used to get attributes like RAM sizes from CMSIS.
         """
 
-        target_json5_file = mbed_os_path / "targets" / "targets.json5"
-        targets_data: Dict[str, Any] = pyjson5.decode(target_json5_file.read_text(encoding="utf-8"))
+        # Create a new "MbedProgram" object which can tell us where the important JSON files are
+        mbed_program = MbedProgram.from_existing(
+            mbed_os_path,
+            mbed_os_path / "build", # build dir arbitrary, not used
+            mbed_os_path
+        )
+
+        targets_raw_data: Dict[str, Any] = decode_json_file(mbed_program.mbed_os.targets_json_file)
+        targets_data = _load_raw_targets_data(mbed_program)
 
         drivers_json5_file = mbed_os_path / "targets" / "drivers.json5"
-        drivers_data: Dict[str, Any] = pyjson5.decode(drivers_json5_file.read_text(encoding="utf-8"))
+        drivers_data: Dict[str, Any] = decode_json_file(drivers_json5_file)
 
-        cmsis_mcu_descriptions_json5_file = mbed_os_path / "targets" / "cmsis_mcu_descriptions.json5"
-        cmsis_mcu_description_data: Dict[str, Any] = pyjson5.decode(
-            cmsis_mcu_descriptions_json5_file.read_text(encoding="utf-8"))
+        cmsis_mcu_description_data: Dict[str, Any] = decode_json_file(mbed_program.mbed_os.cmsis_mcu_descriptions_json_file)
 
         # First assemble a list of all the drivers.
         # For this we want to process the JSON directly rather than dealing with target inheritance, because
@@ -220,7 +229,7 @@ class MbedTestDatabase:
         feature_names: Set[str] = set()
         peripheral_names: Set[str] = set()
 
-        for target_name, target_data in targets_data.items():
+        for target_name, target_data in targets_raw_data.items():
 
             # Note: The names are built matching the logic in mbed_tools/build/_internal/templates/mbed_config.tmpl
             # Also note that top level targets will define e.g. 'components' while child targets will define
@@ -241,7 +250,7 @@ class MbedTestDatabase:
         # First add the targets
         # Note that we don't need to use get_target_attributes() here because none of the attributes we need
         # are inherited
-        for target_name, target_data in targets_data.items():
+        for target_name, target_data in targets_raw_data.items():
             self.add_target(target_name,
                             is_public=target_data.get("public", True),  # targets are public by default
                             is_mcu_family=target_data.get("is_mcu_family_target", False),
@@ -290,7 +299,7 @@ class MbedTestDatabase:
                      type.value,
                      hidden))
 
-        for target_name in targets_data.keys():
+        for target_name in targets_raw_data.keys():
             # Next, add the drivers for each target
             target_attrs = get_target_attributes(targets_data, target_name, True)
 

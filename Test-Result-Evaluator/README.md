@@ -8,7 +8,7 @@ The primary use is so that we can easily tell which tests are having trouble on 
 
 Note: To collect a test run for use with this program, you need to use the following command when running CTest:
 ```
-$ ctest --repeat until-pass:3 --output-on-failure --output-junit mbed-tests-YOUR_MBED_TARGETF.xml --test-output-size-passed 100000 --test-output-size-failed 100000 .
+$ ctest --repeat until-pass:3 --output-on-failure --output-junit mbed-tests-YOUR_MBED_TARGET.xml --test-output-size-passed 100000 --test-output-size-failed 100000 .
 ```
 The --test-output-size options are especially important as without them CTest will throw away the console output from each test that this script needs.
 

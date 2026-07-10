@@ -3,5 +3,15 @@
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$/.." vcs="Git" />
     <mapping directory="$PROJECT_DIR$/../CI-Shield-Tests/mbed-os" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../CI-Shield-Tests/mbed-os/cmsis/CMSIS-RTX" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../CI-Shield-Tests/mbed-os/cmsis/CMSIS_6" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../CI-Shield-Tests/mbed-os/features/frameworks/rtt/RTT" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../CI-Shield-Tests/mbed-os/targets/TARGET_STM/TARGET_STM32F4/STM32Cube_FW/cmsis-device-f4" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../CI-Shield-Tests/mbed-os/targets/TARGET_STM/TARGET_STM32F4/STM32Cube_FW/stm32f4xx-hal-driver" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../CI-Shield-Tests/mbed-os/targets/TARGET_STM/TARGET_STM32F7/STM32Cube_FW/cmsis-device-f7" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../CI-Shield-Tests/mbed-os/targets/TARGET_STM/TARGET_STM32F7/STM32Cube_FW/stm32f7xx-hal-driver" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../CI-Shield-Tests/mbed-os/targets/TARGET_STM/TARGET_STM32U0/STM32Cube_FW/cmsis-device-u0" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../CI-Shield-Tests/mbed-os/targets/TARGET_STM/TARGET_STM32U0/STM32Cube_FW/stm32u0xx-hal-driver" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../CI-Shield-Tests/mbed-os/tools/doxygen-awesome-css" vcs="Git" />
   </component>
 </project>

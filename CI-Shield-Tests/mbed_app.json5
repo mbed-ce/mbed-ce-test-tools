@@ -18,7 +18,14 @@
             // This assumes that such boards (e.g. RASPBERRY_PI_PICO) have an external USB-serial
             // adapter connected.
             "target.console-usb": false,
-            "target.console-uart": true
+            "target.console-uart": true,
+
+            // Get rid of default SDBlockDevice pinmapping to prevent compile error on
+            // targets that don't have FF_ARDUINO_UNO
+            "sd.spi-cs": "NC",
+            "sd.spi-mosi": "NC",
+            "sd.spi-miso": "NC",
+            "sd.spi-clk": "NC"
         },
         "STM32L452xE": {
             // This was added because not using it seemed to cause intermittent

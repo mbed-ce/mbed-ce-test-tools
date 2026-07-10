@@ -12,9 +12,10 @@ jobs:
     strategy:
       matrix:
         mbed_target: 
-          # This is just one of the targets supported by these test cases, but it should
+          # This is just a few of the targets supported by these test cases, but they should
           # be sufficient for making sure it compiles
           - NUCLEO_L452RE_P
+          - RASPBERRY_PI_PICO_2
     
     steps:
       - name: Checkout
