@@ -18,6 +18,8 @@ from mbed_tools.project._internal.project_data import MbedOS, MbedProgramFiles
 
 from mbed_tools.targets._internal.target_attributes import get_target_attributes
 from mbed_tools.build.config import _load_raw_targets_data
+from mbed_tools.schemas import TargetJSON
+from mbed_tools.lib.json_helpers import decode_json_file
 
 import pyjson5
 
@@ -29,7 +31,7 @@ class TestResult(enum.IntEnum):
     PASSED = 1  # Test ran and passed
     FAILED = 2  # Test ran and failed
     SKIPPED = 3  # Test was not run because it is not supported on this target
-    PRIOR_TEST_CASE_CRASHED = 4  # Test case was not executed because a prior test case crashed
+    PRIOR_TEST_CASE_CRASHED = 4  # Test case was not executed because a prior test case crashed. For test cases only, not tests.
 
 
 class DriverType(enum.Enum):
@@ -215,13 +217,18 @@ class MbedTestDatabase:
             mbed_os_path
         )
 
-        targets_raw_data: Dict[str, Any] = decode_json_file(mbed_program.mbed_os.targets_json_file)
         targets_data = _load_raw_targets_data(mbed_program)
+        targets_raw_data: Dict[str, TargetJSON] = {
+            target_name: TargetJSON.model_validate(data)
+            for target_name, data in
+            decode_json_file(mbed_program.mbed_os.targets_json_file).items()
+        }
 
         drivers_json5_file = mbed_os_path / "targets" / "drivers.json5"
         drivers_data: Dict[str, Any] = decode_json_file(drivers_json5_file)
 
         cmsis_mcu_description_data: Dict[str, Any] = decode_json_file(mbed_program.mbed_os.cmsis_mcu_descriptions_json_file)
+
 
         # First assemble a list of all the drivers.
         # For this we want to process the JSON directly rather than dealing with target inheritance, because
@@ -231,35 +238,28 @@ class MbedTestDatabase:
         peripheral_names: Set[str] = set()
 
         for target_name, target_data in targets_raw_data.items():
-
             # Note: The names are built matching the logic in mbed_tools/build/_internal/templates/mbed_config.tmpl
             # Also note that top level targets will define e.g. 'components' while child targets will define
             # e.g. 'components_add', so we have to check both attributes.
-            if "device_has" in target_data:
-                peripheral_names.update("DEVICE_" + entry for entry in target_data["device_has"])
-            if "device_has_add" in target_data:
-                peripheral_names.update("DEVICE_" + entry for entry in target_data["device_has_add"])
-            if "features" in target_data:
-                feature_names.update("FEATURE_" + entry for entry in target_data["features"])
-            if "features_add" in target_data:
-                feature_names.update("FEATURE_" + entry for entry in target_data["features_add"])
-            if "components" in target_data:
-                component_names.update("COMPONENT_" + entry for entry in target_data["components"])
-            if "components_add" in target_data:
-                component_names.update("COMPONENT_" + entry for entry in target_data["components_add"])
+            peripheral_names.update("DEVICE_" + entry for entry in target_data.device_has)
+            peripheral_names.update("DEVICE_" + entry for entry in target_data.device_has_add)
+            feature_names.update("FEATURE_" + entry for entry in target_data.features)
+            feature_names.update("FEATURE_" + entry for entry in target_data.features_add)
+            component_names.update("COMPONENT_" + entry for entry in target_data.components)
+            component_names.update("COMPONENT_" + entry for entry in target_data.components_add)
 
         # First add the targets
         # Note that we don't need to use get_target_attributes() here because none of the attributes we need
         # are inherited
         for target_name, target_data in targets_raw_data.items():
             self.add_target(target_name,
-                            is_public=target_data.get("public", True),  # targets are public by default
-                            is_mcu_family=target_data.get("is_mcu_family_target", False),
+                            is_public=target_data.public,
+                            is_mcu_family=target_data.is_mcu_family_target,
                             mcu_family_target=NO_MCU_TARGET_FAMILY  # Default to no family unless it's set to one later
                             )
 
             # Also add the parents for each target
-            for parent in target_data.get("inherits", []):
+            for parent in target_data.inherits:
                 try:
                     self._database.execute(
                         "INSERT INTO TargetGraph(parentTarget, childTarget) VALUES(?, ?)",
@@ -306,9 +306,13 @@ class MbedTestDatabase:
 
             for feature_name in target_attrs["features"]:
                 feature_full_name = "FEATURE_" + feature_name
-                self._database.execute(
-                    "INSERT INTO TargetDrivers(targetName, driver) VALUES(?, ?)",
-                    (target_name, feature_full_name))
+
+                try:
+                    self._database.execute(
+                        "INSERT INTO TargetDrivers(targetName, driver) VALUES(?, ?)",
+                        (target_name, feature_full_name))
+                except sqlite3.IntegrityError as ex:
+                    raise RuntimeError(f"Failed to add usage of feature {feature_full_name} to target {target_name}. Maybe this feature is missing from drivers.json?") from ex
 
             for component_name in target_attrs["components"]:
                 component_full_name = "COMPONENT_" + component_name
