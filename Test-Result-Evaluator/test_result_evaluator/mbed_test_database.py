@@ -218,17 +218,11 @@ class MbedTestDatabase:
         )
 
         targets_data = _load_raw_targets_data(mbed_program)
-        targets_raw_data: Dict[str, TargetJSON] = {
-            target_name: TargetJSON.model_validate(data)
-            for target_name, data in
-            decode_json_file(mbed_program.mbed_os.targets_json_file).items()
-        }
 
         drivers_json5_file = mbed_os_path / "targets" / "drivers.json5"
         drivers_data: Dict[str, Any] = decode_json_file(drivers_json5_file)
 
         cmsis_mcu_description_data: Dict[str, Any] = decode_json_file(mbed_program.mbed_os.cmsis_mcu_descriptions_json_file)
-
 
         # First assemble a list of all the drivers.
         # For this we want to process the JSON directly rather than dealing with target inheritance, because
@@ -237,7 +231,7 @@ class MbedTestDatabase:
         feature_names: Set[str] = set()
         peripheral_names: Set[str] = set()
 
-        for target_name, target_data in targets_raw_data.items():
+        for target_name, target_data in targets_data.items():
             # Note: The names are built matching the logic in mbed_tools/build/_internal/templates/mbed_config.tmpl
             # Also note that top level targets will define e.g. 'components' while child targets will define
             # e.g. 'components_add', so we have to check both attributes.
@@ -251,7 +245,7 @@ class MbedTestDatabase:
         # First add the targets
         # Note that we don't need to use get_target_attributes() here because none of the attributes we need
         # are inherited
-        for target_name, target_data in targets_raw_data.items():
+        for target_name, target_data in targets_data.items():
             self.add_target(target_name,
                             is_public=target_data.public,
                             is_mcu_family=target_data.is_mcu_family_target,
@@ -300,7 +294,7 @@ class MbedTestDatabase:
                      type.value,
                      hidden))
 
-        for target_name in targets_raw_data.keys():
+        for target_name in targets_data.keys():
             # Next, add the drivers for each target
             target_attrs = get_target_attributes(targets_data, target_name, True)
 
