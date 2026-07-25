@@ -11,6 +11,7 @@ from typing import Set, List, Optional, Dict, Any, Tuple
 import dataclasses
 
 import graphviz
+from mbed_tools.build._internal import memory_banks
 from mbed_tools.lib.json_helpers import decode_json_file
 from mbed_tools.project import MbedProgram
 from mbed_tools.project._internal.project_data import MbedOS, MbedProgramFiles
@@ -328,22 +329,21 @@ class MbedTestDatabase:
                 self._database.execute("UPDATE Targets SET imageURL = ? WHERE name == ?",
                                        (image_url, target_name))
 
-            # Also, while we have the target attributes handy, look up the target in the CMSIS
-            # CPU database if possible.
             cmsis_mcu_part_number: Optional[str] = target_attrs.get("device_name", None)
 
             if cmsis_mcu_part_number is not None:
+                # Set MCU part number in the database
+                self._database.execute("UPDATE Targets SET mcuPartNumber = ? WHERE name == ?",
+                                       (cmsis_mcu_part_number, target_name))
+
                 if cmsis_mcu_part_number not in cmsis_mcu_description_data:
                     raise RuntimeError(
                         f"Target {target_name} specifies CMSIS MCU part number {cmsis_mcu_part_number} which "
                         f"does not exist in CMSIS pack index. Error in 'device_name' targets.json5 "
                         f"attribute?")
+
+                # Set vendor name in the database.
                 cmsis_cpu_data = cmsis_mcu_description_data[cmsis_mcu_part_number]
-
-                # Set MCU part number in the database
-                self._database.execute("UPDATE Targets SET mcuPartNumber = ? WHERE name == ?",
-                                       (cmsis_mcu_part_number, target_name))
-
                 cpu_vendor_name = cmsis_cpu_data["vendor"]
 
                 # Set vendor name in the database.
@@ -353,15 +353,23 @@ class MbedTestDatabase:
                 self._database.execute("UPDATE Targets SET mcuVendorName = ? WHERE name == ?",
                                        (cpu_vendor_name, target_name))
 
-                # Add target memories based on the CMSIS json data
-                for bank_name, bank_data in cmsis_cpu_data["memories"].items():
-                    self._database.execute(
-                        "INSERT INTO TargetMemories(targetName, bankName, size, isFlash) VALUES(?, ?, ?, ?)",
-                        (target_name,
-                         bank_name,
-                         bank_data["size"],
-                         0 if bank_data["access"]["write"] else 1)
-                    )
+            # Compute memory banks
+            memory_banks_json = target_attrs.get("memory_banks", {})
+            if cmsis_mcu_part_number is not None:
+                memory_banks_json = memory_banks.incorporate_memory_bank_data_from_cmsis_preparsed(
+                    cmsis_mcu_part_number,
+                    cmsis_mcu_description_data,
+                    memory_banks_json
+                )
+
+            for bank_name, bank_data in memory_banks_json.items():
+                self._database.execute(
+                    "INSERT INTO TargetMemories(targetName, bankName, size, isFlash) VALUES(?, ?, ?, ?)",
+                    (target_name,
+                     bank_name,
+                     bank_data["size"],
+                     0 if bank_data["access"]["write"] else 1)
+                )
 
         # Match targets with their MCU family targets.
         for mcu_family_target in self.get_mcu_family_targets():

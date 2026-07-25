@@ -2,7 +2,7 @@ import collections
 import pathlib
 from typing import TextIO, List, Dict, Set, Tuple
 import html
-import base64
+import binascii
 
 import prettytable
 
@@ -51,9 +51,11 @@ def get_test_case_run_path(test_name: str, test_case_name: str, target_name: str
     """
     Get the (relative) path for a test case run's HTML file within the tests dir
     """
-    # Convert test case name (which could be any string) into a filesystem-safe string by base64 encoding it
-    test_case_name_b64 = base64.urlsafe_b64encode(test_case_name.encode("UTF-8")).decode("ASCII")
-    return pathlib.Path("runs") / target_name / f"{test_name}-case-{test_case_name_b64}.html"
+    # Convert test case name (which could be any string) into a short filesystem-safe string by CRCing it.
+    # Note that this used to encode the case name as base64, but that was actually running into path length
+    # limits on some systems.
+    test_case_name_crc = binascii.crc32(test_case_name.encode("UTF-8"))
+    return pathlib.Path("runs") / target_name / f"{test_name}-case-{test_case_name_crc}.html"
 
 
 def write_html_header(output_file: TextIO, page_title: str, levels_deep=1):
