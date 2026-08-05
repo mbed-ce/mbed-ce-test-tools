@@ -147,6 +147,11 @@
 #define PIN_SPI_HW_CS PB_9
 #endif
 
+// Overrides for FPB-RA8E1
+#if TARGET_FPB_RA8E1
+#define PIN_ANALOG_OUT P0_14
+#endif
+
 // Default definitions, if not overridden above.  These use the Arduino Uno form factor.
 #ifdef TARGET_FF_ARDUINO_UNO
 
