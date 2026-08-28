@@ -26,7 +26,7 @@ from . import usb_serial_numbers
 from mbed_host_tests.host_tests_logger import HtrunLogger
 
 # This is the fastest that I can *consistently* make work
-LOGIC_ANALYZER_FREQUENCY = 2 # MHz
+LOGIC_ANALYZER_FREQUENCY = 1 # MHz
 
 
 SIGROK_COMMAND = ["sigrok-cli"]
