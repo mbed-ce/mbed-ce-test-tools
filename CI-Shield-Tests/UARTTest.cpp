@@ -45,10 +45,21 @@ std::minstd_rand randGen(1239454);
 // Also, because Sigrok can only trigger on Rx OR Tx, not both, we need to know whether data will
 // be sent to the MCU first, or from the MCU first.
 // Can optionally configure parity, using the PySerial encoding (N = None, O = Odd, E = Even)
-void init_uart(int baudrate, bool data_to_mcu_first, char* parity = "N")
+void init_uart(int baudrate, bool data_to_mcu_first, char parity = 'N')
 {
     uart->set_baud(baudrate);
-    uart->clear_rx_full_watermark();
+    uart->clear_rx_overflow_flag();
+
+    // switch (parity) {
+    //     case 'E':
+    //         uart->set_format(8, SerialBase::Parity::Even);
+    //         break;
+    //     case 'O':
+    //         uart->set_format(8, SerialBase::Parity::Odd);
+    //         break;
+    //     default:
+    //         uart->set_format(8, SerialBase::Parity::None);
+    // }
 
     // Clear out any data currently in the UART
     char data;
@@ -100,7 +111,7 @@ constexpr size_t LONG_TEST_TOTAL_LEN = NUM_REPETITIONS_FOR_LONG_TEST * TEST_STRI
 char rxBuffer[LONG_TEST_TOTAL_LEN];
 
 // Send the test string to the host once
-template<int baudrate>
+template<int baudrate, char parity = 'N'>
 void mcu_tx_test_string()
 {
 #ifdef TARGET_AMA3B1KK
@@ -109,7 +120,7 @@ void mcu_tx_test_string()
     }
 #endif
 
-    init_uart(baudrate, false);
+    init_uart(baudrate, false, parity);
     uart->write(TEST_STRING, TEST_STRING_LEN);
     uart->sync();
 
@@ -121,7 +132,7 @@ void mcu_tx_test_string()
 }
 
 // Receive the test string from the host once
-template<int baudrate>
+template<int baudrate, char parity = 'N'>
 void mcu_rx_test_string()
 {
 #ifdef TARGET_AMA3B1KK
@@ -129,7 +140,7 @@ void mcu_rx_test_string()
         TEST_SKIP_MESSAGE("Baudrate unsupported");
     }
 #endif
-    init_uart(baudrate, true);
+    init_uart(baudrate, true, parity);
     host_send_test_string(1);
     uart->set_blocking(false);
 
@@ -231,7 +242,7 @@ void mcu_rx_long_string()
             printf("Receive timed out after %" PRIi64 "us, only received %zu chars, overflow? %s\n",
                 std::chrono::duration_cast<std::chrono::microseconds>(timeoutTimer.elapsed_time()).count(),
                 totalBytesRead,
-                uart->get_rx_full_watermark() ? "y" : "n");
+                uart->get_rx_overflow_flag() ? "y" : "n");
             show_logic_analyzer_recording();
             TEST_FAIL_MESSAGE("Receive timed out");
             return;
@@ -242,7 +253,7 @@ void mcu_rx_long_string()
     };
 
     // Should NOT have overflowed
-    TEST_ASSERT_FALSE(uart->get_rx_full_watermark());
+    TEST_ASSERT_FALSE(uart->get_rx_overflow_flag());
 
     show_logic_analyzer_recording();
     for (size_t repetition = 0; repetition < NUM_REPETITIONS_FOR_LONG_TEST; repetition++) {
@@ -273,7 +284,7 @@ void mcu_rx_overflow()
     TEST_ASSERT_EQUAL_UINT(uart->rx_buffer_size(), MBED_CONF_DRIVERS_UART_SERIAL_RXBUF_SIZE);
 
     // The buffer full flag should be set
-    TEST_ASSERT_TRUE(uart->get_rx_full_watermark());
+    TEST_ASSERT_TRUE(uart->get_rx_overflow_flag());
 
     show_logic_analyzer_recording();
 }
@@ -297,7 +308,7 @@ void mcu_rx_hw_fifo()
     __enable_irq();
 
     // This should NOT have been able to set because of the interrupt disable
-    TEST_ASSERT_FALSE(uart->get_rx_full_watermark());
+    TEST_ASSERT_FALSE(uart->get_rx_overflow_flag());
 
     // How many did we get?
     printf("Apparent HW Rx FIFO size: %zu\n", uart->rx_buffer_size());
@@ -334,7 +345,7 @@ void handle_junk_on_line() {
     uart->set_blocking(false);
 
     // Have the host send a test string at 9600 baud
-    greentea_send_kv("setup_port_at_baud", "9600 true");
+    greentea_send_kv("setup_port_at_baud", "9600 true N");
     assert_next_message_from_host("setup_port_at_baud", "complete");
     greentea_send_kv("send_test_string", 1);
     assert_next_message_from_host("send_test_string", "started");
@@ -342,7 +353,7 @@ void handle_junk_on_line() {
     show_logic_analyzer_recording();
 
     // Have the host send a test string at 921600 baud
-    greentea_send_kv("setup_port_at_baud", "921600 true");
+    greentea_send_kv("setup_port_at_baud", "921600 true N");
     assert_next_message_from_host("setup_port_at_baud", "complete");
     greentea_send_kv("send_test_string", 1);
     assert_next_message_from_host("send_test_string", "started");
@@ -376,7 +387,7 @@ void handle_junk_on_line() {
 
 utest::v1::status_t test_setup(const size_t number_of_cases) {
     // Setup Greentea using a reasonable timeout in seconds
-    GREENTEA_SETUP(30, "uart_test");
+    GREENTEA_SETUP(60, "uart_test");
 
     // Set up mux for UART
     static BusOut funcSelPins(PIN_FUNC_SEL0, PIN_FUNC_SEL1, PIN_FUNC_SEL2);
@@ -396,16 +407,16 @@ utest::v1::status_t test_setup(const size_t number_of_cases) {
 utest::v1::Case cases[] = {
     // Try sending and receiving at a variety of different baudrates. This may reveal issues in the MCU clock code.
     // Note that the CY7C65211 can handle up to 3Mbaud.
-    // utest::v1::Case("Send test string from MCU once (1200 baud)", mcu_tx_test_string<1200>),
-    // utest::v1::Case("Receive test string from PC once (1200 baud)", mcu_rx_test_string<1200>),
-    // utest::v1::Case("Send test string from MCU once (9600 baud)", mcu_tx_test_string<9600>),
-    // utest::v1::Case("Receive test string from PC once (9600 baud)", mcu_rx_test_string<9600>),
-    // utest::v1::Case("Send test string from MCU once (115200 baud)", mcu_tx_test_string<115200>),
-    // utest::v1::Case("Receive test string from PC once (115200 baud)", mcu_rx_test_string<115200>),
-    // utest::v1::Case("Send test string from MCU once (921600 baud)", mcu_tx_test_string<921600>),
-    // utest::v1::Case("Receive test string from PC once (921600 baud)", mcu_rx_test_string<921600>),
-    // utest::v1::Case("Send test string from MCU once (3000000 baud)", mcu_tx_test_string<3000000>),
-    // utest::v1::Case("Receive test string from PC once (3000000 baud)", mcu_rx_test_string<3000000>),
+    utest::v1::Case("Send test string from MCU once (1200 baud)", mcu_tx_test_string<1200>),
+    utest::v1::Case("Receive test string from PC once (1200 baud)", mcu_rx_test_string<1200>),
+    utest::v1::Case("Send test string from MCU once (9600 baud)", mcu_tx_test_string<9600>),
+    utest::v1::Case("Receive test string from PC once (9600 baud)", mcu_rx_test_string<9600>),
+    utest::v1::Case("Send test string from MCU once (115200 baud)", mcu_tx_test_string<115200>),
+    utest::v1::Case("Receive test string from PC once (115200 baud)", mcu_rx_test_string<115200>),
+    utest::v1::Case("Send test string from MCU once (921600 baud)", mcu_tx_test_string<921600>),
+    utest::v1::Case("Receive test string from PC once (921600 baud)", mcu_rx_test_string<921600>),
+    utest::v1::Case("Send test string from MCU once (3000000 baud)", mcu_tx_test_string<3000000>),
+    utest::v1::Case("Receive test string from PC once (3000000 baud)", mcu_rx_test_string<3000000>),
 
     utest::v1::Case("Receive long string from PC (9600 baud)", mcu_rx_long_string<9600>),
     utest::v1::Case("Receive long string from PC (921600 baud)", mcu_rx_long_string<921600>),
@@ -415,6 +426,11 @@ utest::v1::Case cases[] = {
 
     utest::v1::Case("H/W FIFO Test (9600 baud)", mcu_rx_hw_fifo<9600>),
     utest::v1::Case("H/W FIFO Test (921600 baud)", mcu_rx_hw_fifo<921600>),
+
+    utest::v1::Case("Send test string from MCU once with odd parity (115200 baud)", mcu_tx_test_string<115200, 'O'>),
+    utest::v1::Case("Receive test string from PC once with odd parity (115200 baud)", mcu_rx_test_string<115200, 'O'>),
+    utest::v1::Case("Send test string from MCU once with even parity (57600 baud)", mcu_tx_test_string<57600, 'E'>),
+    utest::v1::Case("Receive test string from PC once with even parity (57600 baud)", mcu_rx_test_string<57600, 'E'>),
 
     utest::v1::Case("Handle Junk on Serial Rx Line", handle_junk_on_line)
 };

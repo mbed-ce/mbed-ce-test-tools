@@ -102,14 +102,24 @@ class UARTHostTest(BaseHostTest):
 
     def _callback_show_logic_analyzer_recording(self, key: str, value: str, timestamp):
         try:
-            self.recorder.get_result()
-        except subprocess.CalledProcessError:
             pass
+            self.recorder.get_result()
+        except subprocess.CalledProcessError as ex:
+            self.logger.prn_err("Sigrok failed: " + str(ex))
+        except subprocess.TimeoutExpired as ex:
+            self.logger.prn_err("Sigrok timed out: " + str(ex))
 
         # For the UART test we don't do anything with the LA recording, so we can let it slide if it did
         # not trigger for now. Getting rather temperamental behavior here, esp. since the UART baudrate is sometimes
         # close to the logic analyzer frequency
         self.send_kv('show_logic_analyzer_recording', 'complete')
+
+    def _callback_read_mcu_rts(self, key: str, value: str, timestamp):
+        """
+        Read the value of the RTS line sent by the MCU.
+        """
+        self.send_kv('read_mcu_rts', int(self.uart.cts))
+
 
     def setup(self):
 
