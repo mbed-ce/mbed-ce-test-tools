@@ -26,7 +26,7 @@ from . import usb_serial_numbers
 from mbed_host_tests.host_tests_logger import HtrunLogger
 
 # This is the fastest that I can *consistently* make work
-LOGIC_ANALYZER_FREQUENCY = 2 # MHz
+LOGIC_ANALYZER_FREQUENCY = 1 # MHz
 
 
 SIGROK_COMMAND = ["sigrok-cli"]
@@ -668,7 +668,7 @@ class SigrokUARTRecorder(SigrokRecorderBase):
         # Save UART info for analysis later
         self._baudrate = baudrate
 
-        # Record all four UART lines. Trigger on an edge on Tx or Rx.
+        # Record the UART lines plus RTS. Trigger on an edge on Tx or Rx.
         # Note that setting a trigger on BOTH Tx and Rx does not seem to work (I think it is looking
         # for them to both trigger at the exact same time?) so we have to pick one or the other.
         sigrok_command = ["--channels", f"D3=MCU_RX,D2=MCU_RTS,D0=MCU_TX",

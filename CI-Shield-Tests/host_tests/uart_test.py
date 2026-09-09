@@ -114,18 +114,12 @@ class UARTHostTest(BaseHostTest):
         # close to the logic analyzer frequency
         self.send_kv('show_logic_analyzer_recording', 'complete')
 
-    def _callback_read_mcu_rts(self, key: str, value: str, timestamp):
-        """
-        Read the value of the RTS line sent by the MCU.
-        """
-        self.send_kv('read_mcu_rts', int(self.uart.cts))
-
-
     def setup(self):
 
         # Open serial port
         self.uart: serial.Serial = self.cy_usb_context.open_device(cy_serial_bridge.DEFAULT_VID, 
-                                cy_serial_bridge.DEFAULT_PID, 
+                                cy_serial_bridge.DEFAULT_PID,
+                                # Note: Cannot use USART here (even 4-wire!) because it drives the DSR/DTR pins, which shorts out the MCU Tx line
                                 cy_serial_bridge.OpenMode.UART_CDC,
                                 CY7C65211_SERIAL_NUMBER)
         

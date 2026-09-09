@@ -25,6 +25,8 @@
 #include <random>
 
 #include "ci_test_common.h"
+#include "SerialBase.h"
+#include "SerialBase.h"
 
 // check if I2C is supported on this device
 #if !DEVICE_SERIAL
@@ -34,9 +36,16 @@
 #if STATIC_PINMAP_READY
 // Must be declared globally as Serial stores the pointer
 constexpr auto serialPinmap = get_uart_pinmap(PIN_UART_MCU_TX, PIN_UART_MCU_RX);
+#ifdef DEVICE_SERIAL_FC
+constexpr auto serialFCPinmap = get_uart_fc_pinmap(PIN_UART_RTS, PIN_UART_CTS);
+#endif
 #endif
 
 BufferedSerial * uart = nullptr;
+
+#ifdef DEVICE_SERIAL_FC
+DigitalOut ctsLoopback(PIN_UART_CTS_LOOP, 0);
+#endif
 
 // Random generator with constant seed
 std::minstd_rand randGen(1239454);
@@ -44,22 +53,24 @@ std::minstd_rand randGen(1239454);
 // Set up the serial port at a specific baudrate. Also configures the host test to start logging at this baudrate
 // Also, because Sigrok can only trigger on Rx OR Tx, not both, we need to know whether data will
 // be sent to the MCU first, or from the MCU first.
-// Can optionally configure parity, using the PySerial encoding (N = None, O = Odd, E = Even)
-void init_uart(int baudrate, bool data_to_mcu_first, char parity = 'N')
+// Can optionally configure parity.
+void init_uart(int baudrate, bool data_to_mcu_first, SerialBase::Parity parity = SerialBase::Parity::None)
 {
     uart->set_baud(baudrate);
     uart->clear_rx_overflow_flag();
 
-    // switch (parity) {
-    //     case 'E':
-    //         uart->set_format(8, SerialBase::Parity::Even);
-    //         break;
-    //     case 'O':
-    //         uart->set_format(8, SerialBase::Parity::Odd);
-    //         break;
-    //     default:
-    //         uart->set_format(8, SerialBase::Parity::None);
-    // }
+    char parityChar;
+    switch (parity) {
+        case SerialBase::Parity::Even:
+            parityChar = 'E';
+            break;
+        case SerialBase::Parity::Odd:
+            parityChar = 'O';
+            break;
+        default:
+            parityChar = 'N';
+            break;
+    }
 
     // Clear out any data currently in the UART
     char data;
@@ -67,7 +78,7 @@ void init_uart(int baudrate, bool data_to_mcu_first, char parity = 'N')
         uart->read(&data, 1);
     }
 
-    std::string value = std::to_string(baudrate) + " " + (data_to_mcu_first ? "true" : "false") + " " + parity;
+    std::string value = std::to_string(baudrate) + " " + (data_to_mcu_first ? "true" : "false") + " " + parityChar;
     greentea_send_kv("setup_port_at_baud", value.c_str());
     assert_next_message_from_host("setup_port_at_baud", "complete");
 }
@@ -111,7 +122,7 @@ constexpr size_t LONG_TEST_TOTAL_LEN = NUM_REPETITIONS_FOR_LONG_TEST * TEST_STRI
 char rxBuffer[LONG_TEST_TOTAL_LEN];
 
 // Send the test string to the host once
-template<int baudrate, char parity = 'N'>
+template<int baudrate, SerialBase::Parity parity = SerialBase::Parity::None>
 void mcu_tx_test_string()
 {
 #ifdef TARGET_AMA3B1KK
@@ -132,7 +143,7 @@ void mcu_tx_test_string()
 }
 
 // Receive the test string from the host once
-template<int baudrate, char parity = 'N'>
+template<int baudrate, SerialBase::Parity parity = SerialBase::Parity::None>
 void mcu_rx_test_string()
 {
 #ifdef TARGET_AMA3B1KK
@@ -385,6 +396,55 @@ void handle_junk_on_line() {
     mcu_rx_test_string<115200>();
 }
 
+#ifdef DEVICE_SERIAL_FC
+
+/*
+ * Test that the Mbed MCU will not send bytes over the UART when the CTS line goes high
+ */
+void test_receive_cts_signal() {
+
+    // Init the UART at a relatively slow baudrate
+    init_uart(9600, false);
+#if STATIC_PINMAP_READY
+    uart = new BufferedSerial(serialPinmap);
+#else
+    uart->set_flow_control(SerialBase::RTSCTS, PIN_UART_RTS, PIN_UART_CTS);
+#endif
+    uart->set_blocking(false);
+
+    // Write the test string
+    uart->write(TEST_STRING, TEST_STRING_LEN);
+
+    // Sanity check: should have at least 2 bytes left in the buffer by this point
+    TEST_ASSERT(uart->tx_buffer_size() >= 2);
+
+    // Now bring CTS high (deasserted) to indicate not-clear-to-send
+    ctsLoopback = 1;
+
+    // The Tx buffer size should now no longer meaningfully decrease
+    const size_t origTxBufferSize = uart->tx_buffer_size();
+    TEST_ASSERT(origTxBufferSize >= 1);
+
+    wait_us(get_time_to_transmit(9600, 10));
+
+    printf("Tx buffer started at %zu when CTS was turned on, is now %zu\n", origTxBufferSize, uart->tx_buffer_size());
+
+    // Should not have seen any more chars transmit (mayyyyybe one char maximum)
+    TEST_ASSERT(uart->tx_buffer_size() + 1 >= origTxBufferSize);
+
+    // Now let's assert CTS again
+    ctsLoopback = 0;
+
+    // We should see the buffer drain now.
+    rtos::ThisThread::sleep_for(std::chrono::ceil<std::chrono::milliseconds>(get_time_to_transmit(9600, TEST_STRING_LEN)));
+
+    // The host side should have seen correct data
+    show_logic_analyzer_recording();
+    assert_host_received_test_string(1);
+}
+
+#endif
+
 utest::v1::status_t test_setup(const size_t number_of_cases) {
     // Setup Greentea using a reasonable timeout in seconds
     GREENTEA_SETUP(60, "uart_test");
@@ -427,12 +487,14 @@ utest::v1::Case cases[] = {
     utest::v1::Case("H/W FIFO Test (9600 baud)", mcu_rx_hw_fifo<9600>),
     utest::v1::Case("H/W FIFO Test (921600 baud)", mcu_rx_hw_fifo<921600>),
 
-    utest::v1::Case("Send test string from MCU once with odd parity (115200 baud)", mcu_tx_test_string<115200, 'O'>),
-    utest::v1::Case("Receive test string from PC once with odd parity (115200 baud)", mcu_rx_test_string<115200, 'O'>),
-    utest::v1::Case("Send test string from MCU once with even parity (57600 baud)", mcu_tx_test_string<57600, 'E'>),
-    utest::v1::Case("Receive test string from PC once with even parity (57600 baud)", mcu_rx_test_string<57600, 'E'>),
+    utest::v1::Case("Send test string from MCU once with odd parity (115200 baud)", mcu_tx_test_string<115200, SerialBase::Parity::Odd>),
+    utest::v1::Case("Receive test string from PC once with odd parity (115200 baud)", mcu_rx_test_string<115200, SerialBase::Parity::Odd>),
+    utest::v1::Case("Send test string from MCU once with even parity (57600 baud)", mcu_tx_test_string<57600, SerialBase::Parity::Even>),
+    utest::v1::Case("Receive test string from PC once with even parity (57600 baud)", mcu_rx_test_string<57600, SerialBase::Parity::Even>),
 
-    utest::v1::Case("Handle Junk on Serial Rx Line", handle_junk_on_line)
+    utest::v1::Case("Handle Junk on Serial Rx Line", handle_junk_on_line),
+
+    utest::v1::Case("CTS Flow Control (9600 baud)", test_receive_cts_signal)
 };
 
 utest::v1::Specification specification(test_setup, cases, utest::v1::greentea_continue_handlers);

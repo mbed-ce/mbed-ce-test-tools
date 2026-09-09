@@ -43,6 +43,10 @@
 // PIN_GPIN_0        - Pin connected to GPIN_0 on the test shield.  Can be any GPIO.  Default D2.
 // PIN_UART_MCU_TX   - Pin connected to UART_MCU_TX on the test shield.  Must be mappable as UART Tx. Default D0.
 // PIN_UART_MCU_RX   - Pin connected to UART_MCU_RX on the test shield.  Must be mappable as UART Rx. Default D1.
+// PIN_UART_CTS      - Pin connected to MCU's UART CTS pin (for the same UART peripheral as above). If not defined, defaults to GPOUT_2.
+// PIN_UART_CTS_LOOP - Another GPIO pin connected to the above CTS pin. If not defined, defaults to GPIN_2.
+// PIN_UART_RTS      - Pin connected to MCU's UART RTS pin (for the same UART peripheral as above). If not defined, defaults to GPOUT_0.
+// PIN_UART_RTS_LOOP - Another GPIO pin connected to the above RTS pin. If not defined, defaults to GPIN_0.
 // PIN_ANALOG_OUT    - Pin connected to the DAC on the MCU.  Should be looped back to PIN_GPOUT_1_PWM.  Don't define if not available.
 
 // Overrides for RP2350. Manually set up with jumper wires.
@@ -235,6 +239,24 @@
 #define PIN_UART_MCU_RX ARDUINO_UNO_D0
 #endif
 
+#endif
+
+#if DEVICE_SERIAL_FC
+#ifndef PIN_UART_CTS
+#define PIN_UART_CTS PIN_GPOUT_2
+#endif
+
+#ifndef PIN_UART_CTS_LOOP
+#define PIN_UART_CTS_LOOP PIN_GPIN_2
+#endif
+
+#ifndef PIN_UART_RTS
+#define PIN_UART_RTS PIN_GPOUT_0
+#endif
+
+#ifndef PIN_UART_RTS_LOOP
+#define PIN_UART_RTS_LOOP PIN_GPIN_0
+#endif
 #endif
 
 #endif /* CI_TEST_PINS_H */
