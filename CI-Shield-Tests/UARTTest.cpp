@@ -58,6 +58,7 @@ void init_uart(int baudrate, bool data_to_mcu_first, SerialBase::Parity parity =
 {
     uart->set_baud(baudrate);
     uart->clear_rx_overflow_flag();
+    uart->set_format(8, parity);
 
     char parityChar;
     switch (parity) {
@@ -406,7 +407,7 @@ void test_receive_cts_signal() {
     // Init the UART at a relatively slow baudrate
     init_uart(9600, false);
 #if STATIC_PINMAP_READY
-    uart = new BufferedSerial(serialPinmap);
+    uart->set_flow_control(SerialBase::RTSCTS, serialFCPinmap);
 #else
     uart->set_flow_control(SerialBase::RTSCTS, PIN_UART_RTS, PIN_UART_CTS);
 #endif
