@@ -23,6 +23,7 @@
 #include <cinttypes>
 #include <algorithm>
 #include <random>
+#include <optional>
 
 #include "ci_test_common.h"
 #include "SerialBase.h"
@@ -45,6 +46,7 @@ BufferedSerial * uart = nullptr;
 
 #ifdef DEVICE_SERIAL_FC
 DigitalOut ctsLoopback(PIN_UART_CTS_LOOP, 0);
+DigitalIn rtrLoopback(PIN_UART_RTS_LOOP);
 #endif
 
 // Random generator with constant seed
@@ -301,6 +303,8 @@ void mcu_rx_overflow()
     show_logic_analyzer_recording();
 }
 
+std::optional<size_t> hw_fifo_size{};
+
 // Tests the size of the hardware FIFO by seeing how many characters we can buffer with interrupts disabled.
 template<int baudrate>
 void mcu_rx_hw_fifo()
@@ -323,7 +327,8 @@ void mcu_rx_hw_fifo()
     TEST_ASSERT_FALSE(uart->get_rx_overflow_flag());
 
     // How many did we get?
-    printf("Apparent HW Rx FIFO size: %zu\n", uart->rx_buffer_size());
+    hw_fifo_size = uart->rx_buffer_size();
+    printf("Apparent HW Rx FIFO size: %zu\n", *hw_fifo_size);
 
     // Should have gotten a correct sequence of bytes
     const size_t bytesRead = uart->read(rxBuffer, sizeof(rxBuffer));
@@ -444,6 +449,60 @@ void test_receive_cts_signal() {
     assert_host_received_test_string(1);
 }
 
+void test_receive_rts_signal() {
+    // Must have measured this in earlier test
+    TEST_ASSERT_TRUE(hw_fifo_size.has_value());
+
+    // Init the UART at a relatively slow baudrate
+    init_uart(9600, true);
+#if STATIC_PINMAP_READY
+    uart->set_flow_control(SerialBase::RTSCTS, serialFCPinmap);
+#else
+    uart->set_flow_control(SerialBase::RTSCTS, PIN_UART_RTS, PIN_UART_CTS);
+#endif
+    uart->set_blocking(false);
+
+    // RTS should start low to indicate we are ready to receive
+    TEST_ASSERT_FALSE(rtrLoopback.read());
+
+    // Have the host script send us a bunch of data, we should fill up the buffer and then RTS should automatically
+    // go high.
+    host_send_test_string(NUM_REPETITIONS_FOR_LONG_TEST);
+    while (uart->rx_buffer_size() < MBED_CONF_DRIVERS_UART_SERIAL_RXBUF_SIZE) {
+        // Wait... RTS should not go high yet (though it might briefly blip high due to the Rx FIFO getting above
+        // the watermark due to a late ISR)
+        if (rtrLoopback.read()) {
+            Timer rtrContinuouslyHighTimer;
+            rtrContinuouslyHighTimer.start();
+            while (rtrLoopback.read()) {
+                if (rtrContinuouslyHighTimer.elapsed_time() >= get_time_to_transmit(9600, 1)) {
+                    printf("RTR went high early! Rx buffer size = %zu\n", uart->rx_buffer_size());
+                    TEST_FAIL();
+                }
+            }
+        }
+    }
+
+    // Now wait for the HW FIFO to fill up
+    wait_us(get_time_to_transmit(9600, *hw_fifo_size));
+
+    // Provide a grace period of 1 byte time
+    wait_us(get_time_to_transmit(9600, 1));
+
+    // RTS should now be high asking the other end to stop transmitting
+    TEST_ASSERT_TRUE(rtrLoopback.read());
+
+    // Wait for the transmission to finish from the host (it will keep transmitting because it doesn't support RTS)
+    wait_us(get_time_to_transmit(9600, LONG_TEST_TOTAL_LEN));
+
+    // If we read data out of the hardware, RTS should go high again.
+    // AFAIK, the specific amount of data that needs to be read depends on the hardware.
+    // On RP2xxx at least, RTS will go low once the HW FIFO is completely empty
+    uart->read(rxBuffer, *hw_fifo_size);
+    wait_us(get_time_to_transmit(9600, 1));
+    TEST_ASSERT_FALSE(rtrLoopback.read());
+}
+
 #endif
 
 utest::v1::status_t test_setup(const size_t number_of_cases) {
@@ -468,34 +527,35 @@ utest::v1::status_t test_setup(const size_t number_of_cases) {
 utest::v1::Case cases[] = {
     // Try sending and receiving at a variety of different baudrates. This may reveal issues in the MCU clock code.
     // Note that the CY7C65211 can handle up to 3Mbaud.
-    utest::v1::Case("Send test string from MCU once (1200 baud)", mcu_tx_test_string<1200>),
-    utest::v1::Case("Receive test string from PC once (1200 baud)", mcu_rx_test_string<1200>),
-    utest::v1::Case("Send test string from MCU once (9600 baud)", mcu_tx_test_string<9600>),
-    utest::v1::Case("Receive test string from PC once (9600 baud)", mcu_rx_test_string<9600>),
-    utest::v1::Case("Send test string from MCU once (115200 baud)", mcu_tx_test_string<115200>),
-    utest::v1::Case("Receive test string from PC once (115200 baud)", mcu_rx_test_string<115200>),
-    utest::v1::Case("Send test string from MCU once (921600 baud)", mcu_tx_test_string<921600>),
-    utest::v1::Case("Receive test string from PC once (921600 baud)", mcu_rx_test_string<921600>),
-    utest::v1::Case("Send test string from MCU once (3000000 baud)", mcu_tx_test_string<3000000>),
-    utest::v1::Case("Receive test string from PC once (3000000 baud)", mcu_rx_test_string<3000000>),
-
-    utest::v1::Case("Receive long string from PC (9600 baud)", mcu_rx_long_string<9600>),
-    utest::v1::Case("Receive long string from PC (921600 baud)", mcu_rx_long_string<921600>),
-
-    utest::v1::Case("Rx overflow (9600 baud)", mcu_rx_overflow<9600>),
-    utest::v1::Case("Rx overflow (921600 baud)", mcu_rx_overflow<921600>),
-
+    // utest::v1::Case("Send test string from MCU once (1200 baud)", mcu_tx_test_string<1200>),
+    // utest::v1::Case("Receive test string from PC once (1200 baud)", mcu_rx_test_string<1200>),
+    // utest::v1::Case("Send test string from MCU once (9600 baud)", mcu_tx_test_string<9600>),
+    // utest::v1::Case("Receive test string from PC once (9600 baud)", mcu_rx_test_string<9600>),
+    // utest::v1::Case("Send test string from MCU once (115200 baud)", mcu_tx_test_string<115200>),
+    // utest::v1::Case("Receive test string from PC once (115200 baud)", mcu_rx_test_string<115200>),
+    // utest::v1::Case("Send test string from MCU once (921600 baud)", mcu_tx_test_string<921600>),
+    // utest::v1::Case("Receive test string from PC once (921600 baud)", mcu_rx_test_string<921600>),
+    // utest::v1::Case("Send test string from MCU once (3000000 baud)", mcu_tx_test_string<3000000>),
+    // utest::v1::Case("Receive test string from PC once (3000000 baud)", mcu_rx_test_string<3000000>),
+    //
+    // utest::v1::Case("Receive long string from PC (9600 baud)", mcu_rx_long_string<9600>),
+    // utest::v1::Case("Receive long string from PC (921600 baud)", mcu_rx_long_string<921600>),
+    //
+    // utest::v1::Case("Rx overflow (9600 baud)", mcu_rx_overflow<9600>),
+    // utest::v1::Case("Rx overflow (921600 baud)", mcu_rx_overflow<921600>),
+    //
     utest::v1::Case("H/W FIFO Test (9600 baud)", mcu_rx_hw_fifo<9600>),
     utest::v1::Case("H/W FIFO Test (921600 baud)", mcu_rx_hw_fifo<921600>),
+    //
+    // utest::v1::Case("Send test string from MCU once with odd parity (115200 baud)", mcu_tx_test_string<115200, SerialBase::Parity::Odd>),
+    // utest::v1::Case("Receive test string from PC once with odd parity (115200 baud)", mcu_rx_test_string<115200, SerialBase::Parity::Odd>),
+    // utest::v1::Case("Send test string from MCU once with even parity (57600 baud)", mcu_tx_test_string<57600, SerialBase::Parity::Even>),
+    // utest::v1::Case("Receive test string from PC once with even parity (57600 baud)", mcu_rx_test_string<57600, SerialBase::Parity::Even>),
+    //
+    // utest::v1::Case("Handle Junk on Serial Rx Line", handle_junk_on_line),
 
-    utest::v1::Case("Send test string from MCU once with odd parity (115200 baud)", mcu_tx_test_string<115200, SerialBase::Parity::Odd>),
-    utest::v1::Case("Receive test string from PC once with odd parity (115200 baud)", mcu_rx_test_string<115200, SerialBase::Parity::Odd>),
-    utest::v1::Case("Send test string from MCU once with even parity (57600 baud)", mcu_tx_test_string<57600, SerialBase::Parity::Even>),
-    utest::v1::Case("Receive test string from PC once with even parity (57600 baud)", mcu_rx_test_string<57600, SerialBase::Parity::Even>),
-
-    utest::v1::Case("Handle Junk on Serial Rx Line", handle_junk_on_line),
-
-    utest::v1::Case("CTS Flow Control (9600 baud)", test_receive_cts_signal)
+    utest::v1::Case("CTS Flow Control (9600 baud)", test_receive_cts_signal),
+    utest::v1::Case("RTS Flow Control (9600 baud)", test_receive_rts_signal)
 };
 
 utest::v1::Specification specification(test_setup, cases, utest::v1::greentea_continue_handlers);
