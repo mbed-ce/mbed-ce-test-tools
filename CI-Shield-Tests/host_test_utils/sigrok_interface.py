@@ -26,7 +26,7 @@ from . import usb_serial_numbers
 from mbed_host_tests.host_tests_logger import HtrunLogger
 
 # This is the fastest that I can *consistently* make work
-LOGIC_ANALYZER_FREQUENCY = 1 # MHz
+LOGIC_ANALYZER_FREQUENCY = 2 # MHz
 
 
 SIGROK_COMMAND = ["sigrok-cli"]
@@ -101,8 +101,10 @@ class SigrokRecorderBase(abc.ABC):
         else:
             self._recording_index_this_test_case += 1
             filename_suffix = "_rec_" + str(self._recording_index_this_test_case)
+
+        test_case_name_clean = test_case_name.replace("/", "_").replace(">", "").replace("<", "")
         
-        test_case_filename = f"case_{self._next_test_case_number}_{test_case_name.replace("/", "_")}{filename_suffix}.sr"
+        test_case_filename = f"case_{self._next_test_case_number}_{test_case_name_clean}{filename_suffix}.sr"
         
         # Update test case number
         # TODO this will break if there is a test case that doesn't call sigrok at all
