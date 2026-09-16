@@ -96,6 +96,10 @@
 #define PIN_SPI_HW_CS p8 // This is a HW CS pin despite HW CS pins not being labeled in the pinout diagram
 #define PIN_SPI_SD_CS p11
 #define PIN_ANALOG_OUT p18
+
+// Note: HW CTS is used with this pinmap. HW RTS is not possible b/c it's not pinned out on the LPC1768 board.
+// This means we need to suppress using static pinmap for serial b/c it won't map the RTS pin so the RTS test will fail.
+#define UART_NO_STATIC_PINMAP 1
 #endif
 
 // Overrides for Nucleo H563ZI

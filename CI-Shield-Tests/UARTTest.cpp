@@ -34,9 +34,14 @@
 #error [NOT_SUPPORTED] Serial not supported on this platform, add 'DEVICE_SERIAL' definition to your platform.
 #endif
 
-#if STATIC_PINMAP_READY
+#if STATIC_PINMAP_READY && !UART_NO_STATIC_PINMAP
+#define UART_TEST_STATIC_PINMAP 1
+#endif
+
+#if UART_TEST_STATIC_PINMAP
 // Must be declared globally as Serial stores the pointer
 constexpr auto serialPinmap = get_uart_pinmap(PIN_UART_MCU_TX, PIN_UART_MCU_RX);
+
 #ifdef DEVICE_SERIAL_FC
 constexpr auto serialFCPinmap = get_uart_fc_pinmap(PIN_UART_RTS, PIN_UART_CTS);
 #endif
@@ -411,7 +416,7 @@ void test_receive_cts_signal() {
 
     // Init the UART at a relatively slow baudrate
     init_uart(9600, false);
-#if STATIC_PINMAP_READY
+#if UART_TEST_STATIC_PINMAP
     uart->set_flow_control(SerialBase::RTSCTS, serialFCPinmap);
 #else
     uart->set_flow_control(SerialBase::RTSCTS, PIN_UART_RTS, PIN_UART_CTS);
@@ -455,7 +460,7 @@ void test_receive_rts_signal() {
 
     // Init the UART at a relatively slow baudrate
     init_uart(9600, true);
-#if STATIC_PINMAP_READY
+#if UART_TEST_STATIC_PINMAP
     uart->set_flow_control(SerialBase::RTSCTS, serialFCPinmap);
 #else
     uart->set_flow_control(SerialBase::RTSCTS, PIN_UART_RTS, PIN_UART_CTS);
@@ -468,18 +473,20 @@ void test_receive_rts_signal() {
     // Have the host script send us a bunch of data, we should fill up the buffer and then RTS should automatically
     // go high.
     host_send_test_string(NUM_REPETITIONS_FOR_LONG_TEST);
+    Timer rtrContinuouslyHighTimer;
     while (uart->rx_buffer_size() < MBED_CONF_DRIVERS_UART_SERIAL_RXBUF_SIZE) {
         // Wait... RTS should not go high yet (though it might briefly blip high due to the Rx FIFO getting above
         // the watermark due to a late ISR)
+
         if (rtrLoopback.read()) {
-            Timer rtrContinuouslyHighTimer;
             rtrContinuouslyHighTimer.start();
-            while (rtrLoopback.read()) {
-                if (rtrContinuouslyHighTimer.elapsed_time() >= get_time_to_transmit(9600, 1)) {
-                    printf("RTR went high early! Rx buffer size = %zu\n", uart->rx_buffer_size());
-                    TEST_FAIL();
-                }
+            if (rtrContinuouslyHighTimer.elapsed_time() >= get_time_to_transmit(9600, 1)) {
+                printf("RTR went high early! Rx buffer size = %zu\n", uart->rx_buffer_size());
+                TEST_FAIL();
             }
+        }
+        else {
+            rtrContinuouslyHighTimer.reset();
         }
     }
 
@@ -514,7 +521,7 @@ utest::v1::status_t test_setup(const size_t number_of_cases) {
     funcSelPins = 0b000;
 
     // Use static pinmap if supported for this device
-#if STATIC_PINMAP_READY
+#if UART_TEST_STATIC_PINMAP
     uart = new BufferedSerial(serialPinmap);
 #else	
     uart = new BufferedSerial(PIN_UART_MCU_TX, PIN_UART_MCU_RX);
@@ -527,32 +534,32 @@ utest::v1::status_t test_setup(const size_t number_of_cases) {
 utest::v1::Case cases[] = {
     // Try sending and receiving at a variety of different baudrates. This may reveal issues in the MCU clock code.
     // Note that the CY7C65211 can handle up to 3Mbaud.
-    // utest::v1::Case("Send test string from MCU once (1200 baud)", mcu_tx_test_string<1200>),
-    // utest::v1::Case("Receive test string from PC once (1200 baud)", mcu_rx_test_string<1200>),
-    // utest::v1::Case("Send test string from MCU once (9600 baud)", mcu_tx_test_string<9600>),
-    // utest::v1::Case("Receive test string from PC once (9600 baud)", mcu_rx_test_string<9600>),
-    // utest::v1::Case("Send test string from MCU once (115200 baud)", mcu_tx_test_string<115200>),
-    // utest::v1::Case("Receive test string from PC once (115200 baud)", mcu_rx_test_string<115200>),
-    // utest::v1::Case("Send test string from MCU once (921600 baud)", mcu_tx_test_string<921600>),
-    // utest::v1::Case("Receive test string from PC once (921600 baud)", mcu_rx_test_string<921600>),
-    // utest::v1::Case("Send test string from MCU once (3000000 baud)", mcu_tx_test_string<3000000>),
-    // utest::v1::Case("Receive test string from PC once (3000000 baud)", mcu_rx_test_string<3000000>),
-    //
-    // utest::v1::Case("Receive long string from PC (9600 baud)", mcu_rx_long_string<9600>),
-    // utest::v1::Case("Receive long string from PC (921600 baud)", mcu_rx_long_string<921600>),
-    //
-    // utest::v1::Case("Rx overflow (9600 baud)", mcu_rx_overflow<9600>),
-    // utest::v1::Case("Rx overflow (921600 baud)", mcu_rx_overflow<921600>),
-    //
+    utest::v1::Case("Send test string from MCU once (1200 baud)", mcu_tx_test_string<1200>),
+    utest::v1::Case("Receive test string from PC once (1200 baud)", mcu_rx_test_string<1200>),
+    utest::v1::Case("Send test string from MCU once (9600 baud)", mcu_tx_test_string<9600>),
+    utest::v1::Case("Receive test string from PC once (9600 baud)", mcu_rx_test_string<9600>),
+    utest::v1::Case("Send test string from MCU once (115200 baud)", mcu_tx_test_string<115200>),
+    utest::v1::Case("Receive test string from PC once (115200 baud)", mcu_rx_test_string<115200>),
+    utest::v1::Case("Send test string from MCU once (921600 baud)", mcu_tx_test_string<921600>),
+    utest::v1::Case("Receive test string from PC once (921600 baud)", mcu_rx_test_string<921600>),
+    utest::v1::Case("Send test string from MCU once (3000000 baud)", mcu_tx_test_string<3000000>),
+    utest::v1::Case("Receive test string from PC once (3000000 baud)", mcu_rx_test_string<3000000>),
+
+    utest::v1::Case("Receive long string from PC (9600 baud)", mcu_rx_long_string<9600>),
+    utest::v1::Case("Receive long string from PC (921600 baud)", mcu_rx_long_string<921600>),
+
+    utest::v1::Case("Rx overflow (9600 baud)", mcu_rx_overflow<9600>),
+    utest::v1::Case("Rx overflow (921600 baud)", mcu_rx_overflow<921600>),
+
     utest::v1::Case("H/W FIFO Test (9600 baud)", mcu_rx_hw_fifo<9600>),
     utest::v1::Case("H/W FIFO Test (921600 baud)", mcu_rx_hw_fifo<921600>),
-    //
-    // utest::v1::Case("Send test string from MCU once with odd parity (115200 baud)", mcu_tx_test_string<115200, SerialBase::Parity::Odd>),
-    // utest::v1::Case("Receive test string from PC once with odd parity (115200 baud)", mcu_rx_test_string<115200, SerialBase::Parity::Odd>),
-    // utest::v1::Case("Send test string from MCU once with even parity (57600 baud)", mcu_tx_test_string<57600, SerialBase::Parity::Even>),
-    // utest::v1::Case("Receive test string from PC once with even parity (57600 baud)", mcu_rx_test_string<57600, SerialBase::Parity::Even>),
-    //
-    // utest::v1::Case("Handle Junk on Serial Rx Line", handle_junk_on_line),
+
+    utest::v1::Case("Send test string from MCU once with odd parity (115200 baud)", mcu_tx_test_string<115200, SerialBase::Parity::Odd>),
+    utest::v1::Case("Receive test string from PC once with odd parity (115200 baud)", mcu_rx_test_string<115200, SerialBase::Parity::Odd>),
+    utest::v1::Case("Send test string from MCU once with even parity (57600 baud)", mcu_tx_test_string<57600, SerialBase::Parity::Even>),
+    utest::v1::Case("Receive test string from PC once with even parity (57600 baud)", mcu_rx_test_string<57600, SerialBase::Parity::Even>),
+
+    utest::v1::Case("Handle Junk on Serial Rx Line", handle_junk_on_line),
 
     utest::v1::Case("CTS Flow Control (9600 baud)", test_receive_cts_signal),
     utest::v1::Case("RTS Flow Control (9600 baud)", test_receive_rts_signal)
