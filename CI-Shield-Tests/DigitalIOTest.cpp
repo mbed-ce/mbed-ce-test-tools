@@ -76,8 +76,8 @@ void DigitalIO_PullUpPullDown_Test()
     DigitalIn din(din_pin, PullNone); // Make sure no pullup/pulldown is active on this pin as some targets have this by default.
 
     // test 0
-    // Apollo3 does not support pull downs on most pins
-#ifndef TARGET_Apollo3
+    // not every target supports pull downs
+#if !defined(TARGET_Apollo3) && !defined(TARGET_MCU_RA)
     dout.mode(PullDown);
     wait_us(GPIO_PROPAGATION_TIME);
     TEST_ASSERT_MESSAGE(0 == din.read(),"Expected value to be 0, read value was not zero");

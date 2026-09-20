@@ -561,8 +561,10 @@ utest::v1::Case cases[] = {
 
     utest::v1::Case("Handle Junk on Serial Rx Line", handle_junk_on_line),
 
+#if DEVICE_SERIAL_FC
     utest::v1::Case("CTS Flow Control (9600 baud)", test_receive_cts_signal),
     utest::v1::Case("RTS Flow Control (9600 baud)", test_receive_rts_signal)
+#endif
 };
 
 utest::v1::Specification specification(test_setup, cases, utest::v1::greentea_continue_handlers);
